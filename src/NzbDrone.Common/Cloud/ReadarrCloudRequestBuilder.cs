@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("https://readarr.servarr.com/v1/")
                 .CreateFactory();
 
-            Metadata = new HttpRequestBuilder("https://api.bookinfo.club/v1/{route}")
+            Metadata = new HttpRequestBuilder("https://api.bookinfo.pro/{route}")
                 .CreateFactory();
         }
 
