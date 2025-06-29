@@ -7,6 +7,13 @@ testPackageFolder='_tests'
 #Artifact variables
 artifactsFolder="_artifacts";
 
+TarPackage()
+{
+    local folder="$1"
+    local tarname="$2"
+    (cd "$(dirname "$folder")" && tar -czvf "$tarname" "$(basename "$folder")")
+}
+
 ProgressStart()
 {
     echo "Start '$1'"
@@ -141,6 +148,8 @@ PackageLinux()
         cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
     fi
 
+    TarPackage "$folder" "Readarr.develop.$READARRVERSION-${runtime}.tar.gz"
+
     ProgressEnd "Creating $runtime Package for $framework"
 }
 
@@ -230,13 +239,13 @@ Package()
         linux|freebsd*)
             PackageLinux "$framework" "$runtime"
             ;;
-        win)
-            PackageWindows "$framework" "$runtime"
-            ;;
-        osx)
-            PackageMacOS "$framework" "$runtime"
-            PackageMacOSApp "$framework" "$runtime"
-            ;;
+        # win)
+        #     PackageWindows "$framework" "$runtime"
+        #     ;;
+        # osx)
+        #     PackageMacOS "$framework" "$runtime"
+        #     PackageMacOSApp "$framework" "$runtime"
+        #     ;;
     esac
 }
 
