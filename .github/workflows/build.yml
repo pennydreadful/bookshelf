@@ -29,6 +29,17 @@ jobs:
       matrix:
         os: [ubuntu-22.04, windows-2022, macos-13]
     steps:
+      - name: Set up DOTNET_INSTALL_DIR
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            echo "DOTNET_INSTALL_DIR=/home/runner/.dotnet" >> $GITHUB_ENV
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            echo "DOTNET_INSTALL_DIR=C:\\Users\\runneradmin\\.dotnet" >> $GITHUB_ENV
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            echo "DOTNET_INSTALL_DIR=/Users/runner/.dotnet" >> $GITHUB_ENV
+          fi
+        shell: bash
+
       - uses: actions/checkout@v4
         with:
           submodules: true
