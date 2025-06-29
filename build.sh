@@ -239,13 +239,13 @@ Package()
         linux|freebsd*)
             PackageLinux "$framework" "$runtime"
             ;;
-        # win)
-        #     PackageWindows "$framework" "$runtime"
-        #     ;;
-        # osx)
-        #     PackageMacOS "$framework" "$runtime"
-        #     PackageMacOSApp "$framework" "$runtime"
-        #     ;;
+        win)
+            PackageWindows "$framework" "$runtime"
+            ;;
+        osx)
+            PackageMacOS "$framework" "$runtime"
+            PackageMacOSApp "$framework" "$runtime"
+            ;;
     esac
 }
 
