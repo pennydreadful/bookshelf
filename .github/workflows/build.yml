@@ -42,7 +42,7 @@ jobs:
       - name: Enable Extra Platform Support (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          BUNDLEDVERSIONS=$(find $DOTNET_INSTALL_DIR/sdk/${{ env.DOTNET_VERSION }} -name Microsoft.NETCoreSdk.BundledVersions.props | head -n 1)
+          BUNDLEDVERSIONS=$(find $DOTNET_ROOT/sdk/${{ env.DOTNET_VERSION }} -name Microsoft.NETCoreSdk.BundledVersions.props | head -n 1)
           if [ -n "$BUNDLEDVERSIONS" ]; then
             if ! grep -q freebsd-x64 $BUNDLEDVERSIONS; then
               sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
