@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, master]
+    paths-ignore:
+      - '.github/**'
+      - 'src/Readarr.Api.*/openapi.json'
+  pull_request:
+    branches: [develop]
+    paths-ignore:
+      - '.github/**'
+      - 'src/NzbDrone.Core/Localization/Core'
+      - 'src/Readarr.Api.*/openapi.json'
+
+env:
+  DOTNET_VERSION: '6.0.427'
+  NODE_VERSION: '20'
+  OUTPUT_FOLDER: ./_output
+  ARTIFACTS_FOLDER: ./_artifacts
+  TESTS_FOLDER: ./_tests
+
+jobs:
+  build-backend:
+    name: Build Backend (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-13]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Enable Extra Platform Support (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          BUNDLEDVERSIONS=$(find $AGENT_TOOLSDIRECTORY/dotnet/sdk/${{ env.DOTNET_VERSION }} -name Microsoft.NETCoreSdk.BundledVersions.props | head -n 1)
+          if [ -n "$BUNDLEDVERSIONS" ]; then
+            if ! grep -q freebsd-x64 $BUNDLEDVERSIONS; then
+              sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+            fi
+          fi
+
+      - name: Build Backend
+        run: ./build.sh --backend --enable-extra-platforms
+
+      - name: Upload Backend Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}Backend
+          path: ${{ env.OUTPUT_FOLDER }}
+
+  build-frontend:
+    name: Build Frontend (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-13]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: .yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Build Frontend
+        run: ./build.sh --frontend
+
+      - name: Upload Frontend Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}Frontend
+          path: ${{ env.OUTPUT_FOLDER }}
+
+  package:
+    name: Package (${{ matrix.os }})
+    needs: [build-backend, build-frontend]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-13]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Backend Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ runner.os }}Backend
+          path: ${{ env.OUTPUT_FOLDER }}
+
+      - name: Download Frontend Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ runner.os }}Frontend
+          path: ${{ env.OUTPUT_FOLDER }}
+
+      - name: Create Packages
+        run: ./build.sh --packages --enable-extra-platforms
+
+      - name: Archive Linux Packages
+        if: runner.os == 'Linux'
+        run: |
+          tar -czvf Readarr.linux-core-x64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/linux-x64/net6.0 Readarr
+          tar -czvf Readarr.linux-core-arm64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/linux-arm64/net6.0 Readarr
+
+      - name: Archive macOS Packages
+        if: runner.os == 'macOS'
+        run: |
+          tar -czvf Readarr.osx-core-x64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/osx-x64/net6.0 Readarr
+
+      - name: Archive Windows Packages
+        if: runner.os == 'Windows'
+        run: |
+          powershell Compress-Archive -Path ${{ env.ARTIFACTS_FOLDER }}\win-x64\net6.0\Readarr\* -DestinationPath Readarr.windows-core-x64.zip
+
+      - name: Upload Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}Packages
+          path: |
+            *.tar.gz
+            *.zip
+
+  # Add additional jobs for tests, integration, installer, etc. as needed.
