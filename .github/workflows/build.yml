@@ -20,6 +20,8 @@ env:
   OUTPUT_FOLDER: ./_output
   ARTIFACTS_FOLDER: ./_artifacts
   TESTS_FOLDER: ./_tests
+  READARR_MAJOR_VERSION: 0
+  VERSION: 0.4.19
 
 jobs:
   build-backend:
@@ -29,16 +31,21 @@ jobs:
       matrix:
         os: [ubuntu-22.04, windows-2022, macos-13]
     steps:
-      - name: Set up DOTNET_INSTALL_DIR
-        run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            echo "DOTNET_INSTALL_DIR=/home/runner/.dotnet" >> $GITHUB_ENV
-          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            echo "DOTNET_INSTALL_DIR=C:\\Users\\runneradmin\\.dotnet" >> $GITHUB_ENV
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            echo "DOTNET_INSTALL_DIR=/Users/runner/.dotnet" >> $GITHUB_ENV
-          fi
+      - name: Setup Environment Variables
+        id: variables
         shell: bash
+        run: |
+          # Add 800 to the build number because GitHub won't let us pick an arbitrary starting point
+          READARR_VERSION="${{ env.VERSION }}.$((${{ github.run_number }}+800))"
+          DOTNET_VERSION=$(jq -r '.sdk.version' global.json)
+
+          echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
+          echo "READARR_VERSION=$READARR_VERSION" >> "$GITHUB_ENV"
+          echo "BRANCH=${RAW_BRANCH_NAME//\//-}" >> "$GITHUB_ENV"
+
+          echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
+          echo "major_version=${{ env.READARR_MAJOR_VERSION }}" >> "$GITHUB_OUTPUT"
+          echo "version=$READARR_VERSION" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
         with:
