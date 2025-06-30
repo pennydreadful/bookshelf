@@ -31,6 +31,11 @@ jobs:
       matrix:
         os: [ubuntu-22.04, windows-2022, macos-13]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
       - name: Setup Environment Variables
         id: variables
         shell: bash
@@ -46,11 +51,6 @@ jobs:
           echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
           echo "major_version=${{ env.READARR_MAJOR_VERSION }}" >> "$GITHUB_OUTPUT"
           echo "version=$READARR_VERSION" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 1
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
