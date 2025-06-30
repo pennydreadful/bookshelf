@@ -25,7 +25,7 @@ env:
 
 jobs:
   build-backend:
-    name: Build Backend (${{ matrix.os }})
+    name: Build Backend
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -60,11 +60,48 @@ jobs:
         shell: bash
         run: ./build.sh --backend --enable-extra-platforms --packages
 
-      - name: Upload Backend Artifact
+      # Test Artifacts
+
+      - name: Publish win-x64 Test Artifact
+        uses: ./.github/actions/publish-test-artifact
+        with:
+          framework: ${{ env.FRAMEWORK }}
+          runtime: win-x64
+
+      - name: Publish linux-x64 Test Artifact
+        uses: ./.github/actions/publish-test-artifact
+        with:
+          framework: ${{ env.FRAMEWORK }}
+          runtime: linux-x64
+
+      - name: Publish osx-arm64 Test Artifact
+        uses: ./.github/actions/publish-test-artifact
+        with:
+          framework: ${{ env.FRAMEWORK }}
+          runtime: osx-arm64
+
+      # Build Artifacts (grouped by OS)
+
+      - name: Publish FreeBSD Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ runner.os }}Backend
-          path: ${{ env.OUTPUT_FOLDER }}
+          name: build_freebsd
+          path: _artifacts/freebsd-*/**/*
+      - name: Publish Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_linux
+          path: _artifacts/linux-*/**/*
+      - name: Publish macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_macos
+          path: _artifacts/osx-*/**/*
+      - name: Publish Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_windows
+          path: _artifacts/win-*/**/*
 
   build-frontend:
     name: Build Frontend (${{ matrix.os }})
