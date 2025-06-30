@@ -36,6 +36,9 @@ jobs:
           submodules: true
           fetch-depth: 1
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
       - name: Setup Environment Variables
         id: variables
         shell: bash
@@ -51,11 +54,6 @@ jobs:
           echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
           echo "major_version=${{ env.READARR_MAJOR_VERSION }}" >> "$GITHUB_OUTPUT"
           echo "version=$READARR_VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Enable Extra Platforms In SDK
         shell: bash
