@@ -26,10 +26,7 @@ env:
 jobs:
   build-backend:
     name: Build Backend (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, windows-2022, macos-13]
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,8 +55,9 @@ jobs:
       - name: Enable Extra Platforms In SDK
         shell: bash
         run: ./build.sh --enable-extra-platforms-in-sdk
-              
+
       - name: Build Backend
+        shell: bash
         run: ./build.sh --backend --enable-extra-platforms --packages
 
       - name: Upload Backend Artifact
