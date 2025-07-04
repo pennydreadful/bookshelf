@@ -342,6 +342,11 @@ namespace NzbDrone.Core.Books
         {
             var updated = false;
             var authors = _authorService.GetAuthors(authorIds);
+            if (authorIds == null || !authorIds.Any())
+            {
+                authors = _authorService.GetAllAuthors();
+                authorIds = authors.Select(x => x.Id).ToList();
+            }
 
             foreach (var author in authors)
             {
