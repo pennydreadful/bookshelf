@@ -56,7 +56,7 @@ namespace Readarr.Api.V1.Books
             var selectedEdition = model.Editions?.Value.Where(x => x.Monitored).SingleOrDefault();
 
             var title = selectedEdition?.Title ?? model.Title;
-            var authorTitle = $"{model.Author?.Value?.Metadata?.Value?.SortNameLastFirst} {title}";
+            var authorTitle = $"{model.AuthorMetadata?.Value?.SortNameLastFirst} {title}";
 
             var seriesLinks = model.SeriesLinks?.Value?.OrderBy(x => x.SeriesPosition);
             var seriesTitle = seriesLinks?.Select(x => x?.Series?.Value?.Title + (x?.Position.IsNotNullOrWhiteSpace() ?? false ? $" #{x.Position}" : string.Empty)).ConcatToString("; ");
@@ -66,7 +66,7 @@ namespace Readarr.Api.V1.Books
                 Id = model.Id,
                 AuthorId = model.AuthorId,
                 ForeignBookId = model.ForeignBookId,
-                ForeignEditionId = model.Editions?.Value?.SingleOrDefault(x => x.Monitored)?.ForeignEditionId,
+                ForeignEditionId = selectedEdition?.ForeignEditionId,
                 TitleSlug = model.TitleSlug,
                 Monitored = model.Monitored,
                 AnyEditionOk = model.AnyEditionOk,
