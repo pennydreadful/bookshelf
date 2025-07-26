@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.MetadataSource
 
             Mocker.GetMock<IReadarrCloudRequestBuilder>()
                 .Setup(s => s.Metadata)
-                .Returns(new HttpRequestBuilder("https://api.bookinfo.club/v1/{route}").CreateFactory());
+                .Returns(new HttpRequestBuilder("https://api.bookinfo.pro/{route}").CreateFactory());
         }
 
         private void WithCustomProvider()
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.MetadataSource
         {
             var details = Subject.GetRequestBuilder().Create();
 
-            details.BaseUrl.ToString().Should().Contain("bookinfo.club/v1");
+            details.BaseUrl.ToString().Should().Contain("bookinfo.pro/");
         }
     }
 }
