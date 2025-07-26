@@ -1,27 +1,28 @@
 name: CI
 
+permissions:
+  packages: write
+
 on:
   workflow_dispatch:
   push:
     branches: [develop, master]
     paths-ignore:
-      - '.github/**'
-      - 'src/Readarr.Api.*/openapi.json'
+      - ".github/**"
+      - "src/Readarr.Api.*/openapi.json"
   pull_request:
     branches: [develop]
     paths-ignore:
-      - '.github/**'
-      - 'src/NzbDrone.Core/Localization/Core'
-      - 'src/Readarr.Api.*/openapi.json'
+      - ".github/**"
+      - "src/NzbDrone.Core/Localization/Core"
+      - "src/Readarr.Api.*/openapi.json"
 
 env:
-  DOTNET_VERSION: '6.0.427'
-  NODE_VERSION: '20'
+  DOTNET_VERSION: "6.0.427"
+  NODE_VERSION: "20"
   OUTPUT_FOLDER: ./_output
   ARTIFACTS_FOLDER: ./_artifacts
   TESTS_FOLDER: ./_tests
-  READARR_MAJOR_VERSION: 0
-  VERSION: 0.4.19
 
 jobs:
   build-backend:
@@ -40,17 +41,15 @@ jobs:
         id: variables
         shell: bash
         run: |
-          # Add 800 to the build number because GitHub won't let us pick an arbitrary starting point
-          READARR_VERSION="${{ env.VERSION }}.$((${{ github.run_number }}+800))"
+
+          # Used by this action.
+          echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
+
+          # Used by build.sh.
           DOTNET_VERSION=$(jq -r '.sdk.version' global.json)
-
           echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
-          echo "READARR_VERSION=$READARR_VERSION" >> "$GITHUB_ENV"
-          echo "BRANCH=${RAW_BRANCH_NAME//\//-}" >> "$GITHUB_ENV"
-
-          echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
-          echo "major_version=${{ env.READARR_MAJOR_VERSION }}" >> "$GITHUB_OUTPUT"
-          echo "version=$READARR_VERSION" >> "$GITHUB_OUTPUT"
+          echo "READARRVERSION=${DATE}.${{ github.run_number }}" >> "$GITHUB_ENV"
+          echo "BUILD_SOURCEBRANCHNAME=${{ github.head_ref || github.ref_name }}" >> "GITHUB_ENV"
 
       - name: Enable Extra Platforms In SDK
         shell: bash
@@ -87,16 +86,19 @@ jobs:
         with:
           name: build_freebsd
           path: _artifacts/freebsd-*/**/*
+
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_linux
           path: _artifacts/linux-*/**/*
+
       - name: Publish macOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_macos
           path: _artifacts/osx-*/**/*
+
       - name: Publish Windows Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -174,7 +176,7 @@ jobs:
       - name: Archive Windows Packages
         if: runner.os == 'Windows'
         run: |
-          powershell Compress-Archive -Path ${{ env.ARTIFACTS_FOLDER }}\win-x64\net6.0\Readarr\* -DestinationPath Readarr.windows-core-x64.zip
+          powershell Compress-Archive -Path ${{ env.ARTIFACTS_FOLDER }}\\win-x64\\net6.0\\Readarr\\* -DestinationPath Readarr.windows-core-x64.zip
 
       - name: Upload Packages
         uses: actions/upload-artifact@v4
@@ -184,4 +186,43 @@ jobs:
             *.tar.gz
             *.zip
 
-  # Add additional jobs for tests, integration, installer, etc. as needed.
+  images:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/metadata-action@v5
+        id: docker_meta
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/reader
+          tags: |
+            type=raw,value=${{ env.DATE }},prefix=v
+            type=raw,value=${{ env.DATE }}.${{ github.run_number }},prefix=v
+          flavor: |
+            latest=${{ github.event_name != 'pull_request' }}
+
+      - uses: docker/login-action@v3
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          call: check
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./docker
+          platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64"
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          build-args: |
+            GIT_BRANCH=${{ env.BUILD_SOURCEBRANCHNAME }}
+            COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
+            RUN_NUMBER=${{ github.run_number }}
+            BUILD_DATE=${{ env.DATE }}
