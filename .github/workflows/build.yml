@@ -60,37 +60,43 @@ jobs:
         id: frontend
         with:
           name: ui
-          path: _output/Readarr.ui.tar.gz
+          path: Readarr.ui.tar.gz
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: linux_arm64
         with:
           name: linux_arm64
           path: _artifacts/linux-arm64/**/*.tar.gz
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: linux_x64
         with:
           name: linux_x65
           path: _artifacts/linux-x64/**/*.tar.gz
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: win_x64
         with:
           name: win_x64
           path: _artifacts/win-x64/**/*.zip
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: osx_x64
         with:
           name: osx_x64
-          path: _artifacts/osx-x64/**/*.tar.gz
+          path: Readarr.osx-x64.tar.gz
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: osx_arm64
         with:
           name: osx_arm64
-          path: _artifacts/osx-arm64/**/*.tar.gz
+          path: Readarr.osx-arm64.tar.gz
+          if-no-files-found: error
 
       - uses: docker/setup-buildx-action@v3
 
