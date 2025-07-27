@@ -113,12 +113,8 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          call: check
-
-      - uses: docker/build-push-action@v6
-        with:
           context: ./docker
-          file: ./Dockerfile
+          file: ./docker/Dockerfile
           platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64,darwin/arm64"
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
