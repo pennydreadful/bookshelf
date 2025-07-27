@@ -51,10 +51,12 @@ jobs:
 
       - name: archive packages
         run: |
+          tar -czvf Readarr.linux-x64.tar.gz -C _artifacts/linux-x64/net6.0 Readarr
+          tar -czvf Readarr.linux-arm64.tar.gz -C _artifacts/linux-arm64/net6.0 Readarr
           tar -czvf Readarr.osx-x64.tar.gz -C _artifacts/osx-x64/net6.0 Readarr
           tar -czvf Readarr.osx-arm64.tar.gz -C _artifacts/osx-arm64/net6.0 Readarr
           tar -czvf Readarr.ui.tar.gz -C _output UI
-          zip -r _artifacts/win-x64/net6.0/Readarr.win-x64.zip _artifacts/win-x64/net6.0/Readarr
+          zip -r Readarr.win-x64.zip _artifacts/win-x64/net6.0/Readarr
 
       - uses: actions/upload-artifact@v4
         id: frontend
@@ -67,21 +69,21 @@ jobs:
         id: linux_arm64
         with:
           name: linux_arm64
-          path: _artifacts/linux-arm64/**/*.tar.gz
+          path: Readarr.linux-arm64.tar.gz
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: linux_x64
         with:
           name: linux_x65
-          path: _artifacts/linux-x64/**/*.tar.gz
+          path: Readarr.linux-x64.tar.gz
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: win_x64
         with:
           name: win_x64
-          path: _artifacts/win-x64/**/*.zip
+          path: Readarr.win-x64.zip
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
