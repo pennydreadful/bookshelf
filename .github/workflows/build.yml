@@ -33,9 +33,6 @@ jobs:
           fetch-depth: 1
 
       - uses: jdx/mise-action@v2
-      - uses: actions/setup-dotnet@v4
-        with:
-          cache: true
 
       - name: Setup Environment Variables
         id: variables
