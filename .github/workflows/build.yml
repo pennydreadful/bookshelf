@@ -19,178 +19,75 @@ on:
 
 env:
   DOTNET_VERSION: "6.0.427"
-  NODE_VERSION: "20"
+  READARR_VERSION: 0.4.19
   OUTPUT_FOLDER: ./_output
   ARTIFACTS_FOLDER: ./_artifacts
   TESTS_FOLDER: ./_tests
 
 jobs:
-  build-backend:
-    name: Build Backend
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: true
           fetch-depth: 1
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - uses: jdx/mise-action@v2
+      - uses: actions/setup-dotnet@v4
+        with:
+          cache: true
 
       - name: Setup Environment Variables
         id: variables
         shell: bash
         run: |
-
-          # Used by this action.
-          echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
-
-          # Used by build.sh.
           DOTNET_VERSION=$(jq -r '.sdk.version' global.json)
           echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
-          echo "READARRVERSION=${DATE}.${{ github.run_number }}" >> "$GITHUB_ENV"
-          echo "BUILD_SOURCEBRANCHNAME=${{ github.head_ref || github.ref_name }}" >> "GITHUB_ENV"
+          echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
 
-      - name: Enable Extra Platforms In SDK
+      - name: build everything
         shell: bash
-        run: ./build.sh --enable-extra-platforms-in-sdk
+        run: ./build.sh
+        env:
+          READARRVERSION: ${{ env.READARR_VERSION }}.${{ github.run_number }}
+          BUILD_SOURCEBRANCHNAME: ${{ github.head_ref || github.ref_name }}
 
-      - name: Build Backend
-        shell: bash
-        run: ./build.sh --backend --enable-extra-platforms --packages
-
-      # Test Artifacts
-
-      - name: Publish win-x64 Test Artifact
-        uses: ./.github/actions/publish-test-artifact
-        with:
-          framework: ${{ env.FRAMEWORK }}
-          runtime: win-x64
-
-      - name: Publish linux-x64 Test Artifact
-        uses: ./.github/actions/publish-test-artifact
-        with:
-          framework: ${{ env.FRAMEWORK }}
-          runtime: linux-x64
-
-      - name: Publish osx-arm64 Test Artifact
-        uses: ./.github/actions/publish-test-artifact
-        with:
-          framework: ${{ env.FRAMEWORK }}
-          runtime: osx-arm64
-
-      # Build Artifacts (grouped by OS)
-
-      - name: Publish FreeBSD Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_freebsd
-          path: _artifacts/freebsd-*/**/*
-
-      - name: Publish Linux Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_linux
-          path: _artifacts/linux-*/**/*
-
-      - name: Publish macOS Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_macos
-          path: _artifacts/osx-*/**/*
-
-      - name: Publish Windows Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_windows
-          path: _artifacts/win-*/**/*
-
-  build-frontend:
-    name: Build Frontend (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, windows-2022, macos-13]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Cache Yarn
-        uses: actions/cache@v4
-        with:
-          path: .yarn
-          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Build Frontend
-        run: ./build.sh --frontend
-
-      - name: Upload Frontend Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ runner.os }}Frontend
-          path: ${{ env.OUTPUT_FOLDER }}
-
-  packages:
-    name: Package (${{ matrix.os }})
-    needs: [build-backend, build-frontend]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, windows-2022, macos-13]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download Backend Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ runner.os }}Backend
-          path: ${{ env.OUTPUT_FOLDER }}
-
-      - name: Download Frontend Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ runner.os }}Frontend
-          path: ${{ env.OUTPUT_FOLDER }}
-
-      - name: Create Packages
-        run: ./build.sh --packages --enable-extra-platforms
-
-      - name: Archive Linux Packages
-        if: runner.os == 'Linux'
+      - name: archive packages
         run: |
-          tar -czvf Readarr.linux-core-x64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/linux-x64/net6.0 Readarr
-          tar -czvf Readarr.linux-core-arm64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/linux-arm64/net6.0 Readarr
+          tar -czvf Readarr.osx-x64.tar.gz -C _artifacts/osx-x64/net6.0 Readarr
+          tar -czvf Readarr.osx-arm64.tar.gz -C _artifacts/osx-arm64/net6.0 Readarr
+          tar -czvf Readarr.ui.tar.gz -C _output UI
+          zip -r _artifacts/win-x64/net6.0/Readarr.win-x64.zip _artifacts/win-x64/net6.0/Readarr
 
-      - name: Archive macOS Packages
-        if: runner.os == 'macOS'
-        run: |
-          tar -czvf Readarr.osx-core-x64.tar.gz -C ${{ env.ARTIFACTS_FOLDER }}/osx-x64/net6.0 Readarr
-
-      - name: Archive Windows Packages
-        if: runner.os == 'Windows'
-        run: |
-          powershell Compress-Archive -Path ${{ env.ARTIFACTS_FOLDER }}\\win-x64\\net6.0\\Readarr\\* -DestinationPath Readarr.windows-core-x64.zip
-
-      - name: Upload Packages
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
+        id: frontend
         with:
-          name: ${{ runner.os }}Packages
-          path: |
-            *.tar.gz
-            *.zip
+          path: _output/UI/*.tar.gz
 
-  images:
-    needs: [packages]
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        id: linux_arm64
+        with:
+          path: _artifacts/linux-arm64/**/*.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        id: linux_x64
+        with:
+          path: _artifacts/linux-x64/**/*.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        id: win_x64
+        with:
+          path: _artifacts/win-x64/**/*.zip
+
+      - uses: actions/upload-artifact@v4
+        id: osx_x64
+        with:
+          path: _artifacts/osx-x64/**/*.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        id: osx_arm64
+        with:
+          path: _artifacts/osx-arm64/**/*.tar.gz
 
       - uses: docker/setup-buildx-action@v3
 
@@ -199,8 +96,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/reader
           tags: |
-            type=raw,value=${{ env.DATE }},prefix=v
-            type=raw,value=${{ env.DATE }}.${{ github.run_number }},prefix=v
+            type=raw,value=${{ env.READARR_VERSION }},prefix=v
+            type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=v
           flavor: |
             latest=${{ github.event_name != 'pull_request' }}
 
@@ -219,12 +116,17 @@ jobs:
         with:
           context: ./docker
           file: ./docker/Dockerfile
-          platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64"
+          platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64,darwin/arm64"
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           build-args: |
             GIT_BRANCH=${{ env.BUILD_SOURCEBRANCHNAME }}
             COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
-            RUN_NUMBER=${{ github.run_number }}
             BUILD_DATE=${{ env.DATE }}
+            LINUX_AMD_URL=${{ steps.linux_x64.outputs.artifact-url }}
+            LINUX_ARM_URL=${{ steps.linux_arm64.outputs.artifact-url }}
+            OSX_ARM_URL=${{ steps.osx_arm64.outputs.artifact-url }}
+            OSX_AMD_URL=${{ steps.osx_x64.outputs.artifact-url }}
+            WIN_AMD_URL=${{ steps.win_x64.outputs.artifact-url }}
+            UI_URL=${{ steps.frontend.outputs.artifact-url }}

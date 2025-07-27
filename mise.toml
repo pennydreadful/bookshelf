@@ -1,0 +1,9 @@
+[tools]
+"asdf:mise-plugins/mise-dotnet" = "6.0.405"
+node = "20.19.4"
+
+[env]
+DOTNET_CLI_TELEMETRY_OPTOUT = "1"
+
+[settings]
+experimental = true
