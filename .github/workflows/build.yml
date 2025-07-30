@@ -49,55 +49,46 @@ jobs:
           READARRVERSION: ${{ env.READARR_VERSION }}.${{ github.run_number }}
           BUILD_SOURCEBRANCHNAME: ${{ github.head_ref || github.ref_name }}
 
-      - name: archive packages
-        run: |
-          tar -czvf Readarr.linux-x64.tar.gz -C _artifacts/linux-x64/net6.0 Readarr
-          tar -czvf Readarr.linux-arm64.tar.gz -C _artifacts/linux-arm64/net6.0 Readarr
-          tar -czvf Readarr.osx-x64.tar.gz -C _artifacts/osx-x64/net6.0 Readarr
-          tar -czvf Readarr.osx-arm64.tar.gz -C _artifacts/osx-arm64/net6.0 Readarr
-          tar -czvf Readarr.win-x64.tar.gz _artifacts/win-x64/net6.0/Readarr
-          tar -czvf Readarr.ui.tar.gz -C _output UI
-
       - uses: actions/upload-artifact@v4
         id: frontend
         with:
           name: ui
-          path: Readarr.ui.tar.gz
+          path: _output/UI
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: linux_arm64
         with:
           name: linux_arm64
-          path: Readarr.linux-arm64.tar.gz
+          path: _artifacts/linux-arm64/net6.0/Readarr
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: linux_x64
         with:
           name: linux_x65
-          path: Readarr.linux-x64.tar.gz
+          path: _artifacts/linux-x64/net6.0/Readarr
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: win_x64
         with:
           name: win_x64
-          path: Readarr.win-x64.tar.gz
+          path: _artifacts/win-x64/net6.0/Readarr
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: osx_x64
         with:
           name: osx_x64
-          path: Readarr.osx-x64.tar.gz
+          path: _artifacts/osx-x64/net6.0/Readarr
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         id: osx_arm64
         with:
           name: osx_arm64
-          path: Readarr.osx-arm64.tar.gz
+          path: _artifacts/osx-arm64/net6.0/Readarr
           if-no-files-found: error
 
       - uses: docker/setup-buildx-action@v3

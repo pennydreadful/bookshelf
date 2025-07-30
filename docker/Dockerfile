@@ -31,19 +31,18 @@ RUN \
     echo "**** install readarr ****" && \
     mkdir -p /app/readarr/bin && \
     case "$TARGETPLATFORM" in \
-    "linux/amd64") curl -o /tmp/readarr.tar.gz "${LINUX_X64_URL}" ;; \
-    "linux/arm64") curl -o /tmp/readarr.tar.gz "${LINUX_ARM_URL}" ;; \
-    "darwin/amd64") curl -o /tmp/readarr.tar.gz "${OSX_X64_URL}" ;; \
-    "darwin/arm64") curl -o /tmp/readarr.tar.gz "${OSX_ARM_URL}" ;; \
-    "windows/amd64") curl -o /tmp/readarr.tar.gz "${WIN_X64_URL}" ;; \
+    "linux/amd64") curl -o /app/readarr/bin/readarr.zip "${LINUX_X64_URL}" ;; \
+    "linux/arm64") curl -o /app/readarr/bin/readarr.zip "${LINUX_ARM_URL}" ;; \
+    "darwin/amd64") curl -o /app/readarr/bin/readarr.zip "${OSX_X64_URL}" ;; \
+    "darwin/arm64") curl -o /app/readarr/bin/readarr.zip "${OSX_ARM_URL}" ;; \
+    "windows/amd64") curl -o /app/readarr/bin/readarr.zip "${WIN_X64_URL}" ;; \
     *) echo "Unknown platform: $TARGETPLATFORM" && exit 1 ;; \
     esac
 
-RUN curl -o /tmp/readarr-ui.tar.gz "${UI_URL}"
+RUN curl -o /app/readarr/bin/readarr-ui.zip "${UI_URL}"
 
-RUN tar xzf /tmp/readarr.tar.gz -C /app/readarr/bin --strip-components=1
-
-RUN tar xzf /tmp/readarr-ui.tar.gz -C /app/readarr/bin --strip-components=1
+RUN gunzip /app/readarr/bin/readarr.zip
+RUN gunzip /app/readarr/bin/readarr-ui.zip
 
 RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
     printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version
