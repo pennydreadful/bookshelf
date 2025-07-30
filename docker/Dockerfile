@@ -38,7 +38,7 @@ RUN \
     *) echo "Unknown platform: $TARGETPLATFORM" && exit 1 ;; \
     esac
 
-RUN curl -o /app/readarr/bin/readarr-ui.gz"${UI_URL}"
+RUN curl -o /app/readarr/bin/readarr-ui.gz "${UI_URL}"
 
 RUN gunzip /app/readarr/bin/readarr.gz
 RUN gunzip /app/readarr/bin/readarr-ui.gz
