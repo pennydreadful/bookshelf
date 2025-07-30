@@ -14,7 +14,7 @@ RUN \
     icu-libs \
     sqlite-libs \
     xmlstarlet \
-    tar
+    unzip
 
 ARG GIT_BRANCH
 ARG COMMIT_HASH
@@ -41,8 +41,8 @@ RUN \
 
 RUN curl -o /app/readarr/bin/readarr-ui.zip "${UI_URL}"
 
-RUN gunzip /app/readarr/bin/readarr.zip
-RUN gunzip /app/readarr/bin/readarr-ui.zip
+RUN unzip /app/readarr/bin/readarr.zip
+RUN unzip /app/readarr/bin/readarr-ui.zip
 
 RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
     printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version
