@@ -19,28 +19,28 @@ ARG GIT_BRANCH
 ARG COMMIT_HASH
 ARG BUILD_DATE
 
-ARG LINUX_AMD_URL
+ARG LINUX_X64_URL
 ARG LINUX_ARM_URL
 ARG OSX_ARM_URL
-ARG OSX_AMD_URL
-ARG WIN_AMD_URL
+ARG OSX_X64_URL
+ARG WIN_X64_URL
 ARG UI_URL
 
 RUN \
     echo "**** install readarr ****" && \
     mkdir -p /app/readarr/bin && \
     case "$TARGETPLATFORM" in \
-    "linux/amd64") curl -o /tmp/readarr.tar.gz "${LINUX_AMD_URL}" ;; \
+    "linux/amd64") curl -o /tmp/readarr.tar.gz "${LINUX_X64_URL}" ;; \
     "linux/arm64") curl -o /tmp/readarr.tar.gz "${LINUX_ARM_URL}" ;; \
-    "darwin/amd64") curl -o /tmp/readarr.tar.gz "${OSX_AMD_URL}" ;; \
+    "darwin/amd64") curl -o /tmp/readarr.tar.gz "${OSX_X64_URL}" ;; \
     "darwin/arm64") curl -o /tmp/readarr.tar.gz "${OSX_ARM_URL}" ;; \
-    "windows/amd64") curl -o /tmp/readarr.tar.gz "${WIN_AMD_URL}" ;; \
+    "windows/amd64") curl -o /tmp/readarr.tar.gz "${WIN_X64_URL}" ;; \
     *) echo "Unknown platform: $TARGETPLATFORM" && exit 1 ;; \
     esac
 
 RUN curl -o /tmp/readarr-ui.tar.gz "${UI_URL}"
 
-RUN tar xzf /tmp/readarr.tar.gz -C /app/readarr/bin --strip-components=1
+RUN echo ${TARGETPLATFORM} && tar xzf /tmp/readarr.tar.gz -C /app/readarr/bin --strip-components=1
 
 RUN tar xzf /tmp/readarr-ui.tar.gz -C /app/readarr/bin --strip-components=1
 

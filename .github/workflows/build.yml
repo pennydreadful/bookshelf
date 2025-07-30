@@ -55,8 +55,8 @@ jobs:
           tar -czvf Readarr.linux-arm64.tar.gz -C _artifacts/linux-arm64/net6.0 Readarr
           tar -czvf Readarr.osx-x64.tar.gz -C _artifacts/osx-x64/net6.0 Readarr
           tar -czvf Readarr.osx-arm64.tar.gz -C _artifacts/osx-arm64/net6.0 Readarr
+          tar -czvf Readarr.win-x64.tar.gz _artifacts/win-x64/net6.0/Readarr
           tar -czvf Readarr.ui.tar.gz -C _output UI
-          zip -r Readarr.win-x64.zip _artifacts/win-x64/net6.0/Readarr
 
       - uses: actions/upload-artifact@v4
         id: frontend
@@ -83,7 +83,7 @@ jobs:
         id: win_x64
         with:
           name: win_x64
-          path: Readarr.win-x64.zip
+          path: Readarr.win-x64.tar.gz
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
@@ -131,9 +131,9 @@ jobs:
             GIT_BRANCH=${{ env.BUILD_SOURCEBRANCHNAME }}
             COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
             BUILD_DATE=${{ env.DATE }}
-            LINUX_AMD_URL=${{ steps.linux_x64.outputs.artifact-url }}
+            LINUX_X64_URL=${{ steps.linux_x64.outputs.artifact-url }}
             LINUX_ARM_URL=${{ steps.linux_arm64.outputs.artifact-url }}
             OSX_ARM_URL=${{ steps.osx_arm64.outputs.artifact-url }}
-            OSX_AMD_URL=${{ steps.osx_x64.outputs.artifact-url }}
-            WIN_AMD_URL=${{ steps.win_x64.outputs.artifact-url }}
+            OSX_X64_URL=${{ steps.osx_x64.outputs.artifact-url }}
+            WIN_X64_URL=${{ steps.win_x64.outputs.artifact-url }}
             UI_URL=${{ steps.frontend.outputs.artifact-url }}
