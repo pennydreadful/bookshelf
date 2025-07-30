@@ -38,16 +38,16 @@ RUN \
     *) echo "Unknown platform: $TARGETPLATFORM" && exit 1 ;; \
     esac
 
-RUN \
-    curl -o /tmp/readarr-ui.tar.gz "${UI_URL}"
+RUN curl -o /tmp/readarr-ui.tar.gz "${UI_URL}"
 
-RUN tar xzf \
-    /tmp/readarr.tar.gz -C \
-    /app/readarr/bin --strip-components=1 && \
-    tar xzf /tmp/readarr-ui.tar.gz -C /app/readarr/bin && \
-    echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
-    printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version && \
-    echo "**** cleanup ****" && \
+RUN tar xzf /tmp/readarr.tar.gz -C /app/readarr/bin --strip-components=1
+
+RUN tar xzf /tmp/readarr-ui.tar.gz -C /app/readarr/bin --strip-components=1
+
+RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
+    printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version
+
+RUN echo "**** cleanup ****" && \
     rm -rf \
     /app/readarr/bin/Readarr.Update \
     /tmp/*
