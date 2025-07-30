@@ -40,9 +40,11 @@ RUN \
 
 RUN curl -o /tmp/readarr-ui.tar.gz "${UI_URL}"
 
-RUN echo ${TARGETPLATFORM} && tar xzf /tmp/readarr.tar.gz -C /app/readarr/bin --strip-components=1
+RUN gzip -d /tmp/readarr.tar.gz
+RUN tar xpf /tmp/readarr.tar -C /app/readarr/bin --strip-components=1
 
-RUN tar xzf /tmp/readarr-ui.tar.gz -C /app/readarr/bin --strip-components=1
+RUN gzip -d /tmp/readarr-ui.tar.gz
+RUN tar xpf /tmp/readarr-ui.tar -C /app/readarr/bin --strip-components=1
 
 RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
     printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version
