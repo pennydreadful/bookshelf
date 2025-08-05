@@ -1,3 +1,4 @@
+using System;
 using NzbDrone.Common.Http;
 
 namespace NzbDrone.Common.Cloud
@@ -16,7 +17,9 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("https://readarr.servarr.com/v1/")
                 .CreateFactory();
 
-            Metadata = new HttpRequestBuilder("https://api.bookinfo.pro/{route}")
+            var md = Environment.GetEnvironmentVariable("METADATA_URL") ?? "https://api.bookinfo.pro";
+
+            Metadata = new HttpRequestBuilder(md + "/{route}")
                 .CreateFactory();
         }
 

@@ -24,10 +24,9 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             _cachedHttpClient = cachedHttpClient;
             _logger = logger;
 
-            _searchBuilder = new HttpRequestBuilder("https://www.goodreads.com/book/auto_complete")
-                .AddQueryParam("format", "json")
-                .SetHeader("User-Agent",
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
+            var md = Environment.GetEnvironmentVariable("METADATA_URL") ?? "https://api.bookinfo.pro";
+
+            _searchBuilder = new HttpRequestBuilder(md + "/search")
                 .KeepAlive()
                 .CreateFactory();
         }
@@ -47,17 +46,17 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             catch (HttpException ex)
             {
                 _logger.Warn(ex);
-                throw new GoodreadsException("Search for '{0}' failed. Unable to communicate with Goodreads.", ex, query);
+                throw new GoodreadsException("Search for '{0}' failed. Unable to communicate with metadata source.", ex, query);
             }
             catch (WebException ex)
             {
                 _logger.Warn(ex);
-                throw new GoodreadsException("Search for '{0}' failed. Unable to communicate with Goodreads.", ex, query, ex.Message);
+                throw new GoodreadsException("Search for '{0}' failed. Unable to communicate with metadata source.", ex, query, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.Warn(ex);
-                throw new GoodreadsException("Search for '{0}' failed. Invalid response received from Goodreads.", ex, query);
+                throw new GoodreadsException("Search for '{0}' failed. Invalid response received from metadata source.", ex, query);
             }
         }
     }

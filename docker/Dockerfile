@@ -17,6 +17,8 @@ ARG GIT_BRANCH
 ARG COMMIT_HASH
 ARG BUILD_DATE
 
+ENV METADATA_URL "https://api.bookinfo.pro"
+
 RUN mkdir -p /app/readarr/bin
 
 RUN --mount=type=bind,source=_output,target=_output \
