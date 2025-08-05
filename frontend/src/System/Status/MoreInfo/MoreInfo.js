@@ -15,34 +15,15 @@ class MoreInfo extends Component {
     return (
       <FieldSet legend={translate('MoreInfo')}>
         <DescriptionList>
-          <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            <Link to="https://readarr.com/">readarr.com</Link>
-          </DescriptionListItemDescription>
-
-          <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            <Link to="https://wiki.servarr.com/readarr">Wiki</Link>
-          </DescriptionListItemDescription>
-
-          <DescriptionListItemTitle>Reddit</DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            <Link to="https://www.reddit.com/r/Readarr/">Readarr</Link>
-          </DescriptionListItemDescription>
-
-          <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            <Link to="https://readarr.com/discord">Readarr on Discord</Link>
-          </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Source</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/readarr/Readarr/">github.com/Readarr/Readarr</Link>
+            <Link to="https://github.com/pennydreadful/bookshelf/">github.com/pennydreadful/bookshelf</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Feature Requests</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/readarr/Readarr/issues">github.com/Readarr/Readarr/issues</Link>
+            <Link to="https://github.com/pennydreadful/bookshelf/issues">github.com/pennydreadful/bookshelf/issues</Link>
           </DescriptionListItemDescription>
 
         </DescriptionList>

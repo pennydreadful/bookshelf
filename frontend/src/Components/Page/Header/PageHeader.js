@@ -73,19 +73,6 @@ class PageHeader extends Component {
 
         <AuthorSearchInputConnector />
 
-        <div className={styles.right}>
-          <IconButton
-            className={styles.donate}
-            name={icons.HEART}
-            aria-label="Donate"
-            to="https://opencollective.com/readarr"
-            size={14}
-          />
-          <PageHeaderActionsMenuConnector
-            onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
-          />
-        </div>
-
         <KeyboardShortcutsModal
           isOpen={this.state.isKeyboardShortcutsModalOpen}
           onModalClose={this.onKeyboardShortcutsModalClose}
