@@ -54,7 +54,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: gr-meta
         with:
-          images: ghcr.io/${{ github.repository_owner }}/reader
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=${{ env.READARR_VERSION }},prefix=v
             type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=v
@@ -62,7 +62,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: hc-meta
         with:
-          images: ghcr.io/${{ github.repository_owner }}/reader
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=${{ env.READARR_VERSION }},prefix=hardcover-v
             type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=hardcover-v
