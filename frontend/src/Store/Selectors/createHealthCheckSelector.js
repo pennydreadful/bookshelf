@@ -11,7 +11,7 @@ function createHealthCheckSelector() {
         items.push({
           source: 'UI',
           type: 'warning',
-          message: 'Could not connect to SignalR, UI won\'t update',
+          message: 'Could not connect to SignalR, UI won\'t update'
         });
       }
 
