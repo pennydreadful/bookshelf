@@ -1,20 +1,14 @@
-import React, { Component } from 'react';
-import FieldSet from 'Components/FieldSet';
-import Link from 'Components/Link/Link';
-import styles from '../styles.css';
+import { Component } from 'react';
 
 class Donations extends Component {
-
   //
   // Render
 
   render() {
-    return
+    return;
   }
 }
 
-Donations.propTypes = {
-
-};
+Donations.propTypes = {};
 
 export default Donations;
