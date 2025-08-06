@@ -1,13 +1,29 @@
-# reader
+# bookshelf
 
-This is a revival of Readarr. The images published are configured to use
-working metadata out of the box.
+This is a revival of [Readarr](https://github.com/Readarr/Readarr). The images
+published are configured to use working metadata out of the box.
 
-Readarr is an ebook and audiobook collection manager for Usenet and BitTorrent
+Bookshelf is an ebook and audiobook collection manager for Usenet and BitTorrent
 users. It can monitor multiple RSS feeds for new books from your favorite
 authors and will grab, sort, and rename them. Note that only one type of a
 given book is supported. If you want both an audiobook and ebook of a given
 book you will need multiple instances.
+
+## Getting Started
+
+The container listens on port 8787 and expects a volume mounted at `/config`.
+
+    docker run -p 8787:8787 -v ~/.config/bookshelf:/config ghcr.io/pennydreadful/bookshelf:hardcover
+
+The `softcover` tags use [Goodreads](https://www.goodreads.com) as the metadata
+provider. The quality of this metadata is generally poor and contains a lot of
+slop. However, it is backward-compatible with existing Readarr databases and
+functionality like Goodreads list imports should continue to work normally.
+
+The `hardcover` tags use [Hardcover](https://hardcover.app/home) as a metadata
+provider. This metadata is higher quality but isn't backward-compatible; if
+you're already running Readarr you'll need to redeploy this from scratch.
+Goodreads list imports haven't been tested and likely don't work.
 
 ## Support
 

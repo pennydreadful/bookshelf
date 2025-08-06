@@ -56,8 +56,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ env.READARR_VERSION }},prefix=v
-            type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=v
+            type=raw,value=${{ env.READARR_VERSION }},prefix=softcover-v
+            type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=softcover-v
+          flavor: |
+            softcover=${{ github.event_name != 'pull_request' }}
 
       - uses: docker/metadata-action@v5
         id: hc-meta
@@ -66,6 +68,8 @@ jobs:
           tags: |
             type=raw,value=${{ env.READARR_VERSION }},prefix=hardcover-v
             type=raw,value=${{ env.READARR_VERSION }}.${{ github.run_number }},prefix=hardcover-v
+          flavor: |
+            hardcover=${{ github.event_name != 'pull_request' }}
 
       - uses: docker/login-action@v3
         if: ${{ github.event_name != 'pull_request' }}
