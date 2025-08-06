@@ -101,4 +101,4 @@ jobs:
             GIT_BRANCH=${{ env.BUILD_SOURCEBRANCHNAME }}
             COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
             BUILD_DATE=${{ env.DATE }}
-            METADATA_URL=hardcover.bookinfo.pro
+            METADATA_URL=https://hardcover.bookinfo.pro
