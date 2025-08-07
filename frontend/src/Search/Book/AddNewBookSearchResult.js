@@ -139,10 +139,10 @@ class AddNewBookSearchResult extends Component {
                 }
 
                 {
-                  editions && editions.length > 1 ?
+                  editions ?
                     <Link
                       className={styles.mbLink}
-                      to={`https://goodreads.com/book/show/${editions[0].foreignEditionId}`}
+                      to={`${editions[0].links[0].url}`}
                       onPress={this.onTVDBLinkPress}
                     >
                       <Icon

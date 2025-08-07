@@ -80,6 +80,7 @@ class AddNewAuthorSearchResult extends Component {
       ratings,
       folder,
       images,
+      links,
       isExistingAuthor,
       isSmallScreen
     } = this.props;
@@ -148,7 +149,7 @@ class AddNewAuthorSearchResult extends Component {
 
                 <Link
                   className={styles.mbLink}
-                  to={`https://goodreads.com/author/show/${foreignAuthorId}`}
+                  to={`${links[0].url}`}
                   onPress={this.onMBLinkPress}
                 >
                   <Icon
@@ -226,6 +227,7 @@ AddNewAuthorSearchResult.propTypes = {
   ratings: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  links: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingAuthor: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired
 };
