@@ -88,7 +88,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return new HashSet<string>(httpResponse.Resource.Ids.Select(x => x.ToString()));
         }
 
-        public Author GetAuthorInfo(string foreignAuthorId, bool useCache = true)
+        public Author GetAuthorInfo(string foreignAuthorId, bool useCache = false)
         {
             _logger.Debug("Getting Author details GoodreadsId of {0}", foreignAuthorId);
 
@@ -604,8 +604,6 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         {
             AuthorResource resource = null;
 
-            var useCache = true;
-
             for (var i = 0; i < 60; i++)
             {
                 var httpRequest = _requestBuilder.GetRequestBuilder().Create()
@@ -615,7 +613,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 httpRequest.AllowAutoRedirect = true;
                 httpRequest.SuppressHttpError = true;
 
-                var httpResponse = _cachedHttpClient.Get(httpRequest, useCache, TimeSpan.FromMinutes(30));
+                var httpResponse = _cachedHttpClient.Get(httpRequest, false, TimeSpan.FromMinutes(30));
 
                 if (httpResponse.HasHttpError)
                 {
@@ -647,7 +645,6 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                     break;
                 }
 
-                useCache = false;
                 Thread.Sleep(2000);
             }
 
