@@ -279,10 +279,16 @@ namespace NzbDrone.Core.Profiles.Metadata
             {
                 _logger.Info("Setting up standard metadata profile");
 
+                var minPopularity = 350;
+                var hc = Environment.GetEnvironmentVariable("HARDCOVER") == "true"
+                if (hc) {
+                    minPopularity = 50;
+                }
+
                 Add(new MetadataProfile
                 {
                     Name = "Standard",
-                    MinPopularity = 350,
+                    MinPopularity = minPopularity,
                     SkipMissingDate = true,
                     SkipPartsAndSets = true,
                     AllowedLanguages = "eng, null"

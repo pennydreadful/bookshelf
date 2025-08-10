@@ -102,3 +102,4 @@ jobs:
             COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
             BUILD_DATE=${{ env.DATE }}
             METADATA_URL=https://hardcover.bookinfo.pro
+            HARDCOVER=true
