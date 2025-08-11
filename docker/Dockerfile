@@ -18,6 +18,8 @@ ARG BUILD_DATE
 ARG METADATA_URL=https://api.bookinfo.pro
 ARG HARDCOVER
 
+LABEL maintainer="pennydreadful"
+
 ENV METADATA_URL=${METADATA_URL}
 ENV HARDCOVER=${HARDCOVER}
 
@@ -43,7 +45,3 @@ COPY docker/root/ /
 EXPOSE 8787
 
 VOLUME /config
-
-WORKDIR /app/readarr/bin
-ENTRYPOINT [ "/app/readarr/bin/Readarr" ]
-CMD [ "-nobrowser", "-data=/config" ]
