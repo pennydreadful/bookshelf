@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns(new List<SearchJsonResource>());
 
             Mocker.GetMock<IGoodreadsProxy>()
-                .Setup(v => v.GetBookInfo(It.IsAny<string>(), true))
+                .Setup(v => v.GetBookInfo(It.IsAny<string>()))
                 .Returns<string, bool>((id, useCache) => Builder<Book>
                 .CreateNew()
                 .With(b => b.AuthorMetadata = Builder<AuthorMetadata>.CreateNew().Build())

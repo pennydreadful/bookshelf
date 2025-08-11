@@ -39,7 +39,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                     .AddQueryParam("q", query)
                     .Build();
 
-                var response = _cachedHttpClient.Get<List<SearchJsonResource>>(httpRequest, true, TimeSpan.FromDays(5));
+                var response = _cachedHttpClient.Get<List<SearchJsonResource>>(httpRequest, false, TimeSpan.FromDays(5));
 
                 return response.Resource;
             }
