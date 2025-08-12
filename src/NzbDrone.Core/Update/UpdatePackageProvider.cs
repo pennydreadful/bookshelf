@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Analytics;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Update
@@ -20,13 +19,11 @@ namespace NzbDrone.Core.Update
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IPlatformInfo _platformInfo;
-        private readonly IAnalyticsService _analyticsService;
         private readonly IMainDatabase _mainDatabase;
 
-        public UpdatePackageProvider(IHttpClient httpClient, IReadarrCloudRequestBuilder requestBuilder, IAnalyticsService analyticsService, IPlatformInfo platformInfo, IMainDatabase mainDatabase)
+        public UpdatePackageProvider(IHttpClient httpClient, IReadarrCloudRequestBuilder requestBuilder, IPlatformInfo platformInfo, IMainDatabase mainDatabase)
         {
             _platformInfo = platformInfo;
-            _analyticsService = analyticsService;
             _requestBuilder = requestBuilder.Services;
             _httpClient = httpClient;
             _mainDatabase = mainDatabase;
@@ -44,12 +41,6 @@ namespace NzbDrone.Core.Update
                                          .AddQueryParam("dbType", _mainDatabase.DatabaseType)
                                          .AddQueryParam("includeMajorVersion", true)
                                          .SetSegment("branch", branch);
-
-            if (_analyticsService.IsEnabled)
-            {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
-            }
 
             var update = _httpClient.Get<UpdatePackageAvailable>(request.Build()).Resource;
 
@@ -75,12 +66,6 @@ namespace NzbDrone.Core.Update
             if (previousVersion != null && previousVersion != currentVersion)
             {
                 request.AddQueryParam("prevVersion", previousVersion);
-            }
-
-            if (_analyticsService.IsEnabled)
-            {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
             }
 
             var updates = _httpClient.Get<List<UpdatePackage>>(request.Build());

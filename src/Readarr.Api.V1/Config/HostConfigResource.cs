@@ -16,7 +16,6 @@ namespace Readarr.Api.V1.Config
         public bool LaunchBrowser { get; set; }
         public AuthenticationType AuthenticationMethod { get; set; }
         public AuthenticationRequiredType AuthenticationRequired { get; set; }
-        public bool AnalyticsEnabled { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string PasswordConfirmation { get; set; }
@@ -61,7 +60,6 @@ namespace Readarr.Api.V1.Config
                 LaunchBrowser = model.LaunchBrowser,
                 AuthenticationMethod = model.AuthenticationMethod,
                 AuthenticationRequired = model.AuthenticationRequired,
-                AnalyticsEnabled = model.AnalyticsEnabled,
 
                 //Username
                 //Password

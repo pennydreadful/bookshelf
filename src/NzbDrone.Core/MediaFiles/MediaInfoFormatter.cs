@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Instrumentation;
-using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
@@ -66,7 +65,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 Logger.ForDebugEvent()
                     .Message("Unknown audio format: '{0}'.", string.Join(", ", mediaInfo.AudioFormat))
-                    .WriteSentryWarn("UnknownAudioFormat", mediaInfo.AudioFormat)
                     .Log();
 
                 return "Unknown";

@@ -149,7 +149,6 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.ForWarnEvent()
                     .Exception(ex)
                     .Message($"Tag removal failed for {path}")
-                    .WriteSentryWarn("Tag removal failed")
                     .Log();
             }
             finally

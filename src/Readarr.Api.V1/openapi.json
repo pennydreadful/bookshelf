@@ -9936,9 +9936,6 @@
           "logRotate": {
             "type": "integer",
             "format": "int32"
-          },
-          "filterSentryEvents": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -10585,9 +10582,6 @@
           },
           "authenticationRequired": {
             "$ref": "#/components/schemas/AuthenticationRequiredType"
-          },
-          "analyticsEnabled": {
-            "type": "boolean"
           },
           "username": {
             "type": "string",

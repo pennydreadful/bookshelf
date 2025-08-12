@@ -1,5 +1,4 @@
 {
-    "AnalyticsEnabledHelpTextWarning": "Herstarten vereist om in werking te treden",
     "Reset": "Reset",
     "SslCertPasswordHelpTextWarning": "Herstarten vereist om in werking te treden",
     "Tags": "Tags",
@@ -19,8 +18,6 @@
     "AgeWhenGrabbed": "Leeftijd (wanneer opgepakt)",
     "AlreadyInYourLibrary": "Reeds in je bibliotheek",
     "AlternateTitles": "Alternatieve Titel",
-    "Analytics": "Statistieken",
-    "AnalyticsEnabledHelpText": "Stuur anonieme gebruiks- en foutinformatie naar de servers van {appName}. Dit omvat informatie over uw browser, welke {appName} WebUI pagina's u gebruikt, foutrapportage en OS en runtime versie. We zullen deze informatie gebruiken om prioriteiten te stellen voor functies en het verhelpen van fouten.",
     "AppDataDirectory": "AppData map",
     "ApplyTags": "Pas Tags Toe",
     "Authentication": "Authenticatie",
@@ -457,8 +454,6 @@
     "Component": "Component",
     "ConsoleLogLevel": "Console-logboekniveau",
     "DeleteBookFileMessageText": "Weet u zeker dat u {0} wilt verwijderen?",
-    "FilterAnalyticsEvents": "Analytics-gebeurtenissen filteren",
-    "FilterSentryEventsHelpText": "Filter bekende gebruikersfoutgebeurtenissen zodat ze niet als Analytiek worden verzonden",
     "Level": "Niveau",
     "LogRotateHelpText": "Maximaal aantal logbestanden om te bewaren in de logboek-map",
     "LogRotation": "Logboekrotatie",

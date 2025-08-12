@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.Analytics;
 using NzbDrone.Core.Configuration;
 
 namespace Readarr.Http.Frontend
@@ -14,17 +13,14 @@ namespace Readarr.Http.Frontend
     public class InitializeJsonController : Controller
     {
         private readonly IConfigFileProvider _configFileProvider;
-        private readonly IAnalyticsService _analyticsService;
 
         private static string _apiKey;
         private static string _urlBase;
         private string _generatedContent;
 
-        public InitializeJsonController(IConfigFileProvider configFileProvider,
-                                      IAnalyticsService analyticsService)
+        public InitializeJsonController(IConfigFileProvider configFileProvider)
         {
             _configFileProvider = configFileProvider;
-            _analyticsService = analyticsService;
 
             _apiKey = configFileProvider.ApiKey;
             _urlBase = configFileProvider.UrlBase;
@@ -52,7 +48,6 @@ namespace Readarr.Http.Frontend
             builder.AppendLine($"  \"instanceName\": \"{_configFileProvider.InstanceName.ToString()}\",");
             builder.AppendLine($"  \"theme\": \"{_configFileProvider.Theme.ToString()}\",");
             builder.AppendLine($"  \"branch\": \"{_configFileProvider.Branch.ToLower()}\",");
-            builder.AppendLine($"  \"analytics\": {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
             builder.AppendLine($"  \"userHash\": \"{HashUtil.AnonymousToken()}\",");
             builder.AppendLine($"  \"urlBase\": \"{_urlBase}\",");
             builder.AppendLine($"  \"isProduction\": {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");

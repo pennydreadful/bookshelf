@@ -46,7 +46,6 @@
     <PackageVersion Include="RestSharp" Version="106.15.0" />
     <PackageVersion Include="Selenium.Support" Version="3.141.0" />
     <PackageVersion Include="Selenium.WebDriver.ChromeDriver" Version="134.0.6998.16500" />
-    <PackageVersion Include="Sentry" Version="4.0.2" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.7" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />

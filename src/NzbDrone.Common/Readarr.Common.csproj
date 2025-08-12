@@ -12,7 +12,6 @@
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NLog" />
-    <PackageReference Include="Sentry" />
     <PackageReference Include="SharpZipLib" />
     <PackageReference Include="System.IO.Abstractions" />
     <PackageReference Include="System.Text.Json" />

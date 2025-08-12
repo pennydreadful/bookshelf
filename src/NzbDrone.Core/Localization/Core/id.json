@@ -3,8 +3,6 @@
     "AgeWhenGrabbed": "Usia (saat diperoleh)",
     "All": "Semua",
     "AlreadyInYourLibrary": "Sudah di pustakamu",
-    "Analytics": "Analitik",
-    "AnalyticsEnabledHelpText": "Kirimkan informasi penggunaan secara anonim ke server {appName}. Informasi tersebut mengandung browser kamu, halaman WebUI {appName} yang kamu gunakan, pelaporan masalah serta OS dan versi runtime. Kami akan memanfaatkan informasi ini untuk memprioritaskan fitur dan perbaikan bug.",
     "ApplicationURL": "URL Aplikasi",
     "ApplicationUrlHelpText": "URL eksternal aplikasi termasuk http(s)://, port, dan dasar URL",
     "CustomFormat": "Format Khusus",

@@ -1,7 +1,8 @@
 # bookshelf
 
 This is a revival of [Readarr](https://github.com/Readarr/Readarr). The images
-published are configured to use working metadata out of the box.
+published are configured to use working Goodreads or Hardcover metadata out of
+the box.
 
 Bookshelf is an ebook and audiobook collection manager for Usenet and BitTorrent
 users. It can monitor multiple RSS feeds for new books from your favorite
@@ -32,7 +33,17 @@ an issue or start a discussion.
 
 ## Contributors & Developers
 
-Help is very welcome. Priority is on fixing quality of life issues.
+Help is very welcome. Priority is on fixing quality of life issues
+
+- [ ] Monitor series.
+- [ ] Hardcover bookshelf import.
+- [ ] Support ebook and audio files in the same root.
+
+Already done
+
+- [x] Lowered default match percentage from 80% to 50%.
+- [x] Metadata is no longer cached locally.
+- [x] Removed servarr analytics spyware.
 
 ## Sponsors
 

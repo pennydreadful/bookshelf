@@ -119,22 +119,6 @@ class DevelopmentSettings extends Component {
                     />
                   </FormGroup>
                 </FieldSet>
-
-                <FieldSet legend={translate('Analytics')}>
-                  <FormGroup>
-                    <FormLabel>
-                      {translate('FilterAnalyticsEvents')}
-                    </FormLabel>
-
-                    <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="filterSentryEvents"
-                      helpText={translate('FilterSentryEventsHelpText')}
-                      onChange={onInputChange}
-                      {...settings.filterSentryEvents}
-                    />
-                  </FormGroup>
-                </FieldSet>
               </Form>
           }
         </PageContentBody>

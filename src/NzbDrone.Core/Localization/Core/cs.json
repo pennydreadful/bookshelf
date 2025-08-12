@@ -1,5 +1,4 @@
 {
-    "AnalyticsEnabledHelpTextWarning": "Vyžaduje restart, aby se projevilo",
     "DeleteRootFolderMessageText": "Opravdu chcete odstranit indexer „{0}“?",
     "Group": "Skupina",
     "LoadingBooksFailed": "Načítání filmových souborů se nezdařilo",
@@ -17,8 +16,6 @@
     "AgeWhenGrabbed": "Stáří (kdy bylo získáno)",
     "AlreadyInYourLibrary": "Již máte ve své knihovně",
     "AlternateTitles": "Alternativní název",
-    "Analytics": "Analýzy",
-    "AnalyticsEnabledHelpText": "Odesílejte anonymní informace o použití a chybách na servery {appName}u. To zahrnuje informace o vašem prohlížeči, které stránky {appName} WebUI používáte, hlášení chyb a také verzi operačního systému a běhového prostředí. Tyto informace použijeme k upřednostnění funkcí a oprav chyb.",
     "AppDataDirectory": "Adresář AppData",
     "ApplyTags": "Použít štítky",
     "Authentication": "Ověřování",

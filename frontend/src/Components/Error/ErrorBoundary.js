@@ -1,4 +1,3 @@
-import * as sentry from '@sentry/browser';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -21,8 +20,6 @@ class ErrorBoundary extends Component {
       error,
       info
     });
-
-    sentry.captureException(error);
   }
 
   //
