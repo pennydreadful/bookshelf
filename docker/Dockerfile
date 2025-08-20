@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.2
-FROM --platform=$BUILDPLATFORM ghcr.io/linuxserver/baseimage-alpine:3.21
+FROM ghcr.io/linuxserver/baseimage-alpine:3.21
 
 ARG TARGETPLATFORM
 
