@@ -33,13 +33,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
 
       - name: Setup Environment Variables
         id: variables
         shell: bash
         run: |
-          DOTNET_VERSION=$(jq -r '.sdk.version' global.json)
           echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
           echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
 

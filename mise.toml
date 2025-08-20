@@ -4,6 +4,7 @@ node = "20.19.4"
 
 [env]
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
+DOTNET_VERSION = "6.0.405"
 
 [settings]
 experimental = true
