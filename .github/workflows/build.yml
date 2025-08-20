@@ -76,15 +76,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/setup-qemu-action@v3
-
       - uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: "linux/amd64"
+          platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
-          load: true
           tags: ${{ steps.gr_meta.outputs.tags }}
           labels: ${{ steps.gr_meta.outputs.labels }}
           build-args: |
@@ -92,17 +89,12 @@ jobs:
             COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
             BUILD_DATE=${{ env.DATE }}
 
-      - run: docker run --platform linux/amd64 ghcr.io/pennydreadful/bookshelf:hardcover --help
-        shell: bash
-        continue-on-error: true
-
       - uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: "linux/arm64"
+          platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
-          load: true
           tags: ${{ steps.hc_meta.outputs.tags }}
           labels: ${{ steps.hc_meta.outputs.labels }}
           build-args: |
@@ -111,7 +103,3 @@ jobs:
             BUILD_DATE=${{ env.DATE }}
             METADATA_URL=https://hardcover.bookinfo.pro
             HARDCOVER=true
-
-      - run: docker run --platform linux/arm64 ghcr.io/pennydreadful/bookshelf:hardcover --help
-        shell: bash
-        continue-on-error: true
