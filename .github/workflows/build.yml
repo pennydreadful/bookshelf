@@ -80,7 +80,7 @@ jobs:
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64,darwin/arm64"
+          platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.gr_meta.outputs.tags }}
           labels: ${{ steps.gr_meta.outputs.labels }}
@@ -93,7 +93,7 @@ jobs:
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: "linux/amd64,linux/arm64,windows/amd64,darwin/amd64,darwin/arm64"
+          platforms: "linux/amd64,linux/arm64"
           push: ${{ github.event_name != 'pull_request' }}
           load: true
           tags: ${{ steps.hc_meta.outputs.tags }}
