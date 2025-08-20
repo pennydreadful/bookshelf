@@ -42,21 +42,6 @@ jobs:
           echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
           echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
 
-      - name: Cache build
-        uses: actions/cache@v4
-        with:
-          path: |
-            _output
-            _artifacts
-            _temp
-            _tests
-          key: ${{ runner.os }}-build-${{ hashFiles('**/*.cs', '**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
-
-      - run: dotnet --info
-        shell: bash
-
       - name: Build everything
         shell: bash
         run: ./build.sh
