@@ -54,6 +54,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
+      - run: dotnet --info
+        shell: bash
+
       - name: Build everything
         shell: bash
         run: ./build.sh
