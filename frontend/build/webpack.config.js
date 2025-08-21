@@ -18,42 +18,57 @@ module.exports = (env) => {
 
   const distFolder = path.resolve(frontendFolder, '..', '_output', uiFolder);
 
+  // Cache configuration
+  const cacheDirectory =
+    process.env.WEBPACK_CACHE_DIRECTORY ||
+    path.resolve(frontendFolder, '..', 'node_modules', '.cache', 'webpack');
+
   console.log('Source Folder:', srcFolder);
   console.log('Output Folder:', distFolder);
+  console.log('Cache Directory:', cacheDirectory);
   console.log('isProduction:', isProduction);
   console.log('isProfiling:', isProfiling);
 
   const config = {
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'eval-source-map',
+
+    cache: {
+      type: 'filesystem',
+      cacheDirectory: cacheDirectory,
+      buildDependencies: {
+        config: [__filename],
+        tsconfig: [path.resolve(frontendFolder, 'tsconfig.json')],
+        packagejson: [path.resolve(frontendFolder, '..', 'package.json')],
+      },
+      version: require('../../package.json').version,
+      name: isProduction ? 'production' : 'development',
+      store: 'pack',
+      compression: 'gzip',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      allowCollectingMemory: true,
+    },
     target: 'web',
 
     stats: {
-      children: false
+      children: false,
     },
 
     watchOptions: {
-      ignored: /node_modules/
+      ignored: /node_modules/,
     },
 
     entry: {
-      index: 'index.ts'
+      index: 'index.ts',
     },
 
     resolve: {
-      extensions: [
-        '.ts',
-        '.tsx',
-        '.js'
-      ],
-      modules: [
-        srcFolder,
-        path.join(srcFolder, 'Shims'),
-        'node_modules'
-      ],
+      extensions: ['.ts', '.tsx', '.js'],
+      modules: [srcFolder, path.join(srcFolder, 'Shims'), 'node_modules'],
       alias: {
         jquery: 'jquery/dist/jquery.min',
-        'react-middle-truncate': 'react-middle-truncate/lib/react-middle-truncate'
+        'react-middle-truncate':
+          'react-middle-truncate/lib/react-middle-truncate',
       },
       fallback: {
         buffer: false,
@@ -61,46 +76,50 @@ module.exports = (env) => {
         https: false,
         url: false,
         util: false,
-        net: false
-      }
+        net: false,
+      },
     },
 
     output: {
       path: distFolder,
       publicPath: '/',
       filename: isProduction ? '[name]-[contenthash].js' : '[name].js',
-      sourceMapFilename: '[file].map'
+      sourceMapFilename: '[file].map',
     },
 
     optimization: {
       moduleIds: 'deterministic',
-      chunkIds: isProduction ? 'deterministic' : 'named'
+      chunkIds: isProduction ? 'deterministic' : 'named',
     },
 
     performance: {
-      hints: false
+      hints: false,
     },
 
     experiments: {
-      topLevelAwait: true
+      topLevelAwait: true,
     },
 
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: !isProduction,
-        'process.env.NODE_ENV': isProduction ? JSON.stringify('production') : JSON.stringify('development')
+        'process.env.NODE_ENV': isProduction
+          ? JSON.stringify('production')
+          : JSON.stringify('development'),
       }),
 
       new MiniCssExtractPlugin({
         filename: 'Content/styles.css',
-        chunkFilename: isProduction ? 'Content/[id]-[chunkhash].css' : 'Content/[id].css'
+        chunkFilename: isProduction
+          ? 'Content/[id]-[chunkhash].css'
+          : 'Content/[id].css',
       }),
 
       new HtmlWebpackPlugin({
         template: 'frontend/src/index.ejs',
         filename: 'index.html',
         publicPath: '/',
-        inject: false
+        inject: false,
       }),
 
       new FileManagerPlugin({
@@ -110,47 +129,44 @@ module.exports = (env) => {
               // HTML
               {
                 source: 'frontend/src/*.html',
-                destination: distFolder
+                destination: distFolder,
               },
 
               // Fonts
               {
                 source: 'frontend/src/Content/Fonts/*.*',
-                destination: path.join(distFolder, 'Content/Fonts')
+                destination: path.join(distFolder, 'Content/Fonts'),
               },
 
               // Icon Images
               {
                 source: 'frontend/src/Content/Images/Icons/*.*',
-                destination: path.join(distFolder, 'Content/Images/Icons')
+                destination: path.join(distFolder, 'Content/Images/Icons'),
               },
 
               // Images
               {
                 source: 'frontend/src/Content/Images/*.*',
-                destination: path.join(distFolder, 'Content/Images')
+                destination: path.join(distFolder, 'Content/Images'),
               },
 
               // Robots
               {
                 source: 'frontend/src/Content/robots.txt',
-                destination: path.join(distFolder, 'Content/robots.txt')
-              }
-            ]
-          }
-        }
+                destination: path.join(distFolder, 'Content/robots.txt'),
+              },
+            ],
+          },
+        },
       }),
 
       new ForkTsCheckerWebpackPlugin(),
 
-      new LiveReloadPlugin()
+      new LiveReloadPlugin(),
     ],
 
     resolveLoader: {
-      modules: [
-        'node_modules',
-        'frontend/build/webpack/'
-      ]
+      modules: ['node_modules', 'frontend/build/webpack/'],
     },
 
     module: {
@@ -161,9 +177,9 @@ module.exports = (env) => {
             loader: 'worker-loader',
             options: {
               filename: '[name].js',
-              inline: inlineWebWorkers
-            }
-          }
+              inline: inlineWebWorkers,
+            },
+          },
         },
         {
           test: [/\.jsx?$/, /\.tsx?$/],
@@ -182,13 +198,13 @@ module.exports = (env) => {
                       loose: true,
                       debug: false,
                       useBuiltIns: 'entry',
-                      corejs: '3.39'
-                    }
-                  ]
-                ]
-              }
-            }
-          ]
+                      corejs: '3.39',
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
         },
 
         // CSS Modules
@@ -203,19 +219,21 @@ module.exports = (env) => {
               options: {
                 importLoaders: 1,
                 modules: {
-                  localIdentName: isProduction ? '[name]/[local]/[hash:base64:5]' : '[name]/[local]'
-                }
-              }
+                  localIdentName: isProduction
+                    ? '[name]/[local]/[hash:base64:5]'
+                    : '[name]/[local]',
+                },
+              },
             },
             {
               loader: 'postcss-loader',
               options: {
                 postcssOptions: {
-                  config: 'frontend/postcss.config.js'
-                }
-              }
-            }
-          ]
+                  config: 'frontend/postcss.config.js',
+                },
+              },
+            },
+          ],
         },
 
         // Global styles
@@ -225,9 +243,9 @@ module.exports = (env) => {
           use: [
             'style-loader',
             {
-              loader: 'css-loader'
-            }
-          ]
+              loader: 'css-loader',
+            },
+          ],
         },
 
         // Fonts
@@ -240,10 +258,10 @@ module.exports = (env) => {
                 limit: 10240,
                 mimetype: 'application/font-woff',
                 emitFile: false,
-                name: 'Content/Fonts/[name].[ext]'
-              }
-            }
-          ]
+                name: 'Content/Fonts/[name].[ext]',
+              },
+            },
+          ],
         },
 
         {
@@ -253,13 +271,13 @@ module.exports = (env) => {
               loader: 'file-loader',
               options: {
                 emitFile: false,
-                name: 'Content/Fonts/[name].[ext]'
-              }
-            }
-          ]
-        }
-      ]
-    }
+                name: 'Content/Fonts/[name].[ext]',
+              },
+            },
+          ],
+        },
+      ],
+    },
   };
 
   if (isProfiling) {
@@ -274,10 +292,10 @@ module.exports = (env) => {
             sourceMap: true, // Must be set to true if using source-maps in production
             mangle: false,
             keep_classnames: true,
-            keep_fnames: true
-          }
-        })
-      ]
+            keep_fnames: true,
+          },
+        }),
+      ],
     };
   }
 

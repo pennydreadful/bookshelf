@@ -1,6 +1,15 @@
 #! /usr/bin/env bash
 set -e
 
+# Build cache configuration
+CACHE_ROOT="${READARR_CACHE_ROOT:-${HOME}/.readarr-build-cache}"
+NUGET_CACHE="${CACHE_ROOT}/nuget"
+MSBUILD_CACHE="${CACHE_ROOT}/msbuild"
+NODE_CACHE="${CACHE_ROOT}/node"
+WEBPACK_CACHE="${CACHE_ROOT}/webpack"
+
+mkdir -p "$NUGET_CACHE" "$MSBUILD_CACHE" "$NODE_CACHE" "$WEBPACK_CACHE"
+
 outputFolder='_output'
 testPackageFolder='_tests'
 
@@ -67,6 +76,25 @@ LintUI()
     ProgressEnd 'Stylelint'
 }
 
+SetupBuildCaching()
+{
+    echo "Setting up build caching..."
+    echo "  NuGet cache: $NUGET_CACHE"
+    echo "  MSBuild cache: $MSBUILD_CACHE"
+    echo "  Node cache: $NODE_CACHE"
+    echo "  Webpack cache: $WEBPACK_CACHE"
+
+    # Export cache environment variables
+    export NUGET_PACKAGES="$NUGET_CACHE"
+    export npm_config_cache="$NODE_CACHE"
+    export YARN_CACHE_FOLDER="$NODE_CACHE/yarn"
+
+    # Check MSBuild version for input/output cache support
+    MSBUILD_VERSION=$(dotnet msbuild -version 2>/dev/null | head -1 | grep -o '[0-9]\+\.[0-9]\+' | head -1 || echo "0.0")
+    SUPPORTS_IO_CACHE=$(echo "$MSBUILD_VERSION" | awk -F. '{print ($1 > 17 || ($1 == 17 && $2 >= 8))}')
+    echo "  MSBuild version: $MSBUILD_VERSION (I/O cache: $([ "$SUPPORTS_IO_CACHE" = "1" ] && echo "supported" || echo "not supported"))"
+}
+
 Build()
 {
     ProgressStart 'Build'
@@ -82,11 +110,38 @@ Build()
         platform=Posix
     fi
 
-    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
-    then
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
+    # Build MSBuild arguments with caching
+    MSBUILD_ARGS=(
+        "-restore" "$slnFile"
+        "-p:Configuration=Release"
+        "-p:Platform=$platform"
+        "-p:RestorePackagesPath=$NUGET_CACHE"
+        "-p:NuGetPackageRoot=$NUGET_CACHE"
+        "-p:UseSharedCompilation=true"
+        "-maxCpuCount:4"
+    )
+
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]]; then
+        MSBUILD_ARGS+=("-t:PublishAllRids")
+
+        # Add input/output cache if supported
+        if [ "$SUPPORTS_IO_CACHE" = "1" ]; then
+            MSBUILD_ARGS+=("-inputResultsCaches:$MSBUILD_CACHE/input" "-outputResultsCache:$MSBUILD_CACHE/output")
+        fi
+
+        dotnet msbuild "${MSBUILD_ARGS[@]}"
     else
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
+        MSBUILD_ARGS+=(
+            "-p:RuntimeIdentifiers=$RID"
+            "-t:PublishAllRids"
+        )
+
+        # Add input/output cache if supported
+        if [ "$SUPPORTS_IO_CACHE" = "1" ]; then
+            MSBUILD_ARGS+=("-inputResultsCaches:$MSBUILD_CACHE/input" "-outputResultsCache:$MSBUILD_CACHE/output")
+        fi
+
+        dotnet msbuild "${MSBUILD_ARGS[@]}"
     fi
 
     ProgressEnd 'Build'
@@ -95,13 +150,21 @@ Build()
 YarnInstall()
 {
     ProgressStart 'yarn install'
-    yarn install --frozen-lockfile --network-timeout 120000
+    yarn install \
+        --frozen-lockfile \
+        --network-timeout 120000 \
+        --cache-folder "$NODE_CACHE/yarn" \
+        --prefer-offline \
+        --silent
     ProgressEnd 'yarn install'
 }
 
 RunWebpack()
 {
     ProgressStart 'Running webpack'
+    # Set webpack cache environment variables
+    export WEBPACK_CACHE_TYPE="filesystem"
+    export WEBPACK_CACHE_DIRECTORY="$WEBPACK_CACHE"
     yarn run build --env production
     ProgressEnd 'Running webpack'
 }
@@ -286,6 +349,41 @@ PackageTests()
     ProgressEnd 'Creating Test Package'
 }
 
+# Cache management functions
+CleanCache()
+{
+    case "${1:-all}" in
+        nuget) rm -rf "$NUGET_CACHE"; echo "NuGet cache cleaned" ;;
+        msbuild) rm -rf "$MSBUILD_CACHE"; echo "MSBuild cache cleaned" ;;
+        node) rm -rf "$NODE_CACHE"; echo "Node cache cleaned" ;;
+        webpack) rm -rf "$WEBPACK_CACHE"; echo "Webpack cache cleaned" ;;
+        all) rm -rf "$CACHE_ROOT"; echo "All caches cleaned" ;;
+        *) echo "Usage: $0 clean [nuget|msbuild|node|webpack|all]"; exit 1 ;;
+    esac
+}
+
+CacheInfo()
+{
+    echo "Build Cache Information:"
+    echo "======================="
+    if [ -d "$CACHE_ROOT" ]; then
+        echo "Cache root: $CACHE_ROOT"
+        echo "Total size: $(du -sh "$CACHE_ROOT" 2>/dev/null | cut -f1 || echo "Unknown")"
+        for cache in nuget msbuild node webpack; do
+            cache_dir="${CACHE_ROOT}/${cache}"
+            if [ -d "$cache_dir" ]; then
+                size=$(du -sh "$cache_dir" 2>/dev/null | cut -f1 || echo "Unknown")
+                files=$(find "$cache_dir" -type f 2>/dev/null | wc -l | tr -d ' ' || echo "Unknown")
+                echo "$cache: $size ($files files)"
+            else
+                echo "$cache: Not initialized"
+            fi
+        done
+    else
+        echo "No cache found at $CACHE_ROOT"
+    fi
+}
+
 # Use mono or .net depending on OS
 case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
@@ -310,6 +408,14 @@ if [ $# -eq 0 ]; then
     ENABLE_EXTRA_PLATFORMS=NO
     ENABLE_EXTRA_PLATFORMS_IN_SDK=NO
 fi
+
+# Handle cache commands first
+case "${1:-}" in
+    clean) CleanCache "${2:-all}"; exit 0 ;;
+    cache-info) CacheInfo; exit 0 ;;
+esac
+
+SetupBuildCaching
 
 while [[ $# -gt 0 ]]
 do
