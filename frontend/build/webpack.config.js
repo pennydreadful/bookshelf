@@ -22,7 +22,7 @@ module.exports = (env) => {
 
   // Cache configuration
   const cacheDirectory =
-    process.env.WEBPACK_CACHE_DIRECTORY ||
+    path.resolve(process.env.WEBPACK_CACHE_DIRECTORY) ||
     path.resolve(frontendFolder, '..', '_cache', 'webpack');
 
   console.log('Source Folder:', srcFolder);
