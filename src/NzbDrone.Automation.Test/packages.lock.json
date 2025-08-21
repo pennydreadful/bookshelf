@@ -58,6 +58,12 @@
         "resolved": "134.0.6998.16500",
         "contentHash": "Mb1ajy5zmY+yXDhpUtl90spvY/OWkDcPmnFqextFEudLPbp7sFcRoQFrhNSiPa5VmTFMh1rFTpx90aIpDXrSTw=="
       },
+      "StyleCop.Analyzers": {
+        "type": "Direct",
+        "requested": "[1.1.118, )",
+        "resolved": "1.1.118",
+        "contentHash": "Onx6ovGSqXSK07n/0eM3ZusiNdB6cIlJdabQhWGgJp3Vooy9AaLS/tigeybOJAobqbtggTamoWndz72JscZBvw=="
+      },
       "BouncyCastle.Cryptography": {
         "type": "Transitive",
         "resolved": "2.4.0",

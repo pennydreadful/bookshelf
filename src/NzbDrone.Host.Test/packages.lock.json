@@ -43,6 +43,12 @@
         "resolved": "3.0.117",
         "contentHash": "+AEoIB71gu6R2QXzAs68MLlceLgo0T9hcL8yWGUi+UzozsDMIjHGKhqDqgCFwtO8UcXAJBaFNkK9o0gtFaLTSw=="
       },
+      "StyleCop.Analyzers": {
+        "type": "Direct",
+        "requested": "[1.1.118, )",
+        "resolved": "1.1.118",
+        "contentHash": "Onx6ovGSqXSK07n/0eM3ZusiNdB6cIlJdabQhWGgJp3Vooy9AaLS/tigeybOJAobqbtggTamoWndz72JscZBvw=="
+      },
       "BouncyCastle.Cryptography": {
         "type": "Transitive",
         "resolved": "2.4.0",

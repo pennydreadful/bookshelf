@@ -44,8 +44,6 @@
     <BuildInParallel>true</BuildInParallel>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
-    <!-- Temporarily disable StyleCop for caching tests -->
-    <EnableAnalyzers>false</EnableAnalyzers>
     <!-- Fix deterministic build conflict with wildcard versions -->
     <Deterministic Condition="$(AssemblyVersion.Contains('*'))">false</Deterministic>
   </PropertyGroup>
