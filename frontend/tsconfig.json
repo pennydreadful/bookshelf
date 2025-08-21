@@ -21,7 +21,7 @@
       "./src/**/*",
       "./.eslintrc.js",
       "./build/webpack.config.js",
-      "./typings/*.ts",
+      "./typings/*.ts"
   ],
   "exclude": [
     "node_modules"

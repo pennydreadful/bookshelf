@@ -8,6 +8,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const version = require('../../package.json').version;
+
 module.exports = (env) => {
   const uiFolder = 'UI';
   const frontendFolder = path.join(__dirname, '..');
@@ -35,13 +37,13 @@ module.exports = (env) => {
 
     cache: {
       type: 'filesystem',
-      cacheDirectory: cacheDirectory,
+      cacheDirectory,
       buildDependencies: {
         config: [__filename],
         tsconfig: [path.resolve(frontendFolder, 'tsconfig.json')],
         packagejson: [path.resolve(frontendFolder, '..', 'package.json')],
       },
-      version: require('../../package.json').version,
+      version,
       name: isProduction ? 'production' : 'development',
       store: 'pack',
       compression: 'gzip',
