@@ -72,9 +72,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: _cache/webpack
-          key: webpack-${{ runner.os }}-${{ hashFiles('frontend/build/**/*', 'frontend/src/**/*', 'frontend/package.json') }}
+          key: webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
           restore-keys: |
-            webpack-${{ runner.os }}-${{ hashFiles('frontend/build/**/*', 'frontend/src/**/*', 'frontend/package.json') }}
+            webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
             webpack-${{ runner.os }}-
 
       - name: Build everything
