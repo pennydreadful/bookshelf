@@ -1320,7 +1320,7 @@
           "Servarr.FluentMigrator.Runner": "[3.3.2.9, )",
           "Servarr.FluentMigrator.Runner.Postgres": "[3.3.2.9, )",
           "Servarr.FluentMigrator.Runner.SQLite": "[3.3.2.9, )",
-          "SixLabors.ImageSharp": "[3.1.7, )",
+          "SixLabors.ImageSharp": "[3.1.11, )",
           "System.IO.Abstractions": "[17.0.24, )",
           "System.Memory": "[4.6.2, )",
           "System.Text.Encoding.CodePages": "[6.0.0, )",
@@ -1705,9 +1705,9 @@
       },
       "SixLabors.ImageSharp": {
         "type": "CentralTransitive",
-        "requested": "[3.1.7, )",
-        "resolved": "3.1.7",
-        "contentHash": "9fIOOAsyLFid6qKypM2Iy0Z3Q9yoanV8VoYAHtI2sYGMNKzhvRTjgFDHonIiVe+ANtxIxM6SuqUzj0r91nItpA=="
+        "requested": "[3.1.11, )",
+        "resolved": "3.1.11",
+        "contentHash": "JfPLyigLthuE50yi6tMt7Amrenr/fA31t2CvJyhy/kQmfulIBAqo5T/YFUSRHtuYPXRSaUHygFeh6Qd933EoSw=="
       },
       "Swashbuckle.AspNetCore.Annotations": {
         "type": "CentralTransitive",
