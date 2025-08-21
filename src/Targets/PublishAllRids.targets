@@ -29,7 +29,7 @@
 
     <MSBuild Projects="@(ProjectToPublish)"
              Targets="Publish"
-             BuildInParallel="true"
+             BuildInParallel="false"
              />
   </Target>
 
