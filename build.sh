@@ -88,11 +88,6 @@ SetupBuildCaching()
     export NUGET_PACKAGES="$NUGET_CACHE"
     export npm_config_cache="$NODE_CACHE"
     export YARN_CACHE_FOLDER="$NODE_CACHE/yarn"
-
-    # Check MSBuild version for input/output cache support
-    MSBUILD_VERSION=$(dotnet msbuild -version 2>/dev/null | head -1 | grep -o '[0-9]\+\.[0-9]\+' | head -1 || echo "0.0")
-    SUPPORTS_IO_CACHE=$(echo "$MSBUILD_VERSION" | awk -F. '{print ($1 > 17 || ($1 == 17 && $2 >= 8))}')
-    echo "  MSBuild version: $MSBUILD_VERSION (I/O cache: $([ "$SUPPORTS_IO_CACHE" = "1" ] && echo "supported" || echo "not supported"))"
 }
 
 Build()
@@ -123,24 +118,12 @@ Build()
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]]; then
         MSBUILD_ARGS+=("-t:PublishAllRids")
-
-        # Add input/output cache if supported
-        if [ "$SUPPORTS_IO_CACHE" = "1" ]; then
-            MSBUILD_ARGS+=("-inputResultsCaches:$MSBUILD_CACHE/input" "-outputResultsCache:$MSBUILD_CACHE/output")
-        fi
-
         dotnet msbuild "${MSBUILD_ARGS[@]}"
     else
         MSBUILD_ARGS+=(
             "-p:RuntimeIdentifiers=$RID"
             "-t:PublishAllRids"
         )
-
-        # Add input/output cache if supported
-        if [ "$SUPPORTS_IO_CACHE" = "1" ]; then
-            MSBUILD_ARGS+=("-inputResultsCaches:$MSBUILD_CACHE/input" "-outputResultsCache:$MSBUILD_CACHE/output")
-        fi
-
         dotnet msbuild "${MSBUILD_ARGS[@]}"
     fi
 
