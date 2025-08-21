@@ -44,6 +44,10 @@
     <BuildInParallel>true</BuildInParallel>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
+    <!-- MSBuild I/O caching for faster incremental builds -->
+    <MSBuildEnableCaching>true</MSBuildEnableCaching>
+    <MSBuildCacheEnabled>true</MSBuildCacheEnabled>
+    <MSBuildCacheDirectory>$(ReadarrRootDir)_cache\msbuild\</MSBuildCacheDirectory>
     <!-- Fix deterministic build conflict with wildcard versions -->
     <Deterministic Condition="$(AssemblyVersion.Contains('*'))">false</Deterministic>
   </PropertyGroup>
