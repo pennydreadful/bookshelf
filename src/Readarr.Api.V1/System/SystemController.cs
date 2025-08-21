@@ -56,6 +56,8 @@ namespace Readarr.Api.V1.System
         [HttpGet("status")]
         public SystemResource GetStatus()
         {
+            var metadataUrl = Environment.GetEnvironmentVariable("METADATA_URL") ?? "https://api.bookinfo.pro";
+
             return new SystemResource
             {
                 AppName = BuildInfo.AppName,
@@ -82,6 +84,7 @@ namespace Readarr.Api.V1.System
                 DatabaseVersion = _database.Version,
                 MigrationVersion = _database.Migration,
                 UrlBase = _configFileProvider.UrlBase,
+                MetadataUrl = metadataUrl,
                 RuntimeVersion = _platformInfo.Version,
                 RuntimeName = "netcore",
                 StartTime = _runtimeInfo.StartTime,

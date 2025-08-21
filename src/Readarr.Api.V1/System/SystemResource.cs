@@ -32,6 +32,7 @@ namespace Readarr.Api.V1.System
         public AuthenticationType Authentication { get; set; }
         public int MigrationVersion { get; set; }
         public string UrlBase { get; set; }
+        public string MetadataUrl { get; set; }
         public Version RuntimeVersion { get; set; }
         public string RuntimeName { get; set; }
         public DateTime StartTime { get; set; }
