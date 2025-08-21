@@ -20,14 +20,8 @@ module.exports = (env) => {
 
   const distFolder = path.resolve(frontendFolder, '..', '_output', uiFolder);
 
-  // Cache configuration
-  const cacheDirectory =
-    process.env.WEBPACK_CACHE_DIRECTORY ||
-    path.resolve(frontendFolder, '..', 'node_modules', '.cache', 'webpack');
-
   console.log('Source Folder:', srcFolder);
   console.log('Output Folder:', distFolder);
-  console.log('Cache Directory:', cacheDirectory);
   console.log('isProduction:', isProduction);
   console.log('isProfiling:', isProfiling);
 
@@ -37,7 +31,6 @@ module.exports = (env) => {
 
     cache: {
       type: 'filesystem',
-      cacheDirectory,
       buildDependencies: {
         config: [__filename],
         tsconfig: [path.resolve(frontendFolder, 'tsconfig.json')],
