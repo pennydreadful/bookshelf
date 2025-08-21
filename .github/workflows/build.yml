@@ -77,6 +77,10 @@ jobs:
             webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
             webpack-${{ runner.os }}-
 
+      - name: Test
+        shell: bash
+        run: dotnet test src/NzbDrone.Core.Test/Readarr.Core.Test.csproj /consoleLoggerParameters:ErrorsOnly
+
       - name: Build everything
         shell: bash
         run: ./build.sh
