@@ -1,10 +1,10 @@
 [tools]
-"asdf:mise-plugins/mise-dotnet" = "7.0.410"
+"asdf:mise-plugins/mise-dotnet" = "8.0.404"
 node = "20.19.4"
 
 [env]
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
-DOTNET_VERSION = "7.0.410"
+DOTNET_VERSION = "8.0.404"
 
 [settings]
 experimental = true
