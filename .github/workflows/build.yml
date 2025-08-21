@@ -41,6 +41,42 @@ jobs:
           echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
           echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: _cache/nuget
+          key: nuget-${{ runner.os }}-${{ hashFiles('src/Directory.Packages.props', 'src/**/*.csproj', 'global.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            _cache/node
+            node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+          restore-keys: |
+            node-${{ runner.os }}-
+
+      - name: Cache MSBuild outputs
+        uses: actions/cache@v4
+        with:
+          path: _cache/msbuild
+          key: msbuild-${{ runner.os }}-${{ hashFiles('src/**/*.cs', 'src/**/*.csproj', 'src/**/*.targets', 'src/**/*.props') }}
+          restore-keys: |
+            msbuild-${{ runner.os }}-${{ hashFiles('src/**/*.cs', 'src/**/*.csproj', 'src/**/*.targets', 'src/**/*.props') }}
+            msbuild-${{ runner.os }}-
+
+      - name: Cache Webpack
+        uses: actions/cache@v4
+        with:
+          path: _cache/webpack
+          key: webpack-${{ runner.os }}-${{ hashFiles('frontend/build/**/*', 'frontend/src/**/*', 'frontend/package.json') }}
+          restore-keys: |
+            webpack-${{ runner.os }}-${{ hashFiles('frontend/build/**/*', 'frontend/src/**/*', 'frontend/package.json') }}
+            webpack-${{ runner.os }}-
+
       - name: Build everything
         shell: bash
         run: ./build.sh

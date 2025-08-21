@@ -29,16 +29,6 @@
           "System.ServiceProcess.ServiceController": "6.0.1"
         }
       },
-      "Microsoft.SourceLink.GitHub": {
-        "type": "Direct",
-        "requested": "[1.1.1, )",
-        "resolved": "1.1.1",
-        "contentHash": "IaJGnOv/M7UQjRJks7B6p7pbPnOwisYGOIzqCz5ilGFTApZ3ktOR+6zJ12ZRPInulBmdAf1SrGdDG2MU8g6XTw==",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        }
-      },
       "Swashbuckle.AspNetCore.SwaggerGen": {
         "type": "Direct",
         "requested": "[6.6.2, )",
@@ -84,11 +74,6 @@
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0"
         }
-      },
-      "Microsoft.Build.Tasks.Git": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "AT3HlgTjsqHnWpBHSNeR0KxbLZD7bztlZVj7I8vgeYG9SYqbeFGh0TM/KVtC6fg53nrWHl3VfZFvb5BiQFcY6Q=="
       },
       "Microsoft.CSharp": {
         "type": "Transitive",
@@ -401,11 +386,6 @@
         "type": "Transitive",
         "resolved": "1.6.14",
         "contentHash": "tTaBT8qjk3xINfESyOPE2rIellPvB7qpVqiWiyA/lACVvz+xOGiXhFUfohcx82NLbi5avzLW0lx+s6oAqQijfw=="
-      },
-      "Microsoft.SourceLink.Common": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "WMcGpWKrmJmzrNeuaEb23bEMnbtR/vLmvZtkAP5qWu7vQsY59GqfRJd65sFpBszbd2k/bQ8cs8eWawQKAabkVg=="
       },
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
@@ -1555,7 +1535,6 @@
         "dependencies": {
           "FluentValidation": "[9.5.4, )",
           "Ical.Net": "[4.3.1, )",
-          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
           "NLog": "[5.1.4, )",
           "Readarr.Common": "[1.0.0, )",
           "Readarr.Core": "[1.0.0, )",
@@ -1573,7 +1552,6 @@
           "IPAddressRange": "[6.1.0, )",
           "Microsoft.Extensions.DependencyInjection": "[6.0.1, )",
           "Microsoft.Extensions.Hosting.WindowsServices": "[6.0.2, )",
-          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
           "Microsoft.Win32.Registry": "[5.0.0, )",
           "NLog": "[5.1.4, )",
           "NLog.Extensions.Logging": "[5.2.3, )",
@@ -1602,7 +1580,6 @@
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
           "Microsoft.Extensions.DependencyInjection": "[6.0.1, )",
           "Microsoft.Extensions.Logging": "[6.0.0, )",
-          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
           "MonoTorrent": "[2.0.7, )",
           "NLog": "[5.1.4, )",
           "NLog.Targets.Syslog": "[7.0.0, )",
@@ -1628,7 +1605,6 @@
         "dependencies": {
           "FluentValidation": "[9.5.4, )",
           "ImpromptuInterface": "[7.0.1, )",
-          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
           "NLog": "[5.1.4, )",
           "Readarr.Core": "[1.0.0, )",
           "Readarr.SignalR": "[1.0.0, )"
@@ -1637,7 +1613,6 @@
       "readarr.signalr": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
           "Readarr.Core": "[1.0.0, )"
         }
       },

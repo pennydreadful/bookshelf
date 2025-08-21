@@ -153,3 +153,5 @@ _temp_*/**/*
 
 # API doc generation
 .config/
+
+_cache/

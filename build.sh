@@ -2,7 +2,7 @@
 set -e
 
 # Build cache configuration
-CACHE_ROOT="${READARR_CACHE_ROOT:-${HOME}/.readarr-build-cache}"
+CACHE_ROOT="${READARR_CACHE_ROOT:-_cache}"
 NUGET_CACHE="${CACHE_ROOT}/nuget"
 MSBUILD_CACHE="${CACHE_ROOT}/msbuild"
 NODE_CACHE="${CACHE_ROOT}/node"
