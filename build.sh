@@ -161,7 +161,6 @@ PackageFiles()
     rm -rf $folder
     mkdir -p $folder
     cp -r $outputFolder/$framework/$runtime/publish/* $folder
-    cp -r $outputFolder/Readarr.Update/$framework/$runtime/publish $folder/Readarr.Update
     cp -r $outputFolder/UI $folder
 
     echo "Adding LICENSE"
@@ -186,13 +185,6 @@ PackageLinux()
     echo "Removing Readarr.Windows"
     rm $folder/Readarr.Windows.*
 
-    echo "Adding Readarr.Mono to UpdatePackage"
-    cp $folder/Readarr.Mono.* $folder/Readarr.Update
-    if [ "$framework" = "net6.0" ]; then
-        cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
-        cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
-    fi
-
     TarPackage "$folder" "Readarr.develop.$READARRVERSION-${runtime}.tar.gz"
 
     ProgressEnd "Creating $runtime Package for $framework"
@@ -216,13 +208,6 @@ PackageMacOS()
     echo "Removing Readarr.Windows"
     rm $folder/Readarr.Windows.*
 
-    echo "Adding Readarr.Mono to UpdatePackage"
-    cp $folder/Readarr.Mono.* $folder/Readarr.Update
-    if [ "$framework" = "net6.0" ]; then
-        cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
-        cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
-    fi
-
     ProgressEnd 'Creating MacOS Package'
 }
 
@@ -243,9 +228,6 @@ PackageMacOSApp()
     echo "Copying Binaries"
     cp -r $artifactsFolder/$runtime/$framework/Readarr/* $folder/Readarr.app/Contents/MacOS
 
-    echo "Removing Update Folder"
-    rm -r $folder/Readarr.app/Contents/MacOS/Readarr.Update
-
     ProgressEnd 'Creating macOS App Package'
 }
 
@@ -265,9 +247,6 @@ PackageWindows()
     rm -f $folder/Readarr.Mono.*
     rm -f $folder/Mono.Posix.NETStandard.*
     rm -f $folder/libMonoPosixHelper.*
-
-    echo "Adding Readarr.Windows to UpdatePackage"
-    cp $folder/Readarr.Windows.* $folder/Readarr.Update
 
     ProgressEnd "Creating $runtime Package for $framework"
 }
@@ -473,11 +452,8 @@ then
     Build
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        PackageTests "net6.0" "win-x64"
-        PackageTests "net6.0" "win-x86"
         PackageTests "net6.0" "linux-x64"
         PackageTests "net6.0" "linux-musl-x64"
-        PackageTests "net6.0" "osx-x64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             PackageTests "net6.0" "freebsd-x64"
@@ -509,16 +485,12 @@ then
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        Package "net6.0" "win-x64"
-        Package "net6.0" "win-x86"
         Package "net6.0" "linux-x64"
         Package "net6.0" "linux-musl-x64"
         Package "net6.0" "linux-arm64"
         Package "net6.0" "linux-musl-arm64"
         Package "net6.0" "linux-arm"
         Package "net6.0" "linux-musl-arm"
-        Package "net6.0" "osx-x64"
-        Package "net6.0" "osx-arm64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             Package "net6.0" "freebsd-x64"

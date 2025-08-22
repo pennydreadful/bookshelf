@@ -8,7 +8,7 @@
 
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeIdentifiers>win-x64;win-x86;osx-x64;osx-arm64;linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64</RuntimeIdentifiers>
 
     <ReadarrRootDir>$(MSBuildThisFileDirectory)..\</ReadarrRootDir>
 
@@ -19,7 +19,6 @@
     <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</ReadarrOutputType>
     <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr'">Exe</ReadarrOutputType>
     <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Console'">Exe</ReadarrOutputType>
-    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Update'">Update</ReadarrOutputType>
 
     <!-- Specifies whether it's one of our own libraries -->
     <ReadarrProject>false</ReadarrProject>
@@ -62,7 +61,6 @@
     <!-- Output to _output and _tests respectively -->
     <OutputPath Condition="'$(ReadarrProject)'=='true'">$(ReadarrRootDir)_output\</OutputPath>
     <OutputPath Condition="'$(ReadarrOutputType)'=='Test'">$(ReadarrRootDir)_tests\</OutputPath>
-    <OutputPath Condition="'$(ReadarrOutputType)'=='Update'">$(ReadarrRootDir)_output\Readarr.Update\</OutputPath>
 
     <!-- Paths relative to project file for better readability -->
     <EnableBaseIntermediateOutputPathMismatchWarning>false</EnableBaseIntermediateOutputPathMismatchWarning>
