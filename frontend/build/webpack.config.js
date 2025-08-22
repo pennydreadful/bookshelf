@@ -21,9 +21,11 @@ module.exports = (env) => {
   const distFolder = path.resolve(frontendFolder, '..', '_output', uiFolder);
 
   // Cache configuration
-  const cacheDirectory =
-    path.resolve(process.env.WEBPACK_CACHE_DIRECTORY) ||
-    path.resolve(frontendFolder, '..', '_cache', 'webpack');
+
+  let cacheDirectory = path.resolve(frontendFolder, '..', '_cache', 'webpack');
+  if (process.env.WEBPACK_CACHE_DIRECTORY !== undefined) {
+    cacheDirectory = path.resolve(process.env.WEBPACK_CACHE_DIRECTORY);
+  }
 
   console.log('Source Folder:', srcFolder);
   console.log('Output Folder:', distFolder);
