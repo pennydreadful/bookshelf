@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Languages;
@@ -264,9 +265,26 @@ namespace NzbDrone.Core.Configuration
 
         public string MetadataSource
         {
-            get { return GetValue("MetadataSource", ""); }
+            get
+            {
+                var md = GetValue("MetadataSource", "");
+                if (md.IsNullOrWhiteSpace())
+                {
+                    md = Environment.GetEnvironmentVariable("METADATA_URL");
+                }
 
-            set { SetValue("MetadataSource", value); }
+                if (md.IsNullOrWhiteSpace())
+                {
+                    md = "https://api.bookinfo.pro";
+                }
+
+                return md;
+            }
+
+            set
+            {
+                SetValue("MetadataSource", value);
+            }
         }
 
         public WriteAudioTagsType WriteAudioTags

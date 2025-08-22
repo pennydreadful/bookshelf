@@ -69,8 +69,6 @@ class DevelopmentSettings extends Component {
                     <FormInputGroup
                       type={inputTypes.TEXT}
                       name="metadataSource"
-                      helpText={translate('MetadataSourceHelpText')}
-                      helpLink="https://wiki.servarr.com/readarr/settings#metadata"
                       onChange={onInputChange}
                       {...settings.metadataSource}
                     />

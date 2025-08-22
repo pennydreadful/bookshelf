@@ -44,6 +44,7 @@ Already done
 - [x] Lowered default match percentage from 80% to 50%.
 - [x] Metadata is no longer cached locally.
 - [x] Removed servarr analytics spyware.
+- [x] Supports selfhosted metadata (UI or `METADATA_URL` env var).
 
 ## Sponsors
 

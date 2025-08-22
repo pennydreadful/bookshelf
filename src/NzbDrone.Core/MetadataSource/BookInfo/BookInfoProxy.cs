@@ -588,8 +588,8 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 () => PollAuthorUncached(foreignAuthorId),
                 new LazyCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-                    ImmediateAbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1),
+                    ImmediateAbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1),
                     Size = 1,
                     SlidingExpiration = TimeSpan.FromMinutes(1),
                     ExpirationMode = ExpirationMode.ImmediateEviction

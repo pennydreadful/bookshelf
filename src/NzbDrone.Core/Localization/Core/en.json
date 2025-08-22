@@ -577,7 +577,6 @@
   "MetadataSettings": "Metadata Settings",
   "MetadataSettingsSummary": "Create metadata files when books are imported or author are refreshed",
   "MetadataSource": "Metadata Source",
-  "MetadataSourceHelpText": "Alternative Metadata Source (Leave blank for default)",
   "MinFormatScoreHelpText": "Minimum custom format score allowed to download",
   "MinPagesHelpText": "Ignore books with fewer pages than this",
   "MinPopularityHelpText": "Popularity is average rating * number of votes",
