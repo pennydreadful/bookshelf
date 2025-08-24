@@ -1,5 +1,5 @@
 [tools]
-"asdf:mise-plugins/mise-dotnet" = "8.0.404"
+dotnet = ["8.0.404", "6.0.405"]
 node = "20.19.4"
 
 [env]
