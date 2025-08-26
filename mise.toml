@@ -1,10 +1,12 @@
 [tools]
-dotnet = ["8.0.404", "6.0.405"]
+dotnet = "6.0.428"
 node = "20.19.4"
 
 [env]
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
-DOTNET_VERSION = "8.0.404"
+TESTSFOLDER = "_tests"
+OUTPUTFOLDER = "_output"
+TEST_DIR ="./_tests/net6.0/linux-x64"
 
 [settings]
 experimental = true

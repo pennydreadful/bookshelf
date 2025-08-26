@@ -8,7 +8,7 @@
 
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeIdentifiers>win-x64;win-x86;osx-x64;osx-arm64;linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>linux-x64;linux-musl-x64</RuntimeIdentifiers>
 
     <ReadarrRootDir>$(MSBuildThisFileDirectory)..\</ReadarrRootDir>
 
@@ -35,21 +35,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!--
         CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member'
-        SA1200: Using directive should appear within a namespace declaration
     -->
-    <NoWarn>$(NoWarn);CS1591;SA1200</NoWarn>
-
-    <!-- Build performance optimizations -->
-    <UseSharedCompilation>true</UseSharedCompilation>
-    <BuildInParallel>true</BuildInParallel>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
-    <!-- MSBuild I/O caching for faster incremental builds -->
-    <MSBuildEnableCaching>true</MSBuildEnableCaching>
-    <MSBuildCacheEnabled>true</MSBuildCacheEnabled>
-    <MSBuildCacheDirectory>$(ReadarrRootDir)_cache\msbuild\</MSBuildCacheDirectory>
-    <!-- Fix deterministic build conflict with wildcard versions -->
-    <Deterministic Condition="$(AssemblyVersion.Contains('*'))">false</Deterministic>
+    <NoWarn>$(NoWarn);CS1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -115,8 +102,7 @@
   <ItemGroup Condition="'$(TestProject)'!='true'">
     <!-- Annotates .NET assemblies with repository information including SHA -->
     <!-- This is built-in on .NET 8 and can be removed once the project is updated -->
-    <!-- Temporarily disabled for caching tests due to parallel build conflicts -->
-    <!-- <PackageReference Include="Microsoft.SourceLink.GitHub" /> -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" />
   </ItemGroup>
 
   <!-- Standard testing packages -->
@@ -128,6 +114,18 @@
     <PackageReference Include="coverlet.collector" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <EmbedAllSources>true</EmbedAllSources>
+    <SourceLinkCreate>true</SourceLinkCreate>
+    <AdditionalCscArguments>$(AdditionalCscArguments) /pathmap:$(PathMap)</AdditionalCscArguments>
+  </PropertyGroup>
+
+  <Target Name="AddPathMapToCsc" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <CscCommandLineArgs>$(CscCommandLineArgs) /pathmap:$(PathMap)</CscCommandLineArgs>
+    </PropertyGroup>
+  </Target>
+
   <!-- Set up stylecop -->
   <ItemGroup Condition="'$(ReadarrProject)'=='true' and '$(EnableAnalyzers)'!='false'">
     <!-- StyleCop analysis -->
@@ -135,7 +133,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
   </ItemGroup>
 
   <!--
@@ -206,5 +204,4 @@
     <_UsingDefaultRuntimeIdentifier>true</_UsingDefaultRuntimeIdentifier>
     <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
   </PropertyGroup>
-
 </Project>

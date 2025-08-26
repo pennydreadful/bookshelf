@@ -1,27 +1,11 @@
 #! /usr/bin/env bash
 set -e
 
-# Build cache configuration
-CACHE_ROOT="${READARR_CACHE_ROOT:-_cache}"
-NUGET_CACHE="${CACHE_ROOT}/nuget"
-MSBUILD_CACHE="${CACHE_ROOT}/msbuild"
-NODE_CACHE="${CACHE_ROOT}/node"
-WEBPACK_CACHE="${CACHE_ROOT}/webpack"
-
-mkdir -p "$NUGET_CACHE" "$MSBUILD_CACHE" "$NODE_CACHE" "$WEBPACK_CACHE"
-
 outputFolder='_output'
 testPackageFolder='_tests'
 
 #Artifact variables
 artifactsFolder="_artifacts";
-
-TarPackage()
-{
-    local folder="$1"
-    local tarname="$2"
-    (cd "$(dirname "$folder")" && tar -czvf "$tarname" "$(basename "$folder")")
-}
 
 ProgressStart()
 {
@@ -45,19 +29,20 @@ UpdateVersionNumber()
 
 EnableExtraPlatformsInSDK()
 {
+    SDK_PATH=$(dotnet --list-sdks | grep -P '6\.\d\.\d+' | head -1 | sed 's/\(6\.[0-9]*\.[0-9]*\).*\[\(.*\)\]/\2\/\1/g')
     BUNDLEDVERSIONS="${SDK_PATH}/Microsoft.NETCoreSdk.BundledVersions.props"
-    if grep -q freebsd-x64 "$BUNDLEDVERSIONS"; then
+    if grep -q freebsd-x64 $BUNDLEDVERSIONS; then
         echo "Extra platforms already enabled"
     else
         echo "Enabling extra platform support"
-        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64/' "$BUNDLEDVERSIONS"
+        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
     fi
 }
 
 EnableExtraPlatforms()
 {
     if grep -qv freebsd-x64 src/Directory.Build.props; then
-        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64</RuntimeIdentifiers>^g" src/Directory.Build.props
+        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64;linux-x86</RuntimeIdentifiers>^g" src/Directory.Build.props
     fi
 }
 
@@ -76,20 +61,6 @@ LintUI()
     ProgressEnd 'Stylelint'
 }
 
-SetupBuildCaching()
-{
-    echo "Setting up build caching..."
-    echo "  NuGet cache: $NUGET_CACHE"
-    echo "  MSBuild cache: $MSBUILD_CACHE"
-    echo "  Node cache: $NODE_CACHE"
-    echo "  Webpack cache: $WEBPACK_CACHE"
-
-    # Export cache environment variables
-    export NUGET_PACKAGES="$NUGET_CACHE"
-    export npm_config_cache="$NODE_CACHE"
-    export YARN_CACHE_FOLDER="$NODE_CACHE/yarn"
-}
-
 Build()
 {
     ProgressStart 'Build'
@@ -105,26 +76,11 @@ Build()
         platform=Posix
     fi
 
-    # Build MSBuild arguments with caching
-    MSBUILD_ARGS=(
-        "-restore" "$slnFile"
-        "-p:Configuration=Release"
-        "-p:Platform=$platform"
-        "-p:RestorePackagesPath=$NUGET_CACHE"
-        "-p:NuGetPackageRoot=$NUGET_CACHE"
-        "-p:UseSharedCompilation=true"
-        "-maxCpuCount:4"
-    )
-
-    if [[ -z "$RID" || -z "$FRAMEWORK" ]]; then
-        MSBUILD_ARGS+=("-t:PublishAllRids")
-        dotnet msbuild "${MSBUILD_ARGS[@]}"
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
     else
-        MSBUILD_ARGS+=(
-            "-p:RuntimeIdentifiers=$RID"
-            "-t:PublishAllRids"
-        )
-        dotnet msbuild "${MSBUILD_ARGS[@]}"
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
     fi
 
     ProgressEnd 'Build'
@@ -133,21 +89,13 @@ Build()
 YarnInstall()
 {
     ProgressStart 'yarn install'
-    yarn install \
-        --frozen-lockfile \
-        --network-timeout 120000 \
-        --cache-folder "$NODE_CACHE/yarn" \
-        --prefer-offline \
-        --silent
+    yarn install --frozen-lockfile --network-timeout 120000
     ProgressEnd 'yarn install'
 }
 
 RunWebpack()
 {
     ProgressStart 'Running webpack'
-    # Set webpack cache environment variables
-    export WEBPACK_CACHE_TYPE="filesystem"
-    export WEBPACK_CACHE_DIRECTORY="$WEBPACK_CACHE"
     yarn run build --env production
     ProgressEnd 'Running webpack'
 }
@@ -192,8 +140,6 @@ PackageLinux()
         cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
     fi
-
-    TarPackage "$folder" "Readarr.develop.$READARRVERSION-${runtime}.tar.gz"
 
     ProgressEnd "Creating $runtime Package for $framework"
 }
@@ -259,7 +205,7 @@ PackageWindows()
     local folder=$artifactsFolder/$runtime/$framework/Readarr
 
     PackageFiles "$folder" "$framework" "$runtime"
-    cp -r $outputFolder/$framework/$runtime/publish/* $folder
+    cp -r $outputFolder/$framework-windows/$runtime/publish/* $folder
 
     echo "Removing Readarr.Mono"
     rm -f $folder/Readarr.Mono.*
@@ -332,41 +278,6 @@ PackageTests()
     ProgressEnd 'Creating Test Package'
 }
 
-# Cache management functions
-CleanCache()
-{
-    case "${1:-all}" in
-        nuget) rm -rf "$NUGET_CACHE"; echo "NuGet cache cleaned" ;;
-        msbuild) rm -rf "$MSBUILD_CACHE"; echo "MSBuild cache cleaned" ;;
-        node) rm -rf "$NODE_CACHE"; echo "Node cache cleaned" ;;
-        webpack) rm -rf "$WEBPACK_CACHE"; echo "Webpack cache cleaned" ;;
-        all) rm -rf "$CACHE_ROOT"; echo "All caches cleaned" ;;
-        *) echo "Usage: $0 clean [nuget|msbuild|node|webpack|all]"; exit 1 ;;
-    esac
-}
-
-CacheInfo()
-{
-    echo "Build Cache Information:"
-    echo "======================="
-    if [ -d "$CACHE_ROOT" ]; then
-        echo "Cache root: $CACHE_ROOT"
-        echo "Total size: $(du -sh "$CACHE_ROOT" 2>/dev/null | cut -f1 || echo "Unknown")"
-        for cache in nuget msbuild node webpack; do
-            cache_dir="${CACHE_ROOT}/${cache}"
-            if [ -d "$cache_dir" ]; then
-                size=$(du -sh "$cache_dir" 2>/dev/null | cut -f1 || echo "Unknown")
-                files=$(find "$cache_dir" -type f 2>/dev/null | wc -l | tr -d ' ' || echo "Unknown")
-                echo "$cache: $size ($files files)"
-            else
-                echo "$cache: Not initialized"
-            fi
-        done
-    else
-        echo "No cache found at $CACHE_ROOT"
-    fi
-}
-
 # Use mono or .net depending on OS
 case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
@@ -391,14 +302,6 @@ if [ $# -eq 0 ]; then
     ENABLE_EXTRA_PLATFORMS=NO
     ENABLE_EXTRA_PLATFORMS_IN_SDK=NO
 fi
-
-# Handle cache commands first
-case "${1:-}" in
-    clean) CleanCache "${2:-all}"; exit 0 ;;
-    cache-info) CacheInfo; exit 0 ;;
-esac
-
-SetupBuildCaching
 
 while [[ $# -gt 0 ]]
 do
@@ -473,11 +376,7 @@ then
     Build
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        PackageTests "net6.0" "win-x64"
-        PackageTests "net6.0" "win-x86"
-        PackageTests "net6.0" "linux-x64"
         PackageTests "net6.0" "linux-musl-x64"
-        PackageTests "net6.0" "osx-x64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             PackageTests "net6.0" "freebsd-x64"
@@ -509,16 +408,7 @@ then
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        Package "net6.0" "win-x64"
-        Package "net6.0" "win-x86"
-        Package "net6.0" "linux-x64"
         Package "net6.0" "linux-musl-x64"
-        Package "net6.0" "linux-arm64"
-        Package "net6.0" "linux-musl-arm64"
-        Package "net6.0" "linux-arm"
-        Package "net6.0" "linux-musl-arm"
-        Package "net6.0" "osx-x64"
-        Package "net6.0" "osx-arm64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             Package "net6.0" "freebsd-x64"

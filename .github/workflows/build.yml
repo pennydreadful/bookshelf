@@ -77,15 +77,22 @@ jobs:
             webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
             webpack-${{ runner.os }}-
 
-      - name: Build everything
+      - name: Build
         shell: bash
-        run: ./build.sh
+        run: ./build.sh --backend; ./build.sh --frontend
         env:
           READARRVERSION: ${{ env.READARR_VERSION }}.${{ github.run_number }}
 
+      - name: Prepare tests
+        run: |
+          mkdir -p _tests/bin
+          cp _output/net6.0/linux-x64/publish/Readarr _tests/bin/
+          chmod +x _tests/bin/Readarr
+          find _tests -name "Readarr.Test.Dummy" -exec chmod a+x {} \;
+
       - name: Test
         shell: bash
-        run: dotnet test src/NzbDrone.Core.Test/Readarr.Core.Test.csproj /consoleLoggerParameters:ErrorsOnly
+        run: ./test.sh Linux Unit Test
 
       - uses: docker/setup-buildx-action@v3
 
