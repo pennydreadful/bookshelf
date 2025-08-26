@@ -94,6 +94,15 @@ jobs:
         shell: bash
         run: ./test.sh Linux Unit Test
 
+      - name: Report test results
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: Unit Test Results
+          path: "**/TestResult.xml"
+          reporter: dotnet-nunit
+          fail-on-error: true
+
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/metadata-action@v5
