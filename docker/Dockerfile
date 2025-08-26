@@ -24,15 +24,16 @@ ENV HARDCOVER=${HARDCOVER}
 
 RUN mkdir -p /app/readarr
 
-RUN --mount=type=bind,source=_artifacts,target=_artifacts \
+RUN --mount=type=bind,source=_output,target=_output \
     case "$TARGETPLATFORM" in \
-    "linux/amd64") cp -r /_artifacts/linux-musl-x64/net6.0/Readarr /app/readarr/bin ;; \
-    "linux/arm64") cp -r /_artifacts/linux-musl-arm64/net6.0/Readarr /app/readarr/bin ;; \
-    "darwin/amd64") cp -r /_artifacts/osx-x64/net6.0/Readarr /app/readarr/bin ;; \
-    "darwin/arm64") cp -r /_artifacts/osx-arm64/net6.0/Readarr /app/readarr/bin ;; \
-    "windows/amd64") cp -r /_artifacts/win-x64/net6.0/Readarr /app/readarr/bin ;; \
+    "linux/amd64") cp -r /_output/net6.0/linux-musl-x64 /app/readarr/bin ;; \
+    "linux/arm64") cp -r /_output/net6.0/linux-musl-arm64 /app/readarr/bin ;; \
+    "darwin/amd64") cp -r /_output/net6.0/osx-x64 /app/readarr/bin ;; \
+    "darwin/arm64") cp -r /_output/net6.0/osx-arm64 /app/readarr/bin ;; \
+    "windows/amd64") cp -r /_output/net6.0/win-x64 /app/readarr/bin ;; \
     *) echo "Unknown platform: $TARGETPLATFORM" && exit 1 ;; \
-    esac
+    esac; \
+    cp -r /_output/UI /app/readarr/bin/UI
 
 RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
     printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version

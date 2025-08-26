@@ -8,7 +8,7 @@
 
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeIdentifiers>linux-x64;linux-musl-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>linux-x64;linux-musl-x64;linux-musl-arm64</RuntimeIdentifiers>
 
     <ReadarrRootDir>$(MSBuildThisFileDirectory)..\</ReadarrRootDir>
 

@@ -79,7 +79,7 @@ jobs:
 
       - name: Build
         shell: bash
-        run: ./build.sh --backend; ./build.sh --frontend
+        run: ./build.sh --backend --frontend
         env:
           READARRVERSION: ${{ env.READARR_VERSION }}.${{ github.run_number }}
 

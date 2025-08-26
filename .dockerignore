@@ -1,8 +1,5 @@
 .git
-_output
-_artifacts/*-app
-_artifacts/linux-arm
-_artifacts/win-x86
+_artifacts
 _temp
 _tests
 distribution
