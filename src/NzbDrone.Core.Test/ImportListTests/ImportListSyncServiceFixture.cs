@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<IGoodreadsProxy>()
                 .Setup(v => v.GetBookInfo(It.IsAny<string>()))
-                .Returns<string, bool>((id, useCache) => Builder<Book>
+                .Returns<string>((id) => Builder<Book>
                 .CreateNew()
                 .With(b => b.AuthorMetadata = Builder<AuthorMetadata>.CreateNew().Build())
                 .With(b => b.ForeignBookId = "4321")
