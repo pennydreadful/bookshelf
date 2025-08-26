@@ -100,6 +100,7 @@ jobs:
         with:
           name: Unit Test Results
           path: "**/TestResult.xml"
+          list-tests: "failed"
           reporter: dotnet-nunit
           fail-on-error: true
 
