@@ -502,11 +502,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 }
             }
 
-            var mapped = MapBulkBook(httpResponse.Resource);
-
-            var idStr = ids.Select(x => x.ToString()).ToList();
-
-            return mapped.OrderBy(b => idStr.IndexOf(b.Editions.Value.First().ForeignEditionId)).ToList();
+            return MapBulkBook(httpResponse.Resource);
         }
 
         private List<Book> MapBulkBook(BulkBookResource resource)
