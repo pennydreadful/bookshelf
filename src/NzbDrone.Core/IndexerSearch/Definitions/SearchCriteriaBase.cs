@@ -15,6 +15,12 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public virtual bool UserInvokedSearch { get; set; }
         public virtual bool InteractiveSearch { get; set; }
 
+        public string SearchTerm { get; set; }
+        public string SanitizedSearchTerm => SearchTerm;
+        public int[] Categories { get; set; }
+        public long? MinSize { get; set; }
+        public long? MaxSize { get; set; }
+
         public Author Author { get; set; }
         public List<Book> Books { get; set; }
 
