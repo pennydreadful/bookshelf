@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.MetadataSource
         {
             Mocker.GetMock<IConfigService>()
                 .Setup(s => s.MetadataSource)
-                .Returns("");
+                .Returns("https://api.bookinfo.pro");
         }
 
         private void WithCustomProvider()

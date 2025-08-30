@@ -4,6 +4,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.Test.Framework;
@@ -18,6 +19,10 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         public void Setup()
         {
             UseRealHttp();
+
+            Mocker.GetMock<IConfigService>()
+                .Setup(x => x.MetadataSource)
+                .Returns("https://api.bookinfo.pro/");
 
             Mocker.GetMock<ICachedHttpResponseService>()
                 .Setup(x => x.Get<List<SearchJsonResource>>(It.IsAny<HttpRequest>(), It.IsAny<bool>(), It.IsAny<TimeSpan>()))
