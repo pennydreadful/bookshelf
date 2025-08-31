@@ -1,0 +1,26 @@
+services:
+  bookshelf:
+    image: ghcr.io/pennydreadful/bookshelf:hardcover # Use :softcover for Goodreads metadata
+    container_name: bookshelf
+    environment:
+      - TZ=Etc/UTC # Update using https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    volumes:
+      - ~/.config/bookshelf:/config
+      - /media:/media # Recommend download & media folders in same volume to enable hardlinks & atomic moves (i.e. /media/ebooks & /media/downloads)
+    ports:
+      - 8787:8787
+    #user: 1000:1000 # UUID/GUID may be helpful to allow read/writes to volumes
+    restart: unless-stopped
+  # If you need to run a second container for audiobooks (provided example), multiple editions of the same books, etc
+  #bookshelf-audiobook:
+  #  image: ghcr.io/pennydreadful/bookshelf:hardcover
+  #  container_name: bookshelf-audiobook
+  #  environment:
+  #    - TZ=Etc/UTC
+  #  volumes:
+  #    - ~/.config/bookshelf-audiobook:/config
+  #    - /media:/media
+  #  ports:
+  #    - 8788:8787
+  #  user: 1000:1000
+  #  restart: unless-stopped
