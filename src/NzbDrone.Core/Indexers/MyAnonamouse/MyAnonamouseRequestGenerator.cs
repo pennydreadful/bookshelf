@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -12,8 +11,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 {
     public class MyAnonamouseRequestGenerator : IIndexerRequestGenerator
     {
-        private static readonly Regex SanitizeSearchQueryRegex = new ("[^\\w]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private readonly MyAnonamouseSettings _settings;
         private readonly IndexerCapabilities _capabilities;
         private readonly Logger _logger;
@@ -32,21 +29,38 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests(new BookSearchCriteria { SearchTerm = "" }));
+            pageableRequests.Add(GetPagedRequests(""));
 
             return pageableRequests;
         }
 
-        private IEnumerable<IndexerRequest> GetPagedRequests(SearchCriteriaBase searchCriteria)
+        private IEnumerable<IndexerRequest> GetPagedRequests(BookSearchCriteria searchCriteria)
         {
-            var term = SanitizeSearchQueryRegex.Replace(searchCriteria.SanitizedSearchTerm, " ").Trim();
-
-            if (searchCriteria.SearchTerm.IsNotNullOrWhiteSpace() && term.IsNullOrWhiteSpace())
+            var query = searchCriteria.AuthorQuery + " " + searchCriteria.BookQuery;
+            if (query.IsNullOrWhiteSpace())
             {
-                _logger.Debug("Search term is empty after being sanitized, stopping search. Initial search term: '{0}'", searchCriteria.SearchTerm);
-
-                yield break;
+                _logger.Info("Search term is empty after being sanitized, stopping search. Initial book search term: '{0}'", query);
+                return null;
             }
+
+            return GetPagedRequests(query);
+        }
+
+        private IEnumerable<IndexerRequest> GetPagedRequests(AuthorSearchCriteria searchCriteria)
+        {
+            var query = searchCriteria.AuthorQuery.Trim();
+            if (query.IsNullOrWhiteSpace())
+            {
+                _logger.Info("Search term is empty after being sanitized, stopping search. Initial author search term: '{0}'", query);
+                return null;
+            }
+
+            return GetPagedRequests(query);
+        }
+
+        private IEnumerable<IndexerRequest> GetPagedRequests(string query)
+        {
+            var term = query.Trim();
 
             var searchType = _settings.SearchType switch
             {
@@ -60,7 +74,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
             var parameters = new NameValueCollection
             {
-                { "tor[text]", term },
                 { "tor[searchType]", searchType },
                 { "tor[srchIn][title]", "true" },
                 { "tor[srchIn][author]", "true" },
@@ -72,6 +85,10 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 { "thumbnails", "1" }, // gives links for thumbnail sized versions of their posters
                 { "description", "1" } // include the description
             };
+            if (!term.IsNullOrWhiteSpace())
+            {
+                parameters.Set("tor[text]", term);
+            }
 
             if (_settings.SearchInDescription)
             {
@@ -96,7 +113,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 }
             }
 
-            var catList = _capabilities.Categories.MapTorznabCapsToTrackers(searchCriteria.Categories).Distinct().ToList();
+            var catList = _capabilities.Categories.GetTrackerCategories();
 
             if (catList.Any())
             {
@@ -108,21 +125,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
             else
             {
                 parameters.Set("tor[cat][]", "0");
-            }
-
-            if (searchCriteria.MinSize is > 0)
-            {
-                parameters.Set("tor[minSize]", searchCriteria.MinSize.Value.ToString());
-            }
-
-            if (searchCriteria.MaxSize is > 0)
-            {
-                parameters.Set("tor[maxSize]", searchCriteria.MaxSize.Value.ToString());
-            }
-
-            if (searchCriteria.MinSize is > 0 || searchCriteria.MaxSize is > 0)
-            {
-                parameters.Set("tor[unit]", "1");
             }
 
             var searchUrl = _settings.BaseUrl + "tor/js/loadSearchJSONbasic.php";

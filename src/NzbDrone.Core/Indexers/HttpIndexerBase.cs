@@ -316,7 +316,7 @@ namespace NzbDrone.Core.Indexers
             failures.AddIfNotNull(await TestConnection());
         }
 
-        protected virtual async Task<ValidationFailure> TestConnection()
+        public virtual async Task<ValidationFailure> TestConnection()
         {
             try
             {

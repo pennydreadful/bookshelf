@@ -1339,6 +1339,16 @@
           "TagLibSharp-Lidarr": "[2.2.0.19, )"
         }
       },
+      "readarr.mono": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
+          "Mono.Posix.NETStandard": "[5.20.1.34-servarr22, )",
+          "NLog": "[5.1.4, )",
+          "Readarr.Common": "[1.0.0, )",
+          "System.IO.Abstractions": "[17.0.24, )"
+        }
+      },
       "readarr.test.common": {
         "type": "Project",
         "dependencies": {
@@ -1355,6 +1365,15 @@
           "RestSharp.Serializers.SystemTextJson": "[106.15.0, )",
           "System.IO.Abstractions": "[17.0.24, )",
           "System.IO.Abstractions.TestingHelpers": "[17.0.24, )"
+        }
+      },
+      "readarr.windows": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.SourceLink.GitHub": "[1.1.1, )",
+          "NLog": "[5.1.4, )",
+          "Readarr.Common": "[1.0.0, )",
+          "System.IO.FileSystem.AccessControl": "[5.0.0, )"
         }
       },
       "Dapper": {
@@ -1516,6 +1535,12 @@
           "System.Security.AccessControl": "5.0.0",
           "System.Security.Principal.Windows": "5.0.0"
         }
+      },
+      "Mono.Posix.NETStandard": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1.34-servarr22, )",
+        "resolved": "5.20.1.34-servarr22",
+        "contentHash": "QgOxfBqiichXwQ0p956pjUNo6HwJNdZsmGfHuPrJY5F3CrPnFBjB/vWDNtBaY6WvqN2QmjDXwQc/o96a8nERMQ=="
       },
       "MonoTorrent": {
         "type": "CentralTransitive",
@@ -1691,6 +1716,16 @@
         "requested": "[17.0.24, )",
         "resolved": "17.0.24",
         "contentHash": "hA7bacntMiZv1Yf9xtjwl/GP3GT1mG84QxhAk7ijAUD0pJhJaVVwXScE13vMpXnNtlaRDW6SeyZdWg2j2qrh4w=="
+      },
+      "System.IO.FileSystem.AccessControl": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
       },
       "System.Memory": {
         "type": "CentralTransitive",
@@ -2304,11 +2339,27 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
+      "Mono.Posix.NETStandard": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1.34-servarr22, )",
+        "resolved": "5.20.1.34-servarr22",
+        "contentHash": "QgOxfBqiichXwQ0p956pjUNo6HwJNdZsmGfHuPrJY5F3CrPnFBjB/vWDNtBaY6WvqN2QmjDXwQc/o96a8nERMQ=="
+      },
       "System.Data.SQLite.Core.Servarr": {
         "type": "CentralTransitive",
         "requested": "[1.0.115.5-18, )",
         "resolved": "1.0.115.5-18",
         "contentHash": "bqSg3X04ugH2gqau7NGh3JHQ3zfchtwUdyBDs4AIEAi00iKZeINz6VQb85VkMMqzqQCN+i59pF/cPkoTLafiuA=="
+      },
+      "System.IO.FileSystem.AccessControl": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
       },
       "System.Security.Principal.Windows": {
         "type": "CentralTransitive",
@@ -2873,11 +2924,27 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
+      "Mono.Posix.NETStandard": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1.34-servarr22, )",
+        "resolved": "5.20.1.34-servarr22",
+        "contentHash": "QgOxfBqiichXwQ0p956pjUNo6HwJNdZsmGfHuPrJY5F3CrPnFBjB/vWDNtBaY6WvqN2QmjDXwQc/o96a8nERMQ=="
+      },
       "System.Data.SQLite.Core.Servarr": {
         "type": "CentralTransitive",
         "requested": "[1.0.115.5-18, )",
         "resolved": "1.0.115.5-18",
         "contentHash": "bqSg3X04ugH2gqau7NGh3JHQ3zfchtwUdyBDs4AIEAi00iKZeINz6VQb85VkMMqzqQCN+i59pF/cPkoTLafiuA=="
+      },
+      "System.IO.FileSystem.AccessControl": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
       },
       "System.Security.Principal.Windows": {
         "type": "CentralTransitive",
@@ -3442,11 +3509,27 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
+      "Mono.Posix.NETStandard": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1.34-servarr22, )",
+        "resolved": "5.20.1.34-servarr22",
+        "contentHash": "QgOxfBqiichXwQ0p956pjUNo6HwJNdZsmGfHuPrJY5F3CrPnFBjB/vWDNtBaY6WvqN2QmjDXwQc/o96a8nERMQ=="
+      },
       "System.Data.SQLite.Core.Servarr": {
         "type": "CentralTransitive",
         "requested": "[1.0.115.5-18, )",
         "resolved": "1.0.115.5-18",
         "contentHash": "bqSg3X04ugH2gqau7NGh3JHQ3zfchtwUdyBDs4AIEAi00iKZeINz6VQb85VkMMqzqQCN+i59pF/cPkoTLafiuA=="
+      },
+      "System.IO.FileSystem.AccessControl": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
       },
       "System.Security.Principal.Windows": {
         "type": "CentralTransitive",
@@ -4011,11 +4094,27 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
+      "Mono.Posix.NETStandard": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1.34-servarr22, )",
+        "resolved": "5.20.1.34-servarr22",
+        "contentHash": "QgOxfBqiichXwQ0p956pjUNo6HwJNdZsmGfHuPrJY5F3CrPnFBjB/vWDNtBaY6WvqN2QmjDXwQc/o96a8nERMQ=="
+      },
       "System.Data.SQLite.Core.Servarr": {
         "type": "CentralTransitive",
         "requested": "[1.0.115.5-18, )",
         "resolved": "1.0.115.5-18",
         "contentHash": "bqSg3X04ugH2gqau7NGh3JHQ3zfchtwUdyBDs4AIEAi00iKZeINz6VQb85VkMMqzqQCN+i59pF/cPkoTLafiuA=="
+      },
+      "System.IO.FileSystem.AccessControl": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
       },
       "System.Security.Principal.Windows": {
         "type": "CentralTransitive",

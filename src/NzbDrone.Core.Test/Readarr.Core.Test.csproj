@@ -11,6 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Test.Common\Readarr.Test.Common.csproj" />
     <ProjectReference Include="..\NzbDrone.Core\Readarr.Core.csproj" />
+    <ProjectReference Include="..\NzbDrone.Mono\Readarr.Mono.csproj" />
+    <ProjectReference Include="..\NzbDrone.Windows\Readarr.Windows.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Logo\1024.png">

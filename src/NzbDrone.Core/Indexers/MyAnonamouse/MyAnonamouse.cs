@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         private readonly Logger _logger;
 
         private readonly ICached<string> _userClassCache;
-        private readonly HashSet<string> _vipFreeleechUserClasses = new (StringComparer.OrdinalIgnoreCase)
+        private readonly HashSet<string> _vipFreeleechUserClasses = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "VIP",
             "Elite VIP"

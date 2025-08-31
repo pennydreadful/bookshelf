@@ -63,8 +63,11 @@ namespace NzbDrone.Core.Test.IndexerTests.MyAnonamouseTests
         {
             var searchCriteria = new BookSearchCriteria()
             {
-                SearchTerm = "Harry Potter",
-                Categories = new int[] { 14 } // E-books category
+                Author = new Books.Author
+                {
+                    Name = "J.K. Rowling"
+                },
+                BookTitle = "Harry Potter",
             };
 
             var releases = await Subject.Fetch(searchCriteria);
@@ -81,13 +84,22 @@ namespace NzbDrone.Core.Test.IndexerTests.MyAnonamouseTests
         {
             var searchCriteria = new AuthorSearchCriteria()
             {
-                SearchTerm = "J.K. Rowling"
+                Author = new Books.Author
+                {
+                    Name = "J.K. Rowling"
+                }
             };
 
             var releases = await Subject.Fetch(searchCriteria);
 
             releases.Should().NotBeEmpty();
             releases.Should().OnlyContain(c => c.GetType() == typeof(TorrentInfo));
+        }
+
+        [Test]
+        public async Task should_test_connection()
+        {
+            await Subject.TestConnection();
         }
 
         [Test]
