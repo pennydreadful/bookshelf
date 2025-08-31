@@ -20,17 +20,17 @@ using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
-namespace NzbDrone.Core.Indexers.MyAnonamouse
+namespace NzbDrone.Core.Indexers.MyAnonaMouse
 {
-    public class MyAnonamouse : HttpIndexerBase<MyAnonamouseSettings>
+    public class MyAnonaMouse : HttpIndexerBase<MyAnonaMouseSettings>
     {
-        public override string Name => "MyAnonamouse";
+        public override string Name => "MyAnonaMouse";
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
         private IndexerCapabilities Capabilities => SetCapabilities();
 
         private readonly ICacheManager _cacheManager;
 
-        public MyAnonamouse(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger, ICacheManager cacheManager)
+        public MyAnonaMouse(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger, ICacheManager cacheManager)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
             _cacheManager = cacheManager;
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
         public override IIndexerRequestGenerator GetRequestGenerator()
         {
-            return new MyAnonamouseRequestGenerator(Settings, Capabilities, _logger)
+            return new MyAnonaMouseRequestGenerator(Settings, Capabilities, _logger)
             {
                 GetCookies = GetCookiesDictionary,
                 CookiesUpdater = UpdateCookiesInternal
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
         public override IParseIndexerResponse GetParser()
         {
-            return new MyAnonamouseParser(Settings, Capabilities.Categories, _httpClient, _cacheManager, _logger)
+            return new MyAnonaMouseParser(Settings, Capabilities.Categories, _httpClient, _cacheManager, _logger)
             {
                 CookiesUpdater = UpdateCookiesInternal
             };
@@ -185,9 +185,9 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         }
     }
 
-    public class MyAnonamouseParser : IParseIndexerResponse
+    public class MyAnonaMouseParser : IParseIndexerResponse
     {
-        private readonly MyAnonamouseSettings _settings;
+        private readonly MyAnonaMouseSettings _settings;
         private readonly IndexerCapabilitiesCategories _categories;
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
             "Elite VIP"
         };
 
-        public MyAnonamouseParser(MyAnonamouseSettings settings,
+        public MyAnonaMouseParser(MyAnonaMouseSettings settings,
             IndexerCapabilitiesCategories categories,
             IHttpClient httpClient,
             ICacheManager cacheManager,
@@ -244,7 +244,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
             var releaseInfos = new List<ReleaseInfo>();
 
-            var jsonResponse = JsonConvert.DeserializeObject<MyAnonamouseResponse>(indexerResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<MyAnonaMouseResponse>(indexerResponse.Content);
 
             var error = jsonResponse.Error;
             if (error.IsNotNullOrWhiteSpace() && error.StartsWithIgnoreCase("Nothing returned, out of"))
@@ -331,7 +331,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 .CombinePath("/tor/download.php")
                 .AddQueryParam("tid", torrentId);
 
-            if (_settings.UseFreeleechWedge is (int)MyAnonamouseFreeleechWedgeAction.Preferred or (int)MyAnonamouseFreeleechWedgeAction.Required && canUseToken)
+            if (_settings.UseFreeleechWedge is (int)MyAnonaMouseFreeleechWedgeAction.Preferred or (int)MyAnonaMouseFreeleechWedgeAction.Required && canUseToken)
             {
                 url = url.AddQueryParam("canUseToken", "true");
             }
@@ -357,7 +357,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
                     var response = _httpClient.Execute(request);
 
-                    var jsonResponse = JsonConvert.DeserializeObject<MyAnonamouseUserDataResponse>(response.Content);
+                    var jsonResponse = JsonConvert.DeserializeObject<MyAnonaMouseUserDataResponse>(response.Content);
 
                     _logger.Trace("Current user class: '{0}'", jsonResponse.UserClass);
 
@@ -369,7 +369,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         }
     }
 
-    public enum MyAnonamouseSearchType
+    public enum MyAnonaMouseSearchType
     {
         [FieldOption(Label = "All torrents", Hint = "Search everything")]
         All = 0,
@@ -390,7 +390,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         NotVip = 5,
     }
 
-    public enum MyAnonamouseSearchLanguages
+    public enum MyAnonaMouseSearchLanguages
     {
         [FieldOption(Label = "English")]
         English = 1,
@@ -582,7 +582,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         Other = 47,
     }
 
-    public enum MyAnonamouseFreeleechWedgeAction
+    public enum MyAnonaMouseFreeleechWedgeAction
     {
         [FieldOption(Label = "Never", Hint = "Do not buy as freeleech")]
         Never = 0,
@@ -594,7 +594,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         Required = 2,
     }
 
-    public class MyAnonamouseTorrent
+    public class MyAnonaMouseTorrent
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -617,14 +617,14 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         public string Size { get; set; }
     }
 
-    public class MyAnonamouseResponse
+    public class MyAnonaMouseResponse
     {
         public string Error { get; set; }
-        public IReadOnlyCollection<MyAnonamouseTorrent> Data { get; set; }
+        public IReadOnlyCollection<MyAnonaMouseTorrent> Data { get; set; }
         public string Message { get; set; }
     }
 
-    public class MyAnonamouseUserDataResponse
+    public class MyAnonaMouseUserDataResponse
     {
         [JsonProperty(PropertyName = "classname")]
         public string UserClass { get; set; }

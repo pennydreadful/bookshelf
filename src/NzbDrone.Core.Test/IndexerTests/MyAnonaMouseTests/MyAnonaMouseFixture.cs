@@ -5,16 +5,16 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.MyAnonamouse;
+using NzbDrone.Core.Indexers.MyAnonaMouse;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common.Categories;
 
-namespace NzbDrone.Core.Test.IndexerTests.MyAnonamouseTests
+namespace NzbDrone.Core.Test.IndexerTests.MyAnonaMouseTests
 {
     [IntegrationTest]
-    public class MyAnonamouseFixture : CoreTest<MyAnonamouse>
+    public class MyAnonaMouseFixture : CoreTest<MyAnonaMouse>
     {
         private string _mamId;
 
@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Test.IndexerTests.MyAnonamouseTests
 
             Subject.Definition = new IndexerDefinition()
             {
-                Name = "MyAnonamouse",
-                Settings = new MyAnonamouseSettings()
+                Name = "MyAnonaMouse",
+                Settings = new MyAnonaMouseSettings()
                 {
                     BaseUrl = "https://www.myanonamouse.net/",
                     MamId = _mamId,
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.IndexerTests.MyAnonamouseTests
         [Test]
         public void should_fail_validation_with_empty_mam_id()
         {
-            Subject.Definition.Settings = new MyAnonamouseSettings()
+            Subject.Definition.Settings = new MyAnonaMouseSettings()
             {
                 BaseUrl = "https://www.myanonamouse.net/",
                 MamId = ""

@@ -10,15 +10,15 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 
-namespace NzbDrone.Core.Indexers.MyAnonamouse
+namespace NzbDrone.Core.Indexers.MyAnonaMouse
 {
-    public class MyAnonamouseRequestGenerator : IIndexerRequestGenerator
+    public class MyAnonaMouseRequestGenerator : IIndexerRequestGenerator
     {
-        private readonly MyAnonamouseSettings _settings;
+        private readonly MyAnonaMouseSettings _settings;
         private readonly IndexerCapabilities _capabilities;
         private readonly Logger _logger;
 
-        public MyAnonamouseRequestGenerator(MyAnonamouseSettings settings, IndexerCapabilities capabilities, Logger logger)
+        public MyAnonaMouseRequestGenerator(MyAnonaMouseSettings settings, IndexerCapabilities capabilities, Logger logger)
         {
             _settings = settings;
             _capabilities = capabilities;
@@ -67,11 +67,11 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
             var searchType = _settings.SearchType switch
             {
-                (int)MyAnonamouseSearchType.Active => "active",
-                (int)MyAnonamouseSearchType.Freeleech => "fl",
-                (int)MyAnonamouseSearchType.FreeleechOrVip => "fl-VIP",
-                (int)MyAnonamouseSearchType.Vip => "VIP",
-                (int)MyAnonamouseSearchType.NotVip => "nVIP",
+                (int)MyAnonaMouseSearchType.Active => "active",
+                (int)MyAnonaMouseSearchType.Freeleech => "fl",
+                (int)MyAnonaMouseSearchType.FreeleechOrVip => "fl-VIP",
+                (int)MyAnonaMouseSearchType.Vip => "VIP",
+                (int)MyAnonaMouseSearchType.NotVip => "nVIP",
                 _ => "all"
             };
 

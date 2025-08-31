@@ -6,11 +6,11 @@ using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.Indexers.MyAnonamouse
+namespace NzbDrone.Core.Indexers.MyAnonaMouse
 {
-    public class MyAnonamouseSettingsValidator : AbstractValidator<MyAnonamouseSettings>
+    public class MyAnonaMouseSettingsValidator : AbstractValidator<MyAnonaMouseSettings>
     {
-        public MyAnonamouseSettingsValidator()
+        public MyAnonaMouseSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
             RuleFor(c => c.MamId).NotEmpty();
@@ -19,20 +19,20 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         }
     }
 
-    public class MyAnonamouseSettings : ITorrentIndexerSettings
+    public class MyAnonaMouseSettings : ITorrentIndexerSettings
     {
-        private static readonly MyAnonamouseSettingsValidator Validator = new MyAnonamouseSettingsValidator();
+        private static readonly MyAnonaMouseSettingsValidator Validator = new MyAnonaMouseSettingsValidator();
 
-        public MyAnonamouseSettings()
+        public MyAnonaMouseSettings()
         {
             BaseUrl = "https://www.myanonamouse.net/";
             MamId = "";
-            SearchType = (int)MyAnonamouseSearchType.All;
+            SearchType = (int)MyAnonaMouseSearchType.All;
             SearchInDescription = false;
             SearchInSeries = false;
             SearchInFilenames = false;
             SearchLanguages = System.Array.Empty<int>();
-            UseFreeleechWedge = (int)MyAnonamouseFreeleechWedgeAction.Never;
+            UseFreeleechWedge = (int)MyAnonaMouseFreeleechWedgeAction.Never;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         [FieldDefinition(2, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Readarr will download from this indexer, empty is no limit", Advanced = true)]
         public int? EarlyReleaseLimit { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Select, Label = "Search Type", SelectOptions = typeof(MyAnonamouseSearchType), HelpText = "Specify the desired search type")]
+        [FieldDefinition(3, Type = FieldType.Select, Label = "Search Type", SelectOptions = typeof(MyAnonaMouseSearchType), HelpText = "Specify the desired search type")]
         public int SearchType { get; set; }
 
         [FieldDefinition(4, Type = FieldType.Checkbox, Label = "Search in description", HelpText = "Search text in the description")]
@@ -57,10 +57,10 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         [FieldDefinition(6, Type = FieldType.Checkbox, Label = "Search in filenames", HelpText = "Search text in the filenames")]
         public bool SearchInFilenames { get; set; }
 
-        [FieldDefinition(7, Type = FieldType.Select, Label = "Search Languages", SelectOptions = typeof(MyAnonamouseSearchLanguages), HelpText = "Specify the desired languages. If unspecified, all options are used.")]
+        [FieldDefinition(7, Type = FieldType.Select, Label = "Search Languages", SelectOptions = typeof(MyAnonaMouseSearchLanguages), HelpText = "Specify the desired languages. If unspecified, all options are used.")]
         public IEnumerable<int> SearchLanguages { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.Select, Label = "Use Freeleech Wedges", SelectOptions = typeof(MyAnonamouseFreeleechWedgeAction), HelpText = "Use freeleech wedges to make grabbed torrents personal freeleech")]
+        [FieldDefinition(8, Type = FieldType.Select, Label = "Use Freeleech Wedges", SelectOptions = typeof(MyAnonaMouseFreeleechWedgeAction), HelpText = "Use freeleech wedges to make grabbed torrents personal freeleech")]
         public int UseFreeleechWedge { get; set; }
 
         [FieldDefinition(9, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]

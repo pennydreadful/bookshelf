@@ -41,6 +41,7 @@ Help is very welcome. Priority is on fixing quality of life issues
 
 Already done
 
+- [x] Native support for MyAnonaMouse without Prowlarr.
 - [x] Lowered default match percentage from 80% to 50%.
 - [x] Metadata is no longer cached locally.
 - [x] Removed servarr analytics spyware.
