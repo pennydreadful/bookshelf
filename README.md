@@ -54,5 +54,9 @@ should request a refund. Those people don't deserve your money.
 
 ### License
 
-* [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2025
+The is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)
+and [Prowlarr](https://github.com/Prowlarr/Prowlarr) projects which are both
+licensed [GPLv3](http://www.gnu.org/licenses/gpl.html). This project is
+therefore also licensed under the terms of GPLv3.
+
+Copyright 2025
