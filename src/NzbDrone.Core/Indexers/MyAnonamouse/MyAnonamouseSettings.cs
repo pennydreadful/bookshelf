@@ -1,3 +1,6 @@
+// Modified from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/Definitions/MyAnonamouse.cs
+
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -18,7 +21,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
     public class MyAnonamouseSettings : ITorrentIndexerSettings
     {
-        private static readonly MyAnonamouseSettingsValidator Validator = new ();
+        private static readonly MyAnonamouseSettingsValidator Validator = new MyAnonamouseSettingsValidator();
 
         public MyAnonamouseSettings()
         {

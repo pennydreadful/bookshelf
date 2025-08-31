@@ -1,3 +1,6 @@
+// Modified from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/Definitions/MyAnonamouse.cs
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +19,6 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Indexers.MyAnonamouse
 {
@@ -54,7 +56,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
         public override IParseIndexerResponse GetParser()
         {
-            return new MyAnonamouseParser(Definition, Settings, Capabilities.Categories, _httpClient, _cacheManager, _logger)
+            return new MyAnonamouseParser(Settings, Capabilities.Categories, _httpClient, _cacheManager, _logger)
             {
                 CookiesUpdater = UpdateCookiesInternal
             };
@@ -185,7 +187,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
     public class MyAnonamouseParser : IParseIndexerResponse
     {
-        private readonly ProviderDefinition _definition;
         private readonly MyAnonamouseSettings _settings;
         private readonly IndexerCapabilitiesCategories _categories;
         private readonly IHttpClient _httpClient;
@@ -198,14 +199,12 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
             "Elite VIP"
         };
 
-        public MyAnonamouseParser(ProviderDefinition definition,
-            MyAnonamouseSettings settings,
+        public MyAnonamouseParser(MyAnonamouseSettings settings,
             IndexerCapabilitiesCategories categories,
             IHttpClient httpClient,
             ICacheManager cacheManager,
             Logger logger)
         {
-            _definition = definition;
             _settings = settings;
             _categories = categories;
             _httpClient = httpClient;
@@ -268,9 +267,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 var id = item.Id;
 
                 release.Title = item.Title;
-                release.Description = item.Description;
-
-                release.BookTitle = item.Title;
 
                 if (item.AuthorInfo != null)
                 {
@@ -316,15 +312,9 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 release.Guid = release.InfoUrl;
                 release.Categories = _categories.MapTrackerCatToNewznab(item.Category).Select(c => c.Id).ToList();
                 release.PublishDate = DateTime.ParseExact(item.Added, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToLocalTime();
-                release.Grabs = item.Grabs;
-                release.Files = item.NumFiles;
                 release.Seeders = item.Seeders;
                 release.Peers = item.Leechers + release.Seeders;
                 release.Size = RssParser.ParseSize(item.Size, true);
-                release.DownloadVolumeFactor = isFreeLeech ? 0 : 1;
-                release.UploadVolumeFactor = 1;
-                release.MinimumRatio = 1;
-                release.MinimumSeedTime = 259200; // 72 hours
 
                 releaseInfos.Add(release);
             }
@@ -610,7 +600,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         public string Title { get; set; }
         [JsonProperty(PropertyName = "author_info")]
         public string AuthorInfo { get; set; }
-        public string Description { get; set; }
         [JsonProperty(PropertyName = "lang_code")]
         public string LanguageCode { get; set; }
         public string Filetype { get; set; }
@@ -623,10 +612,8 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         public string Category { get; set; }
         public string Added { get; set; }
         [JsonProperty(PropertyName = "times_completed")]
-        public int Grabs { get; set; }
         public int Seeders { get; set; }
         public int Leechers { get; set; }
-        public int NumFiles { get; set; }
         public string Size { get; set; }
     }
 
@@ -635,12 +622,6 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         public string Error { get; set; }
         public IReadOnlyCollection<MyAnonamouseTorrent> Data { get; set; }
         public string Message { get; set; }
-    }
-
-    public class MyAnonamouseBuyPersonalFreeleechResponse
-    {
-        public bool Success { get; set; }
-        public string Error { get; set; }
     }
 
     public class MyAnonamouseUserDataResponse

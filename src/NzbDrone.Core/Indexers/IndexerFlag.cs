@@ -1,3 +1,6 @@
+// Taken from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/IndexerFlag.cs
+
 using System;
 
 namespace NzbDrone.Core.Indexers
@@ -62,12 +65,12 @@ namespace NzbDrone.Core.Indexers
             return !Equals(left, right);
         }
 
-        public static IndexerFlag Internal => new ("internal", "Uploader is an internal release group");
-        public static IndexerFlag Exclusive => new ("exclusive", "An exclusive release that must not be uploaded anywhere else");
-        public static IndexerFlag FreeLeech => new ("freeleech", "Download doesn't count toward ratio");
-        public static IndexerFlag NeutralLeech => new ("neutralleech", "Download and upload doesn't count toward ratio");
-        public static IndexerFlag HalfLeech => new ("halfleech", "Release counts 50% to ratio");
-        public static IndexerFlag Scene => new ("scene", "Uploader follows scene rules");
-        public static IndexerFlag DoubleUpload => new ("doubleupload", "Seeding counts double for release");
+        public static IndexerFlag Internal => new IndexerFlag("internal", "Uploader is an internal release group");
+        public static IndexerFlag Exclusive => new IndexerFlag("exclusive", "An exclusive release that must not be uploaded anywhere else");
+        public static IndexerFlag FreeLeech => new IndexerFlag("freeleech", "Download doesn't count toward ratio");
+        public static IndexerFlag NeutralLeech => new IndexerFlag("neutralleech", "Download and upload doesn't count toward ratio");
+        public static IndexerFlag HalfLeech => new IndexerFlag("halfleech", "Release counts 50% to ratio");
+        public static IndexerFlag Scene => new IndexerFlag("scene", "Uploader follows scene rules");
+        public static IndexerFlag DoubleUpload => new IndexerFlag("doubleupload", "Seeding counts double for release");
     }
 }

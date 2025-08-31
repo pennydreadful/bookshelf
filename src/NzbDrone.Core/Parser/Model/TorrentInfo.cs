@@ -8,12 +8,6 @@ namespace NzbDrone.Core.Parser.Model
         public string InfoHash { get; set; }
         public int? Seeders { get; set; }
         public int? Peers { get; set; }
-        public int? Grabs { get; set; }
-        public int? Files { get; set; }
-        public double DownloadVolumeFactor { get; set; } = 1.0;
-        public double UploadVolumeFactor { get; set; } = 1.0;
-        public double MinimumRatio { get; set; } = 1.0;
-        public int MinimumSeedTime { get; set; }
 
         public static int? GetSeeders(ReleaseInfo release)
         {

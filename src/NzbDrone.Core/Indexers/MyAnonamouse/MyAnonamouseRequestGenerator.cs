@@ -1,3 +1,6 @@
+// Modified from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/Definitions/MyAnonamouse.cs
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

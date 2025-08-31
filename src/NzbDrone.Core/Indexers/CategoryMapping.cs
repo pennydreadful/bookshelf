@@ -1,3 +1,6 @@
+// Taken from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/CategoryMapping.cs
+
 namespace NzbDrone.Core.Indexers
 {
     public class CategoryMapping

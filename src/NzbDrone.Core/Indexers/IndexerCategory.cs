@@ -1,3 +1,6 @@
+// Taken from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/IndexerCategory.cs
+
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 

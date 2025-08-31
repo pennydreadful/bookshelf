@@ -1,3 +1,6 @@
+// Taken from
+// https://raw.githubusercontent.com/Prowlarr/Prowlarr/refs/heads/develop/src/NzbDrone.Core/Indexers/IndexerCapabilitiesCategories.cs
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
