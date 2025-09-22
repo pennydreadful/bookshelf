@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DryIoc;
+using DryIoc.Microsoft.DependencyInjection;
 using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Common.Composition.Extensions
@@ -9,7 +10,7 @@ namespace NzbDrone.Common.Composition.Extensions
     {
         public static Rules WithNzbDroneRules(this Rules rules)
         {
-            return rules.WithMicrosoftDependencyInjectionRules()
+            return DryIocAdapter.WithMicrosoftDependencyInjectionRules(rules)
                 .WithAutoConcreteTypeResolution()
                 .WithDefaultReuse(Reuse.Singleton);
         }

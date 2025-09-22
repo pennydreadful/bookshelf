@@ -86,7 +86,7 @@ jobs:
       - name: Prepare tests
         run: |
           mkdir -p _tests/bin
-          cp _output/net6.0/linux-x64/publish/Readarr _tests/bin/
+          cp _output/net8.0/linux-x64/publish/Readarr _tests/bin/
           chmod +x _tests/bin/Readarr
           find _tests -name "Readarr.Test.Dummy" -exec chmod a+x {} \;
 
