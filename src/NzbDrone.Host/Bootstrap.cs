@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -13,10 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.WindowsServices;
+using Microsoft.Extensions.Logging;
 using NLog;
-using Npgsql;
 using NzbDrone.Common.Composition.Extensions;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
@@ -25,8 +23,8 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Options;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Extensions;
-using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Messaging.Events;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+
 using PostgresOptions = NzbDrone.Core.Datastore.PostgresOptions;
 
 namespace NzbDrone.Host
@@ -54,7 +52,6 @@ namespace NzbDrone.Host
 
                 var startupContext = new StartupContext(args);
 
-                LongPathSupport.Enable();
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 var appMode = GetApplicationMode(startupContext);
@@ -116,21 +113,11 @@ namespace NzbDrone.Host
             {
                 throw new ReadarrStartupException(ex);
             }
-            catch (AccessDeniedConfigFileException ex)
+            catch (TerminateApplicationException e)
             {
-                throw new ReadarrStartupException(ex);
-            }
-            catch (TerminateApplicationException ex)
-            {
-                Logger.Info(ex.Message);
+                Logger.Info(e.Message);
                 LogManager.Configuration = null;
             }
-
-            // Make sure there are no lingering database connections
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            SQLiteConnection.ClearAllPools();
-            NpgsqlConnection.ClearAllPools();
         }
 
         public static IHostBuilder CreateConsoleHostBuilder(string[] args, StartupContext context)
@@ -138,8 +125,8 @@ namespace NzbDrone.Host
             var config = GetConfiguration(context);
 
             var bindAddress = config.GetValue<string>($"Readarr:Server:{nameof(ServerOptions.BindAddress)}") ?? config.GetValue(nameof(ConfigFileProvider.BindAddress), "*");
-            var port = config.GetValue<int?>($"Readarr:Server:{nameof(ServerOptions.Port)}") ?? config.GetValue(nameof(ConfigFileProvider.Port), 8787);
-            var sslPort = config.GetValue<int?>($"Readarr:Server:{nameof(ServerOptions.SslPort)}") ?? config.GetValue(nameof(ConfigFileProvider.SslPort), 6868);
+            var port = config.GetValue<int?>($"Readarr:Server:{nameof(ServerOptions.Port)}") ?? config.GetValue(nameof(ConfigFileProvider.Port), 8989);
+            var sslPort = config.GetValue<int?>($"Readarr:Server:{nameof(ServerOptions.SslPort)}") ?? config.GetValue(nameof(ConfigFileProvider.SslPort), 9898);
             var enableSsl = config.GetValue<bool?>($"Readarr:Server:{nameof(ServerOptions.EnableSsl)}") ?? config.GetValue(nameof(ConfigFileProvider.EnableSsl), false);
             var sslCertPath = config.GetValue<string>($"Readarr:Server:{nameof(ServerOptions.SslCertPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPath));
             var sslCertPassword = config.GetValue<string>($"Readarr:Server:{nameof(ServerOptions.SslCertPassword)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPassword));
@@ -154,13 +141,16 @@ namespace NzbDrone.Host
             return new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseServiceProviderFactory(new DryIocServiceProviderFactory(new Container(rules => rules.WithNzbDroneRules())))
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
+                })
                 .ConfigureContainer<IContainer>(c =>
                 {
                     c.AutoAddServices(Bootstrap.ASSEMBLIES)
                         .AddNzbDroneLogger()
                         .AddDatabase()
-                        .AddStartupContext(context)
-                        .Resolve<IEventAggregator>().PublishEvent(new ApplicationStartingEvent());
+                        .AddStartupContext(context);
                 })
                 .ConfigureServices(services =>
                 {
@@ -215,8 +205,6 @@ namespace NzbDrone.Host
             {
                 return ApplicationModes.UninstallService;
             }
-
-            Logger.Debug("Getting windows service status");
 
             // IsWindowsService can throw sometimes, so wrap it
             var isWindowsService = false;

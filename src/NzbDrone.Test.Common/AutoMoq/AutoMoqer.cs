@@ -6,7 +6,6 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Reflection;
 using DryIoc;
-using DryIoc.Microsoft.DependencyInjection;
 using Moq;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
@@ -23,7 +22,7 @@ namespace NzbDrone.Test.Common.AutoMoq
 
         public AutoMoqer()
         {
-            _container = CreateTestContainer(new Container(rules => DryIocAdapter.WithMicrosoftDependencyInjectionRules(rules).WithDefaultReuse(Reuse.Singleton)));
+            _container = CreateTestContainer(new Container(rules => rules.WithMicrosoftDependencyInjectionRules().WithDefaultReuse(Reuse.Singleton)));
 
             LoadPlatformLibrary();
 
