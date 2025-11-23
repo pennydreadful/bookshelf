@@ -112,9 +112,12 @@ namespace NzbDrone.Core.Profiles.Metadata
 
         public List<Book> FilterBooks(Author input, int profileId)
         {
-            var seriesLinks = input.Series.Value.SelectMany(x => x.LinkItems.Value)
+            var seriesLinks = input.Series?.Value?
+                .Where(x => x.LinkItems != null && x.LinkItems.Value != null)
+                .SelectMany(x => x.LinkItems.Value)
+                .Where(x => x.Book != null && x.Book.Value != null)
                 .GroupBy(x => x.Book.Value)
-                .ToDictionary(x => x.Key, y => y.ToList());
+                .ToDictionary(x => x.Key, y => y.ToList()) ?? new Dictionary<Book, List<SeriesBookLink>>();
 
             var dbAuthor = _authorService.FindById(input.ForeignAuthorId);
 

@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
@@ -223,6 +226,136 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
             Subject.Delete(1);
 
             Mocker.GetMock<IMetadataProfileRepository>().Verify(c => c.Delete(1), Times.Once());
+        }
+
+        [Test]
+        public void FilterBooks_should_handle_series_with_null_linkitems()
+        {
+            // Arrange - Create an author with series that have null LinkItems (simulating the Brandon Sanderson issue)
+            var profile = Builder<MetadataProfile>.CreateNew()
+                .With(p => p.Id = 1)
+                .With(p => p.MinPopularity = 100)
+                .Build();
+
+            var edition = Builder<Edition>.CreateNew().Build();
+            var book = Builder<Book>.CreateNew()
+                .With(b => b.ForeignBookId = "123")
+                .With(b => b.Title = "Test Book")
+                .With(b => b.Ratings = new Ratings { Value = 4.0m, Votes = 50 })
+                .With(b => b.ReleaseDate = DateTime.UtcNow.AddDays(-1))
+                .With(b => b.Editions = new LazyLoaded<List<Edition>>(new List<Edition> { edition }))
+                .Build();
+
+            // Create a series with null LinkItems (the problematic case)
+            var seriesWithNullLinkItems = Builder<Series>.CreateNew()
+                .With(s => s.Title = "Series Without Links")
+                .With(s => s.LinkItems = null) // This is the null that causes the issue
+                .Build();
+
+            // Create a series with valid LinkItems for comparison
+            var validSeries = Builder<Series>.CreateNew()
+                .With(s => s.Title = "Valid Series")
+                .Build();
+
+            var seriesBookLink = Builder<SeriesBookLink>.CreateNew()
+                .With(l => l.Book = new LazyLoaded<Book>(book))
+                .With(l => l.Series = new LazyLoaded<Series>(validSeries))
+                .Build();
+
+            validSeries.LinkItems = new LazyLoaded<List<SeriesBookLink>>(new List<SeriesBookLink> { seriesBookLink });
+
+            var author = Builder<Author>.CreateNew()
+                .With(a => a.ForeignAuthorId = "204214")
+                .With(a => a.MetadataProfileId = 1)
+                .With(a => a.Metadata = Builder<AuthorMetadata>.CreateNew()
+                    .With(m => m.ForeignAuthorId = "204214")
+                    .Build())
+                .With(a => a.Series = new LazyLoaded<List<Series>>(new List<Series> { seriesWithNullLinkItems, validSeries }))
+                .With(a => a.Books = new LazyLoaded<List<Book>>(new List<Book> { book }))
+                .Build();
+
+            Mocker.GetMock<IMetadataProfileRepository>()
+                .Setup(s => s.Get(1))
+                .Returns(profile);
+
+            Mocker.GetMock<IAuthorService>()
+                .Setup(s => s.FindById(It.IsAny<string>()))
+                .Returns((Author)null);
+
+            Mocker.GetMock<IBookService>()
+                .Setup(s => s.GetBooksByAuthorMetadataId(It.IsAny<int>()))
+                .Returns(new List<Book>());
+
+            Mocker.GetMock<IEditionService>()
+                .Setup(s => s.GetEditionsByAuthor(It.IsAny<int>()))
+                .Returns(new List<Edition>());
+
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesByAuthor(It.IsAny<int>()))
+                .Returns(new List<BookFile>());
+
+            // Act - This should not throw a NullReferenceException
+            var result = Subject.FilterBooks(author, 1);
+
+            // Assert - Should return the filtered books without crashing
+            Assert.NotNull(result);
+            Assert.IsInstanceOf<List<Book>>(result);
+        }
+
+        [Test]
+        public void FilterBooks_should_handle_null_series_value()
+        {
+            // Arrange - Create an author with null Series.Value
+            var profile = Builder<MetadataProfile>.CreateNew()
+                .With(p => p.Id = 1)
+                .With(p => p.MinPopularity = 100)
+                .Build();
+
+            var edition2 = Builder<Edition>.CreateNew().Build();
+            var book2 = Builder<Book>.CreateNew()
+                .With(b => b.ForeignBookId = "123")
+                .With(b => b.Title = "Test Book")
+                .With(b => b.Ratings = new Ratings { Value = 4.0m, Votes = 50 })
+                .With(b => b.ReleaseDate = DateTime.UtcNow.AddDays(-1))
+                .With(b => b.Editions = new LazyLoaded<List<Edition>>(new List<Edition> { edition2 }))
+                .Build();
+
+            var author = Builder<Author>.CreateNew()
+                .With(a => a.ForeignAuthorId = "204214")
+                .With(a => a.MetadataProfileId = 1)
+                .With(a => a.Metadata = Builder<AuthorMetadata>.CreateNew()
+                    .With(m => m.ForeignAuthorId = "204214")
+                    .Build())
+                .With(a => a.Series = null) // Null Series
+                .With(a => a.Books = new LazyLoaded<List<Book>>(new List<Book> { book2 }))
+                .Build();
+
+            Mocker.GetMock<IMetadataProfileRepository>()
+                .Setup(s => s.Get(1))
+                .Returns(profile);
+
+            Mocker.GetMock<IAuthorService>()
+                .Setup(s => s.FindById(It.IsAny<string>()))
+                .Returns((Author)null);
+
+            Mocker.GetMock<IBookService>()
+                .Setup(s => s.GetBooksByAuthorMetadataId(It.IsAny<int>()))
+                .Returns(new List<Book>());
+
+            Mocker.GetMock<IEditionService>()
+                .Setup(s => s.GetEditionsByAuthor(It.IsAny<int>()))
+                .Returns(new List<Edition>());
+
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesByAuthor(It.IsAny<int>()))
+                .Returns(new List<BookFile>());
+
+            // Act - This should not throw a NullReferenceException
+            var result = Subject.FilterBooks(author, 1);
+
+            // Assert - Should return the filtered books without crashing
+            Assert.NotNull(result);
+            Assert.IsInstanceOf<List<Book>>(result);
         }
     }
 }
