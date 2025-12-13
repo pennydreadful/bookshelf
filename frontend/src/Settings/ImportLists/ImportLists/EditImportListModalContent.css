@@ -14,6 +14,21 @@
   margin-left: 8px;
 }
 
+.hardcoverAuthRow {
+  margin-bottom: 10px;
+}
+
+.hardcoverAuthButtons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.authSuccess {
+  color: var(--successColor);
+  font-size: 12px;
+}
+
 .message {
   composes: alert from '~Components/Alert.css';
 
