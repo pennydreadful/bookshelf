@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.21
+- Summary: enforce repo ownership and readable permissions before running dev builds.
+- Why: avoid "Permission denied" when executing dev-build.sh as the `joe` user.
+- Impact: dev-ubuntu.sh now chowns the repo and ensures scripts are readable.
+- Files: scripts/dev-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download dev-ubuntu.sh and rerun it.
+
 ## 1.2.20
 - Summary: run dev-build.sh via bash and ensure scripts are executable.
 - Why: avoid permission errors on some filesystems after git update.
