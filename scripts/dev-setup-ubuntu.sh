@@ -27,7 +27,11 @@ fi
 
 if [ "${need_node}" = "true" ]; then
   log "Installing Node.js 20"
-  curl -fsSL https://deb.nodesource.com/setup_20.x | ${SUDO} -E bash -
+  if [ -n "${SUDO}" ]; then
+    curl -fsSL https://deb.nodesource.com/setup_20.x | ${SUDO} -E bash -
+  else
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+  fi
   ${SUDO} apt-get install -y nodejs
 fi
 

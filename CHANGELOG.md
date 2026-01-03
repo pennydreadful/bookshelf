@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.12
+- Summary: fix NodeSource setup execution when running dev setup as root.
+- Why: avoid the "-E: command not found" error on Ubuntu.
+- Impact: dev setup script now handles sudo vs root properly.
+- Files: scripts/dev-setup-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun dev-setup-ubuntu.sh on the VM.
+
 ## 1.2.11
 - Summary: add native Ubuntu dev scripts (setup/build/run) to avoid Docker during development.
 - Why: speed up iteration on the dev VM and defer Docker builds to release time.
