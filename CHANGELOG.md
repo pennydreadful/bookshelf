@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.18
+- Summary: copy built UI assets into the runtime output for native dev runs.
+- Why: the dev binary expects UI under `_output/net6.0/<rid>/UI`.
+- Impact: native dev runs will load the UI without missing index.html warnings.
+- Files: scripts/dev-build.sh, scripts/dev-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun dev-build.sh or dev-ubuntu.sh on the VM, then start dev-run.sh.
+
 ## 1.2.17
 - Summary: add a single Ubuntu dev script that sets up, builds, and optionally runs Bookdarr.
 - Why: simplify dev setup to one command on the VM.

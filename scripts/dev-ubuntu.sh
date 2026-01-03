@@ -85,7 +85,7 @@ ${SUDO} mkdir -p "${APPDATA_DIR}"
 ${SUDO} chown -R "${USER_NAME}:${USER_NAME}" "${APPDATA_DIR}"
 
 log "Building Bookdarr"
-run_as_user bash -lc "cd \"${REPO_DIR}\" && yarn install --frozen-lockfile --network-timeout 120000 && yarn build && dotnet msbuild -restore src/Readarr.sln -p:Configuration=Release -p:Platform=Posix -p:RuntimeIdentifiers=${RID} -t:PublishAllRids"
+run_as_user bash -lc "REPO_DIR='${REPO_DIR}' RID='${RID}' ${REPO_DIR}/scripts/dev-build.sh"
 
 if [ "${RUN_APP}" = "true" ]; then
   log "Starting Bookdarr (foreground)"

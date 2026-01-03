@@ -21,4 +21,13 @@ yarn build
 
 dotnet msbuild -restore src/Readarr.sln -p:Configuration=Release -p:Platform=Posix -p:RuntimeIdentifiers=${RID} -t:PublishAllRids
 
+ui_src="${REPO_DIR}/_output/UI"
+ui_dest="${REPO_DIR}/_output/net6.0/${RID}/UI"
+
+if [ -d "${ui_src}" ]; then
+  rm -rf "${ui_dest}"
+  mkdir -p "${ui_dest}"
+  cp -a "${ui_src}/." "${ui_dest}/"
+fi
+
 echo "Build complete. Run dev-run.sh to start Bookdarr."
