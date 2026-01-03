@@ -263,6 +263,30 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ChownGroup", value); }
         }
 
+        public string MetadataProvider
+        {
+            get
+            {
+                var provider = GetValue("MetadataProvider", "");
+                if (provider.IsNullOrWhiteSpace())
+                {
+                    provider = Environment.GetEnvironmentVariable("METADATA_PROVIDER");
+                }
+
+                if (provider.IsNullOrWhiteSpace())
+                {
+                    provider = "googlebooks";
+                }
+
+                return provider;
+            }
+
+            set
+            {
+                SetValue("MetadataProvider", value);
+            }
+        }
+
         public string MetadataSource
         {
             get
@@ -284,6 +308,25 @@ namespace NzbDrone.Core.Configuration
             set
             {
                 SetValue("MetadataSource", value);
+            }
+        }
+
+        public string GoogleBooksApiKey
+        {
+            get
+            {
+                var apiKey = GetValue("GoogleBooksApiKey", "");
+                if (apiKey.IsNullOrWhiteSpace())
+                {
+                    apiKey = Environment.GetEnvironmentVariable("GOOGLE_BOOKS_API_KEY");
+                }
+
+                return apiKey;
+            }
+
+            set
+            {
+                SetValue("GoogleBooksApiKey", value);
             }
         }
 

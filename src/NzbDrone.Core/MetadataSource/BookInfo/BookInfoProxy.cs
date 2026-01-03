@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using LazyCache;
@@ -15,9 +16,11 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MetadataSource.GoogleBooks;
 using NzbDrone.Core.MetadataSource.Goodreads;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -34,17 +37,23 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private readonly IHttpClient _httpClient;
         private readonly ICachedHttpResponseService _cachedHttpClient;
         private readonly IGoodreadsSearchProxy _goodreadsSearchProxy;
+        private readonly IConfigService _configService;
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
         private readonly IEditionService _editionService;
         private readonly Logger _logger;
         private readonly IMetadataRequestBuilder _requestBuilder;
+        private readonly IHttpRequestBuilderFactory _googleBooksRequestBuilder;
         private readonly ICached<HashSet<string>> _cache;
         private readonly CachingService _authorCache;
+
+        private const string GoogleBookPrefix = "gb:";
+        private const string GoogleAuthorPrefix = "gba:";
 
         public BookInfoProxy(IHttpClient httpClient,
                              ICachedHttpResponseService cachedHttpClient,
                              IGoodreadsSearchProxy goodreadsSearchProxy,
+                             IConfigService configService,
                              IAuthorService authorService,
                              IBookService bookService,
                              IEditionService editionService,
@@ -55,6 +64,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             _httpClient = httpClient;
             _cachedHttpClient = cachedHttpClient;
             _goodreadsSearchProxy = goodreadsSearchProxy;
+            _configService = configService;
             _authorService = authorService;
             _bookService = bookService;
             _editionService = editionService;
@@ -62,11 +72,20 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             _cache = cacheManager.GetCache<HashSet<string>>(GetType());
             _logger = logger;
 
+            _googleBooksRequestBuilder = new HttpRequestBuilder("https://www.googleapis.com/books/v1/{route}")
+                .KeepAlive()
+                .CreateFactory();
+
             _authorCache = new CachingService(new MemoryCacheProvider(new MemoryCache(new MemoryCacheOptions { SizeLimit = 10 })));
             _authorCache.DefaultCachePolicy = new CacheDefaults
             {
                 DefaultCacheDurationSeconds = 60
             };
+        }
+
+        private bool UseGoogleBooks
+        {
+            get { return string.Equals(_configService.MetadataProvider, "googlebooks", StringComparison.OrdinalIgnoreCase); }
         }
 
         public HashSet<string> GetChangedAuthors(DateTime startTime)
@@ -94,6 +113,11 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             try
             {
+                if (UseGoogleBooks && TryParseGoogleAuthorId(foreignAuthorId, out var authorName))
+                {
+                    return GetGoogleAuthorInfo(authorName);
+                }
+
                 if (useCache)
                 {
                     return PollAuthor(foreignAuthorId);
@@ -122,6 +146,11 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         {
             try
             {
+                if (UseGoogleBooks && TryParseGoogleBookId(foreignBookId, out var volumeId))
+                {
+                    return GetGoogleBookInfo(volumeId);
+                }
+
                 return PollBook(foreignBookId);
             }
             catch (BookInfoException e)
@@ -163,6 +192,22 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         public List<Book> SearchForNewBook(string title, string author, bool getAllEditions = true)
         {
+            if (UseGoogleBooks)
+            {
+                var query = title?.Trim() ?? string.Empty;
+                if (query.IsNullOrWhiteSpace())
+                {
+                    return new List<Book>();
+                }
+
+                if (author.IsNotNullOrWhiteSpace())
+                {
+                    query = $"{query} inauthor:{author.Trim()}";
+                }
+
+                return SearchGoogleBooks(query);
+            }
+
             var q = title.ToLower().Trim();
             if (author != null)
             {
@@ -229,11 +274,21 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         public List<Book> SearchByIsbn(string isbn)
         {
+            if (UseGoogleBooks)
+            {
+                return SearchGoogleBooks($"isbn:{isbn}");
+            }
+
             return Search(isbn, true);
         }
 
         public List<Book> SearchByAsin(string asin)
         {
+            if (UseGoogleBooks)
+            {
+                return SearchGoogleBooks(asin);
+            }
+
             return Search(asin, true);
         }
 
@@ -942,6 +997,357 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             return book;
+        }
+
+        private List<Book> SearchGoogleBooks(string query)
+        {
+            HttpResponse<GoogleBooksVolumeResponse> response;
+
+            try
+            {
+                var request = BuildGoogleBooksRequest("volumes", new Dictionary<string, string>
+                {
+                    { "q", query },
+                    { "maxResults", "20" }
+                });
+
+                request.SuppressHttpError = true;
+
+                response = _httpClient.Get<GoogleBooksVolumeResponse>(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Error searching Google Books for {0}", query);
+                return new List<Book>();
+            }
+
+            if (response.HasHttpError || response.Resource?.Items == null)
+            {
+                return new List<Book>();
+            }
+
+            return response.Resource.Items
+                .Select(MapGoogleVolume)
+                .Where(x => x != null)
+                .ToList();
+        }
+
+        private Tuple<string, Book, List<AuthorMetadata>> GetGoogleBookInfo(string volumeId)
+        {
+            var volume = GetGoogleVolume(volumeId);
+            if (volume == null)
+            {
+                throw new BookNotFoundException(volumeId);
+            }
+
+            var book = MapGoogleVolume(volume);
+            if (book?.AuthorMetadata?.Value == null)
+            {
+                throw new BookNotFoundException(volumeId);
+            }
+
+            var authorMetadata = book.AuthorMetadata.Value;
+            return Tuple.Create(authorMetadata.ForeignAuthorId, book, new List<AuthorMetadata> { authorMetadata });
+        }
+
+        private Author GetGoogleAuthorInfo(string authorName)
+        {
+            var authorId = BuildGoogleAuthorId(authorName);
+            var metadata = BuildGoogleAuthorMetadata(authorId, authorName);
+            var books = SearchGoogleBooks($"inauthor:{authorName}");
+
+            var author = new Author
+            {
+                Metadata = metadata,
+                CleanName = Parser.Parser.CleanAuthorName(authorName),
+                Books = books,
+                Series = new List<Series>()
+            };
+
+            foreach (var book in books)
+            {
+                book.Author = author;
+                book.AuthorMetadata = metadata;
+            }
+
+            return author;
+        }
+
+        private GoogleBooksVolume GetGoogleVolume(string volumeId)
+        {
+            HttpResponse<GoogleBooksVolume> response;
+
+            try
+            {
+                var request = BuildGoogleBooksRequest($"volumes/{volumeId}", null);
+                request.SuppressHttpError = true;
+
+                response = _httpClient.Get<GoogleBooksVolume>(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Error fetching Google Books volume {0}", volumeId);
+                return null;
+            }
+
+            if (response.HasHttpError)
+            {
+                return null;
+            }
+
+            return response.Resource;
+        }
+
+        private Book MapGoogleVolume(GoogleBooksVolume volume)
+        {
+            if (volume?.VolumeInfo == null || volume.Id.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var volumeInfo = volume.VolumeInfo;
+
+            var title = volumeInfo.Title;
+            if (title.IsNullOrWhiteSpace())
+            {
+                title = volumeInfo.Subtitle;
+            }
+
+            if (title.IsNullOrWhiteSpace())
+            {
+                title = "Unknown Title";
+            }
+
+            var authorName = volumeInfo.Authors?.FirstOrDefault();
+            if (authorName.IsNullOrWhiteSpace())
+            {
+                authorName = "Unknown Author";
+            }
+
+            var authorId = BuildGoogleAuthorId(authorName);
+            var authorMetadata = BuildGoogleAuthorMetadata(authorId, authorName);
+            var bookId = BuildGoogleBookId(volume.Id);
+
+            var edition = new Edition
+            {
+                ForeignEditionId = bookId,
+                TitleSlug = bookId,
+                Title = title,
+                Language = volumeInfo.Language,
+                Overview = volumeInfo.Description ?? string.Empty,
+                Format = volumeInfo.PrintType,
+                IsEbook = volume.SaleInfo?.IsEbook ?? false,
+                Publisher = volumeInfo.Publisher,
+                PageCount = volumeInfo.PageCount ?? 0,
+                ReleaseDate = ParseGooglePublishedDate(volumeInfo.PublishedDate),
+                Isbn13 = GetIndustryIdentifier(volumeInfo.IndustryIdentifiers, "ISBN_13"),
+                Asin = GetIndustryIdentifier(volumeInfo.IndustryIdentifiers, "ASIN"),
+                Ratings = new Ratings
+                {
+                    Votes = volumeInfo.RatingsCount ?? 0,
+                    Value = volumeInfo.AverageRating ?? 0
+                }
+            };
+
+            foreach (var image in BuildGoogleImages(volumeInfo.ImageLinks))
+            {
+                edition.Images.Add(image);
+            }
+
+            var link = volumeInfo.InfoLink ?? volumeInfo.PreviewLink;
+            if (link.IsNotNullOrWhiteSpace())
+            {
+                edition.Links.Add(new Links { Url = link, Name = "Google Books" });
+            }
+
+            edition.Monitored = true;
+
+            var book = new Book
+            {
+                ForeignBookId = bookId,
+                Title = title,
+                TitleSlug = bookId,
+                CleanTitle = Parser.Parser.CleanAuthorName(title),
+                ReleaseDate = ParseGooglePublishedDate(volumeInfo.PublishedDate),
+                Genres = volumeInfo.Categories ?? new List<string>(),
+                AnyEditionOk = true,
+                Editions = new List<Edition> { edition },
+                Author = new Author
+                {
+                    Metadata = authorMetadata,
+                    CleanName = Parser.Parser.CleanAuthorName(authorName)
+                },
+                AuthorMetadata = authorMetadata
+            };
+
+            if (link.IsNotNullOrWhiteSpace())
+            {
+                book.Links.Add(new Links { Url = link, Name = "Google Books" });
+            }
+
+            return book;
+        }
+
+        private HttpRequest BuildGoogleBooksRequest(string route, Dictionary<string, string> queryParams)
+        {
+            var builder = _googleBooksRequestBuilder.Create()
+                .SetSegment("route", route);
+
+            if (_configService.GoogleBooksApiKey.IsNotNullOrWhiteSpace())
+            {
+                builder.AddQueryParam("key", _configService.GoogleBooksApiKey);
+            }
+
+            if (queryParams != null)
+            {
+                foreach (var pair in queryParams)
+                {
+                    builder.AddQueryParam(pair.Key, pair.Value);
+                }
+            }
+
+            return builder.Build();
+        }
+
+        private static string BuildGoogleBookId(string volumeId)
+        {
+            return $"{GoogleBookPrefix}{volumeId}";
+        }
+
+        private static bool TryParseGoogleBookId(string foreignBookId, out string volumeId)
+        {
+            volumeId = null;
+            if (foreignBookId.IsNullOrWhiteSpace() || !foreignBookId.StartsWith(GoogleBookPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            volumeId = foreignBookId.Substring(GoogleBookPrefix.Length);
+            return volumeId.IsNotNullOrWhiteSpace();
+        }
+
+        private static string BuildGoogleAuthorId(string authorName)
+        {
+            return $"{GoogleAuthorPrefix}{Base64UrlEncode(authorName)}";
+        }
+
+        private static bool TryParseGoogleAuthorId(string foreignAuthorId, out string authorName)
+        {
+            authorName = null;
+            if (foreignAuthorId.IsNullOrWhiteSpace() || !foreignAuthorId.StartsWith(GoogleAuthorPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            var encoded = foreignAuthorId.Substring(GoogleAuthorPrefix.Length);
+            return TryBase64UrlDecode(encoded, out authorName);
+        }
+
+        private static AuthorMetadata BuildGoogleAuthorMetadata(string authorId, string authorName)
+        {
+            var metadata = new AuthorMetadata
+            {
+                ForeignAuthorId = authorId,
+                TitleSlug = authorId,
+                Name = authorName.CleanSpaces(),
+                Status = AuthorStatusType.Continuing
+            };
+
+            metadata.SortName = metadata.Name.ToLowerInvariant();
+            metadata.NameLastFirst = metadata.Name.ToLastFirst();
+            metadata.SortNameLastFirst = metadata.NameLastFirst.ToLowerInvariant();
+
+            return metadata;
+        }
+
+        private static List<MediaCover.MediaCover> BuildGoogleImages(GoogleBooksImageLinks imageLinks)
+        {
+            var images = new List<MediaCover.MediaCover>();
+            var url = imageLinks?.Thumbnail ?? imageLinks?.SmallThumbnail;
+
+            if (url.IsNotNullOrWhiteSpace())
+            {
+                images.Add(new MediaCover.MediaCover
+                {
+                    Url = url,
+                    CoverType = MediaCoverTypes.Cover
+                });
+            }
+
+            return images;
+        }
+
+        private static DateTime? ParseGooglePublishedDate(string publishedDate)
+        {
+            if (publishedDate.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var formats = new[] { "yyyy-MM-dd", "yyyy-MM", "yyyy" };
+            if (DateTime.TryParseExact(publishedDate, formats, System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal, out var parsed))
+            {
+                return parsed;
+            }
+
+            if (DateTime.TryParse(publishedDate, System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal, out parsed))
+            {
+                return parsed;
+            }
+
+            return null;
+        }
+
+        private static string GetIndustryIdentifier(List<GoogleBooksIndustryIdentifier> identifiers, string type)
+        {
+            return identifiers?.FirstOrDefault(x => string.Equals(x.Type, type, StringComparison.OrdinalIgnoreCase))?.Identifier;
+        }
+
+        private static string Base64UrlEncode(string value)
+        {
+            var bytes = Encoding.UTF8.GetBytes(value);
+            return Convert.ToBase64String(bytes)
+                .TrimEnd('=')
+                .Replace('+', '-')
+                .Replace('/', '_');
+        }
+
+        private static bool TryBase64UrlDecode(string value, out string decoded)
+        {
+            decoded = null;
+
+            if (value.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            var padded = value.Replace('-', '+').Replace('_', '/');
+            var mod = padded.Length % 4;
+            if (mod == 2)
+            {
+                padded += "==";
+            }
+            else if (mod == 3)
+            {
+                padded += "=";
+            }
+            else if (mod != 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                var bytes = Convert.FromBase64String(padded);
+                decoded = Encoding.UTF8.GetString(bytes);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
 
         private static Edition MapEdition(BookResource resource)

@@ -16,6 +16,12 @@ The container listens on port 8787 and expects a volume mounted at `/config`.
 Docker images will be published under `thashiznit2003/bookdarr`. Until then,
 build locally from source.
 
+### Metadata
+
+Bookdarr defaults to Google Books search. You can supply an optional API key
+via `GOOGLE_BOOKS_API_KEY` to increase quota. To switch back to the default
+metadata source, set `METADATA_PROVIDER=bookinfo`.
+
 ## Support
 
 This project won't use Discord for support. If you have a problem, please file
