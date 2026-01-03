@@ -60,7 +60,16 @@ if [ "${need_dotnet}" = "true" ]; then
   ${SUDO} dpkg -i /tmp/packages-microsoft-prod.deb
   ${SUDO} rm -f /tmp/packages-microsoft-prod.deb
   ${SUDO} apt-get update
-  ${SUDO} apt-get install -y dotnet-sdk-6.0
+  if ! ${SUDO} apt-get install -y dotnet-sdk-6.0; then
+    log "dotnet-sdk-6.0 not available via apt, using dotnet-install.sh fallback"
+    ${SUDO} curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+    ${SUDO} chmod +x /tmp/dotnet-install.sh
+    ${SUDO} /tmp/dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet
+    ${SUDO} rm -f /tmp/dotnet-install.sh
+    if [ ! -x /usr/bin/dotnet ]; then
+      ${SUDO} ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+    fi
+  fi
 fi
 
 log "Preparing repo at ${REPO_DIR}"

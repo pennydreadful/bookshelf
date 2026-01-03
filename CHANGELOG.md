@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.16
+- Summary: add a dotnet-install.sh fallback when dotnet-sdk-6.0 isn't in apt.
+- Why: Ubuntu 24.04 doesn't provide dotnet-sdk-6.0 packages.
+- Impact: dev setup can install .NET 6 via Microsoft script on newer Ubuntu.
+- Files: scripts/dev-setup-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download the dev setup script and rerun it.
+
 ## 1.2.15
 - Summary: install Yarn via npm to avoid corepack permission errors on Ubuntu.
 - Why: corepack enable was failing to create global symlinks in /usr/bin.
