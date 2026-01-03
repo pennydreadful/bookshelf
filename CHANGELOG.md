@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.8
+- Summary: trim the displayed version to major.minor.patch in the UI.
+- Why: hide the auto-generated build suffix (e.g., `.40745`) in the header.
+- Impact: UI shows clean semantic version while keeping internal build info.
+- Files: src/Readarr.Http/Frontend/InitializeJsonController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rebuild and confirm header shows `v1.2.8`.
+
 ## 1.2.7
 - Summary: make the install script build only and skip container start by default.
 - Why: support Portainer stack redeploys without container name conflicts.

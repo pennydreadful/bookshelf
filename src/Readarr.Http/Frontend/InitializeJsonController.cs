@@ -43,8 +43,9 @@ namespace Readarr.Http.Frontend
             builder.AppendLine("{");
             builder.AppendLine($"  \"apiRoot\": \"{_urlBase}/api/v1\",");
             builder.AppendLine($"  \"apiKey\": \"{_apiKey}\",");
+            var displayVersion = BuildInfo.Version.ToString(3);
             builder.AppendLine($"  \"release\": \"{BuildInfo.Release}\",");
-            builder.AppendLine($"  \"version\": \"{BuildInfo.Version.ToString()}\",");
+            builder.AppendLine($"  \"version\": \"{displayVersion}\",");
             builder.AppendLine($"  \"instanceName\": \"{_configFileProvider.InstanceName.ToString()}\",");
             builder.AppendLine($"  \"theme\": \"{_configFileProvider.Theme.ToString()}\",");
             builder.AppendLine($"  \"branch\": \"{_configFileProvider.Branch.ToLower()}\",");
