@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.14
+- Summary: run `corepack enable` with sudo during Ubuntu dev setup.
+- Why: corepack needs root to create global symlinks on Ubuntu.
+- Impact: dev setup no longer fails with EACCES on corepack enable.
+- Files: scripts/dev-setup-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download the dev setup script and rerun it.
+
 ## 1.2.13
 - Summary: make the Ubuntu dev setup script work when run with sudo.
 - Why: avoid the "-E: command not found" error and support running as root.

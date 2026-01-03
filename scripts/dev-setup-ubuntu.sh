@@ -44,7 +44,7 @@ if [ "${need_node}" = "true" ]; then
 fi
 
 log "Enabling Corepack (Yarn 1.22.19)"
-run_as_user corepack enable
+${SUDO} corepack enable
 run_as_user corepack prepare yarn@1.22.19 --activate
 
 need_dotnet=true
