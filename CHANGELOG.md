@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.11
+- Summary: add native Ubuntu dev scripts (setup/build/run) to avoid Docker during development.
+- Why: speed up iteration on the dev VM and defer Docker builds to release time.
+- Impact: new scripts for local builds and a README section describing the flow.
+- Files: scripts/dev-setup-ubuntu.sh, scripts/dev-build.sh, scripts/dev-run.sh, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run dev-setup-ubuntu.sh on the VM and validate a native launch.
+
 ## 1.2.10
 - Summary: allow the update modal to close even if reload fails.
 - Why: prevent the UI from getting stuck on the update dialog.
