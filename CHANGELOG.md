@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.9
+- Summary: normalize SignalR version messages to major.minor.patch.
+- Why: prevent the update modal from reappearing due to build-number mismatches.
+- Impact: the update modal should dismiss normally after reload.
+- Files: frontend/src/Components/SignalRConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: rebuild and confirm the update modal can be closed.
+
 ## 1.2.8
 - Summary: trim the displayed version to major.minor.patch in the UI.
 - Why: hide the auto-generated build suffix (e.g., `.40745`) in the header.

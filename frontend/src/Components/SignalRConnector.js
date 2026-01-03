@@ -245,7 +245,8 @@ class SignalRConnector extends Component {
   };
 
   handleVersion = (body) => {
-    const version = body.version;
+    const rawVersion = body.version;
+    const version = rawVersion?.split('.')?.slice(0, 3).join('.');
 
     this.props.dispatchSetVersion({ version });
   };
