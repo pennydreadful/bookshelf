@@ -16,6 +16,9 @@ The container listens on port 8787 and expects a volume mounted at `/config`.
 Docker images will be published under `thashiznit2003/bookdarr`. Until then,
 build locally from source.
 
+For download client integration, mount your host download folder to
+`/downloads` inside the container (example: `-v /qb1/downloads:/downloads`).
+
 ### Metadata
 
 Bookdarr defaults to Google Books search. You can supply an optional API key

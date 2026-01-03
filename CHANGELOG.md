@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.3
+- Summary: document the download client mount path as `/downloads`.
+- Why: standardize the container-side path for client integration.
+- Impact: documentation-only; no runtime changes.
+- Files: README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: keep install/run instructions consistent with `/downloads`.
+
 ## 1.2.2
 - Summary: default proxy cover images to JPEG content type when the filename has no extension.
 - Why: Google Books thumbnails often omit file extensions and were not rendering.
