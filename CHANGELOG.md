@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+- Summary: add a source-build install script with error logging.
+- Why: make VM installs repeatable and capture clear errors for support.
+- Impact: new script writes `/opt/bookdarr/install.log` and builds a local image.
+- Files: scripts/install-bookdarr.sh, README.md, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: wire diagnostics upload and Docker Hub image publishing.
+
 ## 1.1.3
 - Summary: add a handoff guide to help a new Codex chat take over.
 - Why: preserve context, preferences, and next steps for continuity.

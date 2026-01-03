@@ -22,6 +22,12 @@ Bookdarr defaults to Google Books search. You can supply an optional API key
 via `GOOGLE_BOOKS_API_KEY` to increase quota. To switch back to the default
 metadata source, set `METADATA_PROVIDER=bookinfo`.
 
+### Install Script (Source Build)
+
+This uses Docker to build from source and logs output to `/opt/bookdarr/install.log`.
+
+    sudo mkdir -p /opt/bookdarr && sudo curl -L https://raw.githubusercontent.com/thashiznit2003/Bookdarr/develop/scripts/install-bookdarr.sh -o /opt/bookdarr/install-bookdarr.sh && sudo chmod +x /opt/bookdarr/install-bookdarr.sh && sudo /opt/bookdarr/install-bookdarr.sh
+
 ## Support
 
 This project won't use Discord for support. If you have a problem, please file

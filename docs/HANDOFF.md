@@ -25,6 +25,7 @@ Use this file to onboard a new Codex chat.
   - constants before non-constant fields,
   - multiline method parameters each on their own line.
 - Build uses `_output` assets; UI built via `yarn build` and server via `dotnet msbuild`.
+- Install script: `scripts/install-bookdarr.sh` (logs to `/opt/bookdarr/install.log`).
 
 ## Metadata Notes
 - Provider default: `MetadataProvider=googlebooks` (config/env `METADATA_PROVIDER` overrides).
