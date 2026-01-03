@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.4
+- Summary: add a compose file for Portainer stacks and document redeploy flow.
+- Why: avoid full rebuilds unless the image actually changes.
+- Impact: compose-driven deployments can restart quickly without rebuilding.
+- Files: docker-compose.yml, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: keep stack instructions aligned with `/downloads` and `/config` mounts.
+
 ## 1.2.3
 - Summary: document the download client mount path as `/downloads`.
 - Why: standardize the container-side path for client integration.

@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  bookdarr:
+    image: bookdarr:local
+    container_name: bookdarr
+    ports:
+      - "8787:8787"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - /opt/bookdarr/config:/config
+      - /qb1/downloads:/downloads
+    restart: unless-stopped
