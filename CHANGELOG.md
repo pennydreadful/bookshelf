@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.6
+- Summary: move the Bookdarr name/version into the left logo area.
+- Why: keep the header branding closer to the icon, as requested.
+- Impact: header layout shift only; no runtime behavior changes.
+- Files: frontend/src/Components/Page/Header/PageHeader.js, frontend/src/Components/Page/Header/PageHeader.css, src/Directory.Build.props, CHANGELOG.md.
+- Next: verify alignment looks good in the sidebar header on the VM.
+
 ## 1.2.5
 - Summary: show Bookdarr name/version in the header and fix proxy covers without file extensions.
 - Why: make it easy to confirm the running version and render Google Books covers reliably.

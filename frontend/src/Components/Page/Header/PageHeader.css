@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   flex: 0 0 $sidebarWidth;
+  gap: 10px;
   padding-left: 20px;
 }
 
@@ -35,7 +36,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-right: 16px;
   line-height: 1.1;
 }
 

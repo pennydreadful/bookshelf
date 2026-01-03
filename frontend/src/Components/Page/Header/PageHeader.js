@@ -58,15 +58,15 @@ class PageHeader extends Component {
               alt="Bookdarr Logo"
             />
           </Link>
-        </div>
 
-        <div className={styles.appInfo}>
-          <div className={styles.appName}>Bookdarr</div>
-          {
-            appVersion ?
-              <div className={styles.appVersion}>v{appVersion}</div> :
-              null
-          }
+          <div className={styles.appInfo}>
+            <div className={styles.appName}>Bookdarr</div>
+            {
+              appVersion ?
+                <div className={styles.appVersion}>v{appVersion}</div> :
+                null
+            }
+          </div>
         </div>
 
         <div className={styles.sidebarToggleContainer}>
