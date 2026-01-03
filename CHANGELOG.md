@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.15
+- Summary: install Yarn via npm to avoid corepack permission errors on Ubuntu.
+- Why: corepack enable was failing to create global symlinks in /usr/bin.
+- Impact: dev setup now uses npm to install Yarn; dev build checks for yarn.
+- Files: scripts/dev-setup-ubuntu.sh, scripts/dev-build.sh, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download the dev setup script and rerun it.
+
 ## 1.2.14
 - Summary: run `corepack enable` with sudo during Ubuntu dev setup.
 - Why: corepack needs root to create global symlinks on Ubuntu.

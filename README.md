@@ -49,7 +49,7 @@ To rebuild only when needed:
 ### Native Dev on Ubuntu (No Docker)
 
 Use this for faster local builds on a dedicated dev VM. It installs Node 20,
-Yarn 1.22.19, and .NET SDK 6.0, clones the repo to `/opt/bookdarr-dev`, and
+Yarn 1.22.19 (via npm), and .NET SDK 6.0, clones the repo to `/opt/bookdarr-dev`, and
 creates `/opt/bookdarr-dev/config` for AppData.
 
 Setup (run once):

@@ -43,9 +43,8 @@ if [ "${need_node}" = "true" ]; then
   ${SUDO} apt-get install -y nodejs
 fi
 
-log "Enabling Corepack (Yarn 1.22.19)"
-${SUDO} corepack enable
-run_as_user corepack prepare yarn@1.22.19 --activate
+log "Installing Yarn 1.22.19"
+${SUDO} npm install -g yarn@1.22.19
 
 need_dotnet=true
 if command -v dotnet >/dev/null 2>&1; then

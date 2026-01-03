@@ -11,8 +11,10 @@ fi
 
 cd "${REPO_DIR}"
 
-corepack enable
-corepack prepare yarn@1.22.19 --activate
+if ! command -v yarn >/dev/null 2>&1; then
+  echo "Yarn is not installed. Run dev-setup-ubuntu.sh first." >&2
+  exit 1
+fi
 
 yarn install --frozen-lockfile --network-timeout 120000
 yarn build
