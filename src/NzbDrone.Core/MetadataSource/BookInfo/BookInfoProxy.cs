@@ -20,14 +20,16 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.MetadataSource.GoogleBooks;
 using NzbDrone.Core.MetadataSource.Goodreads;
+using NzbDrone.Core.MetadataSource.GoogleBooks;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NzbDrone.Core.MetadataSource.BookInfo
 {
     public class BookInfoProxy : IProvideAuthorInfo, IProvideBookInfo, ISearchForNewBook, ISearchForNewAuthor, ISearchForNewEntity
     {
+        private const string GoogleBookPrefix = "gb:";
+        private const string GoogleAuthorPrefix = "gba:";
         private static readonly JsonSerializerOptions SerializerSettings = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false,
@@ -46,9 +48,6 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private readonly IHttpRequestBuilderFactory _googleBooksRequestBuilder;
         private readonly ICached<HashSet<string>> _cache;
         private readonly CachingService _authorCache;
-
-        private const string GoogleBookPrefix = "gb:";
-        private const string GoogleAuthorPrefix = "gba:";
 
         public BookInfoProxy(IHttpClient httpClient,
                              ICachedHttpResponseService cachedHttpClient,
@@ -1303,14 +1302,19 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var formats = new[] { "yyyy-MM-dd", "yyyy-MM", "yyyy" };
-            if (DateTime.TryParseExact(publishedDate, formats, System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.DateTimeStyles.AssumeUniversal, out var parsed))
+            if (DateTime.TryParseExact(publishedDate,
+                    formats,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal,
+                    out var parsed))
             {
                 return parsed;
             }
 
-            if (DateTime.TryParse(publishedDate, System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.DateTimeStyles.AssumeUniversal, out parsed))
+            if (DateTime.TryParse(publishedDate,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal,
+                    out parsed))
             {
                 return parsed;
             }

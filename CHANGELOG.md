@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+- Fix build by aligning BookInfoProxy formatting to style rules.
+
 ## 1.1.1
 - Add tooltip instructions for creating a Google Books API key.
 
