@@ -31,6 +31,25 @@
   margin-right: 14px;
 }
 
+.appInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 16px;
+  line-height: 1.1;
+}
+
+.appName {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.appVersion {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .right {
   display: flex;
   justify-content: flex-end;
@@ -57,6 +76,10 @@
 
   .sidebarToggleContainer {
     display: flex;
+  }
+
+  .appInfo {
+    display: none;
   }
 
   .donate {

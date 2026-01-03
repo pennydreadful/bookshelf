@@ -46,6 +46,7 @@ class PageHeader extends Component {
 
   render() {
     const { onSidebarToggle } = this.props;
+    const appVersion = window.Readarr?.version;
 
     return (
       <div className={styles.header}>
@@ -57,6 +58,15 @@ class PageHeader extends Component {
               alt="Bookdarr Logo"
             />
           </Link>
+        </div>
+
+        <div className={styles.appInfo}>
+          <div className={styles.appName}>Bookdarr</div>
+          {
+            appVersion ?
+              <div className={styles.appVersion}>v{appVersion}</div> :
+              null
+          }
         </div>
 
         <div className={styles.sidebarToggleContainer}>

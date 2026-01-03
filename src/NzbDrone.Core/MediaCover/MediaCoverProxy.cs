@@ -42,7 +42,7 @@ namespace NzbDrone.Core.MediaCover
 
             _cache.ClearExpired();
 
-            var fileName = Path.GetFileName(url);
+            var fileName = GetProxyFileName(url);
             return _configFileProvider.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
         }
 
@@ -65,6 +65,32 @@ namespace NzbDrone.Core.MediaCover
             var request = new HttpRequest(url);
 
             return _httpClient.Get(request).ResponseData;
+        }
+
+        private static string GetProxyFileName(string url)
+        {
+            string fileName = null;
+
+            if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                fileName = Path.GetFileName(uri.LocalPath);
+            }
+            else
+            {
+                fileName = Path.GetFileName(url);
+            }
+
+            if (fileName.IsNullOrWhiteSpace())
+            {
+                fileName = "cover";
+            }
+
+            if (Path.GetExtension(fileName).IsNullOrWhiteSpace())
+            {
+                fileName += ".jpg";
+            }
+
+            return fileName;
         }
     }
 }

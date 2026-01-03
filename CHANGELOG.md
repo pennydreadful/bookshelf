@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.5
+- Summary: show Bookdarr name/version in the header and fix proxy covers without file extensions.
+- Why: make it easy to confirm the running version and render Google Books covers reliably.
+- Impact: new header text; proxy image URLs are now extension-safe.
+- Files: frontend/src/Components/Page/Header/PageHeader.js, frontend/src/Components/Page/Header/PageHeader.css, src/NzbDrone.Core/MediaCover/MediaCoverProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: verify cover images appear on the search page after rebuild.
+
 ## 1.2.4
 - Summary: add a compose file for Portainer stacks and document redeploy flow.
 - Why: avoid full rebuilds unless the image actually changes.
