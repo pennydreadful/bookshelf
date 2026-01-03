@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+- Add tooltip instructions for creating a Google Books API key.
+
 ## 1.1.0
 - Add a Google Books API key field in metadata settings.
 

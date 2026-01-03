@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from 'Components/Alert';
+import Icon from 'Components/Icon';
 import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import { inputTypes, kinds } from 'Helpers/Props';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import styles from './MetadataProvider.css';
 
 const writeAudioTagOptions = [
   {
@@ -88,7 +91,21 @@ function MetadataProvider(props) {
             <FieldSet legend={translate('SearchMetadata')}>
               <FormGroup>
                 <FormLabel>
-                  {translate('GoogleBooksApiKey')}
+                  <span className={styles.apiKeyLabel}>
+                    {translate('GoogleBooksApiKey')}
+                    <Tooltip
+                      anchor={(
+                        <span className={styles.apiKeyHelpIcon}>
+                          <Icon
+                            name={icons.TBA}
+                            size={12}
+                          />
+                        </span>
+                      )}
+                      tooltip={translate('GoogleBooksApiKeyTooltip')}
+                      position={tooltipPositions.RIGHT}
+                    />
+                  </span>
                 </FormLabel>
 
                 <FormInputGroup

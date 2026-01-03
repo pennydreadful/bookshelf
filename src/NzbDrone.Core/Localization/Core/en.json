@@ -579,6 +579,7 @@
   "SearchMetadata": "Search Metadata",
   "GoogleBooksApiKey": "Google Books API Key",
   "GoogleBooksApiKeyHelpText": "Optional. Provide your own Google Books API key to increase quota.",
+  "GoogleBooksApiKeyTooltip": "Create a free key in Google Cloud Console: enable the Books API, then go to APIs & Services > Credentials > Create API key. Paste it here.",
   "MetadataSource": "Metadata Source",
   "MinFormatScoreHelpText": "Minimum custom format score allowed to download",
   "MinPagesHelpText": "Ignore books with fewer pages than this",

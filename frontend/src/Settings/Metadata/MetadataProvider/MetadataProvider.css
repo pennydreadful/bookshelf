@@ -1,0 +1,11 @@
+.apiKeyLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apiKeyHelpIcon {
+  display: inline-flex;
+  color: var(--helpTextColor);
+  cursor: help;
+}
