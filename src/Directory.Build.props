@@ -69,12 +69,12 @@
 
   <!-- Set the Product and Version info for our own projects -->
   <PropertyGroup Condition="'$(ReadarrProject)'=='true'">
-    <Product>Readarr</Product>
-    <Company>readarr.com</Company>
-    <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) readarr.com (GNU General Public v3)</Copyright>
+    <Product>Bookdarr</Product>
+    <Company>Bookdarr</Company>
+    <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) Bookdarr (GNU General Public v3)</Copyright>
 
     <!-- Should be replaced by CI -->
-    <AssemblyVersion>10.0.0.*</AssemblyVersion>
+    <AssemblyVersion>1.0.0.*</AssemblyVersion>
     <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
     <NeutralLanguage>en</NeutralLanguage>
 

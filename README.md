@@ -1,10 +1,10 @@
-# bookshelf
+# Bookdarr
 
-This is a revival of [Readarr](https://github.com/Readarr/Readarr). The images
-published are configured to use working Goodreads or Hardcover metadata out of
-the box.
+Bookdarr is a fork of [Bookshelf](https://github.com/pennydreadful/bookshelf)
+and [Readarr](https://github.com/Readarr/Readarr). The goal is to provide a
+stable, self-hosted book manager with improved metadata options.
 
-Bookshelf is an ebook and audiobook collection manager for Usenet and BitTorrent
+Bookdarr is an ebook and audiobook collection manager for Usenet and BitTorrent
 users. It can monitor multiple RSS feeds for new books from your favorite
 authors and will grab, sort, and rename them. Note that only one type of a
 given book is supported. If you want both an audiobook and ebook of a given
@@ -13,22 +13,12 @@ book you will need multiple instances.
 ## Getting Started
 
 The container listens on port 8787 and expects a volume mounted at `/config`.
-
-    docker run -p 8787:8787 -v ~/.config/bookshelf:/config ghcr.io/pennydreadful/bookshelf:hardcover
-
-The `softcover` tags use [Goodreads](https://www.goodreads.com) as the metadata
-provider. The quality of this metadata is generally poor and contains a lot of
-slop. However, it is backward-compatible with existing Readarr databases and
-functionality like Goodreads list imports should continue to work normally.
-
-The `hardcover` tags use [Hardcover](https://hardcover.app/home) as a metadata
-provider. This metadata is higher quality but isn't backward-compatible; if
-you're already running Readarr you'll need to redeploy this from scratch.
-Goodreads list imports haven't been tested and likely don't work.
+Docker images will be published under `thashiznit2003/bookdarr`. Until then,
+build locally from source.
 
 ## Support
 
-This project won't use Discord for support. If you have a problem please file
+This project won't use Discord for support. If you have a problem, please file
 an issue or start a discussion.
 
 ## Contributors & Developers
@@ -54,7 +44,7 @@ should request a refund. Those people don't deserve your money.
 
 ### License
 
-The is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)
+This is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)
 and [Prowlarr](https://github.com/Prowlarr/Prowlarr) projects which are both
 licensed [GPLv3](http://www.gnu.org/licenses/gpl.html). This project is
 therefore also licensed under the terms of GPLv3.

@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Validation
         public static IRuleBuilderOptions<T, string> ContainsReadarr<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
-            return ruleBuilder.SetValidator(new RegularExpressionValidator("readarr", RegexOptions.IgnoreCase)).WithMessage("Must contain readarr");
+            return ruleBuilder.SetValidator(new RegularExpressionValidator("bookdarr", RegexOptions.IgnoreCase)).WithMessage("Must contain bookdarr");
         }
     }
 }
