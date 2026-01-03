@@ -92,6 +92,7 @@ class AddNewAuthorSearchResult extends Component {
     const linkProps = isExistingAuthor ? { to: `/author/${titleSlug}` } : { onPress: this.onPress };
 
     const endedString = 'Deceased';
+    const authorLink = Array.isArray(links) && links.length ? links[0].url : null;
 
     const height = calculateHeight(230, isSmallScreen);
 
@@ -147,17 +148,21 @@ class AddNewAuthorSearchResult extends Component {
                     null
                 }
 
-                <Link
-                  className={styles.mbLink}
-                  to={`${links[0].url}`}
-                  onPress={this.onMBLinkPress}
-                >
-                  <Icon
-                    className={styles.mbLinkIcon}
-                    name={icons.EXTERNAL_LINK}
-                    size={28}
-                  />
-                </Link>
+                {
+                  authorLink ?
+                    <Link
+                      className={styles.mbLink}
+                      to={`${authorLink}`}
+                      onPress={this.onMBLinkPress}
+                    >
+                      <Icon
+                        className={styles.mbLinkIcon}
+                        name={icons.EXTERNAL_LINK}
+                        size={28}
+                      />
+                    </Link> :
+                    null
+                }
               </div>
             </div>
 

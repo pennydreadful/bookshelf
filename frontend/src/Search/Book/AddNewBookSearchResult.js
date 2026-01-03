@@ -92,6 +92,7 @@ class AddNewBookSearchResult extends Component {
     } = this.state;
 
     const linkProps = isExistingBook ? { to: `/book/${titleSlug}` } : { onPress: this.onPress };
+    const editionLink = editions?.[0]?.links?.length ? editions[0].links[0].url : null;
 
     const height = calculateHeight(230, isSmallScreen);
 
@@ -139,10 +140,10 @@ class AddNewBookSearchResult extends Component {
                 }
 
                 {
-                  editions ?
+                  editionLink ?
                     <Link
                       className={styles.mbLink}
-                      to={`${editions[0].links[0].url}`}
+                      to={`${editionLink}`}
                       onPress={this.onTVDBLinkPress}
                     >
                       <Icon
@@ -150,7 +151,8 @@ class AddNewBookSearchResult extends Component {
                         name={icons.EXTERNAL_LINK}
                         size={28}
                       />
-                    </Link> : null
+                    </Link> :
+                    null
                 }
               </div>
             </div>

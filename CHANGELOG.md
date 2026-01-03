@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1
+- Summary: prevent search results UI crashes when external links are missing.
+- Why: Google Books results may not include author/book links.
+- Impact: search page renders without errors even when links are absent.
+- Files: frontend/src/Search/Author/AddNewAuthorSearchResult.js, frontend/src/Search/Book/AddNewBookSearchResult.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: confirm search page behavior on the VM after rebuild.
+
 ## 1.2.0
 - Summary: add a source-build install script with error logging.
 - Why: make VM installs repeatable and capture clear errors for support.
