@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2
+- Summary: default proxy cover images to JPEG content type when the filename has no extension.
+- Why: Google Books thumbnails often omit file extensions and were not rendering.
+- Impact: search results should display covers reliably.
+- Files: src/Readarr.Http/Frontend/Mappers/MediaCoverProxyMapper.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: verify covers render on the VM after rebuild.
+
 ## 1.2.1
 - Summary: prevent search results UI crashes when external links are missing.
 - Why: Google Books results may not include author/book links.

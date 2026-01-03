@@ -46,7 +46,7 @@ namespace Readarr.Http.Frontend.Mappers
 
             if (!_mimeTypeProvider.TryGetContentType(filename, out var contentType))
             {
-                contentType = "application/octet-stream";
+                contentType = "image/jpeg";
             }
 
             return new FileContentResult(imageData, contentType);
