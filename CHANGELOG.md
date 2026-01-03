@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.17
+- Summary: add a single Ubuntu dev script that sets up, builds, and optionally runs Bookdarr.
+- Why: simplify dev setup to one command on the VM.
+- Impact: `scripts/dev-ubuntu.sh` replaces the multi-step flow; README updated.
+- Files: scripts/dev-ubuntu.sh, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: use dev-ubuntu.sh for future dev installs.
+
 ## 1.2.16
 - Summary: add a dotnet-install.sh fallback when dotnet-sdk-6.0 isn't in apt.
 - Why: Ubuntu 24.04 doesn't provide dotnet-sdk-6.0 packages.

@@ -52,16 +52,17 @@ Use this for faster local builds on a dedicated dev VM. It installs Node 20,
 Yarn 1.22.19 (via npm), and .NET SDK 6.0, clones the repo to `/opt/bookdarr-dev`, and
 creates `/opt/bookdarr-dev/config` for AppData.
 
-Setup (run once):
+One-step setup + build + run (foreground):
 
-    sudo curl -L https://raw.githubusercontent.com/thashiznit2003/Bookdarr/develop/scripts/dev-setup-ubuntu.sh -o /opt/bookdarr-dev-setup.sh && sudo bash /opt/bookdarr-dev-setup.sh
+    sudo curl -L https://raw.githubusercontent.com/thashiznit2003/Bookdarr/develop/scripts/dev-ubuntu.sh -o /opt/bookdarr-dev.sh && sudo bash /opt/bookdarr-dev.sh
 
-Build (run after changes):
+If you only want to build (no run):
+
+    sudo RUN_APP=false bash /opt/bookdarr-dev.sh
+
+You can still use the individual scripts afterward:
 
     sudo -u joe /opt/bookdarr-dev/scripts/dev-build.sh
-
-Run (foreground process):
-
     sudo -u joe /opt/bookdarr-dev/scripts/dev-run.sh
 
 ## Support
