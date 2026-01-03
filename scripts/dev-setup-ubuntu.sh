@@ -4,10 +4,18 @@ set -euo pipefail
 REPO_DIR="${REPO_DIR:-/opt/bookdarr-dev}"
 USER_NAME="${USER_NAME:-joe}"
 
-SUDO="sudo"
-if [ "$(id -u)" -eq 0 ]; then
-  SUDO=""
+SUDO=""
+if command -v sudo >/dev/null 2>&1; then
+  SUDO="sudo"
 fi
+
+run_as_user() {
+  if [ -n "${SUDO}" ]; then
+    ${SUDO} -u "${USER_NAME}" "$@"
+  else
+    su - "${USER_NAME}" -c "$*"
+  fi
+}
 
 log() {
   printf '[%s] %s\n' "$(date -u +'%F %T UTC')" "$*"
@@ -28,7 +36,7 @@ fi
 if [ "${need_node}" = "true" ]; then
   log "Installing Node.js 20"
   if [ -n "${SUDO}" ]; then
-    curl -fsSL https://deb.nodesource.com/setup_20.x | ${SUDO} -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_20.x | ${SUDO} bash -
   else
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
   fi
@@ -36,8 +44,8 @@ if [ "${need_node}" = "true" ]; then
 fi
 
 log "Enabling Corepack (Yarn 1.22.19)"
-${SUDO} -u "${USER_NAME}" corepack enable
-${SUDO} -u "${USER_NAME}" corepack prepare yarn@1.22.19 --activate
+run_as_user corepack enable
+run_as_user corepack prepare yarn@1.22.19 --activate
 
 need_dotnet=true
 if command -v dotnet >/dev/null 2>&1; then
@@ -61,9 +69,9 @@ ${SUDO} mkdir -p "${REPO_DIR}"
 ${SUDO} chown -R "${USER_NAME}:${USER_NAME}" "${REPO_DIR}"
 
 if [ ! -d "${REPO_DIR}/.git" ]; then
-  ${SUDO} -u "${USER_NAME}" git clone https://github.com/thashiznit2003/Bookdarr.git "${REPO_DIR}"
+  run_as_user git clone https://github.com/thashiznit2003/Bookdarr.git "${REPO_DIR}"
 else
-  ${SUDO} -u "${USER_NAME}" git -C "${REPO_DIR}" fetch
+  run_as_user git -C "${REPO_DIR}" fetch
 fi
 
 ${SUDO} mkdir -p "${REPO_DIR}/config"

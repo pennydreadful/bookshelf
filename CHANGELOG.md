@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.13
+- Summary: make the Ubuntu dev setup script work when run with sudo.
+- Why: avoid the "-E: command not found" error and support running as root.
+- Impact: dev setup now uses sudo when available and runs user commands safely.
+- Files: scripts/dev-setup-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download the dev setup script and rerun it.
+
 ## 1.2.12
 - Summary: fix NodeSource setup execution when running dev setup as root.
 - Why: avoid the "-E: command not found" error on Ubuntu.
