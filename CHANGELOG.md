@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.19
+- Summary: ensure dev scripts are executable after clone/update.
+- Why: avoid "Permission denied" when running dev-build.sh.
+- Impact: dev-ubuntu.sh now chmods scripts before building.
+- Files: scripts/dev-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun dev-ubuntu.sh on the VM.
+
 ## 1.2.18
 - Summary: copy built UI assets into the runtime output for native dev runs.
 - Why: the dev binary expects UI under `_output/net6.0/<rid>/UI`.
