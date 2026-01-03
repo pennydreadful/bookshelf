@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.20
+- Summary: run dev-build.sh via bash and ensure scripts are executable.
+- Why: avoid permission errors on some filesystems after git update.
+- Impact: dev-ubuntu.sh no longer fails on dev-build.sh execution.
+- Files: scripts/dev-ubuntu.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download the dev-ubuntu.sh script and rerun it.
+
 ## 1.2.19
 - Summary: ensure dev scripts are executable after clone/update.
 - Why: avoid "Permission denied" when running dev-build.sh.

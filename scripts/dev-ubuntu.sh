@@ -84,10 +84,10 @@ fi
 ${SUDO} mkdir -p "${APPDATA_DIR}"
 ${SUDO} chown -R "${USER_NAME}:${USER_NAME}" "${APPDATA_DIR}"
 
-${SUDO} chmod +x "${REPO_DIR}/scripts/"*.sh
+${SUDO} chmod -R +x "${REPO_DIR}/scripts"
 
 log "Building Bookdarr"
-run_as_user bash -lc "REPO_DIR='${REPO_DIR}' RID='${RID}' ${REPO_DIR}/scripts/dev-build.sh"
+run_as_user bash -lc "REPO_DIR='${REPO_DIR}' RID='${RID}' bash ${REPO_DIR}/scripts/dev-build.sh"
 
 if [ "${RUN_APP}" = "true" ]; then
   log "Starting Bookdarr (foreground)"
