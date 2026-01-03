@@ -1,6 +1,15 @@
+.searchHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .searchContainer {
   display: flex;
   margin-bottom: 10px;
+  flex: 1 1 520px;
 }
 
 .searchIconContainer {
@@ -52,4 +61,13 @@
 
 .searchResults {
   margin-top: 30px;
+}
+
+.quotaDisclaimer {
+  font-size: 12px;
+  color: var(--helpTextColor);
+  text-align: right;
+  line-height: 1.2;
+  max-width: 240px;
+  padding-top: 6px;
 }

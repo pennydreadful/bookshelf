@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+- Show Google Books free-tier quota warning on the search page.
+- Surface a user-friendly error when the Google Books quota is exceeded.
+
 ## 1.0.1
 - Add Google Books search support with optional API key.
 

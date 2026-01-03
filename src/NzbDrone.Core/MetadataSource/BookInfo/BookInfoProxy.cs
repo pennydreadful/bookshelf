@@ -1021,7 +1021,19 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 return new List<Book>();
             }
 
-            if (response.HasHttpError || response.Resource?.Items == null)
+            if (response.HasHttpError)
+            {
+                if (IsGoogleBooksQuotaError(response))
+                {
+                    throw new NzbDroneClientException(response.StatusCode,
+                        "Google Books free tier quota exceeded. Please try again later.");
+                }
+
+                _logger.Warn("Google Books returned {0} for query {1}", response.StatusCode, query);
+                return new List<Book>();
+            }
+
+            if (response.Resource?.Items == null)
             {
                 return new List<Book>();
             }
@@ -1092,6 +1104,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             if (response.HasHttpError)
             {
+                if (IsGoogleBooksQuotaError(response))
+                {
+                    throw new NzbDroneClientException(response.StatusCode,
+                        "Google Books free tier quota exceeded. Please try again later.");
+                }
+
                 return null;
             }
 
@@ -1303,6 +1321,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private static string GetIndustryIdentifier(List<GoogleBooksIndustryIdentifier> identifiers, string type)
         {
             return identifiers?.FirstOrDefault(x => string.Equals(x.Type, type, StringComparison.OrdinalIgnoreCase))?.Identifier;
+        }
+
+        private static bool IsGoogleBooksQuotaError(HttpResponse response)
+        {
+            return response.StatusCode == HttpStatusCode.TooManyRequests ||
+                response.StatusCode == HttpStatusCode.Forbidden;
         }
 
         private static string Base64UrlEncode(string value)

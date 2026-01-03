@@ -92,32 +92,38 @@ class AddNewItem extends Component {
     return (
       <PageContent title={translate('AddNewItem')}>
         <PageContentBody>
-          <div className={styles.searchContainer}>
-            <div className={styles.searchIconContainer}>
-              <Icon
-                name={icons.SEARCH}
-                size={20}
+          <div className={styles.searchHeader}>
+            <div className={styles.searchContainer}>
+              <div className={styles.searchIconContainer}>
+                <Icon
+                  name={icons.SEARCH}
+                  size={20}
+                />
+              </div>
+
+              <TextInput
+                className={styles.searchInput}
+                name="searchBox"
+                value={term}
+                placeholder={translate('SearchBoxPlaceHolder')}
+                autoFocus={true}
+                onChange={this.onSearchInputChange}
               />
+
+              <Button
+                className={styles.clearLookupButton}
+                onPress={this.onClearSearchPress}
+              >
+                <Icon
+                  name={icons.REMOVE}
+                  size={20}
+                />
+              </Button>
             </div>
 
-            <TextInput
-              className={styles.searchInput}
-              name="searchBox"
-              value={term}
-              placeholder={translate('SearchBoxPlaceHolder')}
-              autoFocus={true}
-              onChange={this.onSearchInputChange}
-            />
-
-            <Button
-              className={styles.clearLookupButton}
-              onPress={this.onClearSearchPress}
-            >
-              <Icon
-                name={icons.REMOVE}
-                size={20}
-              />
-            </Button>
+            <div className={styles.quotaDisclaimer}>
+              Uses Google Books free tier (~1000 requests/day).
+            </div>
           </div>
 
           {
