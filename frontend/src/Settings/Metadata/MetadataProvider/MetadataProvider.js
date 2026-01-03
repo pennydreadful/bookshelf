@@ -85,6 +85,22 @@ function MetadataProvider(props) {
       {
         hasSettings && !isFetching && !error &&
           <Form>
+            <FieldSet legend={translate('SearchMetadata')}>
+              <FormGroup>
+                <FormLabel>
+                  {translate('GoogleBooksApiKey')}
+                </FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.PASSWORD}
+                  name="googleBooksApiKey"
+                  helpText={translate('GoogleBooksApiKeyHelpText')}
+                  onChange={onInputChange}
+                  {...settings.googleBooksApiKey}
+                />
+              </FormGroup>
+            </FieldSet>
+
             <FieldSet legend={translate('CalibreMetadata')}>
               <FormGroup>
                 <FormLabel>
