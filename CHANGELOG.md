@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.10
+- Summary: allow the update modal to close even if reload fails.
+- Why: prevent the UI from getting stuck on the update dialog.
+- Impact: closing the modal clears the update flag before reloading.
+- Files: frontend/src/App/AppUpdatedModalConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: rebuild and verify the modal can be dismissed.
+
 ## 1.2.9
 - Summary: normalize SignalR version messages to major.minor.patch.
 - Why: prevent the update modal from reappearing due to build-number mismatches.
