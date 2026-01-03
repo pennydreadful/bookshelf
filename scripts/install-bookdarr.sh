@@ -9,6 +9,7 @@ IMAGE_TAG="${IMAGE_TAG:-bookdarr:local}"
 CONTAINER_NAME="${CONTAINER_NAME:-bookdarr}"
 RID="${RID:-linux-musl-x64}"
 LOG_FILE="${LOG_FILE:-/opt/bookdarr/install.log}"
+START_CONTAINER="${START_CONTAINER:-false}"
 
 log() {
   printf '[%s] %s\n' "$(date -u +'%F %T UTC')" "$*"
@@ -67,12 +68,15 @@ docker run --rm -v "${INSTALL_DIR}:/src" -w /src mcr.microsoft.com/dotnet/sdk:6.
 log "Building Docker image"
 DOCKER_BUILDKIT=1 docker build -t "$IMAGE_TAG" -f "$INSTALL_DIR/docker/Dockerfile" "$INSTALL_DIR"
 
-if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}\$"; then
-  log "Removing existing container ${CONTAINER_NAME}"
-  docker rm -f "$CONTAINER_NAME"
+if [ "${START_CONTAINER}" = "true" ]; then
+  if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}\$"; then
+    log "Removing existing container ${CONTAINER_NAME}"
+    docker rm -f "$CONTAINER_NAME"
+  fi
+
+  log "Starting container ${CONTAINER_NAME}"
+  docker run -d --name "$CONTAINER_NAME" -p 8787:8787 -v "${CONFIG_DIR}:/config" "$IMAGE_TAG"
+  log "Install complete. Open http://<vm-ip>:8787"
+else
+  log "Build complete. Redeploy your Portainer stack to start the container."
 fi
-
-log "Starting container ${CONTAINER_NAME}"
-docker run -d --name "$CONTAINER_NAME" -p 8787:8787 -v "${CONFIG_DIR}:/config" "$IMAGE_TAG"
-
-log "Install complete. Open http://<vm-ip>:8787"

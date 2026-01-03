@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.7
+- Summary: make the install script build only and skip container start by default.
+- Why: support Portainer stack redeploys without container name conflicts.
+- Impact: install script no longer starts Bookdarr unless `START_CONTAINER=true`.
+- Files: scripts/install-bookdarr.sh, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: confirm stack redeploy works cleanly after rebuilds.
+
 ## 1.2.6
 - Summary: move the Bookdarr name/version into the left logo area.
 - Why: keep the header branding closer to the icon, as requested.

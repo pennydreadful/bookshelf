@@ -28,6 +28,7 @@ metadata source, set `METADATA_PROVIDER=bookinfo`.
 ### Install Script (Source Build)
 
 This uses Docker to build from source and logs output to `/opt/bookdarr/install.log`.
+By default it only builds the image; redeploy your Portainer stack to start the container.
 
     sudo mkdir -p /opt/bookdarr && sudo curl -L https://raw.githubusercontent.com/thashiznit2003/Bookdarr/develop/scripts/install-bookdarr.sh -o /opt/bookdarr/install-bookdarr.sh && sudo chmod +x /opt/bookdarr/install-bookdarr.sh && sudo /opt/bookdarr/install-bookdarr.sh
 
