@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.58
+- Summary: keep book covers by selecting an edition with images when available.
+- Why: when no edition is marked monitored, the fallback could pick an edition without images and show placeholders.
+- Impact: monitor/unmonitor toggles keep covers visible as long as any edition has artwork.
+- Files: src/Readarr.Api.V1/Books/BookResource.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and toggle a book’s monitored state to confirm covers stay.
+
 ## 1.2.57
 - Summary: keep book covers when toggling monitored state.
 - Why: the edit flow could return a resource without a monitored edition, resulting in empty images and placeholder art.

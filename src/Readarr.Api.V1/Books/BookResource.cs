@@ -54,7 +54,10 @@ namespace Readarr.Api.V1.Books
             }
 
             var editions = model.Editions?.Value ?? new List<Edition>();
-            var selectedEdition = editions.FirstOrDefault(x => x.Monitored) ?? editions.FirstOrDefault();
+            var selectedEdition = editions.FirstOrDefault(x => x.Monitored && x.Images?.Any() == true) ??
+                editions.FirstOrDefault(x => x.Monitored) ??
+                editions.FirstOrDefault(x => x.Images?.Any() == true) ??
+                editions.FirstOrDefault();
 
             var title = selectedEdition?.Title ?? model.Title;
             var authorTitle = $"{model.AuthorMetadata?.Value?.SortNameLastFirst} {title}";
