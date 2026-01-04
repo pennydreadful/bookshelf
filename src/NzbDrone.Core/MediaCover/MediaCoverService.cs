@@ -94,6 +94,7 @@ namespace NzbDrone.Core.MediaCover
                     {
                         mediaCover.RemoteUrl = mediaCover.Url;
                     }
+
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
                 }
             }

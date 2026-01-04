@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.75
+- Summary: fix build style error in MediaCoverService.
+- Why: StyleCop rejected a missing blank line, which stopped builds.
+- Impact: build passes without the StyleCop error.
+- Files: src/NzbDrone.Core/MediaCover/MediaCoverService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the build completes.
+
 ## 1.2.74
 - Summary: serve author posters directly from remote URLs when no local cover exists.
 - Why: MediaCoverProxy entries are in-memory and can be missing after restarts, causing author images to fail.
