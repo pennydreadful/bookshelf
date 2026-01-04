@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.30
+- Summary: add an indexer export item to the development checklist.
+- Why: track the request to support exporting indexers for migration.
+- Impact: checklist now includes indexer export work.
+- Files: checklist.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: plan the export flow (API/UI or script) and implement it.
+
 ## 1.2.29
 - Summary: allow import script to read connection details from a local env file.
 - Why: make it possible to run the import without retyping keys each time.
