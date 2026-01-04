@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.41
+- Summary: add missing System import for the new filesystem folder API.
+- Why: fixes the build error in FileSystemController.
+- Impact: build completes again after update-dev.sh.
+- Files: src/Readarr.Api.V1/FileSystem/FileSystemController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh to rebuild.
+
 ## 1.2.40
 - Summary: fix duplicate import in FormInputGroup.
 - Why: resolves the webpack build failure after the permissions tip update.
