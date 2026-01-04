@@ -78,6 +78,29 @@ class AuthorDetailsHeader extends Component {
       onMonitorTogglePress
     } = this.props;
 
+    const hasOverview = !!overview && overview.length > 0;
+    const hasWikipedia = links.some((link) => {
+      const name = link?.name ?? '';
+      const url = link?.url ?? '';
+      return name.toLowerCase() === 'wikipedia' || url.includes('wikipedia.org');
+    });
+    const hasOpenLibrary = links.some((link) => {
+      const name = link?.name ?? '';
+      const url = link?.url ?? '';
+      return name.toLowerCase() === 'open library' || url.includes('openlibrary.org');
+    });
+    const showAttribution = hasOverview && (hasWikipedia || hasOpenLibrary);
+    let attributionLabel = '';
+    if (showAttribution) {
+      if (hasWikipedia && hasOpenLibrary) {
+        attributionLabel = 'Source: Wikipedia/Open Library';
+      } else if (hasWikipedia) {
+        attributionLabel = 'Source: Wikipedia';
+      } else {
+        attributionLabel = 'Source: Open Library';
+      }
+    }
+
     const {
       bookFileCount,
       sizeOnDisk
@@ -309,6 +332,12 @@ class AuthorDetailsHeader extends Component {
                 text={stripHtml(overview)}
               />
             </Measure>
+            {
+              showAttribution &&
+                <div className={styles.sourceAttribution}>
+                  {attributionLabel}
+                </div>
+            }
           </div>
         </div>
       </div>

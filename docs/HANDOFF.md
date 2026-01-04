@@ -43,6 +43,8 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author images now render correctly when the URL is proxied (no poster-size replacement).
+- Author pages show a small attribution label under the blurb when the source is Wikipedia/Open Library.
 - Fixed author extras backfill build errors in the API layer.
 - Author pages now backfill missing posters/blurbs/links on load and persist them to metadata.
 - Author posters fall back to the media-cover proxy when no local author cover exists.

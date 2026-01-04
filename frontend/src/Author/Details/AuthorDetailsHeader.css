@@ -130,6 +130,12 @@
   font-size: $intermediateFontSize;
 }
 
+.sourceAttribution {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--helpTextColor);
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .headerContent {
     padding: 15px;

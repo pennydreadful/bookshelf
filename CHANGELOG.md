@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.72
+- Summary: show remote author images correctly and add attribution under the author blurb.
+- Why: author posters were not rendering when served via the proxy, and attribution was requested in the UI.
+- Impact: author images display reliably even when they are remote/proxied; author pages show a small “Source: Wikipedia/Open Library” label under the blurb when applicable.
+- Files: frontend/src/Author/AuthorImage.js, frontend/src/Author/Details/AuthorDetailsHeader.js, frontend/src/Author/Details/AuthorDetailsHeader.css, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an author page, and confirm the poster and attribution label are visible.
+
 ## 1.2.71
 - Summary: fix author extras build errors in the API layer.
 - Why: a type mismatch in the author metadata backfill prevented compilation.

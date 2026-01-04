@@ -10,7 +10,12 @@ function getUrl(image, coverType, size) {
   const imageUrl = image?.url;
 
   if (imageUrl) {
-    return imageUrl.replace(`${coverType}.jpg`, `${coverType}-${size}.jpg`);
+    const sizedToken = `${coverType}.jpg`;
+    if (imageUrl.includes(sizedToken)) {
+      return imageUrl.replace(sizedToken, `${coverType}-${size}.jpg`);
+    }
+
+    return imageUrl;
   }
 }
 
