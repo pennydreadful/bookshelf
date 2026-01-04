@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 
 namespace NzbDrone.Core.RemotePathMappings
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.RemotePathMappings
     {
         private readonly IRemotePathMappingRepository _remotePathMappingRepository;
         private readonly IDiskProvider _diskProvider;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         private readonly ICached<List<RemotePathMapping>> _cache;
@@ -33,11 +35,13 @@ namespace NzbDrone.Core.RemotePathMappings
         public RemotePathMappingService(IDownloadClientRepository downloadClientRepository,
                                         IRemotePathMappingRepository remotePathMappingRepository,
                                         IDiskProvider diskProvider,
+                                        IConfigService configService,
                                         ICacheManager cacheManager,
                                         Logger logger)
         {
             _remotePathMappingRepository = remotePathMappingRepository;
             _diskProvider = diskProvider;
+            _configService = configService;
             _logger = logger;
 
             _cache = cacheManager.GetCache<List<RemotePathMapping>>(GetType());
@@ -131,7 +135,7 @@ namespace NzbDrone.Core.RemotePathMappings
 
             if (mappings.Empty())
             {
-                return remotePath;
+                return RemapRemoteToLocalFallback(remotePath);
             }
 
             _logger.Trace("Evaluating remote path remote mappings for match to host [{0}] and remote path [{1}]", host, remotePath.FullPath);
@@ -148,7 +152,7 @@ namespace NzbDrone.Core.RemotePathMappings
                 }
             }
 
-            return remotePath;
+            return RemapRemoteToLocalFallback(remotePath);
         }
 
         public OsPath RemapLocalToRemote(string host, OsPath localPath)
@@ -178,6 +182,41 @@ namespace NzbDrone.Core.RemotePathMappings
                     return remotePath;
                 }
             }
+
+            return localPath;
+        }
+
+        private OsPath RemapRemoteToLocalFallback(OsPath remotePath)
+        {
+            var downloadRoot = _configService.DownloadClientRootFolder;
+
+            if (downloadRoot.IsNullOrWhiteSpace())
+            {
+                return remotePath;
+            }
+
+            var localRoot = new OsPath(downloadRoot).AsDirectory();
+
+            if (localRoot.IsEmpty || !localRoot.IsRooted)
+            {
+                return remotePath;
+            }
+
+            if (!_diskProvider.FolderExists(localRoot.FullPath))
+            {
+                return remotePath;
+            }
+
+            var remoteRoot = new OsPath("/downloads").AsDirectory();
+
+            if (!remoteRoot.Contains(remotePath))
+            {
+                return remotePath;
+            }
+
+            var localPath = localRoot + (remotePath - remoteRoot);
+
+            _logger.Debug("Remapped remote path [{0}] to local path [{1}] using downloads folder override", remotePath, localPath);
 
             return localPath;
         }

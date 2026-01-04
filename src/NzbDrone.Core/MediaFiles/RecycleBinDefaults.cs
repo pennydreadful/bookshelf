@@ -35,8 +35,9 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            var appDataPath = _appFolderInfo.GetAppDataPath();
-            var defaultRecycleBin = Path.Combine(appDataPath, "recycle");
+            var bookdarrHome = Environment.GetEnvironmentVariable("BOOKDARR_HOME");
+            var basePath = bookdarrHome.IsNotNullOrWhiteSpace() ? bookdarrHome : _appFolderInfo.GetAppDataPath();
+            var defaultRecycleBin = Path.Combine(basePath, "recycle");
 
             try
             {

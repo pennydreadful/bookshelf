@@ -452,7 +452,20 @@ namespace NzbDrone.Common.Disk
                 return null;
             }
 
-            return driveInfo.VolumeLabel;
+            var label = driveInfo.VolumeLabel;
+
+            if (label.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            if (label.StartsWith("UUID=", StringComparison.InvariantCultureIgnoreCase) ||
+                label.StartsWith("/dev/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            return label;
         }
 
         public FileStream OpenReadStream(string path)

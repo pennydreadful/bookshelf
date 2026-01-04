@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.38
+- Summary: add a downloads folder fallback for remote path mapping and hide device UUID labels in disk space.
+- Why: avoid false remote path mapping warnings and show cleaner disk space labels.
+- Impact: when no remote path mapping exists, `/downloads` remaps to the configured downloads folder if it exists; disk space labels no longer show `/dev/disk/by-uuid/...`.
+- Files: src/NzbDrone.Core/RemotePathMappings/RemotePathMappingService.cs, src/NzbDrone.Common/Disk/DiskProviderBase.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the qBittorrent warning is gone and disk space shows paths only.
+
+## 1.2.37
+- Summary: default recycle bin to Bookdarr home when available.
+- Why: keep the recycle folder at the app root (e.g., `/opt/bookdarr-dev/recycle`) instead of under config.
+- Impact: if `BOOKDARR_HOME` is set, recycle bin defaults to `BOOKDARR_HOME/recycle`; otherwise uses the app data path.
+- Files: src/NzbDrone.Core/MediaFiles/RecycleBinDefaults.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify the recycle bin path.
+
 ## 1.2.36
 - Summary: fix build failure from missing OsInfo using.
 - Why: ConfigService now uses OsInfo for default download path on Linux.
