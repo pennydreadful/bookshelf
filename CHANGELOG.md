@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.24
+- Summary: prompt for Readarr and Bookdarr connection details in the import script.
+- Why: avoid passing API keys on the command line.
+- Impact: import-indexers.sh now asks for source host/port/key and target key interactively.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download import-indexers.sh and run it on the Bookdarr VM.
+
 ## 1.2.23
 - Summary: add a script to import indexers from another Readarr instance via API.
 - Why: avoid manual SQL edits and reduce migration errors.

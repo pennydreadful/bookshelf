@@ -37,6 +37,28 @@ if [ $# -ge 5 ]; then
   TARGET_URL="$5"
 fi
 
+if [ -z "${SOURCE_HOST}" ]; then
+  read -r -p "Source Readarr host (IP/DNS): " SOURCE_HOST
+fi
+
+if [ -z "${SOURCE_PORT}" ]; then
+  read -r -p "Source Readarr port: " SOURCE_PORT
+fi
+
+if [ -z "${SOURCE_API_KEY}" ]; then
+  read -r -s -p "Source Readarr API key: " SOURCE_API_KEY
+  echo
+fi
+
+if [ -z "${TARGET_URL}" ]; then
+  TARGET_URL="http://localhost:8787"
+fi
+
+read -r -p "Target Bookdarr URL [${TARGET_URL}]: " target_url_input
+if [ -n "${target_url_input}" ]; then
+  TARGET_URL="${target_url_input}"
+fi
+
 if [ -z "${SOURCE_HOST}" ] || [ -z "${SOURCE_PORT}" ] || [ -z "${SOURCE_API_KEY}" ]; then
   usage
   exit 1
@@ -58,6 +80,11 @@ except Exception:
     pass
 PY
   )"
+fi
+
+if [ -z "${TARGET_API_KEY}" ]; then
+  read -r -s -p "Target Bookdarr API key: " TARGET_API_KEY
+  echo
 fi
 
 if [ -z "${TARGET_API_KEY}" ]; then
