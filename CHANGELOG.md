@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.80
+- Summary: restore the Standard Book Format field even when Rename Books is disabled.
+- Why: users still need to see and set the global naming pattern while toggling rename behavior.
+- Impact: the field stays visible with a help reminder to enable Rename Books; naming rules remain unchanged.
+- Files: frontend/src/Settings/MediaManagement/Naming/Naming.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm Standard Book Format is visible and editable.
+
 ## 1.2.79
 - Summary: fix IDE0005 build errors by removing unnecessary using directives.
 - Why: the dev build failed with StyleCop/IDE warnings treated as errors.

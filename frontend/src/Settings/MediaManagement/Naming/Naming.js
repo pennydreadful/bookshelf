@@ -173,27 +173,22 @@ class Naming extends Component {
                   null
               }
 
-              {
-                renameBooks &&
-                  <div>
-                    <FormGroup size={sizes.LARGE}>
-                      <FormLabel>
-                        {translate('StandardBookFormat')}
-                      </FormLabel>
+              <FormGroup size={sizes.LARGE}>
+                <FormLabel>
+                  {translate('StandardBookFormat')}
+                </FormLabel>
 
-                      <FormInputGroup
-                        inputClassName={styles.namingInput}
-                        type={inputTypes.TEXT}
-                        name="standardBookFormat"
-                        buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
-                        onChange={onInputChange}
-                        {...settings.standardBookFormat}
-                        helpTexts={standardBookFormatHelpTexts}
-                        errors={[...standardBookFormatErrors, ...settings.standardBookFormat.errors]}
-                      />
-                    </FormGroup>
-                  </div>
-              }
+                <FormInputGroup
+                  inputClassName={styles.namingInput}
+                  type={inputTypes.TEXT}
+                  name="standardBookFormat"
+                  buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
+                  onChange={onInputChange}
+                  {...settings.standardBookFormat}
+                  helpTexts={renameBooks ? standardBookFormatHelpTexts : ['Enable Rename Books to apply this format', ...standardBookFormatHelpTexts]}
+                  errors={[...standardBookFormatErrors, ...settings.standardBookFormat.errors]}
+                />
+              </FormGroup>
 
               <FormGroup
                 advancedSettings={advancedSettings}
