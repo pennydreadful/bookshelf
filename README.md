@@ -86,11 +86,6 @@ Already done
 - [x] Removed servarr analytics spyware.
 - [x] Supports selfhosted metadata (UI or `METADATA_URL` env var).
 
-## Sponsors
-
-If you ever donated to [this](https://opencollective.com/readarr) project you
-should request a refund. Those people don't deserve your money.
-
 ### License
 
 This is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)
