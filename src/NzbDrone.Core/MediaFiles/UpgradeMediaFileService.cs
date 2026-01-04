@@ -47,7 +47,13 @@ namespace NzbDrone.Core.MediaFiles
         public BookFileMoveResult UpgradeBookFile(BookFile bookFile, LocalBook localBook, bool copyOnly = false)
         {
             var moveFileResult = new BookFileMoveResult();
+            var targetMediaType = GetMediaType(bookFile, localBook);
             var existingFiles = localBook.Book.BookFiles.Value;
+
+            if (targetMediaType != BookFileMediaType.Unknown)
+            {
+                existingFiles = existingFiles.Where(f => GetMediaType(f) == targetMediaType).ToList();
+            }
 
             var rootFolderPath = _diskProvider.GetParentFolder(localBook.Author.Path);
             var rootFolder = _rootFolderService.GetBestRootFolder(rootFolderPath);
@@ -115,6 +121,46 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return moveFileResult;
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile bookFile, LocalBook localBook)
+        {
+            if (bookFile != null && bookFile.MediaType != BookFileMediaType.Unknown)
+            {
+                return bookFile.MediaType;
+            }
+
+            if (localBook != null && localBook.MediaType != BookFileMediaType.Unknown)
+            {
+                return localBook.MediaType;
+            }
+
+            if (bookFile != null)
+            {
+                return MediaFileExtensions.GetMediaTypeForPath(bookFile.Path);
+            }
+
+            if (localBook != null)
+            {
+                return MediaFileExtensions.GetMediaTypeForPath(localBook.Path);
+            }
+
+            return BookFileMediaType.Unknown;
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile bookFile)
+        {
+            if (bookFile == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (bookFile.MediaType != BookFileMediaType.Unknown)
+            {
+                return bookFile.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(bookFile.Path);
         }
     }
 }

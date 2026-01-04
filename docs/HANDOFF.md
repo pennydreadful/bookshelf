@@ -38,11 +38,15 @@ Use this file to onboard a new Codex chat.
 ## Open Work / Next Steps
 - Docker Hub publish pipeline (GitHub Action + secrets).
 - Hardcover fallback provider (research and implementation).
-- Multi-file-per-book support (ebook + audiobook in same folder).
+- Validate ebook + audiobook coexistence on real imports and check stats/progress display.
 - Diagnostics repo + UI upload flow for logs/config.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Added media type tracking for BookFiles (ebook vs audiobook) with a DB migration to backfill existing rows.
+- Upgrade/cutoff decisions now compare files within the same media type so ebooks and audiobooks can coexist.
+- Import/rename logic now scopes part counts to the media type to keep multi-part audiobooks consistent.
+- BookFile API resources now expose `mediaType`.
 - Added a “Refresh author picture” button that forces a metadata re-fetch for images.
 - Added a Wikipedia-by-name fallback (summary + thumbnail) for authors without Wikidata/Open Library art.
 - Fixed a StyleCop build error in MediaCoverService.

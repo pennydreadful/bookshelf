@@ -185,6 +185,9 @@ namespace NzbDrone.Core.MediaFiles
                     Size = decision.Item.Size,
                     Modified = decision.Item.Modified,
                     DateAdded = DateTime.UtcNow,
+                    MediaType = decision.Item.MediaType != BookFileMediaType.Unknown
+                        ? decision.Item.MediaType
+                        : MediaFileExtensions.GetMediaTypeForExtension(Path.GetExtension(decision.Item.Path)),
                     Quality = decision.Item.Quality,
                     MediaInfo = decision.Item.FileTrackInfo.MediaInfo,
                     Edition = decision.Item.Edition

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NzbDrone.Core.Qualities;
 
@@ -45,6 +46,51 @@ namespace NzbDrone.Core.MediaFiles
         public static HashSet<string> TextExtensions => new HashSet<string>(_textExtensions.Keys, StringComparer.OrdinalIgnoreCase);
         public static HashSet<string> AudioExtensions => new HashSet<string>(_audioExtensions.Keys, StringComparer.OrdinalIgnoreCase);
         public static HashSet<string> AllExtensions => new HashSet<string>(_textExtensions.Keys.Concat(_audioExtensions.Keys), StringComparer.OrdinalIgnoreCase);
+
+        public static BookFileMediaType GetMediaTypeForExtension(string extension)
+        {
+            if (_textExtensions.ContainsKey(extension))
+            {
+                return BookFileMediaType.Ebook;
+            }
+
+            if (_audioExtensions.ContainsKey(extension))
+            {
+                return BookFileMediaType.Audiobook;
+            }
+
+            return BookFileMediaType.Unknown;
+        }
+
+        public static BookFileMediaType GetMediaTypeForPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            return GetMediaTypeForExtension(Path.GetExtension(path));
+        }
+
+        public static BookFileMediaType GetMediaTypeForQuality(Quality quality)
+        {
+            if (quality == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (quality == Quality.MP3 || quality == Quality.M4B || quality == Quality.FLAC || quality == Quality.UnknownAudio)
+            {
+                return BookFileMediaType.Audiobook;
+            }
+
+            if (quality == Quality.PDF || quality == Quality.MOBI || quality == Quality.EPUB || quality == Quality.AZW3 || quality == Quality.Unknown)
+            {
+                return BookFileMediaType.Ebook;
+            }
+
+            return BookFileMediaType.Unknown;
+        }
 
         public static Quality GetQualityForExtension(string extension)
         {

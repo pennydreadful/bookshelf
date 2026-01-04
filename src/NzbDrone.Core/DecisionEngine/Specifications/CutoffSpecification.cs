@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -30,8 +31,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             var qualityProfile = subject.Author.QualityProfile.Value;
+            var targetMediaType = GetMediaType(subject);
 
-            foreach (var file in subject.Books.SelectMany(b => b.BookFiles.Value))
+            var files = subject.Books.SelectMany(b => b.BookFiles.Value);
+            if (targetMediaType != BookFileMediaType.Unknown)
+            {
+                files = files.Where(f => GetMediaType(f) == targetMediaType);
+            }
+
+            foreach (var file in files)
             {
                 // Get a distinct list of all current track qualities for a given book
                 var currentQualities = new List<QualityModel> { file.Quality };
@@ -55,6 +63,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return Decision.Accept();
+        }
+
+        private static BookFileMediaType GetMediaType(RemoteBook subject)
+        {
+            return MediaFileExtensions.GetMediaTypeForQuality(subject?.ParsedBookInfo?.Quality?.Quality);
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile file)
+        {
+            if (file == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (file.MediaType != BookFileMediaType.Unknown)
+            {
+                return file.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(file.Path);
         }
     }
 }

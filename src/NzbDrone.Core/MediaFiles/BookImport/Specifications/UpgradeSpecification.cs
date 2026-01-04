@@ -4,6 +4,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -33,6 +34,17 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
                 return Decision.Accept();
             }
 
+            var targetMediaType = GetMediaType(item);
+            if (targetMediaType != BookFileMediaType.Unknown)
+            {
+                files = files.Where(f => GetMediaType(f) == targetMediaType).ToList();
+            }
+
+            if (!files.Any())
+            {
+                return Decision.Accept();
+            }
+
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
             var qualityComparer = new QualityModelComparer(item.Author.QualityProfile);
 
@@ -55,6 +67,36 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             }
 
             return Decision.Accept();
+        }
+
+        private static BookFileMediaType GetMediaType(LocalBook item)
+        {
+            if (item == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (item.MediaType != BookFileMediaType.Unknown)
+            {
+                return item.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(item.Path);
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile file)
+        {
+            if (file == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (file.MediaType != BookFileMediaType.Unknown)
+            {
+                return file.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(file.Path);
         }
     }
 }

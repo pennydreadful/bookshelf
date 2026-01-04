@@ -8,6 +8,7 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.BookImport.Aggregation;
 using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Parser.Model;
@@ -113,6 +114,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     DownloadClientBookInfo = downloadClientItemInfo,
                     FolderTrackInfo = folderInfo,
                     Path = file.FullName,
+                    MediaType = MediaFileExtensions.GetMediaTypeForExtension(file.Extension),
                     Part = fileTrackInfo.TrackNumbers.Any() ? fileTrackInfo.TrackNumbers.First() : 1,
                     Size = file.Length,
                     Modified = file.LastWriteTimeUtc,

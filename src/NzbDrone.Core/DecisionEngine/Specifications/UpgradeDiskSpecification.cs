@@ -3,6 +3,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
@@ -28,7 +29,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            foreach (var file in subject.Books.SelectMany(c => c.BookFiles.Value))
+            var targetMediaType = GetMediaType(subject);
+            var files = subject.Books.SelectMany(c => c.BookFiles.Value);
+            if (targetMediaType != BookFileMediaType.Unknown)
+            {
+                files = files.Where(f => GetMediaType(f) == targetMediaType);
+            }
+
+            foreach (var file in files)
             {
                 if (file == null)
                 {
@@ -48,6 +56,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return Decision.Accept();
+        }
+
+        private static BookFileMediaType GetMediaType(RemoteBook subject)
+        {
+            return MediaFileExtensions.GetMediaTypeForQuality(subject?.ParsedBookInfo?.Quality?.Quality);
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile file)
+        {
+            if (file == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (file.MediaType != BookFileMediaType.Unknown)
+            {
+                return file.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(file.Path);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace NzbDrone.Core.MediaFiles
         public int EditionId { get; set; }
         public int CalibreId { get; set; }
         public int Part { get; set; }
+        public BookFileMediaType MediaType { get; set; }
 
         // These are queried from the database
         public LazyLoaded<Author> Author { get; set; }

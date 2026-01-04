@@ -72,13 +72,21 @@ namespace NzbDrone.Core.MediaFiles
 
         private IEnumerable<RenameBookFilePreview> GetPreviews(Author author, List<BookFile> files)
         {
-            var counts = files.GroupBy(x => x.EditionId).ToDictionary(g => g.Key, g => g.Count());
+            var counts = files
+                .GroupBy(x => (x.EditionId, MediaType: GetMediaType(x)))
+                .ToDictionary(g => g.Key, g => g.Count());
 
             // Don't rename Calibre files
             foreach (var f in files.Where(x => x.CalibreId == 0))
             {
                 var file = f;
-                file.PartCount = counts[file.EditionId];
+                var countKey = (file.EditionId, MediaType: GetMediaType(file));
+                if (!counts.TryGetValue(countKey, out var partCount))
+                {
+                    partCount = 1;
+                }
+
+                file.PartCount = partCount;
 
                 var book = file.Edition.Value;
                 var bookFilePath = file.Path;
@@ -114,14 +122,22 @@ namespace NzbDrone.Core.MediaFiles
         private void RenameFiles(List<BookFile> bookFiles, Author author)
         {
             var allFiles = _mediaFileService.GetFilesByAuthor(author.Id);
-            var counts = allFiles.GroupBy(x => x.EditionId).ToDictionary(g => g.Key, g => g.Count());
+            var counts = allFiles
+                .GroupBy(x => (x.EditionId, MediaType: GetMediaType(x)))
+                .ToDictionary(g => g.Key, g => g.Count());
             var renamed = new List<RenamedBookFile>();
 
             // Don't rename Calibre files
             foreach (var bookFile in bookFiles.Where(x => x.CalibreId == 0))
             {
                 var previousPath = bookFile.Path;
-                bookFile.PartCount = counts[bookFile.EditionId];
+                var countKey = (bookFile.EditionId, MediaType: GetMediaType(bookFile));
+                if (!counts.TryGetValue(countKey, out var partCount))
+                {
+                    partCount = 1;
+                }
+
+                bookFile.PartCount = partCount;
 
                 try
                 {
@@ -185,6 +201,21 @@ namespace NzbDrone.Core.MediaFiles
                 RenameFiles(bookFiles, author);
                 _logger.ProgressInfo("All book files renamed for {0}", author.Name);
             }
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile bookFile)
+        {
+            if (bookFile == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (bookFile.MediaType != BookFileMediaType.Unknown)
+            {
+                return bookFile.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(bookFile.Path);
         }
     }
 }

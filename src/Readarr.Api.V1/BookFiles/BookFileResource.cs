@@ -19,6 +19,7 @@ namespace Readarr.Api.V1.BookFiles
         public int QualityWeight { get; set; }
         public int? IndexerFlags { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
+        public BookFileMediaType MediaType { get; set; }
 
         public bool QualityCutoffNotMet { get; set; }
         public ParsedTrackInfo AudioTags { get; set; }
@@ -55,7 +56,10 @@ namespace Readarr.Api.V1.BookFiles
                 DateAdded = model.DateAdded,
                 Quality = model.Quality,
                 QualityWeight = QualityWeight(model.Quality),
-                MediaInfo = model.MediaInfo.ToResource()
+                MediaInfo = model.MediaInfo.ToResource(),
+                MediaType = model.MediaType != BookFileMediaType.Unknown
+                    ? model.MediaType
+                    : MediaFileExtensions.GetMediaTypeForPath(model.Path)
             };
         }
 
@@ -78,6 +82,9 @@ namespace Readarr.Api.V1.BookFiles
                 Quality = model.Quality,
                 QualityWeight = QualityWeight(model.Quality),
                 MediaInfo = model.MediaInfo.ToResource(),
+                MediaType = model.MediaType != BookFileMediaType.Unknown
+                    ? model.MediaType
+                    : MediaFileExtensions.GetMediaTypeForPath(model.Path),
                 QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(author.QualityProfile.Value, model.Quality),
                 IndexerFlags = (int)model.IndexerFlags
             };

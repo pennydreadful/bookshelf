@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.78
+- Summary: support ebook + audiobook files per book with media-type-aware upgrades.
+- Why: importing one format should not delete the other, and quality comparisons must stay within the same media type.
+- Impact: BookFiles store a media type, upgrade/cutoff checks compare only matching types, part counts are scoped by media type, and the API exposes mediaType.
+- Files: src/NzbDrone.Core/MediaFiles/BookFileMediaType.cs, src/NzbDrone.Core/MediaFiles/MediaFileExtensions.cs, src/NzbDrone.Core/MediaFiles/BookFile.cs, src/NzbDrone.Core/Parser/Model/LocalBook.cs, src/NzbDrone.Core/Datastore/Migration/041_add_bookfile_media_type.cs, src/NzbDrone.Core/MediaFiles/BookImport/ImportDecisionMaker.cs, src/NzbDrone.Core/MediaFiles/BookImport/Identification/IdentificationService.cs, src/NzbDrone.Core/MediaFiles/BookImport/Manual/ManualImportService.cs, src/NzbDrone.Core/MediaFiles/DiskScanService.cs, src/NzbDrone.Core/MediaFiles/BookImport/ImportApprovedBooks.cs, src/NzbDrone.Core/MediaFiles/UpgradeMediaFileService.cs, src/NzbDrone.Core/MediaFiles/RenameBookFileService.cs, src/NzbDrone.Core/MediaFiles/BookImport/Specifications/UpgradeSpecification.cs, src/NzbDrone.Core/DecisionEngine/Specifications/UpgradeAllowedSpecification.cs, src/NzbDrone.Core/DecisionEngine/Specifications/CutoffSpecification.cs, src/NzbDrone.Core/DecisionEngine/Specifications/UpgradeDiskSpecification.cs, src/Readarr.Api.V1/BookFiles/BookFileResource.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, import an ebook and audiobook for the same book, and confirm both files remain listed under the book files table.
+
 ## 1.2.77
 - Summary: add an author picture refresh button that forces a metadata re-fetch.
 - Why: users need a quick way to fix incorrect or missing author photos without a full refresh.

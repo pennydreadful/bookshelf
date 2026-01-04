@@ -14,6 +14,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
@@ -341,6 +342,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                         ExistingFile = fileRootFolder != null,
                         FileTrackInfo = fileTrackInfo,
                         Path = file.Path,
+                        MediaType = MediaFileExtensions.GetMediaTypeForExtension(fileInfo.Extension),
                         Part = fileTrackInfo.TrackNumbers.Any() ? fileTrackInfo.TrackNumbers.First() : 1,
                         PartCount = importBookId.Count(),
                         Size = fileInfo.Length,

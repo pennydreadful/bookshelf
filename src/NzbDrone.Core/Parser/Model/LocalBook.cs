@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Qualities;
 
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.Parser.Model
         public bool SceneSource { get; set; }
         public string ReleaseGroup { get; set; }
         public string SceneName { get; set; }
+        public BookFileMediaType MediaType { get; set; }
 
         public override string ToString()
         {
