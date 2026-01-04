@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Books.Calibre;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles;
@@ -42,6 +43,7 @@ namespace NzbDrone.Core.Profiles.Metadata
         private readonly IImportListFactory _importListFactory;
         private readonly IRootFolderService _rootFolderService;
         private readonly ITermMatcherService _termMatcherService;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public MetadataProfileService(IMetadataProfileRepository profileRepository,
@@ -52,6 +54,7 @@ namespace NzbDrone.Core.Profiles.Metadata
                                       IImportListFactory importListFactory,
                                       IRootFolderService rootFolderService,
                                       ITermMatcherService termMatcherService,
+                                      IConfigService configService,
                                       Logger logger)
         {
             _profileRepository = profileRepository;
@@ -62,6 +65,7 @@ namespace NzbDrone.Core.Profiles.Metadata
             _importListFactory = importListFactory;
             _rootFolderService = rootFolderService;
             _termMatcherService = termMatcherService;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -154,8 +158,11 @@ namespace NzbDrone.Core.Profiles.Metadata
             var localHash = new HashSet<string>(localBooks.Where(x => x.AddOptions.AddType == BookAddType.Manual).Select(x => x.ForeignBookId));
             localHash.UnionWith(localFiles.Select(x => x.Edition.Value.Book.Value.ForeignBookId));
 
-            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, BookAllowedByRating, "rating criteria not met");
-            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipMissingDate || x.ReleaseDate.HasValue, "release date is missing");
+            if (!IsGoogleBooksProvider())
+            {
+                FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, BookAllowedByRating, "rating criteria not met");
+                FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipMissingDate || x.ReleaseDate.HasValue, "release date is missing");
+            }
             FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipPartsAndSets || !IsPartOrSet(x, seriesLinks.GetValueOrDefault(x), titles), "book is part of set");
             FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipSeriesSecondary || !seriesLinks.ContainsKey(x) || seriesLinks[x].Any(y => y.IsPrimary), "book is a secondary series item");
             FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.Ignored.Any(i => MatchesTerms(x.Title, i)), "contains ignored terms");
@@ -208,6 +215,11 @@ namespace NzbDrone.Core.Profiles.Metadata
             }
 
             return (b.Ratings.Popularity >= p.MinPopularity) || b.ReleaseDate > DateTime.UtcNow;
+        }
+
+        private bool IsGoogleBooksProvider()
+        {
+            return string.Equals(_configService.MetadataProvider, "googlebooks", StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsPartOrSet(Book book, List<SeriesBookLink> seriesLinks, HashSet<string> titles)

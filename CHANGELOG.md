@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.51
+- Summary: relax metadata profile filters for Google Books and stop using book covers as author posters.
+- Why: Google Books doesn’t provide popularity scores or author photos; those filters were removing all books and the poster fallback was misleading.
+- Impact: author adds from Google Books should now populate books; author posters will show the default placeholder unless a real author image exists.
+- Files: src/NzbDrone.Core/Profiles/Metadata/MetadataProfileService.cs, src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and re-test adding J. K. Rowling and author images.
+
 ## 1.2.50
 - Summary: fix stylecop ordering error from the AddBookService import change.
 - Why: builds fail when using directives are out of order.

@@ -1122,7 +1122,6 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             var authorId = BuildGoogleAuthorId(authorName);
             var metadata = BuildGoogleAuthorMetadata(authorId, authorName);
             var books = SearchGoogleBooksAuthor(authorName);
-            EnsureGoogleAuthorImage(metadata, books);
 
             var author = new Author
             {
@@ -1422,30 +1421,6 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 .ToArray());
 
             return normalized.CleanSpaces();
-        }
-
-        private static void EnsureGoogleAuthorImage(AuthorMetadata metadata, List<Book> books)
-        {
-            if (metadata.Images.Any() || books == null)
-            {
-                return;
-            }
-
-            var cover = books
-                .SelectMany(b => b.Editions?.Value ?? new List<Edition>())
-                .SelectMany(e => e.Images ?? new List<MediaCover.MediaCover>())
-                .FirstOrDefault(image => image.CoverType == MediaCoverTypes.Cover && image.Url.IsNotNullOrWhiteSpace());
-
-            if (cover == null)
-            {
-                return;
-            }
-
-            metadata.Images.Add(new MediaCover.MediaCover
-            {
-                Url = cover.Url,
-                CoverType = MediaCoverTypes.Poster
-            });
         }
 
         private static DateTime? ParseGooglePublishedDate(string publishedDate)
