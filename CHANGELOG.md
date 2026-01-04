@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.29
+- Summary: allow import script to read connection details from a local env file.
+- Why: make it possible to run the import without retyping keys each time.
+- Impact: import-indexers.sh loads `/opt/bookdarr-dev/import-indexers.env` if present.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: add the env file on the VM and rerun the import script.
+
 ## 1.2.28
 - Summary: add a recovery prompt when the target indexer API fails.
 - Why: a corrupted indexer table returns HTTP 500 and blocks imports.

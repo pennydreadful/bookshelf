@@ -9,6 +9,7 @@ TARGET_API_KEY="${TARGET_API_KEY:-}"
 TARGET_CONFIG="${TARGET_CONFIG:-/opt/bookdarr-dev/config/config.xml}"
 TARGET_DB="${TARGET_DB:-/opt/bookdarr-dev/config/readarr.db}"
 REPLACE_EXISTING="${REPLACE_EXISTING:-true}"
+ENV_FILE="${ENV_FILE:-/opt/bookdarr-dev/import-indexers.env}"
 
 usage() {
   cat <<'EOF'
@@ -21,6 +22,7 @@ Environment variables:
   TARGET_URL (default: http://localhost:8787)
   TARGET_CONFIG (default: /opt/bookdarr-dev/config/config.xml)
   TARGET_DB (default: /opt/bookdarr-dev/config/readarr.db)
+  ENV_FILE (default: /opt/bookdarr-dev/import-indexers.env)
   REPLACE_EXISTING (default: true)
 EOF
 }
@@ -30,6 +32,13 @@ ensure_echo() {
     stty echo || true
   fi
 }
+
+if [ -f "${ENV_FILE}" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "${ENV_FILE}"
+  set +a
+fi
 
 if [ $# -ge 3 ]; then
   SOURCE_HOST="$1"
