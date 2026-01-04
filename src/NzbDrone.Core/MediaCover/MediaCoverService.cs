@@ -96,6 +96,25 @@ namespace NzbDrone.Core.MediaCover
             }
             else
             {
+                if (coverEntity == MediaCoverEntity.Book)
+                {
+                    var coverList = covers as IList<MediaCover>;
+                    var localCover = coverList != null ? BuildLocalBookCover(entityId) : null;
+
+                    if (localCover != null)
+                    {
+                        for (var i = coverList.Count - 1; i >= 0; i--)
+                        {
+                            if (coverList[i].CoverType == MediaCoverTypes.Cover)
+                            {
+                                coverList.RemoveAt(i);
+                            }
+                        }
+
+                        coverList.Insert(0, localCover);
+                    }
+                }
+
                 foreach (var mediaCover in covers)
                 {
                     if (mediaCover.CoverType == MediaCoverTypes.Unknown)
@@ -123,6 +142,20 @@ namespace NzbDrone.Core.MediaCover
                     }
                 }
             }
+        }
+
+        private MediaCover BuildLocalBookCover(int bookId)
+        {
+            foreach (var extension in new[] { ".jpg", ".jpeg", ".png" })
+            {
+                var path = GetCoverPath(bookId, MediaCoverEntity.Book, MediaCoverTypes.Cover, extension, null);
+                if (_diskProvider.FileExists(path))
+                {
+                    return new MediaCover(MediaCoverTypes.Cover, "cover" + extension);
+                }
+            }
+
+            return null;
         }
 
         private string GetAuthorCoverPath(int authorId)

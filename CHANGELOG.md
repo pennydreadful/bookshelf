@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.60
+- Summary: make book covers edition-independent by preferring the local book cover file.
+- Why: cover art was tied to the monitored edition, so toggling monitored could drop images and show placeholders.
+- Impact: if a local book cover exists, it is always used for display regardless of edition state.
+- Files: src/NzbDrone.Core/MediaCover/MediaCoverService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and toggle monitored to confirm covers stay unchanged.
+
 ## 1.2.59
 - Summary: keep book covers on save by reloading editions before returning the updated resource.
 - Why: the edit save response could omit editions, which wiped images in the UI even though nothing about covers changed.
