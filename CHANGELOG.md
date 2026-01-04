@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.55
+- Summary: avoid crashing Book save when edit payload omits editions.
+- Why: the Book Details edit modal triggers a PUT without editions, which caused a 500 error and made Save appear to do nothing.
+- Impact: edit modal saves no longer error when editions are missing from the payload; monitoring changes still handled separately.
+- Files: src/Readarr.Api.V1/Books/BookResource.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm Book Details edit Save updates without errors.
+
 ## 1.2.54
 - Summary: force monitored updates from the edit modal via the monitor endpoint.
 - Why: the Book Details edit modal was not reliably applying monitor/unmonitor changes.

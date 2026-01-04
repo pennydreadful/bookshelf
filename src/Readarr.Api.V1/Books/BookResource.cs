@@ -103,7 +103,7 @@ namespace Readarr.Api.V1.Books
                 Title = resource.Title,
                 Monitored = resource.Monitored,
                 AnyEditionOk = resource.AnyEditionOk,
-                Editions = resource.Editions.ToModel(),
+                Editions = resource.Editions?.ToModel(),
                 AddOptions = resource.AddOptions,
                 Author = author,
                 AuthorMetadata = author.Metadata.Value
@@ -115,7 +115,10 @@ namespace Readarr.Api.V1.Books
             var updatedBook = resource.ToModel();
 
             book.ApplyChanges(updatedBook);
-            book.Editions = updatedBook.Editions;
+            if (updatedBook.Editions != null)
+            {
+                book.Editions = updatedBook.Editions;
+            }
 
             return book;
         }
