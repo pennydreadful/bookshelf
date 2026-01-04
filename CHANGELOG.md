@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.42
+- Summary: return JSON from the create-folder API to avoid false UI errors.
+- Why: the file browser expects JSON; empty responses were treated as errors.
+- Impact: folder creation no longer shows a failure banner when it succeeds.
+- Files: src/Readarr.Api.V1/FileSystem/FileSystemController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and re-test create folder.
+
 ## 1.2.41
 - Summary: add missing System import for the new filesystem folder API.
 - Why: fixes the build error in FileSystemController.

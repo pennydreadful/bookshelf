@@ -72,13 +72,13 @@ namespace Readarr.Api.V1.FileSystem
 
             if (_diskProvider.FolderExists(request.Path))
             {
-                return Ok();
+                return Ok(new { created = false });
             }
 
             try
             {
                 _diskProvider.CreateFolder(request.Path);
-                return Ok();
+                return Ok(new { created = true });
             }
             catch (Exception ex)
             {
