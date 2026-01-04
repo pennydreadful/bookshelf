@@ -74,7 +74,8 @@ namespace NzbDrone.Core.Books
 
             book.Author = dbAuthor;
             book.AuthorMetadataId = dbAuthor.AuthorMetadataId;
-            _bookService.AddBook(book, doRefresh);
+            var shouldRefresh = doRefresh && book.AddOptions.AddType != BookAddType.Manual;
+            _bookService.AddBook(book, shouldRefresh);
 
             return book;
         }

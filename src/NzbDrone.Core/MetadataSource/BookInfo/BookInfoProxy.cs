@@ -30,6 +30,8 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
     {
         private const string GoogleBookPrefix = "gb:";
         private const string GoogleAuthorPrefix = "gba:";
+        private const int GoogleBooksMaxResultsPerRequest = 40;
+        private const int GoogleBooksAuthorMaxResults = 200;
         private static readonly JsonSerializerOptions SerializerSettings = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false,
@@ -1014,7 +1016,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return book;
         }
 
-        private List<Book> SearchGoogleBooks(string query)
+        private List<Book> SearchGoogleBooks(string query, int maxResults = 20, int startIndex = 0)
         {
             HttpResponse<GoogleBooksVolumeResponse> response;
 
@@ -1023,8 +1025,13 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 var request = BuildGoogleBooksRequest("volumes", new Dictionary<string, string>
                 {
                     { "q", query },
-                    { "maxResults", "20" }
+                    { "maxResults", maxResults.ToString() }
                 });
+
+                if (startIndex > 0)
+                {
+                    request.AddQueryParam("startIndex", startIndex.ToString());
+                }
 
                 request.SuppressHttpError = true;
 
@@ -1059,6 +1066,36 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 .ToList();
         }
 
+        private List<Book> SearchGoogleBooksPaged(string query, int maxResults)
+        {
+            var all = new List<Book>();
+            var startIndex = 0;
+
+            while (startIndex < maxResults)
+            {
+                var pageSize = Math.Min(GoogleBooksMaxResultsPerRequest, maxResults - startIndex);
+                var page = SearchGoogleBooks(query, pageSize, startIndex);
+
+                if (!page.Any())
+                {
+                    break;
+                }
+
+                all.AddRange(page);
+
+                if (page.Count < pageSize)
+                {
+                    break;
+                }
+
+                startIndex += pageSize;
+            }
+
+            return all
+                .DistinctBy(x => x.ForeignBookId)
+                .ToList();
+        }
+
         private Tuple<string, Book, List<AuthorMetadata>> GetGoogleBookInfo(string volumeId)
         {
             var volume = GetGoogleVolume(volumeId);
@@ -1081,7 +1118,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         {
             var authorId = BuildGoogleAuthorId(authorName);
             var metadata = BuildGoogleAuthorMetadata(authorId, authorName);
-            var books = SearchGoogleBooks($"inauthor:{authorName}");
+            var books = SearchGoogleBooksPaged($"inauthor:{authorName}", GoogleBooksAuthorMaxResults);
 
             var author = new Author
             {

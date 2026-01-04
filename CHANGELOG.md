@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.47
+- Summary: page Google Books author results and stop manual book adds from triggering author refresh.
+- Why: author adds were returning too few books and manual book adds were pulling extra books from author refreshes.
+- Impact: author add fetches up to 200 Google Books results; adding a single book no longer auto-adds other books.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/NzbDrone.Core/Books/Services/AddBookService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and re-test adding a book and adding J. K. Rowling as an author.
+
 ## 1.2.46
 - Summary: fix build error in Google Books author search.
 - Why: avoid variable shadowing that caused the dev build to fail.
