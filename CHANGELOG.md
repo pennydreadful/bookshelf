@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.57
+- Summary: keep book covers when toggling monitored state.
+- Why: the edit flow could return a resource without a monitored edition, resulting in empty images and placeholder art.
+- Impact: book art remains visible after monitor/unmonitor changes by falling back to the first edition.
+- Files: src/Readarr.Api.V1/Books/BookResource.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and toggle monitored on a book to verify covers stay.
+
 ## 1.2.56
 - Summary: prevent edit saves from failing when editions are missing.
 - Why: PUT /api/v1/book could throw when editions or links were null, and UpdateMany was called with a null list.
