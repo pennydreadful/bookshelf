@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.43
+- Summary: default book adds to a single book and warn before adding an author.
+- Why: choosing a book should not add the entire author catalog; adding an author should be explicit.
+- Impact: book add defaults to “Only This Book” and existing defaults migrate away from “All Books”; adding an author now shows a confirmation warning.
+- Files: frontend/src/Store/Actions/searchActions.js, frontend/src/Store/Migrators/migrateAddBookDefaults.js, frontend/src/Store/Migrators/migrate.js, frontend/src/Search/Author/AddNewAuthorModalContent.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify book vs author add behavior.
+
 ## 1.2.42
 - Summary: return JSON from the create-folder API to avoid false UI errors.
 - Why: the file browser expects JSON; empty responses were treated as errors.

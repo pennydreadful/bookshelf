@@ -41,7 +41,7 @@ export const defaultState = {
 
   bookDefaults: {
     rootFolderPath: '',
-    monitor: monitorOptions[0].key,
+    monitor: 'specificBook',
     monitorNewItems: monitorNewItemsOptions[0].key,
     qualityProfileId: 0,
     metadataProfileId: 0,

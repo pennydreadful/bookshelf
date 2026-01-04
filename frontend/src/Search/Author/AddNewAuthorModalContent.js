@@ -4,6 +4,7 @@ import TextTruncate from 'react-text-truncate';
 import AuthorPoster from 'Author/AuthorPoster';
 import CheckInput from 'Components/Form/CheckInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
@@ -22,7 +23,8 @@ class AddNewAuthorModalContent extends Component {
     super(props, context);
 
     this.state = {
-      searchForMissingBooks: false
+      searchForMissingBooks: false,
+      isConfirmOpen: false
     };
   }
 
@@ -34,7 +36,16 @@ class AddNewAuthorModalContent extends Component {
   };
 
   onAddAuthorPress = () => {
+    this.setState({ isConfirmOpen: true });
+  };
+
+  onConfirmAddAuthor = () => {
+    this.setState({ isConfirmOpen: false });
     this.props.onAddAuthorPress(this.state.searchForMissingBooks);
+  };
+
+  onCancelAddAuthor = () => {
+    this.setState({ isConfirmOpen: false });
   };
 
   //
@@ -127,6 +138,17 @@ class AddNewAuthorModalContent extends Component {
             Add {authorName}
           </SpinnerButton>
         </ModalFooter>
+
+        <ConfirmModal
+          isOpen={this.state.isConfirmOpen}
+          title={translate('AddAuthorWarningTitle')}
+          message={translate('AddAuthorWarningMessage')}
+          confirmLabel={translate('AddAuthorWarningConfirm')}
+          cancelLabel={translate('Cancel')}
+          isSpinning={isAdding}
+          onConfirm={this.onConfirmAddAuthor}
+          onCancel={this.onCancelAddAuthor}
+        />
       </ModalContent>
     );
   }
