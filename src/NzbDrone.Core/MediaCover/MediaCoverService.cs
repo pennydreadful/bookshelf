@@ -90,7 +90,10 @@ namespace NzbDrone.Core.MediaCover
                 // Author isn't in Readarr yet, map via a proxy to circument referrer issues
                 foreach (var mediaCover in covers)
                 {
-                    mediaCover.RemoteUrl = mediaCover.Url;
+                    if (mediaCover.RemoteUrl.IsNullOrWhiteSpace())
+                    {
+                        mediaCover.RemoteUrl = mediaCover.Url;
+                    }
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
                 }
             }
@@ -142,14 +145,16 @@ namespace NzbDrone.Core.MediaCover
                     }
                     else if (coverEntity == MediaCoverEntity.Author)
                     {
-                        if (mediaCover.RemoteUrl.IsNotNullOrWhiteSpace() &&
-                            mediaCover.RemoteUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                        var remoteUrl = mediaCover.RemoteUrl;
+
+                        if (remoteUrl.IsNotNullOrWhiteSpace() &&
+                            remoteUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                         {
-                            mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
+                            mediaCover.Url = remoteUrl;
                         }
                         else
                         {
-                            mediaCover.Url = mediaCover.RemoteUrl;
+                            mediaCover.Url = _mediaCoverProxy.RegisterUrl(remoteUrl);
                         }
                     }
                 }

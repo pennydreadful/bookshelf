@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author posters now use remote URLs directly when no local cover exists (avoids proxy cache misses).
 - MediaCoverProxy now URL-encodes filenames so author images render even with quotes/unicode.
 - Author images now render correctly when the URL is proxied (no poster-size replacement).
 - Author pages show a small attribution label under the blurb when the source is Wikipedia/Open Library.

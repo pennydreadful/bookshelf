@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.74
+- Summary: serve author posters directly from remote URLs when no local cover exists.
+- Why: MediaCoverProxy entries are in-memory and can be missing after restarts, causing author images to fail.
+- Impact: author images load directly from Wikimedia/Open Library without relying on the proxy cache.
+- Files: src/NzbDrone.Core/MediaCover/MediaCoverService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm author posters display (Andy Weir, Stephen King).
+
 ## 1.2.73
 - Summary: URL-encode proxied cover filenames.
 - Why: author images with quotes/unicode in filenames were not rendering through the proxy.
