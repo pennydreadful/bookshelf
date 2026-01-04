@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.35
+- Summary: add configurable downloads folder and default recycle bin path.
+- Why: allow changing the download path and avoid missing recycle bin folders.
+- Impact: Download Clients options include a downloads folder setting; new remote path mappings default to it; recycle bin defaults to appdata/recycle.
+- Files: src/NzbDrone.Core/Configuration/IConfigService.cs, src/NzbDrone.Core/Configuration/ConfigService.cs, src/Readarr.Api.V1/Config/DownloadClientConfigResource.cs, frontend/src/Settings/DownloadClients/Options/DownloadClientOptions.js, frontend/src/Settings/DownloadClients/RemotePathMappings/EditRemotePathMappingModalContentConnector.js, src/NzbDrone.Core/MediaFiles/RecycleBinDefaults.cs, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: rebuild and confirm download folder + recycle bin appear in settings and on disk.
+
 ## 1.2.34
 - Summary: add a one-command update script for native dev installs.
 - Why: avoid build failures from a running process and simplify updates.

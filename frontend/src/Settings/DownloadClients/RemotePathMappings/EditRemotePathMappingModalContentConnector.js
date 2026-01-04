@@ -56,8 +56,9 @@ function createRemotePathMappingSelector() {
   return createSelector(
     (state, { id }) => id,
     (state) => state.settings.remotePathMappings,
+    (state) => state.settings.downloadClientOptions.item.downloadClientRootFolder,
     selectDownloadClientHosts,
-    (id, remotePathMappings, downloadClientHosts) => {
+    (id, remotePathMappings, defaultLocalPath, downloadClientHosts) => {
       const {
         isFetching,
         error,
@@ -67,7 +68,10 @@ function createRemotePathMappingSelector() {
         items
       } = remotePathMappings;
 
-      const mapping = id ? _.find(items, { id }) : newRemotePathMapping;
+      const mapping = id ? _.find(items, { id }) : {
+        ...newRemotePathMapping,
+        localPath: defaultLocalPath || newRemotePathMapping.localPath
+      };
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
       return {
@@ -78,7 +82,8 @@ function createRemotePathMappingSelector() {
         saveError,
         item: settings.settings,
         ...settings,
-        downloadClientHosts
+        downloadClientHosts,
+        defaultLocalPath
       };
     }
   );
@@ -107,10 +112,15 @@ class EditRemotePathMappingModalContentConnector extends Component {
 
   componentDidMount() {
     if (!this.props.id) {
-      Object.keys(newRemotePathMapping).forEach((name) => {
+      const defaults = {
+        ...newRemotePathMapping,
+        localPath: this.props.defaultLocalPath || newRemotePathMapping.localPath
+      };
+
+      Object.keys(defaults).forEach((name) => {
         this.props.dispatchSetRemotePathMappingValue({
           name,
-          value: newRemotePathMapping[name]
+          value: defaults[name]
         });
       });
     }
@@ -154,7 +164,8 @@ EditRemotePathMappingModalContentConnector.propTypes = {
   item: PropTypes.object.isRequired,
   dispatchSetRemotePathMappingValue: PropTypes.func.isRequired,
   dispatchSaveRemotePathMapping: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  defaultLocalPath: PropTypes.string
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(EditRemotePathMappingModalContentConnector);

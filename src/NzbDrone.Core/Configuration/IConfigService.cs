@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Configuration
         //Download Client
         string DownloadClientWorkingFolders { get; set; }
         int DownloadClientHistoryLimit { get; set; }
+        string DownloadClientRootFolder { get; set; }
 
         //Completed/Failed Download Handling (Download client)
         bool EnableCompletedDownloadHandling { get; set; }

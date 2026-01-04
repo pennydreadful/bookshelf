@@ -6,6 +6,7 @@ namespace Readarr.Api.V1.Config
     public class DownloadClientConfigResource : RestResource
     {
         public string DownloadClientWorkingFolders { get; set; }
+        public string DownloadClientRootFolder { get; set; }
 
         public bool EnableCompletedDownloadHandling { get; set; }
         public bool AutoRedownloadFailed { get; set; }
@@ -19,6 +20,7 @@ namespace Readarr.Api.V1.Config
             return new DownloadClientConfigResource
             {
                 DownloadClientWorkingFolders = model.DownloadClientWorkingFolders,
+                DownloadClientRootFolder = model.DownloadClientRootFolder,
 
                 EnableCompletedDownloadHandling = model.EnableCompletedDownloadHandling,
                 AutoRedownloadFailed = model.AutoRedownloadFailed,

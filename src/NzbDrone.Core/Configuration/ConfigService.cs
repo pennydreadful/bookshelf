@@ -186,6 +186,12 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadClientHistoryLimit", value); }
         }
 
+        public string DownloadClientRootFolder
+        {
+            get { return GetValue("DownloadClientRootFolder", OsInfo.IsLinux ? "/downloads" : string.Empty); }
+            set { SetValue("DownloadClientRootFolder", value); }
+        }
+
         public bool SkipFreeSpaceCheckWhenImporting
         {
             get { return GetValueBoolean("SkipFreeSpaceCheckWhenImporting", false); }

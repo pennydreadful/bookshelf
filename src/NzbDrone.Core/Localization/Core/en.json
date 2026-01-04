@@ -308,6 +308,8 @@
   "DownloadClientDelugeSettingsDirectoryCompleted": "Move When Completed Directory",
   "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Optional location to move completed downloads to, leave blank to use the default Deluge location",
   "DownloadClientDelugeSettingsDirectoryHelpText": "Optional location to put downloads in, leave blank to use the default Deluge location",
+  "DownloadClientRootFolder": "Downloads Folder",
+  "DownloadClientRootFolderHelpText": "Local path where Bookdarr can see completed downloads (default is /downloads in Docker). Used as the default local path for new Remote Path Mappings.",
   "DownloadClientQbittorrentSettingsContentLayout": "Content Layout",
   "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Whether to use qBittorrent's configured content layout, the original layout from the torrent or always create a subfolder (qBittorrent 4.3.2+)",
   "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Download client {0} is set to remove completed downloads. This can result in downloads being removed from your client before {1} can import them.",

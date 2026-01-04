@@ -44,6 +44,22 @@ function DownloadClientOptions(props) {
                   isAdvanced={true}
                   size={sizes.MEDIUM}
                 >
+                  <FormLabel>{translate('DownloadClientRootFolder')}</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.PATH}
+                    name="downloadClientRootFolder"
+                    helpText={translate('DownloadClientRootFolderHelpText')}
+                    onChange={onInputChange}
+                    {...settings.downloadClientRootFolder}
+                  />
+                </FormGroup>
+
+                <FormGroup
+                  advancedSettings={advancedSettings}
+                  isAdvanced={true}
+                  size={sizes.MEDIUM}
+                >
                   <FormLabel>{translate('Enable')}</FormLabel>
 
                   <FormInputGroup
