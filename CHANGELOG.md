@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.79
+- Summary: fix IDE0005 build errors by removing unnecessary using directives.
+- Why: the dev build failed with StyleCop/IDE warnings treated as errors.
+- Impact: update-dev.sh completes without the IDE0005 errors in import/identification code.
+- Files: src/NzbDrone.Core/MediaFiles/BookImport/Identification/IdentificationService.cs, src/NzbDrone.Core/MediaFiles/BookImport/ImportApprovedBooks.cs, src/NzbDrone.Core/MediaFiles/BookImport/ImportDecisionMaker.cs, src/NzbDrone.Core/MediaFiles/BookImport/Manual/ManualImportService.cs, src/NzbDrone.Core/MediaFiles/BookImport/Specifications/UpgradeSpecification.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh again to confirm the build passes.
+
 ## 1.2.78
 - Summary: support ebook + audiobook files per book with media-type-aware upgrades.
 - Why: importing one format should not delete the other, and quality comparisons must stay within the same media type.

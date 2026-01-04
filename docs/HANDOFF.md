@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Removed redundant using directives that caused IDE0005 build failures.
 - Added media type tracking for BookFiles (ebook vs audiobook) with a DB migration to backfill existing rows.
 - Upgrade/cutoff decisions now compare files within the same media type so ebooks and audiobooks can coexist.
 - Import/rename logic now scopes part counts to the media type to keep multi-part audiobooks consistent.
