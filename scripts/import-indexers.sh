@@ -19,8 +19,14 @@ Environment variables:
   TARGET_API_KEY (optional; will be read from TARGET_CONFIG if missing)
   TARGET_URL (default: http://localhost:8787)
   TARGET_CONFIG (default: /opt/bookdarr-dev/config/config.xml)
-  REPLACE_EXISTING (default: false)
+  REPLACE_EXISTING (default: true)
 EOF
+}
+
+ensure_echo() {
+  if command -v stty >/dev/null 2>&1; then
+    stty echo || true
+  fi
 }
 
 if [ $# -ge 3 ]; then
@@ -46,6 +52,7 @@ if [ -z "${SOURCE_PORT}" ]; then
 fi
 
 if [ -z "${SOURCE_API_KEY}" ]; then
+  ensure_echo
   read -r -p "Source Readarr API key: " SOURCE_API_KEY
 fi
 
@@ -82,6 +89,7 @@ PY
 fi
 
 if [ -z "${TARGET_API_KEY}" ]; then
+  ensure_echo
   read -r -p "Target Bookdarr API key: " TARGET_API_KEY
 fi
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.27
+- Summary: force visible API key input for the import script prompts.
+- Why: terminals can keep echo disabled from previous commands, hiding input.
+- Impact: import-indexers.sh ensures echo is on before API key prompts.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download import-indexers.sh and run it on the Bookdarr VM.
+
 ## 1.2.26
 - Summary: show API key input in the import script prompts.
 - Why: allow copy/paste visibility when entering keys interactively.
