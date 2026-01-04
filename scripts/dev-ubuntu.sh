@@ -83,12 +83,10 @@ fi
 
 ${SUDO} mkdir -p "${APPDATA_DIR}"
 ${SUDO} chown -R "${USER_NAME}:${USER_NAME}" "${REPO_DIR}" "${APPDATA_DIR}"
-${SUDO} chmod -R u+rwX,go+rX "${REPO_DIR}/scripts"
-
-${SUDO} chmod -R +x "${REPO_DIR}/scripts"
+${SUDO} chmod -R 755 "${REPO_DIR}/scripts"
 
 log "Building Bookdarr"
-run_as_user bash -lc "REPO_DIR='${REPO_DIR}' RID='${RID}' bash \"${REPO_DIR}/scripts/dev-build.sh\""
+run_as_user bash -lc "cd \"${REPO_DIR}\" && yarn install --frozen-lockfile --network-timeout 120000 && yarn build && dotnet msbuild -restore src/Readarr.sln -p:Configuration=Release -p:Platform=Posix -p:RuntimeIdentifiers=${RID} -t:PublishAllRids && if [ -d \"${REPO_DIR}/_output/UI\" ]; then rm -rf \"${REPO_DIR}/_output/net6.0/${RID}/UI\" && mkdir -p \"${REPO_DIR}/_output/net6.0/${RID}/UI\" && cp -a \"${REPO_DIR}/_output/UI/.\" \"${REPO_DIR}/_output/net6.0/${RID}/UI/\"; fi"
 
 if [ "${RUN_APP}" = "true" ]; then
   log "Starting Bookdarr (foreground)"

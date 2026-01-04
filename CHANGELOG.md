@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.22
+- Summary: make dev scripts executable in git to avoid permission errors on fresh clones.
+- Why: some setups were cloning scripts without execute bits, causing dev-build.sh to fail.
+- Impact: scripts can run directly after checkout; dev-ubuntu.sh still chmods as a safety net.
+- Files: scripts/dev-build.sh, scripts/dev-run.sh, scripts/dev-setup-ubuntu.sh, scripts/dev-ubuntu.sh, scripts/install-bookdarr.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download dev-ubuntu.sh and rerun it.
+
 ## 1.2.21
 - Summary: enforce repo ownership and readable permissions before running dev builds.
 - Why: avoid "Permission denied" when executing dev-build.sh as the `joe` user.
