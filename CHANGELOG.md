@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.73
+- Summary: URL-encode proxied cover filenames.
+- Why: author images with quotes/unicode in filenames were not rendering through the proxy.
+- Impact: MediaCoverProxy links now work reliably for Wikimedia/Open Library images with special characters.
+- Files: src/NzbDrone.Core/MediaCover/MediaCoverProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and reload an author page (Andy Weir should show a poster).
+
 ## 1.2.72
 - Summary: show remote author images correctly and add attribution under the author blurb.
 - Why: author posters were not rendering when served via the proxy, and attribution was requested in the UI.

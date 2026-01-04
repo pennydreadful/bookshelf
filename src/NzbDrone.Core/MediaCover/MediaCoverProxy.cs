@@ -42,7 +42,7 @@ namespace NzbDrone.Core.MediaCover
 
             _cache.ClearExpired();
 
-            var fileName = GetProxyFileName(url);
+            var fileName = Uri.EscapeDataString(GetProxyFileName(url));
             return _configFileProvider.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
         }
 
