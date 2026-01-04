@@ -211,7 +211,7 @@ namespace Readarr.Api.V1.Author
                 return;
             }
 
-            metadata.Images ??= new List<MediaCover.MediaCover>();
+            metadata.Images ??= new List<MediaCover>();
             metadata.Links ??= new List<Links>();
 
             var hasPoster = metadata.Images.Any(x => x.CoverType == MediaCoverTypes.Poster && x.Url.IsNotNullOrWhiteSpace());
@@ -235,7 +235,7 @@ namespace Readarr.Api.V1.Author
 
             if (!hasPoster && extras.ImageUrl.IsNotNullOrWhiteSpace())
             {
-                metadata.Images.Add(new MediaCover.MediaCover
+                metadata.Images.Add(new MediaCover
                 {
                     Url = extras.ImageUrl,
                     CoverType = MediaCoverTypes.Poster

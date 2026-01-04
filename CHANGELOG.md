@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.71
+- Summary: fix author extras build errors in the API layer.
+- Why: a type mismatch in the author metadata backfill prevented compilation.
+- Impact: Bookdarr builds cleanly while still backfilling author images/blurbs/links.
+- Files: src/Readarr.Api.V1/Author/AuthorController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the build completes.
+
 ## 1.2.70
 - Summary: backfill author photos/blurbs/links and serve remote author images when local covers are missing.
 - Why: author images and Wikipedia blurbs were not appearing for existing or newly added authors.
