@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.69
+- Summary: add Wikidata/Open Library author photos with attribution and disable the update modal.
+- Why: author pages need real photos with clear source links, and the update modal was outdated/noisy.
+- Impact: author posters are populated from Wikidata/Wikipedia or Open Library with attribution links; the update modal no longer appears after updates.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, frontend/src/Components/Page/Page.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, refresh an author page to verify a poster appears with source links, and confirm no update popup appears.
+
 ## 1.2.68
 - Summary: fix Available Books title tooltips so they trigger on truncated text.
 - Why: the hover detection was bound to an inner element and never detected truncation.

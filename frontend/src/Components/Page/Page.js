@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppUpdatedModalConnector from 'App/AppUpdatedModalConnector';
 import ColorImpairedContext from 'App/ColorImpairedContext';
 import ConnectionLostModalConnector from 'App/ConnectionLostModalConnector';
 import SignalRConnector from 'Components/SignalRConnector';
@@ -19,7 +18,6 @@ class Page extends Component {
     super(props, context);
 
     this.state = {
-      isUpdatedModalOpen: false,
       isConnectionLostModalOpen: false
     };
   }
@@ -30,13 +28,8 @@ class Page extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      isDisconnected,
-      isUpdated
+      isDisconnected
     } = this.props;
-
-    if (!prevProps.isUpdated && isUpdated) {
-      this.setState({ isUpdatedModalOpen: true });
-    }
 
     if (prevProps.isDisconnected !== isDisconnected) {
       this.setState({ isConnectionLostModalOpen: isDisconnected });
@@ -55,10 +48,6 @@ class Page extends Component {
       width: window.innerWidth,
       height: window.innerHeight
     });
-  };
-
-  onUpdatedModalClose = () => {
-    this.setState({ isUpdatedModalOpen: false });
   };
 
   onConnectionLostModalClose = () => {
@@ -101,11 +90,6 @@ class Page extends Component {
             {children}
           </div>
 
-          <AppUpdatedModalConnector
-            isOpen={this.state.isUpdatedModalOpen}
-            onModalClose={this.onUpdatedModalClose}
-          />
-
           <ConnectionLostModalConnector
             isOpen={this.state.isConnectionLostModalOpen}
             onModalClose={this.onConnectionLostModalClose}
@@ -126,7 +110,6 @@ Page.propTypes = {
   children: PropTypes.node.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   isSidebarVisible: PropTypes.bool.isRequired,
-  isUpdated: PropTypes.bool.isRequired,
   isDisconnected: PropTypes.bool.isRequired,
   enableColorImpairedMode: PropTypes.bool.isRequired,
   authenticationEnabled: PropTypes.bool.isRequired,

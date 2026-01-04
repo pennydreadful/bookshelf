@@ -43,6 +43,8 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author posters now pull from Wikidata/Wikipedia or Open Library with attribution links.
+- Update modal on app reloads is disabled.
 - Available Books title tooltip detection now triggers on the truncated title element.
 - Available Books titles now show a mouse-following tooltip when truncated.
 - Available Books: removal endpoint now returns JSON to avoid false error banners on success.
