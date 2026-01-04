@@ -5,13 +5,10 @@ REPO_DIR="${REPO_DIR:-/opt/bookdarr-dev}"
 APPDATA_DIR="${APPDATA_DIR:-/opt/bookdarr-dev/config}"
 RID="${RID:-linux-x64}"
 
-BIN="${REPO_DIR}/_output/net6.0/${RID}/Readarr"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [ ! -x "${BIN}" ]; then
-  echo "Binary not found at ${BIN}. Run dev-build.sh first." >&2
-  exit 1
-fi
+export BOOKDARR_HOME="${REPO_DIR}"
+export BOOKDARR_DATA_DIR="${APPDATA_DIR}"
+export RID
 
-mkdir -p "${APPDATA_DIR}"
-
-exec "${BIN}" "/data=${APPDATA_DIR}" "/nobrowser"
+exec "${SCRIPT_DIR}/run-bookdarr.sh" "$@"

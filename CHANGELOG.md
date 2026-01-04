@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.31
+- Summary: add a shared run script for Bookdarr and route dev runs through it.
+- Why: keep dev and Docker launch behavior consistent.
+- Impact: new `scripts/run-bookdarr.sh`; `dev-run.sh` now calls it.
+- Files: scripts/run-bookdarr.sh, scripts/dev-run.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: use run-bookdarr.sh as the Docker entrypoint later.
+
 ## 1.2.30
 - Summary: add an indexer export item to the development checklist.
 - Why: track the request to support exporting indexers for migration.
