@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.52
+- Summary: fix stylecop spacing in MetadataProfileService.
+- Why: build failed due to a missing blank line after a closing brace.
+- Impact: update-dev.sh completes without SA1513.
+- Files: src/NzbDrone.Core/Profiles/Metadata/MetadataProfileService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry adding authors.
+
 ## 1.2.51
 - Summary: relax metadata profile filters for Google Books and stop using book covers as author posters.
 - Why: Google Books doesn’t provide popularity scores or author photos; those filters were removing all books and the poster fallback was misleading.
