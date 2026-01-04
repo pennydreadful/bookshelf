@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.70
+- Summary: backfill author photos/blurbs/links and serve remote author images when local covers are missing.
+- Why: author images and Wikipedia blurbs were not appearing for existing or newly added authors.
+- Impact: author pages now populate missing posters and overviews from Wikidata/Wikipedia or Open Library, include Wikipedia links when available, and display remote author images via the cover proxy if no local file exists.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/NzbDrone.Core/MetadataSource/AuthorExtraMetadata.cs, src/NzbDrone.Core/MediaCover/MediaCoverService.cs, src/Readarr.Api.V1/Author/AuthorController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an author page with missing art, and confirm the poster, blurb, and Wikipedia link appear.
+
 ## 1.2.69
 - Summary: add Wikidata/Open Library author photos with attribution and disable the update modal.
 - Why: author pages need real photos with clear source links, and the update modal was outdated/noisy.

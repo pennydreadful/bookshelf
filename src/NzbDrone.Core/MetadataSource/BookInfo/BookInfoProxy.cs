@@ -27,7 +27,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NzbDrone.Core.MetadataSource.BookInfo
 {
-    public class BookInfoProxy : IProvideAuthorInfo, IProvideBookInfo, ISearchForNewBook, ISearchForNewAuthor, ISearchForNewEntity
+    public class BookInfoProxy : IProvideAuthorInfo, IProvideBookInfo, ISearchForNewBook, ISearchForNewAuthor, ISearchForNewEntity, IAuthorExtraMetadataProvider
     {
         private const string GoogleBookPrefix = "gb:";
         private const string GoogleAuthorPrefix = "gba:";
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private readonly IMetadataRequestBuilder _requestBuilder;
         private readonly IHttpRequestBuilderFactory _googleBooksRequestBuilder;
         private readonly ICached<HashSet<string>> _cache;
-        private readonly ICached<AuthorImageLookupResult> _authorImageCache;
+        private readonly ICached<AuthorExtraMetadata> _authorExtrasCache;
         private readonly CachingService _authorCache;
 
         public BookInfoProxy(IHttpClient httpClient,
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             _editionService = editionService;
             _requestBuilder = requestBuilder;
             _cache = cacheManager.GetCache<HashSet<string>>(GetType());
-            _authorImageCache = cacheManager.GetCache<AuthorImageLookupResult>(GetType(), "authorImage");
+            _authorExtrasCache = cacheManager.GetCache<AuthorExtraMetadata>(GetType(), "authorImage");
             _logger = logger;
 
             _googleBooksRequestBuilder = new HttpRequestBuilder("https://www.googleapis.com/books/v1/{route}")
@@ -1341,6 +1341,21 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return metadata;
         }
 
+        public AuthorExtraMetadata GetAuthorExtraMetadata(string authorName)
+        {
+            if (authorName.IsNullOrWhiteSpace())
+            {
+                return new AuthorExtraMetadata();
+            }
+
+            var cacheKey = authorName.CleanSpaces().ToLowerInvariant();
+            var result = _authorExtrasCache.Get(cacheKey,
+                () => LookupAuthorExtraMetadata(authorName),
+                TimeSpan.FromDays(AuthorImageCacheDays));
+
+            return result ?? new AuthorExtraMetadata();
+        }
+
         private void TryAddExternalAuthorImage(AuthorMetadata metadata)
         {
             if (metadata == null || metadata.Name.IsNullOrWhiteSpace())
@@ -1348,24 +1363,34 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 return;
             }
 
-            if (metadata.Images.Any(x => x.CoverType == MediaCoverTypes.Poster && x.Url.IsNotNullOrWhiteSpace()))
+            var hasPoster = metadata.Images.Any(x => x.CoverType == MediaCoverTypes.Poster && x.Url.IsNotNullOrWhiteSpace());
+            var needsOverview = metadata.Overview.IsNullOrWhiteSpace();
+
+            if (hasPoster && !needsOverview)
             {
                 return;
             }
 
-            var cacheKey = metadata.Name.CleanSpaces().ToLowerInvariant();
-            var result = _authorImageCache.Get(cacheKey, () => LookupAuthorImage(metadata.Name), TimeSpan.FromDays(AuthorImageCacheDays));
+            var result = GetAuthorExtraMetadata(metadata.Name);
 
-            if (result == null || result.ImageUrl.IsNullOrWhiteSpace())
+            if (result == null)
             {
                 return;
             }
 
-            metadata.Images.Add(new MediaCover.MediaCover
+            if (!hasPoster && result.ImageUrl.IsNotNullOrWhiteSpace())
             {
-                Url = result.ImageUrl,
-                CoverType = MediaCoverTypes.Poster
-            });
+                metadata.Images.Add(new MediaCover.MediaCover
+                {
+                    Url = result.ImageUrl,
+                    CoverType = MediaCoverTypes.Poster
+                });
+            }
+
+            if (needsOverview && result.Overview.IsNotNullOrWhiteSpace())
+            {
+                metadata.Overview = result.Overview;
+            }
 
             if (result.Links != null)
             {
@@ -1395,12 +1420,15 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             });
         }
 
-        private AuthorImageLookupResult LookupAuthorImage(string authorName)
+        private AuthorExtraMetadata LookupAuthorExtraMetadata(string authorName)
         {
             try
             {
-                var wikidataResult = TryGetWikidataAuthorImage(authorName);
-                if (wikidataResult?.ImageUrl.IsNotNullOrWhiteSpace() == true)
+                var wikidataResult = TryGetWikidataAuthorExtras(authorName);
+                if (wikidataResult != null &&
+                    (wikidataResult.ImageUrl.IsNotNullOrWhiteSpace() ||
+                     wikidataResult.Overview.IsNotNullOrWhiteSpace() ||
+                     (wikidataResult.Links != null && wikidataResult.Links.Any())))
                 {
                     return wikidataResult;
                 }
@@ -1412,8 +1440,9 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             try
             {
-                var openLibraryResult = TryGetOpenLibraryAuthorImage(authorName);
-                if (openLibraryResult?.ImageUrl.IsNotNullOrWhiteSpace() == true)
+                var openLibraryResult = TryGetOpenLibraryAuthorExtras(authorName);
+                if (openLibraryResult?.ImageUrl.IsNotNullOrWhiteSpace() == true ||
+                    openLibraryResult?.Overview.IsNotNullOrWhiteSpace() == true)
                 {
                     return openLibraryResult;
                 }
@@ -1423,10 +1452,10 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 _logger.Debug(ex, "Open Library author image lookup failed for {0}", authorName);
             }
 
-            return new AuthorImageLookupResult();
+            return new AuthorExtraMetadata();
         }
 
-        private AuthorImageLookupResult TryGetWikidataAuthorImage(string authorName)
+        private AuthorExtraMetadata TryGetWikidataAuthorExtras(string authorName)
         {
             var searchRequest = new HttpRequestBuilder("https://www.wikidata.org/w/api.php")
                 .AddQueryParam("action", "wbsearchentities")
@@ -1471,37 +1500,57 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             var entityJson = JObject.Parse(entityResponse.Content);
             var entity = entityJson["entities"]?[entityId];
             var imageName = entity?["claims"]?["P18"]?.FirstOrDefault()?["mainsnak"]?["datavalue"]?["value"]?.ToString();
+            string imageUrl = null;
 
-            if (imageName.IsNullOrWhiteSpace())
+            var links = new List<Links>
+            {
+                new Links { Name = "Wikidata", Url = $"https://www.wikidata.org/wiki/{entityId}" }
+            };
+
+            if (imageName.IsNotNullOrWhiteSpace())
+            {
+                var fileName = imageName.Replace(' ', '_');
+                var encodedFileName = Uri.EscapeDataString(fileName);
+                imageUrl = $"https://commons.wikimedia.org/wiki/Special:FilePath/{encodedFileName}";
+                links.Add(new Links { Name = "Wikimedia Commons", Url = $"https://commons.wikimedia.org/wiki/File:{encodedFileName}" });
+            }
+
+            var wikiTitle = entity?["sitelinks"]?["enwiki"]?["title"]?.ToString();
+            string overview = null;
+            var hasWikipediaLink = false;
+            if (wikiTitle.IsNotNullOrWhiteSpace())
+            {
+                var summary = TryGetWikipediaSummary(wikiTitle);
+                if (summary?.Overview.IsNotNullOrWhiteSpace() == true)
+                {
+                    overview = summary.Overview;
+                }
+
+                var wikipediaUrl = summary?.Url;
+                if (wikipediaUrl.IsNullOrWhiteSpace())
+                {
+                    var encodedTitle = Uri.EscapeDataString(wikiTitle.Replace(' ', '_'));
+                    wikipediaUrl = $"https://en.wikipedia.org/wiki/{encodedTitle}";
+                }
+
+                links.Add(new Links { Name = "Wikipedia", Url = wikipediaUrl });
+                hasWikipediaLink = wikipediaUrl.IsNotNullOrWhiteSpace();
+            }
+
+            if (imageUrl.IsNullOrWhiteSpace() && overview.IsNullOrWhiteSpace() && !hasWikipediaLink)
             {
                 return null;
             }
 
-            var fileName = imageName.Replace(' ', '_');
-            var encodedFileName = Uri.EscapeDataString(fileName);
-            var imageUrl = $"https://commons.wikimedia.org/wiki/Special:FilePath/{encodedFileName}";
-
-            var links = new List<Links>
-            {
-                new Links { Name = "Wikidata", Url = $"https://www.wikidata.org/wiki/{entityId}" },
-                new Links { Name = "Wikimedia Commons", Url = $"https://commons.wikimedia.org/wiki/File:{encodedFileName}" }
-            };
-
-            var wikiTitle = entity?["sitelinks"]?["enwiki"]?["title"]?.ToString();
-            if (wikiTitle.IsNotNullOrWhiteSpace())
-            {
-                var encodedTitle = Uri.EscapeDataString(wikiTitle.Replace(' ', '_'));
-                links.Add(new Links { Name = "Wikipedia", Url = $"https://en.wikipedia.org/wiki/{encodedTitle}" });
-            }
-
-            return new AuthorImageLookupResult
+            return new AuthorExtraMetadata
             {
                 ImageUrl = imageUrl,
+                Overview = overview,
                 Links = links
             };
         }
 
-        private AuthorImageLookupResult TryGetOpenLibraryAuthorImage(string authorName)
+        private AuthorExtraMetadata TryGetOpenLibraryAuthorExtras(string authorName)
         {
             var request = new HttpRequestBuilder("https://openlibrary.org/search/authors.json")
                 .AddQueryParam("q", authorName)
@@ -1527,14 +1576,15 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             {
                 var photoToken = doc["photo_id"] ?? doc["photos"]?.FirstOrDefault();
                 var photoId = photoToken?.ToString();
+                var linkKey = doc["key"]?.ToString();
+                var overview = TryGetOpenLibraryAuthorOverview(linkKey);
 
-                if (photoId.IsNullOrWhiteSpace())
+                if (photoId.IsNullOrWhiteSpace() && overview.IsNullOrWhiteSpace())
                 {
                     continue;
                 }
 
-                var imageUrl = $"https://covers.openlibrary.org/a/id/{photoId}-L.jpg";
-                var linkKey = doc["key"]?.ToString();
+                var imageUrl = photoId.IsNullOrWhiteSpace() ? null : $"https://covers.openlibrary.org/a/id/{photoId}-L.jpg";
                 var links = new List<Links>();
 
                 if (linkKey.IsNotNullOrWhiteSpace())
@@ -1542,9 +1592,10 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                     links.Add(new Links { Name = "Open Library", Url = $"https://openlibrary.org{linkKey}" });
                 }
 
-                return new AuthorImageLookupResult
+                return new AuthorExtraMetadata
                 {
                     ImageUrl = imageUrl,
+                    Overview = overview,
                     Links = links
                 };
             }
@@ -1552,10 +1603,97 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return null;
         }
 
-        private class AuthorImageLookupResult
+        private WikipediaSummary TryGetWikipediaSummary(string wikiTitle)
         {
-            public string ImageUrl { get; set; }
-            public List<Links> Links { get; set; }
+            if (wikiTitle.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var encodedTitle = Uri.EscapeDataString(wikiTitle.Replace(' ', '_'));
+            var request = new HttpRequestBuilder($"https://en.wikipedia.org/api/rest_v1/page/summary/{encodedTitle}")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get(request);
+            if (response.HasHttpError)
+            {
+                return null;
+            }
+
+            var json = JObject.Parse(response.Content);
+            var extract = NormalizeOverview(json["extract"]?.ToString());
+            var url = json["content_urls"]?["desktop"]?["page"]?.ToString();
+
+            if (extract.IsNullOrWhiteSpace() && url.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            return new WikipediaSummary
+            {
+                Overview = extract,
+                Url = url
+            };
+        }
+
+        private string TryGetOpenLibraryAuthorOverview(string authorKey)
+        {
+            if (authorKey.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var request = new HttpRequestBuilder($"https://openlibrary.org{authorKey}.json")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get(request);
+            if (response.HasHttpError)
+            {
+                return null;
+            }
+
+            var json = JObject.Parse(response.Content);
+            var bioToken = json["bio"];
+
+            if (bioToken == null)
+            {
+                return null;
+            }
+
+            if (bioToken.Type == JTokenType.String)
+            {
+                return NormalizeOverview(bioToken.ToString());
+            }
+
+            return NormalizeOverview(bioToken["value"]?.ToString());
+        }
+
+        private static string NormalizeOverview(string overview)
+        {
+            if (overview.IsNullOrWhiteSpace())
+            {
+                return overview;
+            }
+
+            var cleaned = overview.CleanSpaces();
+            if (cleaned.Length > 600)
+            {
+                cleaned = cleaned.Substring(0, 600).Trim();
+            }
+
+            return cleaned;
+        }
+
+        private class WikipediaSummary
+        {
+            public string Overview { get; set; }
+            public string Url { get; set; }
         }
 
         private static List<MediaCover.MediaCover> BuildGoogleImages(GoogleBooksImageLinks imageLinks)

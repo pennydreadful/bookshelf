@@ -140,6 +140,18 @@ namespace NzbDrone.Core.MediaCover
                         var lastWrite = _diskProvider.FileGetLastWrite(filePath);
                         mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
                     }
+                    else if (coverEntity == MediaCoverEntity.Author)
+                    {
+                        if (mediaCover.RemoteUrl.IsNotNullOrWhiteSpace() &&
+                            mediaCover.RemoteUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                        {
+                            mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
+                        }
+                        else
+                        {
+                            mediaCover.Url = mediaCover.RemoteUrl;
+                        }
+                    }
                 }
             }
         }

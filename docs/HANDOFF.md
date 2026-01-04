@@ -43,6 +43,9 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author pages now backfill missing posters/blurbs/links on load and persist them to metadata.
+- Author posters fall back to the media-cover proxy when no local author cover exists.
+- Wikidata lookups now return Wikipedia links/blurbs even when no image is available.
 - Author posters now pull from Wikidata/Wikipedia or Open Library with attribution links.
 - Update modal on app reloads is disabled.
 - Available Books title tooltip detection now triggers on the truncated title element.

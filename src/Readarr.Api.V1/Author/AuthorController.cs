@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -13,6 +14,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
@@ -39,6 +41,8 @@ namespace Readarr.Api.V1.Author
         private readonly IBookService _bookService;
         private readonly IAddAuthorService _addAuthorService;
         private readonly IAuthorStatisticsService _authorStatisticsService;
+        private readonly IAuthorExtraMetadataProvider _authorExtraMetadataProvider;
+        private readonly IAuthorMetadataService _authorMetadataService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IRootFolderService _rootFolderService;
@@ -48,6 +52,8 @@ namespace Readarr.Api.V1.Author
                             IBookService bookService,
                             IAddAuthorService addAuthorService,
                             IAuthorStatisticsService authorStatisticsService,
+                            IAuthorExtraMetadataProvider authorExtraMetadataProvider,
+                            IAuthorMetadataService authorMetadataService,
                             IMapCoversToLocal coverMapper,
                             IManageCommandQueue commandQueueManager,
                             IRootFolderService rootFolderService,
@@ -67,6 +73,8 @@ namespace Readarr.Api.V1.Author
             _bookService = bookService;
             _addAuthorService = addAuthorService;
             _authorStatisticsService = authorStatisticsService;
+            _authorExtraMetadataProvider = authorExtraMetadataProvider;
+            _authorMetadataService = authorMetadataService;
 
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
@@ -113,6 +121,8 @@ namespace Readarr.Api.V1.Author
                 return null;
             }
 
+            EnsureAuthorExtras(author);
+
             var resource = author.ToResource();
             MapCoversToLocal(resource);
             FetchAndLinkAuthorStatistics(resource);
@@ -127,7 +137,13 @@ namespace Readarr.Api.V1.Author
         public List<AuthorResource> AllAuthors()
         {
             var authorStats = _authorStatisticsService.AuthorStatistics();
-            var authorResources = _authorService.GetAllAuthors().ToResource();
+            var authors = _authorService.GetAllAuthors();
+            foreach (var author in authors)
+            {
+                EnsureAuthorExtras(author);
+            }
+
+            var authorResources = authors.ToResource();
 
             MapCoversToLocal(authorResources.ToArray());
             LinkNextPreviousBooks(authorResources.ToArray());
@@ -184,6 +200,77 @@ namespace Readarr.Api.V1.Author
             foreach (var authorResource in authors)
             {
                 _coverMapper.ConvertToLocalUrls(authorResource.Id, MediaCoverEntity.Author, authorResource.Images);
+            }
+        }
+
+        private void EnsureAuthorExtras(NzbDrone.Core.Books.Author author)
+        {
+            var metadata = author?.Metadata?.Value;
+            if (metadata == null)
+            {
+                return;
+            }
+
+            metadata.Images ??= new List<MediaCover.MediaCover>();
+            metadata.Links ??= new List<Links>();
+
+            var hasPoster = metadata.Images.Any(x => x.CoverType == MediaCoverTypes.Poster && x.Url.IsNotNullOrWhiteSpace());
+            var needsOverview = metadata.Overview.IsNullOrWhiteSpace();
+            var hasWikipediaLink = metadata.Links.Any(x =>
+                x.Url.IsNotNullOrWhiteSpace() &&
+                x.Url.Contains("wikipedia.org", StringComparison.OrdinalIgnoreCase));
+
+            if (hasPoster && !needsOverview && hasWikipediaLink)
+            {
+                return;
+            }
+
+            var extras = _authorExtraMetadataProvider.GetAuthorExtraMetadata(metadata.Name);
+            if (extras == null)
+            {
+                return;
+            }
+
+            var changed = false;
+
+            if (!hasPoster && extras.ImageUrl.IsNotNullOrWhiteSpace())
+            {
+                metadata.Images.Add(new MediaCover.MediaCover
+                {
+                    Url = extras.ImageUrl,
+                    CoverType = MediaCoverTypes.Poster
+                });
+                changed = true;
+            }
+
+            if (needsOverview && extras.Overview.IsNotNullOrWhiteSpace())
+            {
+                metadata.Overview = extras.Overview;
+                changed = true;
+            }
+
+            if (extras.Links != null)
+            {
+                foreach (var link in extras.Links)
+                {
+                    if (link?.Url.IsNullOrWhiteSpace() ?? true)
+                    {
+                        continue;
+                    }
+
+                    if (metadata.Links.Any(x => x.Url.Equals(link.Url, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    metadata.Links.Add(link);
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                _authorMetadataService.Upsert(metadata);
             }
         }
 
