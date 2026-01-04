@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.67
+- Summary: show a mouse-following tooltip for truncated available-book titles.
+- Why: long titles were clipped with ellipses and the full text was not accessible.
+- Impact: hovering a truncated title shows the full title in a floating tooltip that follows the cursor.
+- Files: frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, frontend/src/Author/Details/AuthorDetailsAvailableBooks.css, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and hover a truncated Available Books title to confirm the tooltip appears.
+
 ## 1.2.66
 - Summary: fix false removal errors, add a selection toggle for available books, and rename select mode buttons.
 - Why: removing available books showed an error despite success, and selection mode should be explicit and clearer across library pages.

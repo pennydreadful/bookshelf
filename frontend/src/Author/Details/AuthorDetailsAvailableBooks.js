@@ -33,13 +33,18 @@ class AuthorDetailsAvailableBooks extends Component {
       isConfirmRemoveOpen: false,
       pendingRemoveIds: [],
       pendingRemoveTitle: '',
-      isSelecting: false
+      isSelecting: false,
+      isTitleTooltipVisible: false,
+      titleTooltipText: '',
+      titleTooltipX: 0,
+      titleTooltipY: 0
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.items !== this.props.items) {
       this.clearSelection(true);
+      this.hideTitleTooltip();
     }
   }
 
@@ -54,6 +59,13 @@ class AuthorDetailsAvailableBooks extends Component {
       isConfirmRemoveOpen: false,
       isSelecting: keepSelecting ? prevState.isSelecting : false
     }));
+  };
+
+  hideTitleTooltip = () => {
+    this.setState({
+      isTitleTooltipVisible: false,
+      titleTooltipText: ''
+    });
   };
 
   getSelectedIds = () => {
@@ -87,6 +99,38 @@ class AuthorDetailsAvailableBooks extends Component {
     }
 
     this.setState({ selectedState });
+  };
+
+  onTitleMouseEnter = (event, title) => {
+    const { currentTarget, clientX, clientY } = event;
+    const isTruncated = currentTarget.scrollHeight > currentTarget.clientHeight ||
+      currentTarget.scrollWidth > currentTarget.clientWidth;
+
+    if (!isTruncated) {
+      return;
+    }
+
+    this.setState({
+      isTitleTooltipVisible: true,
+      titleTooltipText: title,
+      titleTooltipX: clientX + 12,
+      titleTooltipY: clientY + 12
+    });
+  };
+
+  onTitleMouseMove = (event) => {
+    if (!this.state.isTitleTooltipVisible) {
+      return;
+    }
+
+    this.setState({
+      titleTooltipX: event.clientX + 12,
+      titleTooltipY: event.clientY + 12
+    });
+  };
+
+  onTitleMouseLeave = () => {
+    this.hideTitleTooltip();
   };
 
   onToggleSelecting = () => {
@@ -180,7 +224,11 @@ class AuthorDetailsAvailableBooks extends Component {
       isConfirmRemoveOpen,
       pendingRemoveIds,
       pendingRemoveTitle,
-      isSelecting
+      isSelecting,
+      isTitleTooltipVisible,
+      titleTooltipText,
+      titleTooltipX,
+      titleTooltipY
     } = this.state;
 
     const selectionCount = isSelecting ? this.getSelectionCount() : 0;
@@ -311,7 +359,13 @@ class AuthorDetailsAvailableBooks extends Component {
 
                       <div className={styles.meta}>
                         <div className={styles.bookTitle}>
-                          {item.title}
+                          <span
+                            onMouseEnter={(event) => this.onTitleMouseEnter(event, item.title)}
+                            onMouseMove={this.onTitleMouseMove}
+                            onMouseLeave={this.onTitleMouseLeave}
+                          >
+                            {item.title}
+                          </span>
                         </div>
 
                         {
@@ -363,6 +417,19 @@ class AuthorDetailsAvailableBooks extends Component {
           onConfirm={this.onConfirmRemove}
           onCancel={this.onCancelRemove}
         />
+
+        {
+          isTitleTooltipVisible &&
+            <div
+              className={styles.titleTooltip}
+              style={{
+                left: titleTooltipX,
+                top: titleTooltipY
+              }}
+            >
+              {titleTooltipText}
+            </div>
+        }
       </div>
     );
   }

@@ -128,6 +128,21 @@
   overflow: hidden;
 }
 
+.titleTooltip {
+  position: fixed;
+  z-index: 60;
+  max-width: 360px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background-color: var(--popoverBodyBackgroundColor);
+  box-shadow: 0 6px 14px var(--popoverShadowColor);
+  border: 1px solid var(--borderColor);
+  color: var(--textColor);
+  pointer-events: none;
+  word-break: break-word;
+  white-space: normal;
+}
+
 .addButton {
   composes: button from '~Components/Link/IconButton.css';
 

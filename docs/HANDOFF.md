@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Available Books titles now show a mouse-following tooltip when truncated.
 - Available Books: removal endpoint now returns JSON to avoid false error banners on success.
 - Available Books selection is explicit via “Select Available Books”/“Done Selecting”; checkboxes and batch buttons are hidden unless selection mode is enabled.
 - Book/Author selection buttons are renamed to “Book Select/Done Selecting” and “Author Select/Done Selecting.”
