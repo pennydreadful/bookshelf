@@ -3,8 +3,6 @@ import React from 'react';
 import Link from 'Components/Link/Link';
 import translate from 'Utilities/String/translate';
 import { inputTypes, kinds } from 'Helpers/Props';
-import translate from 'Utilities/String/translate';
-// import translate from 'Utilities/String/translate';
 import AutoCompleteInput from './AutoCompleteInput';
 import BookEditionSelectInputConnector from './BookEditionSelectInputConnector';
 import BookshelfInputConnector from './BookshelfInputConnector';

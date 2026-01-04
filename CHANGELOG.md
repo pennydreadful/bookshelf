@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.40
+- Summary: fix duplicate import in FormInputGroup.
+- Why: resolves the webpack build failure after the permissions tip update.
+- Impact: frontend build succeeds again.
+- Files: frontend/src/Components/Form/FormInputGroup.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh to rebuild.
+
 ## 1.2.39
 - Summary: add create-folder support in the file browser and show a permissions tip for unwritable paths.
 - Why: let users create folders from the UI and fix common permission errors faster.
