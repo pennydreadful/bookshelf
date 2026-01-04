@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.68
+- Summary: fix Available Books title tooltips so they trigger on truncated text.
+- Why: the hover detection was bound to an inner element and never detected truncation.
+- Impact: hovering a truncated Available Books title now shows the full title tooltip reliably.
+- Files: frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and hover a truncated Available Books title to confirm the tooltip appears.
+
 ## 1.2.67
 - Summary: show a mouse-following tooltip for truncated available-book titles.
 - Why: long titles were clipped with ellipses and the full text was not accessible.

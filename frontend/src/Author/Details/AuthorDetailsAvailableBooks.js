@@ -107,6 +107,7 @@ class AuthorDetailsAvailableBooks extends Component {
       currentTarget.scrollWidth > currentTarget.clientWidth;
 
     if (!isTruncated) {
+      this.hideTitleTooltip();
       return;
     }
 
@@ -358,14 +359,13 @@ class AuthorDetailsAvailableBooks extends Component {
                       />
 
                       <div className={styles.meta}>
-                        <div className={styles.bookTitle}>
-                          <span
-                            onMouseEnter={(event) => this.onTitleMouseEnter(event, item.title)}
-                            onMouseMove={this.onTitleMouseMove}
-                            onMouseLeave={this.onTitleMouseLeave}
-                          >
-                            {item.title}
-                          </span>
+                        <div
+                          className={styles.bookTitle}
+                          onMouseEnter={(event) => this.onTitleMouseEnter(event, item.title)}
+                          onMouseMove={this.onTitleMouseMove}
+                          onMouseLeave={this.onTitleMouseLeave}
+                        >
+                          {item.title}
                         </div>
 
                         {
