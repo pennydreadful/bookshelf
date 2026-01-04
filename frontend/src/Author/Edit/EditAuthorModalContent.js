@@ -62,11 +62,15 @@ class EditAuthorModalContent extends Component {
   render() {
     const {
       authorName,
+      availableBooksCount,
       item,
+      isAvailableBooksPopulated,
       isSaving,
+      isAddingAvailableBooks,
       showMetadataProfile,
       originalPath,
       onInputChange,
+      onAddAllBooksPress,
       onModalClose,
       onDeleteAuthorPress,
       ...otherProps
@@ -208,6 +212,15 @@ class EditAuthorModalContent extends Component {
             Delete
           </Button>
 
+          <SpinnerButton
+            className={styles.requestAllButton}
+            isSpinning={isAddingAvailableBooks}
+            isDisabled={isAvailableBooksPopulated && availableBooksCount === 0}
+            onPress={onAddAllBooksPress}
+          >
+            {translate('RequestAllBooks')}
+          </SpinnerButton>
+
           <Button
             onPress={onModalClose}
           >
@@ -238,12 +251,16 @@ class EditAuthorModalContent extends Component {
 EditAuthorModalContent.propTypes = {
   authorId: PropTypes.number.isRequired,
   authorName: PropTypes.string.isRequired,
+  availableBooksCount: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
+  isAvailableBooksPopulated: PropTypes.bool.isRequired,
+  isAddingAvailableBooks: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   isPathChanging: PropTypes.bool.isRequired,
   originalPath: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
+  onAddAllBooksPress: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteAuthorPress: PropTypes.func.isRequired

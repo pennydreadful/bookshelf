@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.62
+- Summary: show available author books on the author page and add a “Request All Books” action in the edit modal.
+- Why: the author page only listed existing library books, so discovery and bulk adds were missing.
+- Impact: author pages now list addable books with a + button; edit modal can request all available books at once.
+- Files: src/Readarr.Api.V1/Author/AuthorBooksAddResource.cs, src/Readarr.Api.V1/Author/AuthorBooksController.cs, frontend/src/Store/Actions/authorAvailableBooksActions.js, frontend/src/Store/Actions/index.js, frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, frontend/src/Author/Details/AuthorDetailsAvailableBooks.css, frontend/src/Author/Details/AuthorDetailsAvailableBooksConnector.js, frontend/src/Author/Details/AuthorDetails.js, frontend/src/Author/Edit/EditAuthorModalContent.js, frontend/src/Author/Edit/EditAuthorModalContent.css, frontend/src/Author/Edit/EditAuthorModalContentConnector.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an author page, confirm Available Books renders with + buttons, and verify “Request All Books” in Edit.
+
 ## 1.2.61
 - Summary: avoid page crash when a deleted book is still referenced during selection updates.
 - Why: the book author selector assumed a book always exists, which threw after a delete and triggered the error page.

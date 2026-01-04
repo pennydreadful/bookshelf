@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { saveAuthor, setAuthorValue } from 'Store/Actions/authorActions';
+import { addAuthorBooks } from 'Store/Actions/authorAvailableBooksActions';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import selectSettings from 'Store/Selectors/selectSettings';
 import EditAuthorModalContent from './EditAuthorModalContent';
@@ -27,10 +28,11 @@ function createIsPathChangingSelector() {
 function createMapStateToProps() {
   return createSelector(
     (state) => state.authors,
+    (state) => state.authorAvailableBooks,
     (state) => state.settings.metadataProfiles,
     createAuthorSelector(),
     createIsPathChangingSelector(),
-    (authorsState, metadataProfiles, author, isPathChanging) => {
+    (authorsState, authorAvailableBooks, metadataProfiles, author, isPathChanging) => {
       const {
         isSaving,
         saveError,
@@ -47,6 +49,7 @@ function createMapStateToProps() {
       ]);
 
       const settings = selectSettings(authorSettings, pendingChanges, saveError);
+      const isCurrentAuthor = authorAvailableBooks?.authorId === author.id;
 
       return {
         authorName: author.authorName,
@@ -54,6 +57,9 @@ function createMapStateToProps() {
         saveError,
         isPathChanging,
         originalPath: author.path,
+        isAddingAvailableBooks: isCurrentAuthor ? authorAvailableBooks.isAdding : false,
+        isAvailableBooksPopulated: isCurrentAuthor ? authorAvailableBooks.isPopulated : false,
+        availableBooksCount: isCurrentAuthor ? authorAvailableBooks.items.length : 0,
         item: settings.settings,
         showMetadataProfile: metadataProfiles.items.length > 1,
         ...settings
@@ -64,7 +70,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   dispatchSetAuthorValue: setAuthorValue,
-  dispatchSaveAuthor: saveAuthor
+  dispatchSaveAuthor: saveAuthor,
+  dispatchAddAuthorBooks: addAuthorBooks
 };
 
 class EditAuthorModalContentConnector extends Component {
@@ -92,6 +99,12 @@ class EditAuthorModalContentConnector extends Component {
     });
   };
 
+  onAddAllBooksPress = () => {
+    this.props.dispatchAddAuthorBooks({
+      authorId: this.props.authorId
+    });
+  };
+
   //
   // Render
 
@@ -100,6 +113,7 @@ class EditAuthorModalContentConnector extends Component {
       <EditAuthorModalContent
         {...this.props}
         onInputChange={this.onInputChange}
+        onAddAllBooksPress={this.onAddAllBooksPress}
         onSavePress={this.onSavePress}
         onMoveAuthorPress={this.onMoveAuthorPress}
       />
@@ -110,9 +124,13 @@ class EditAuthorModalContentConnector extends Component {
 EditAuthorModalContentConnector.propTypes = {
   authorId: PropTypes.number,
   isSaving: PropTypes.bool.isRequired,
+  isAddingAvailableBooks: PropTypes.bool.isRequired,
+  isAvailableBooksPopulated: PropTypes.bool.isRequired,
+  availableBooksCount: PropTypes.number.isRequired,
   saveError: PropTypes.object,
   dispatchSetAuthorValue: PropTypes.func.isRequired,
   dispatchSaveAuthor: PropTypes.func.isRequired,
+  dispatchAddAuthorBooks: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

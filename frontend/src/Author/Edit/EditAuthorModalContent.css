@@ -4,6 +4,10 @@
   margin-right: auto;
 }
 
+.requestAllButton {
+  margin-right: 12px;
+}
+
 .labelIcon {
   margin-left: 8px;
 }

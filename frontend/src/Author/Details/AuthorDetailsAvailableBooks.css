@@ -1,0 +1,67 @@
+.section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--borderColor);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty {
+  color: var(--helpTextColor);
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background-color: var(--cardBackgroundColor);
+}
+
+.cover {
+  flex: 0 0 auto;
+}
+
+.meta {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.bookTitle {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.bookSeries,
+.bookYear {
+  color: var(--helpTextColor);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.addButton {
+  composes: button from '~Components/Link/IconButton.css';
+
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+}

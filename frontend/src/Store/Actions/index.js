@@ -1,4 +1,5 @@
 import * as app from './appActions';
+import * as authorAvailableBooks from './authorAvailableBooksActions';
 import * as author from './authorActions';
 import * as authorDetails from './authorDetailsActions';
 import * as authorHistory from './authorHistoryActions';
@@ -32,6 +33,7 @@ import * as wanted from './wantedActions';
 
 export default [
   app,
+  authorAvailableBooks,
   author,
   authorDetails,
   authorHistory,

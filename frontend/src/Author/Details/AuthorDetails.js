@@ -29,6 +29,7 @@ import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
 import AuthorDetailsHeaderConnector from './AuthorDetailsHeaderConnector';
+import AuthorDetailsAvailableBooksConnector from './AuthorDetailsAvailableBooksConnector';
 import AuthorDetailsSeasonConnector from './AuthorDetailsSeasonConnector';
 import AuthorDetailsSeriesConnector from './AuthorDetailsSeriesConnector';
 import styles from './AuthorDetails.css';
@@ -494,6 +495,10 @@ class AuthorDetails extends Component {
                       setSelectedState={this.setSelectedState}
                       onSelectedChange={this.onSelectedChange}
                       isEditorActive={isEditorActive}
+                    />
+
+                    <AuthorDetailsAvailableBooksConnector
+                      authorId={id}
                     />
                   </TabPanel>
 
