@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.59
+- Summary: keep book covers on save by reloading editions before returning the updated resource.
+- Why: the edit save response could omit editions, which wiped images in the UI even though nothing about covers changed.
+- Impact: edit saves retain existing cover art and no longer replace it with placeholders.
+- Files: src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and toggle monitored in the Edit Book modal to confirm covers stay.
+
 ## 1.2.58
 - Summary: keep book covers by selecting an edition with images when available.
 - Why: when no edition is marked monitored, the fallback could pick an edition without images and show placeholders.

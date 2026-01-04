@@ -171,6 +171,10 @@ namespace Readarr.Api.V1.Books
             {
                 _editionService.UpdateMany(model.Editions.Value);
             }
+            else
+            {
+                model.Editions = _editionService.GetEditionsByBook(model.Id);
+            }
 
             BroadcastResourceChange(ModelAction.Updated, model.Id);
 
