@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.44
+- Summary: default author add to "All Books" when the add author modal opens.
+- Why: avoid only adding a single book when prior defaults were set to a single-book option.
+- Impact: author add starts with "All Books" monitoring unless you change it before confirming.
+- Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify author adds now pull the full catalog.
+
 ## 1.2.43
 - Summary: default book adds to a single book and warn before adding an author.
 - Why: choosing a book should not add the entire author catalog; adding an author should be explicit.

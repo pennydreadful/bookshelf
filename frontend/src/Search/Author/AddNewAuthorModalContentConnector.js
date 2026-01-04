@@ -51,6 +51,14 @@ class AddNewAuthorModalContentConnector extends Component {
   //
   // Listeners
 
+  componentDidMount() {
+    const { monitor, setAuthorAddDefault } = this.props;
+
+    if (monitor?.value && monitor.value !== 'all') {
+      setAuthorAddDefault({ monitor: 'all' });
+    }
+  }
+
   onInputChange = ({ name, value }) => {
     this.props.setAuthorAddDefault({ [name]: value });
   };
