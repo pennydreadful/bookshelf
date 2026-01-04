@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.61
+- Summary: avoid page crash when a deleted book is still referenced during selection updates.
+- Why: the book author selector assumed a book always exists, which threw after a delete and triggered the error page.
+- Impact: deleting books from Book Editor no longer shows the error page.
+- Files: frontend/src/Store/Selectors/createBookAuthorSelector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and delete a book from Book Editor to confirm no error page appears.
+
 ## 1.2.60
 - Summary: make book covers edition-independent by preferring the local book cover file.
 - Why: cover art was tied to the monitored edition, so toggling monitored could drop images and show placeholders.
