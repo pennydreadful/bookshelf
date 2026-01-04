@@ -13,5 +13,6 @@ namespace NzbDrone.Core.MetadataSource
     public interface IAuthorExtraMetadataProvider
     {
         AuthorExtraMetadata GetAuthorExtraMetadata(string authorName);
+        AuthorExtraMetadata RefreshAuthorExtraMetadata(string authorName);
     }
 }

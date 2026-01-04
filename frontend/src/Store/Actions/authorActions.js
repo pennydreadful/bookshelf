@@ -167,6 +167,7 @@ export const FETCH_AUTHOR = 'authors/fetchAuthor';
 export const SET_AUTHOR_VALUE = 'authors/setAuthorValue';
 export const SAVE_AUTHOR = 'authors/saveAuthor';
 export const DELETE_AUTHOR = 'authors/deleteAuthor';
+export const REFRESH_AUTHOR_IMAGE = 'authors/refreshAuthorImage';
 
 export const TOGGLE_AUTHOR_MONITORED = 'authors/toggleAuthorMonitored';
 export const TOGGLE_BOOK_MONITORED = 'authors/toggleBookMonitored';
@@ -202,6 +203,8 @@ export const deleteAuthor = createThunk(DELETE_AUTHOR, (payload) => {
   };
 });
 
+export const refreshAuthorImage = createThunk(REFRESH_AUTHOR_IMAGE);
+
 export const toggleAuthorMonitored = createThunk(TOGGLE_AUTHOR_MONITORED);
 export const toggleBookMonitored = createThunk(TOGGLE_BOOK_MONITORED);
 export const updateBookMonitor = createThunk(UPDATE_BOOK_MONITORED);
@@ -232,6 +235,42 @@ export const actionHandlers = handleThunks({
   [FETCH_AUTHOR]: createFetchHandler(section, '/author'),
   [SAVE_AUTHOR]: createSaveProviderHandler(section, '/author', { getAjaxOptions: getSaveAjaxOptions }),
   [DELETE_AUTHOR]: createRemoveItemHandler(section, '/author'),
+  [REFRESH_AUTHOR_IMAGE]: (getState, payload, dispatch) => {
+    const {
+      authorId: id
+    } = payload;
+
+    dispatch(updateItem({
+      id,
+      section,
+      isSaving: true
+    }));
+
+    const request = createAjaxRequest({
+      url: `/author/${id}/refresh-image`,
+      method: 'POST',
+      dataType: 'json'
+    }).request;
+
+    request.done((data) => {
+      dispatch(updateItem({
+        id,
+        section,
+        isSaving: false,
+        ...data
+      }));
+    });
+
+    request.fail(() => {
+      dispatch(updateItem({
+        id,
+        section,
+        isSaving: false
+      }));
+    });
+
+    return request;
+  },
 
   [TOGGLE_AUTHOR_MONITORED]: (getState, payload, dispatch) => {
     const {

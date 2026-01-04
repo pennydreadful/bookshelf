@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.77
+- Summary: add an author picture refresh button that forces a metadata re-fetch.
+- Why: users need a quick way to fix incorrect or missing author photos without a full refresh.
+- Impact: author pages include a “Refresh author picture” button; it refreshes metadata images and updates the author record.
+- Files: src/NzbDrone.Core/MetadataSource/AuthorExtraMetadata.cs, src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Readarr.Api.V1/Author/AuthorController.cs, frontend/src/Author/Details/AuthorDetails.js, frontend/src/Author/Details/AuthorDetailsConnector.js, frontend/src/Store/Actions/authorActions.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and use the new button on an author page to confirm the poster updates.
+
 ## 1.2.76
 - Summary: add Wikipedia direct lookup fallback for author images/blurbs.
 - Why: some authors (e.g., Dave Ramsey) lack Wikidata image data but do have Wikipedia summaries.

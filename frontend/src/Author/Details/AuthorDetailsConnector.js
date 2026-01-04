@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
-import { toggleAuthorMonitored } from 'Store/Actions/authorActions';
+import { refreshAuthorImage, toggleAuthorMonitored } from 'Store/Actions/authorActions';
 import { fetchAuthorAvailableBooks } from 'Store/Actions/authorAvailableBooksActions';
 import { clearBookFiles, fetchBookFiles } from 'Store/Actions/bookFileActions';
 import { saveBookEditor } from 'Store/Actions/bookIndexActions';
@@ -214,6 +214,7 @@ const mapDispatchToProps = {
   fetchBookFiles,
   clearBookFiles,
   toggleAuthorMonitored,
+  refreshAuthorImage,
   fetchQueueDetails,
   clearQueueDetails,
   clearReleases,
@@ -223,6 +224,9 @@ const mapDispatchToProps = {
 };
 
 class AuthorDetailsConnector extends Component {
+  state = {
+    isRefreshingImage: false
+  };
 
   //
   // Lifecycle
@@ -297,6 +301,17 @@ class AuthorDetailsConnector extends Component {
     this.props.fetchAuthorAvailableBooks({ authorId: this.props.id });
   };
 
+  onRefreshImagePress = () => {
+    this.setState({ isRefreshingImage: true });
+
+    const request = this.props.refreshAuthorImage({ authorId: this.props.id });
+    if (request && request.always) {
+      request.always(() => this.setState({ isRefreshingImage: false }));
+    } else {
+      this.setState({ isRefreshingImage: false });
+    }
+  };
+
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.AUTHOR_SEARCH,
@@ -315,8 +330,10 @@ class AuthorDetailsConnector extends Component {
     return (
       <AuthorDetails
         {...this.props}
+        isRefreshingImage={this.state.isRefreshingImage}
         onMonitorTogglePress={this.onMonitorTogglePress}
         onRefreshPress={this.onRefreshPress}
+        onRefreshImagePress={this.onRefreshImagePress}
         onSearchPress={this.onSearchPress}
         onSaveSelected={this.onSaveSelected}
       />
@@ -343,7 +360,8 @@ AuthorDetailsConnector.propTypes = {
   clearReleases: PropTypes.func.isRequired,
   cancelFetchReleases: PropTypes.func.isRequired,
   fetchAuthorAvailableBooks: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  executeCommand: PropTypes.func.isRequired,
+  refreshAuthorImage: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AuthorDetailsConnector);

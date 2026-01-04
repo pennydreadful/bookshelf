@@ -195,6 +195,61 @@ namespace Readarr.Api.V1.Author
             _authorService.DeleteAuthor(id, deleteFiles, addImportListExclusion);
         }
 
+        [HttpPost("{id:int}/refresh-image")]
+        public ActionResult<AuthorResource> RefreshAuthorImage(int id)
+        {
+            var author = _authorService.GetAuthor(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            var metadata = author.Metadata.Value;
+            metadata.Images ??= new List<MediaCover>();
+            metadata.Links ??= new List<Links>();
+
+            var extras = _authorExtraMetadataProvider.RefreshAuthorExtraMetadata(metadata.Name);
+            var updated = false;
+
+            if (extras?.ImageUrl.IsNotNullOrWhiteSpace() == true)
+            {
+                metadata.Images.RemoveAll(x => x.CoverType == MediaCoverTypes.Poster);
+                metadata.Images.Add(new MediaCover
+                {
+                    Url = extras.ImageUrl,
+                    CoverType = MediaCoverTypes.Poster
+                });
+                updated = true;
+            }
+
+            if (extras?.Links != null)
+            {
+                foreach (var link in extras.Links)
+                {
+                    if (link?.Url.IsNullOrWhiteSpace() ?? true)
+                    {
+                        continue;
+                    }
+
+                    if (metadata.Links.Any(x => x.Url.Equals(link.Url, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    metadata.Links.Add(link);
+                    updated = true;
+                }
+            }
+
+            if (updated)
+            {
+                _authorMetadataService.Upsert(metadata);
+            }
+
+            author = _authorService.GetAuthor(id);
+            return GetAuthorResource(author);
+        }
+
         private void MapCoversToLocal(params AuthorResource[] authors)
         {
             foreach (var authorResource in authors)

@@ -1356,6 +1356,22 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return result ?? new AuthorExtraMetadata();
         }
 
+        public AuthorExtraMetadata RefreshAuthorExtraMetadata(string authorName)
+        {
+            if (authorName.IsNullOrWhiteSpace())
+            {
+                return new AuthorExtraMetadata();
+            }
+
+            var cacheKey = authorName.CleanSpaces().ToLowerInvariant();
+            _authorExtrasCache.Remove(cacheKey);
+
+            var result = LookupAuthorExtraMetadata(authorName) ?? new AuthorExtraMetadata();
+            _authorExtrasCache.Set(cacheKey, result, TimeSpan.FromDays(AuthorImageCacheDays));
+
+            return result;
+        }
+
         private void TryAddExternalAuthorImage(AuthorMetadata metadata)
         {
             if (metadata == null || metadata.Name.IsNullOrWhiteSpace())

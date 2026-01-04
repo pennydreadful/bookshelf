@@ -794,6 +794,8 @@
   "RefreshAndScan": "Refresh & Scan",
   "RefreshAvailableBooks": "Refresh available books",
   "RefreshAvailableBooksHelpText": "Reload the list of available books for this author",
+  "RefreshAuthorPicture": "Refresh author picture",
+  "RefreshAuthorPictureHelpText": "Re-fetch the author poster from metadata sources",
   "RefreshAuthor": "Refresh Author",
   "RefreshBook": "Refresh Book",
   "RefreshInformation": "Refresh information",
