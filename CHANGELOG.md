@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.28
+- Summary: add a recovery prompt when the target indexer API fails.
+- Why: a corrupted indexer table returns HTTP 500 and blocks imports.
+- Impact: import-indexers.sh can optionally reset the local indexers table and proceed.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download import-indexers.sh and run it on the Bookdarr VM.
+
 ## 1.2.27
 - Summary: force visible API key input for the import script prompts.
 - Why: terminals can keep echo disabled from previous commands, hiding input.

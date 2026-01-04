@@ -7,6 +7,7 @@ SOURCE_API_KEY="${SOURCE_API_KEY:-}"
 TARGET_URL="${TARGET_URL:-http://localhost:8787}"
 TARGET_API_KEY="${TARGET_API_KEY:-}"
 TARGET_CONFIG="${TARGET_CONFIG:-/opt/bookdarr-dev/config/config.xml}"
+TARGET_DB="${TARGET_DB:-/opt/bookdarr-dev/config/readarr.db}"
 REPLACE_EXISTING="${REPLACE_EXISTING:-true}"
 
 usage() {
@@ -19,6 +20,7 @@ Environment variables:
   TARGET_API_KEY (optional; will be read from TARGET_CONFIG if missing)
   TARGET_URL (default: http://localhost:8787)
   TARGET_CONFIG (default: /opt/bookdarr-dev/config/config.xml)
+  TARGET_DB (default: /opt/bookdarr-dev/config/readarr.db)
   REPLACE_EXISTING (default: true)
 EOF
 }
@@ -115,9 +117,28 @@ source_indexers_json="$(
 )"
 
 log "Fetching existing indexers from ${TARGET_URL}"
-target_indexers_json="$(
+if ! target_indexers_json="$(
   curl -fsS "${TARGET_URL}/api/v1/indexer" -H "X-Api-Key: ${TARGET_API_KEY}"
-)"
+)"; then
+  log "Failed to fetch target indexers (HTTP error)."
+  if [ -f "${TARGET_DB}" ] && command -v sqlite3 >/dev/null 2>&1; then
+    read -r -p "Reset target indexers in ${TARGET_DB}? This deletes all target indexers. [y/N]: " reset_confirm
+    if [[ "${reset_confirm}" =~ ^[Yy]$ ]]; then
+      if ! sqlite3 "${TARGET_DB}" "PRAGMA busy_timeout=5000; DELETE FROM Indexers; DELETE FROM sqlite_sequence WHERE name='Indexers';"; then
+        echo "Failed to reset indexers (database locked). Stop Bookdarr and rerun." >&2
+        exit 1
+      fi
+      target_indexers_json="[]"
+      log "Target indexers cleared. Continuing with import."
+    else
+      echo "Cannot continue without target indexers. Resolve the API error and retry." >&2
+      exit 1
+    fi
+  else
+    echo "Cannot reset target indexers (missing sqlite3 or DB). Resolve the API error and retry." >&2
+    exit 1
+  fi
+fi
 
 declare -A TARGET_IDS=()
 while IFS='|' read -r name id; do
