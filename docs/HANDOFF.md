@@ -43,12 +43,9 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
-- Author page: Available Books list now supports batch select with Add Selected and Remove Selected, plus per-book remove with confirmation.
-- Available Books removals are stored as Import List Exclusions, so hidden books stay hidden after refresh (remove via Settings -> Import Lists -> Import List Exclusions).
-- Author page Refresh button now reloads Available Books only (no auto-add/scan).
-- Adding books from Available Books adds them as Monitored.
-- Adding an author from search now adds only the author (no auto-import of books) by sending `doRefresh=false`.
-- New API: `POST /api/v1/author/{authorId}/books/exclude` with `{ foreignBookIds: [] }`.
+- Available Books: removal endpoint now returns JSON to avoid false error banners on success.
+- Available Books selection is explicit via “Select Available Books”/“Done Selecting”; checkboxes and batch buttons are hidden unless selection mode is enabled.
+- Book/Author selection buttons are renamed to “Book Select/Done Selecting” and “Author Select/Done Selecting.”
 
 ## Local Backup Convention
 - Backups are stored under `/Users/joe/VS Code/Bookdarr-backups/` before each push.

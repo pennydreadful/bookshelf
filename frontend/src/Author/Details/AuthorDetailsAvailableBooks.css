@@ -11,6 +11,12 @@
   margin-bottom: 12px;
 }
 
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .title {
   font-size: 18px;
   font-weight: 600;
@@ -50,6 +56,17 @@
 }
 
 .card {
+  display: grid;
+  grid-template-columns: 60px 1fr 32px 32px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background-color: var(--cardBackgroundColor);
+}
+
+.cardSelecting {
   display: grid;
   grid-template-columns: 20px 60px 1fr 32px 32px;
   gap: 10px;

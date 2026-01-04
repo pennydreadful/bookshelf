@@ -32,26 +32,28 @@ class AuthorDetailsAvailableBooks extends Component {
       selectedState: {},
       isConfirmRemoveOpen: false,
       pendingRemoveIds: [],
-      pendingRemoveTitle: ''
+      pendingRemoveTitle: '',
+      isSelecting: false
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.items !== this.props.items) {
-      this.clearSelection();
+      this.clearSelection(true);
     }
   }
 
   //
   // Control
 
-  clearSelection = () => {
-    this.setState({
+  clearSelection = (keepSelecting) => {
+    this.setState((prevState) => ({
       selectedState: {},
       pendingRemoveIds: [],
       pendingRemoveTitle: '',
-      isConfirmRemoveOpen: false
-    });
+      isConfirmRemoveOpen: false,
+      isSelecting: keepSelecting ? prevState.isSelecting : false
+    }));
   };
 
   getSelectedIds = () => {
@@ -87,6 +89,22 @@ class AuthorDetailsAvailableBooks extends Component {
     this.setState({ selectedState });
   };
 
+  onToggleSelecting = () => {
+    this.setState((prevState) => {
+      if (prevState.isSelecting) {
+        return {
+          isSelecting: false,
+          selectedState: {},
+          pendingRemoveIds: [],
+          pendingRemoveTitle: '',
+          isConfirmRemoveOpen: false
+        };
+      }
+
+      return { isSelecting: true };
+    });
+  };
+
   onAddSelectedPress = () => {
     const selectedIds = this.getSelectedIds();
 
@@ -95,7 +113,7 @@ class AuthorDetailsAvailableBooks extends Component {
     }
 
     this.props.onAddBooksPress(selectedIds);
-    this.clearSelection();
+    this.clearSelection(true);
   };
 
   onRemoveSelectedPress = () => {
@@ -128,12 +146,12 @@ class AuthorDetailsAvailableBooks extends Component {
     const { pendingRemoveIds } = this.state;
 
     if (!pendingRemoveIds.length) {
-      this.clearSelection();
+      this.clearSelection(true);
       return;
     }
 
     this.props.onExcludeBooksPress(pendingRemoveIds);
-    this.clearSelection();
+    this.clearSelection(true);
   };
 
   onCancelRemove = () => {
@@ -161,11 +179,12 @@ class AuthorDetailsAvailableBooks extends Component {
     const {
       isConfirmRemoveOpen,
       pendingRemoveIds,
-      pendingRemoveTitle
+      pendingRemoveTitle,
+      isSelecting
     } = this.state;
 
-    const selectionCount = this.getSelectionCount();
-    const allSelected = items.length > 0 && selectionCount === items.length;
+    const selectionCount = isSelecting ? this.getSelectionCount() : 0;
+    const allSelected = isSelecting && items.length > 0 && selectionCount === items.length;
     const isWorking = isAdding || isExcluding;
 
     const confirmTitle = pendingRemoveIds.length > 1 ?
@@ -179,43 +198,56 @@ class AuthorDetailsAvailableBooks extends Component {
     return (
       <div className={styles.section}>
         <div className={styles.header}>
-          <div className={styles.title}>
-            {translate('AvailableBooks')}
-          </div>
-
-          <div className={styles.headerActions}>
-            <div className={styles.selectionInfo}>
-              <CheckInput
-                name="selectAllAvailableBooks"
-                value={allSelected}
-                checkedValue={true}
-                uncheckedValue={false}
-                onChange={this.onSelectAllChange}
-                isDisabled={!items.length || isWorking}
-              />
-              <span>{translate('SelectedCountBooksSelectedInterp', [selectionCount])}</span>
+          <div className={styles.titleGroup}>
+            <div className={styles.title}>
+              {translate('AvailableBooks')}
             </div>
 
-            <div className={styles.selectionButtons}>
-              <SpinnerButton
-                kind={kinds.SUCCESS}
-                isSpinning={isAdding}
-                isDisabled={!selectionCount || isWorking}
-                onPress={this.onAddSelectedPress}
-              >
-                {translate('AddSelectedBooks')}
-              </SpinnerButton>
-
-              <SpinnerButton
-                kind={kinds.DANGER}
-                isSpinning={isExcluding}
-                isDisabled={!selectionCount || isWorking}
-                onPress={this.onRemoveSelectedPress}
-              >
-                {translate('RemoveSelected')}
-              </SpinnerButton>
-            </div>
+            <SpinnerButton
+              kind={kinds.DEFAULT}
+              isDisabled={!items.length || isWorking}
+              onPress={this.onToggleSelecting}
+            >
+              {translate(isSelecting ? 'DoneSelecting' : 'SelectAvailableBooks')}
+            </SpinnerButton>
           </div>
+
+          {
+            isSelecting &&
+              <div className={styles.headerActions}>
+                <div className={styles.selectionInfo}>
+                  <CheckInput
+                    name="selectAllAvailableBooks"
+                    value={allSelected}
+                    checkedValue={true}
+                    uncheckedValue={false}
+                    onChange={this.onSelectAllChange}
+                    isDisabled={!items.length || isWorking}
+                  />
+                  <span>{translate('SelectedCountBooksSelectedInterp', [selectionCount])}</span>
+                </div>
+
+                <div className={styles.selectionButtons}>
+                  <SpinnerButton
+                    kind={kinds.SUCCESS}
+                    isSpinning={isAdding}
+                    isDisabled={!selectionCount || isWorking}
+                    onPress={this.onAddSelectedPress}
+                  >
+                    {translate('AddSelectedBooks')}
+                  </SpinnerButton>
+
+                  <SpinnerButton
+                    kind={kinds.DANGER}
+                    isSpinning={isExcluding}
+                    isDisabled={!selectionCount || isWorking}
+                    onPress={this.onRemoveSelectedPress}
+                  >
+                    {translate('RemoveSelected')}
+                  </SpinnerButton>
+                </div>
+              </div>
+          }
         </div>
 
         {
@@ -255,18 +287,21 @@ class AuthorDetailsAvailableBooks extends Component {
                   return (
                     <div
                       key={item.foreignBookId}
-                      className={styles.card}
+                      className={isSelecting ? styles.cardSelecting : styles.card}
                     >
-                      <div className={styles.selectCell}>
-                        <CheckInput
-                          name={`availableBook-${item.foreignBookId}`}
-                          value={isSelected}
-                          checkedValue={true}
-                          uncheckedValue={false}
-                          onChange={(payload) => this.onSelectBookChange(item.foreignBookId, payload)}
-                          isDisabled={isWorking}
-                        />
-                      </div>
+                      {
+                        isSelecting &&
+                          <div className={styles.selectCell}>
+                            <CheckInput
+                              name={`availableBook-${item.foreignBookId}`}
+                              value={isSelected}
+                              checkedValue={true}
+                              uncheckedValue={false}
+                              onChange={(payload) => this.onSelectBookChange(item.foreignBookId, payload)}
+                              isDisabled={isWorking}
+                            />
+                          </div>
+                      }
 
                       <BookCover
                         className={styles.cover}

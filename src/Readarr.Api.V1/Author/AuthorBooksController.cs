@@ -81,12 +81,13 @@ namespace Readarr.Api.V1.Author
 
             if (resource?.ForeignBookIds == null || !resource.ForeignBookIds.Any())
             {
-                return Ok();
+                return Ok(new { removedCount = 0 });
             }
 
             var remoteAuthor = _authorInfo.GetAuthorInfo(author.Metadata.Value.ForeignAuthorId, true);
             var remoteBooks = remoteAuthor?.Books?.Value ?? new List<Book>();
             var lookup = remoteBooks.ToDictionary(book => book.ForeignBookId, book => book);
+            var removedCount = 0;
 
             foreach (var foreignId in resource.ForeignBookIds.Distinct())
             {
@@ -102,9 +103,11 @@ namespace Readarr.Api.V1.Author
                     ForeignId = foreignId,
                     Name = $"{author.Name} - {title}"
                 });
+
+                removedCount++;
             }
 
-            return Ok();
+            return Ok(new { removedCount });
         }
 
         private List<Book> GetAvailableBooks(NzbDrone.Core.Books.Author author)

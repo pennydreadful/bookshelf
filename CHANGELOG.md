@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.66
+- Summary: fix false removal errors, add a selection toggle for available books, and rename select mode buttons.
+- Why: removing available books showed an error despite success, and selection mode should be explicit and clearer across library pages.
+- Impact: available book removals return JSON to avoid error banners; selection is enabled via “Select Available Books” and hidden when done; Book/Author buttons now read “Select” and “Done Selecting.”
+- Files: src/Readarr.Api.V1/Author/AuthorBooksController.cs, frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, frontend/src/Author/Details/AuthorDetailsAvailableBooks.css, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, remove an available book via the X and batch remove, and confirm no error banner appears.
+
 ## 1.2.65
 - Summary: add available-book exclusions with confirmations and batch actions, and stop author adds from auto-importing books.
 - Why: you need to hide unwanted books from the available list and avoid auto-adding an author’s entire catalog.
