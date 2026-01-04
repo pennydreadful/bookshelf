@@ -145,6 +145,17 @@ function Settings() {
         <div className={styles.summary}>
           {translate('UISettingsSummary')}
         </div>
+
+        <Link
+          className={styles.link}
+          to="/settings/development"
+        >
+          {translate('Development')}
+        </Link>
+
+        <div className={styles.summary}>
+          Development settings
+        </div>
       </PageContentBody>
     </PageContent>
   );

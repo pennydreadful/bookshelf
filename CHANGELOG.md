@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.33
+- Summary: add a Settings link for Development and update the System status links to Bookdarr.
+- Why: surface the hidden Development page and point “More info” at the correct repo.
+- Impact: Settings page now includes Development; System -> Status links point to Bookdarr.
+- Files: frontend/src/Settings/Settings.js, frontend/src/System/Status/MoreInfo/MoreInfo.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: rebuild UI and confirm the new link and repo URLs.
+
 ## 1.2.32
 - Summary: record command formatting preference in the handoff doc.
 - Why: ensure future chats use fenced code blocks for commands.
