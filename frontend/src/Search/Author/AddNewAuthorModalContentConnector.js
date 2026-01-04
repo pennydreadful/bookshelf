@@ -54,8 +54,8 @@ class AddNewAuthorModalContentConnector extends Component {
   componentDidMount() {
     const { monitor, setAuthorAddDefault } = this.props;
 
-    if (monitor?.value && monitor.value !== 'all') {
-      setAuthorAddDefault({ monitor: 'all' });
+    if (monitor?.value && monitor.value !== 'none') {
+      setAuthorAddDefault({ monitor: 'none' });
     }
   }
 

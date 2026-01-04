@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.65
+- Summary: add available-book exclusions with confirmations and batch actions, and stop author adds from auto-importing books.
+- Why: you need to hide unwanted books from the available list and avoid auto-adding an author’s entire catalog.
+- Impact: available books can be selected, added, or excluded; excluded books stay hidden after refresh; adding an author only adds the author.
+- Files: frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, frontend/src/Author/Details/AuthorDetailsAvailableBooks.css, frontend/src/Author/Details/AuthorDetailsAvailableBooksConnector.js, frontend/src/Store/Actions/authorAvailableBooksActions.js, frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, frontend/src/Utilities/Author/getNewAuthor.js, src/Readarr.Api.V1/Author/AuthorBooksController.cs, src/Readarr.Api.V1/Author/AuthorBooksExcludeResource.cs, src/Readarr.Api.V1/Author/AuthorController.cs, src/Readarr.Api.V1/Author/AuthorResource.cs, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, verify single/batch remove confirmations, and confirm adding an author does not add books.
+
 ## 1.2.64
 - Summary: make author refresh reload available books only, relabel the Books tab, and add available books as monitored.
 - Why: the author refresh action was adding all books unintentionally, the tab label was ambiguous, and available-book adds were coming in unmonitored.

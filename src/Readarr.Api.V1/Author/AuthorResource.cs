@@ -55,6 +55,8 @@ namespace Readarr.Api.V1.Author
         public DateTime Added { get; set; }
         public AddAuthorOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? DoRefresh { get; set; }
 
         public AuthorStatisticsResource Statistics { get; set; }
     }

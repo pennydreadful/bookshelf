@@ -140,7 +140,7 @@ namespace Readarr.Api.V1.Author
         [RestPostById]
         public ActionResult<AuthorResource> AddAuthor(AuthorResource authorResource)
         {
-            var author = _addAuthorService.AddAuthor(authorResource.ToModel());
+            var author = _addAuthorService.AddAuthor(authorResource.ToModel(), authorResource.DoRefresh ?? true);
 
             return Created(author.Id);
         }

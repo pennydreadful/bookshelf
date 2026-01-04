@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using Readarr.Api.V1.Books;
@@ -18,18 +19,21 @@ namespace Readarr.Api.V1.Author
         private readonly IBookService _bookService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IProvideAuthorInfo _authorInfo;
+        private readonly IImportListExclusionService _importListExclusionService;
 
         public AuthorBooksController(IAddBookService addBookService,
                                      IAuthorService authorService,
                                      IBookService bookService,
                                      IMapCoversToLocal coverMapper,
-                                     IProvideAuthorInfo authorInfo)
+                                     IProvideAuthorInfo authorInfo,
+                                     IImportListExclusionService importListExclusionService)
         {
             _addBookService = addBookService;
             _authorService = authorService;
             _bookService = bookService;
             _coverMapper = coverMapper;
             _authorInfo = authorInfo;
+            _importListExclusionService = importListExclusionService;
         }
 
         [HttpGet]
@@ -70,6 +74,39 @@ namespace Readarr.Api.V1.Author
             return Ok(MapToResource(added));
         }
 
+        [HttpPost("exclude")]
+        public IActionResult ExcludeBooks(int authorId, [FromBody] AuthorBooksExcludeResource resource)
+        {
+            var author = _authorService.GetAuthor(authorId);
+
+            if (resource?.ForeignBookIds == null || !resource.ForeignBookIds.Any())
+            {
+                return Ok();
+            }
+
+            var remoteAuthor = _authorInfo.GetAuthorInfo(author.Metadata.Value.ForeignAuthorId, true);
+            var remoteBooks = remoteAuthor?.Books?.Value ?? new List<Book>();
+            var lookup = remoteBooks.ToDictionary(book => book.ForeignBookId, book => book);
+
+            foreach (var foreignId in resource.ForeignBookIds.Distinct())
+            {
+                if (_importListExclusionService.FindByForeignId(foreignId) != null)
+                {
+                    continue;
+                }
+
+                var title = lookup.TryGetValue(foreignId, out var book) ? book.Title : foreignId;
+
+                _importListExclusionService.Add(new ImportListExclusion
+                {
+                    ForeignId = foreignId,
+                    Name = $"{author.Name} - {title}"
+                });
+            }
+
+            return Ok();
+        }
+
         private List<Book> GetAvailableBooks(NzbDrone.Core.Books.Author author)
         {
             var remoteAuthor = _authorInfo.GetAuthorInfo(author.Metadata.Value.ForeignAuthorId, true);
@@ -77,10 +114,22 @@ namespace Readarr.Api.V1.Author
                 .Select(book => book.ForeignBookId)
                 .ToHashSet();
 
-            return remoteAuthor.Books.Value
+            var available = remoteAuthor.Books.Value
                 .Where(book => !existingBookIds.Contains(book.ForeignBookId))
                 .OrderByDescending(book => book.ReleaseDate ?? DateTime.MinValue)
                 .ToList();
+
+            if (!available.Any())
+            {
+                return available;
+            }
+
+            var excluded = _importListExclusionService
+                .FindByForeignId(available.Select(book => book.ForeignBookId).ToList())
+                .Select(exclusion => exclusion.ForeignId)
+                .ToHashSet();
+
+            return available.Where(book => !excluded.Contains(book.ForeignBookId)).ToList();
         }
 
         private List<BookResource> MapToResource(IEnumerable<Book> books)

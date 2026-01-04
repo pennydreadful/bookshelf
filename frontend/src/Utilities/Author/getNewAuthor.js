@@ -22,6 +22,7 @@ function getNewAuthor(author, payload) {
   author.metadataProfileId = metadataProfileId;
   author.rootFolderPath = rootFolderPath;
   author.tags = tags;
+  author.doRefresh = false;
 
   return author;
 }

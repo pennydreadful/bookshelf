@@ -16,6 +16,28 @@
   font-weight: 600;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.selectionInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--helpTextColor);
+  font-size: 12px;
+}
+
+.selectionButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .empty {
   color: var(--helpTextColor);
   text-align: center;
@@ -29,13 +51,19 @@
 
 .card {
   display: grid;
-  grid-template-columns: 60px 1fr 32px;
-  gap: 12px;
+  grid-template-columns: 20px 60px 1fr 32px 32px;
+  gap: 10px;
   align-items: center;
   padding: 10px 12px;
   border: 1px solid var(--borderColor);
   border-radius: 4px;
   background-color: var(--cardBackgroundColor);
+}
+
+.selectCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cover {
@@ -89,5 +117,13 @@
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
-  margin-top: 4px;
+}
+
+.removeButton {
+  composes: button from '~Components/Link/IconButton.css';
+
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  color: var(--dangerColor);
 }

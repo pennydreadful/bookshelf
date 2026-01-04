@@ -20,6 +20,8 @@ export const defaultState = {
   error: null,
   isAdding: false,
   addError: null,
+  isExcluding: false,
+  excludeError: null,
   items: [],
   authorId: null
 };
@@ -29,6 +31,7 @@ export const defaultState = {
 
 export const FETCH_AUTHOR_AVAILABLE_BOOKS = 'authorAvailableBooks/fetchAuthorAvailableBooks';
 export const ADD_AUTHOR_BOOKS = 'authorAvailableBooks/addAuthorBooks';
+export const EXCLUDE_AUTHOR_AVAILABLE_BOOKS = 'authorAvailableBooks/excludeAuthorAvailableBooks';
 export const CLEAR_AUTHOR_AVAILABLE_BOOKS = 'authorAvailableBooks/clearAuthorAvailableBooks';
 
 //
@@ -36,6 +39,7 @@ export const CLEAR_AUTHOR_AVAILABLE_BOOKS = 'authorAvailableBooks/clearAuthorAva
 
 export const fetchAuthorAvailableBooks = createThunk(FETCH_AUTHOR_AVAILABLE_BOOKS);
 export const addAuthorBooks = createThunk(ADD_AUTHOR_BOOKS);
+export const excludeAuthorAvailableBooks = createThunk(EXCLUDE_AUTHOR_AVAILABLE_BOOKS);
 export const clearAuthorAvailableBooks = createAction(CLEAR_AUTHOR_AVAILABLE_BOOKS);
 
 //
@@ -117,6 +121,44 @@ export const actionHandlers = handleThunks({
         addError: xhr
       }));
     });
+  },
+
+  [EXCLUDE_AUTHOR_AVAILABLE_BOOKS]: function(getState, payload, dispatch) {
+    const { authorId, foreignBookIds } = payload;
+
+    dispatch(set({
+      section,
+      isExcluding: true,
+      excludeError: null
+    }));
+
+    const { request } = createAjaxRequest({
+      url: `/author/${authorId}/books/exclude`,
+      method: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        foreignBookIds
+      })
+    });
+
+    request.done(() => {
+      dispatch(set({
+        section,
+        isExcluding: false,
+        excludeError: null
+      }));
+
+      dispatch(fetchAuthorAvailableBooks({ authorId }));
+    });
+
+    request.fail((xhr) => {
+      dispatch(set({
+        section,
+        isExcluding: false,
+        excludeError: xhr
+      }));
+    });
   }
 });
 
@@ -130,6 +172,8 @@ export const reducers = createHandleActions({
     error: null,
     isAdding: false,
     addError: null,
+    isExcluding: false,
+    excludeError: null,
     items: [],
     authorId: null
   })

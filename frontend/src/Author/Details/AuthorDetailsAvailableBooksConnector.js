@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import {
   addAuthorBooks,
   clearAuthorAvailableBooks,
+  excludeAuthorAvailableBooks,
   fetchAuthorAvailableBooks
 } from 'Store/Actions/authorAvailableBooksActions';
 import AuthorDetailsAvailableBooks from './AuthorDetailsAvailableBooks';
@@ -22,6 +23,8 @@ function createMapStateToProps() {
         isPopulated: isCurrentAuthor ? authorAvailableBooks.isPopulated : false,
         error: isCurrentAuthor ? authorAvailableBooks.error : null,
         isAdding: isCurrentAuthor ? authorAvailableBooks.isAdding : false,
+        isExcluding: isCurrentAuthor ? authorAvailableBooks.isExcluding : false,
+        excludeError: isCurrentAuthor ? authorAvailableBooks.excludeError : null,
         availableBooksCount: isCurrentAuthor ? authorAvailableBooks.items.length : 0
       };
     }
@@ -31,6 +34,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   addAuthorBooks,
   clearAuthorAvailableBooks,
+  excludeAuthorAvailableBooks,
   fetchAuthorAvailableBooks
 };
 
@@ -71,6 +75,20 @@ class AuthorDetailsAvailableBooksConnector extends Component {
     });
   };
 
+  onAddBooksPress = (foreignBookIds) => {
+    this.props.addAuthorBooks({
+      authorId: this.props.authorId,
+      foreignBookIds
+    });
+  };
+
+  onExcludeBooksPress = (foreignBookIds) => {
+    this.props.excludeAuthorAvailableBooks({
+      authorId: this.props.authorId,
+      foreignBookIds
+    });
+  };
+
   //
   // Render
 
@@ -79,6 +97,8 @@ class AuthorDetailsAvailableBooksConnector extends Component {
       <AuthorDetailsAvailableBooks
         {...this.props}
         onAddBookPress={this.onAddBookPress}
+        onAddBooksPress={this.onAddBooksPress}
+        onExcludeBooksPress={this.onExcludeBooksPress}
       />
     );
   }
@@ -88,6 +108,7 @@ AuthorDetailsAvailableBooksConnector.propTypes = {
   authorId: PropTypes.number.isRequired,
   addAuthorBooks: PropTypes.func.isRequired,
   clearAuthorAvailableBooks: PropTypes.func.isRequired,
+  excludeAuthorAvailableBooks: PropTypes.func.isRequired,
   fetchAuthorAvailableBooks: PropTypes.func.isRequired
 };
 
