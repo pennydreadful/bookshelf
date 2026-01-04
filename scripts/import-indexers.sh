@@ -7,7 +7,7 @@ SOURCE_API_KEY="${SOURCE_API_KEY:-}"
 TARGET_URL="${TARGET_URL:-http://localhost:8787}"
 TARGET_API_KEY="${TARGET_API_KEY:-}"
 TARGET_CONFIG="${TARGET_CONFIG:-/opt/bookdarr-dev/config/config.xml}"
-REPLACE_EXISTING="${REPLACE_EXISTING:-false}"
+REPLACE_EXISTING="${REPLACE_EXISTING:-true}"
 
 usage() {
   cat <<'EOF'

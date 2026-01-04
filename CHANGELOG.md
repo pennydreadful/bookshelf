@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.25
+- Summary: make indexer imports replace existing entries by default.
+- Why: simplify migration by updating matching indexers automatically.
+- Impact: import-indexers.sh now replaces existing indexers unless overridden.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download import-indexers.sh and run it on the Bookdarr VM.
+
 ## 1.2.24
 - Summary: prompt for Readarr and Bookdarr connection details in the import script.
 - Why: avoid passing API keys on the command line.
