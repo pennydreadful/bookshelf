@@ -78,14 +78,6 @@ Help is very welcome. Priority is on fixing quality of life issues
 - [ ] Hardcover bookshelf import.
 - [ ] Support ebook and audio files in the same root.
 
-Already done
-
-- [x] Native support for MyAnonaMouse without Prowlarr.
-- [x] Lowered default match percentage from 80% to 50%.
-- [x] Metadata is no longer cached locally.
-- [x] Removed servarr analytics spyware.
-- [x] Supports selfhosted metadata (UI or `METADATA_URL` env var).
-
 ### License
 
 This is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)
