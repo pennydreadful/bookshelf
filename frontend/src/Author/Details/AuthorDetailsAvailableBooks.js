@@ -68,7 +68,7 @@ function AuthorDetailsAvailableBooks(props) {
                     <BookCover
                       className={styles.cover}
                       images={item.images}
-                      size={80}
+                      size={90}
                     />
 
                     <div className={styles.meta}>

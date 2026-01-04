@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.63
+- Summary: refine the Available Books grid layout to be compact and readable.
+- Why: the initial grid was overly tall with cramped text, making titles hard to read.
+- Impact: cards are shorter with fixed cover sizing, improved text wrapping, and cleaner metadata spacing.
+- Files: frontend/src/Author/Details/AuthorDetailsAvailableBooks.css, frontend/src/Author/Details/AuthorDetailsAvailableBooks.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an author page, and confirm Available Books renders with compact cards and readable titles.
+
 ## 1.2.62
 - Summary: show available author books on the author page and add a “Request All Books” action in the edit modal.
 - Why: the author page only listed existing library books, so discovery and bulk adds were missing.
