@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.48
+- Summary: fix Google Books paging build error.
+- Why: `HttpRequest` doesn’t expose `AddQueryParam`; paging must be added before request build.
+- Impact: update-dev.sh builds again with Google Books paging enabled.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry the author add flow.
+
 ## 1.2.47
 - Summary: page Google Books author results and stop manual book adds from triggering author refresh.
 - Why: author adds were returning too few books and manual book adds were pulling extra books from author refreshes.

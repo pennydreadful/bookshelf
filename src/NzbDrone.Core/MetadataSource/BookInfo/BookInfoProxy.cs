@@ -1022,16 +1022,18 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             try
             {
-                var request = BuildGoogleBooksRequest("volumes", new Dictionary<string, string>
+                var queryParams = new Dictionary<string, string>
                 {
                     { "q", query },
                     { "maxResults", maxResults.ToString() }
-                });
+                };
 
                 if (startIndex > 0)
                 {
-                    request.AddQueryParam("startIndex", startIndex.ToString());
+                    queryParams["startIndex"] = startIndex.ToString();
                 }
+
+                var request = BuildGoogleBooksRequest("volumes", queryParams);
 
                 request.SuppressHttpError = true;
 
