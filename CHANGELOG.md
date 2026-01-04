@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.36
+- Summary: fix build failure from missing OsInfo using.
+- Why: ConfigService now uses OsInfo for default download path on Linux.
+- Impact: builds succeed after adding the EnvironmentInfo import.
+- Files: src/NzbDrone.Core/Configuration/ConfigService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the app builds and starts.
+
 ## 1.2.35
 - Summary: add configurable downloads folder and default recycle bin path.
 - Why: allow changing the download path and avoid missing recycle bin folders.
