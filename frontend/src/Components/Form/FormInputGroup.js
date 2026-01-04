@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Link from 'Components/Link/Link';
+import translate from 'Utilities/String/translate';
 import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 // import translate from 'Utilities/String/translate';
@@ -119,6 +120,48 @@ function getComponent(type) {
   }
 }
 
+function quotePathForShell(path) {
+  if (!path) {
+    return path;
+  }
+
+  if (path.includes("'") && !path.includes('"')) {
+    return `"${path}"`;
+  }
+
+  if (!path.includes("'")) {
+    return `'${path}'`;
+  }
+
+  return path;
+}
+
+function getWritableTip(type, errors) {
+  if (type !== inputTypes.PATH && type !== inputTypes.ROOT_FOLDER_SELECT) {
+    return null;
+  }
+
+  const error = errors.find(({ message }) => typeof message === 'string' && message.toLowerCase().includes('not writable'));
+
+  if (!error) {
+    return null;
+  }
+
+  const match = error.message.match(/'([^']+)' is not writable by user '([^']+)'/i) ||
+    error.message.match(/path '([^']+)' is not writable by user '([^']+)'/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const path = match[1];
+  const user = match[2];
+  const quotedPath = quotePathForShell(path);
+  const command = `sudo chown -R ${user}:${user} ${quotedPath} && sudo chmod -R u+rwX,g+rwX ${quotedPath}`;
+
+  return translate('PathNotWritableTip', { command });
+}
+
 function FormInputGroup(props) {
   const {
     className,
@@ -141,6 +184,7 @@ function FormInputGroup(props) {
   const checkInput = type === inputTypes.CHECK;
   const hasError = !!errors.length;
   const hasWarning = !hasError && !!warnings.length;
+  const writableTip = getWritableTip(type, errors);
   const buttonsArray = React.Children.toArray(buttons);
   const lastButtonIndex = buttonsArray.length - 1;
   const hasButton = !!buttonsArray.length;
@@ -250,6 +294,15 @@ function FormInputGroup(props) {
             />
           );
         })
+      }
+
+      {
+        writableTip &&
+          <FormInputHelpText
+            text={writableTip}
+            isWarning={true}
+            isCheckInput={checkInput}
+          />
       }
 
       {

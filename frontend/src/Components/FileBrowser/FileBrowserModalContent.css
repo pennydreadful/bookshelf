@@ -23,6 +23,21 @@
   flex: 0 0 auto;
 }
 
+.createFolderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.createFolderInput {
+  flex: 1 1 auto;
+}
+
+.createFolderButton {
+  flex: 0 0 auto;
+}
+
 .scroller {
   margin-top: 20px;
 }

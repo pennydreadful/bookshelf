@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'Components/Alert';
 import PathInput from 'Components/Form/PathInput';
+import TextInput from 'Components/Form/TextInput';
 import Button from 'Components/Link/Button';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -42,7 +43,10 @@ class FileBrowserModalContent extends Component {
 
     this.state = {
       isFileBrowserModalOpen: false,
-      currentPath: props.value
+      currentPath: props.value,
+      newFolderName: '',
+      isCreatingFolder: false,
+      createFolderError: null
     };
   }
 
@@ -81,6 +85,57 @@ class FileBrowserModalContent extends Component {
     this.props.onModalClose();
   };
 
+  onNewFolderNameChange = ({ value }) => {
+    this.setState({ newFolderName: value });
+  };
+
+  onCreateFolderPress = () => {
+    const {
+      isWindows,
+      onCreateFolder
+    } = this.props;
+
+    const {
+      currentPath,
+      newFolderName
+    } = this.state;
+
+    const trimmedName = newFolderName.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    if (!currentPath) {
+      this.setState({ createFolderError: translate('CreateFolderSelectPath') });
+      return;
+    }
+
+    const basePath = currentPath.replace(/[\\/]+$/, '');
+    const separator = isWindows ? '\\' : '/';
+    const fullPath = `${basePath}${separator}${trimmedName}`;
+
+    this.setState({ isCreatingFolder: true, createFolderError: null });
+
+    const promise = onCreateFolder(fullPath, currentPath);
+
+    promise.done(() => {
+      this.setState({
+        newFolderName: '',
+        isCreatingFolder: false,
+        createFolderError: null
+      });
+    });
+
+    promise.fail((xhr) => {
+      const message = xhr?.responseJSON?.message || xhr?.responseText || translate('CreateFolderFailed');
+      this.setState({
+        isCreatingFolder: false,
+        createFolderError: message
+      });
+    });
+  };
+
   //
   // Render
 
@@ -92,12 +147,15 @@ class FileBrowserModalContent extends Component {
       parent,
       directories,
       files,
+      isWindows,
       isWindowsService,
+      onCreateFolder,
       onModalClose,
       ...otherProps
     } = this.props;
 
     const emptyParent = parent === '';
+    const createDisabled = this.state.isCreatingFolder || !this.state.newFolderName.trim() || !this.state.currentPath;
 
     return (
       <ModalContent
@@ -129,6 +187,33 @@ class FileBrowserModalContent extends Component {
             value={this.state.currentPath}
             onChange={this.onPathInputChange}
           />
+
+          <div className={styles.createFolderRow}>
+            <TextInput
+              className={styles.createFolderInput}
+              name="newFolderName"
+              placeholder={translate('CreateFolderPlaceholder')}
+              value={this.state.newFolderName}
+              onChange={this.onNewFolderNameChange}
+              spellCheck={false}
+            />
+
+            <Button
+              className={styles.createFolderButton}
+              kind={kinds.PRIMARY}
+              isDisabled={createDisabled}
+              onPress={this.onCreateFolderPress}
+            >
+              {translate('CreateFolder')}
+            </Button>
+          </div>
+
+          {
+            this.state.createFolderError &&
+              <Alert kind={kinds.DANGER}>
+                {this.state.createFolderError}
+              </Alert>
+          }
 
           <Scroller
             ref={this._scrollerRef}
@@ -238,9 +323,11 @@ FileBrowserModalContent.propTypes = {
   currentPath: PropTypes.string.isRequired,
   directories: PropTypes.arrayOf(PropTypes.object).isRequired,
   files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isWindows: PropTypes.bool.isRequired,
   isWindowsService: PropTypes.bool.isRequired,
   onFetchPaths: PropTypes.func.isRequired,
   onClearPaths: PropTypes.func.isRequired,
+  onCreateFolder: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

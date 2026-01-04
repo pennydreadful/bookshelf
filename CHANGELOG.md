@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.39
+- Summary: add create-folder support in the file browser and show a permissions tip for unwritable paths.
+- Why: let users create folders from the UI and fix common permission errors faster.
+- Impact: file browser has a “Create Folder” row and the API adds `/filesystem/folder`; path fields show a chmod/chown tip when the folder isn’t writable.
+- Files: src/Readarr.Api.V1/FileSystem/FileSystemController.cs, frontend/src/Components/FileBrowser/FileBrowserModalContent.js, frontend/src/Components/FileBrowser/FileBrowserModalContent.css, frontend/src/Components/FileBrowser/FileBrowserModalContentConnector.js, frontend/src/Components/Form/FormInputGroup.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify folder creation + permission tip.
+
 ## 1.2.38
 - Summary: add a downloads folder fallback for remote path mapping and hide device UUID labels in disk space.
 - Why: avoid false remote path mapping warnings and show cleaner disk space labels.

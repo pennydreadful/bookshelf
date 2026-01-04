@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using Readarr.Http;
 
@@ -53,6 +54,40 @@ namespace Readarr.Api.V1.FileSystem
                 Path = f.FullName,
                 Name = f.Name
             });
+        }
+
+        [HttpPost("folder")]
+        public IActionResult CreateFolder([FromBody] CreateFolderRequest request)
+        {
+            if (request == null || request.Path.IsNullOrWhiteSpace())
+            {
+                return BadRequest("Path is required.");
+            }
+
+            if (!request.Path.IsPathValid(PathValidationType.CurrentOs))
+            {
+                return BadRequest("Path is invalid for this OS.");
+            }
+
+            if (_diskProvider.FolderExists(request.Path))
+            {
+                return Ok();
+            }
+
+            try
+            {
+                _diskProvider.CreateFolder(request.Path);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Unable to create folder: {ex.Message}");
+            }
+        }
+
+        public class CreateFolderRequest
+        {
+            public string Path { get; set; }
         }
     }
 }

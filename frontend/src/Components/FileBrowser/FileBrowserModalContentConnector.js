@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { clearPaths, fetchPaths } from 'Store/Actions/pathActions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import FileBrowserModalContent from './FileBrowserModalContent';
 
@@ -35,6 +36,7 @@ function createMapStateToProps() {
         directories,
         files,
         paths: filteredPaths,
+        isWindows: systemStatus.isWindows,
         isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service'
       };
     }
@@ -84,6 +86,30 @@ class FileBrowserModalContentConnector extends Component {
     // this.props.dispatchClearPaths();
   };
 
+  onCreateFolder = (path, refreshPath) => {
+    const {
+      includeFiles,
+      dispatchFetchPaths
+    } = this.props;
+
+    const promise = createAjaxRequest({
+      url: '/filesystem/folder',
+      method: 'POST',
+      dataType: 'json',
+      data: JSON.stringify({ path })
+    }).request;
+
+    promise.done(() => {
+      dispatchFetchPaths({
+        path: refreshPath,
+        allowFoldersWithoutTrailingSlashes: true,
+        includeFiles
+      });
+    });
+
+    return promise;
+  };
+
   onModalClose = () => {
     this.props.dispatchClearPaths();
     this.props.onModalClose();
@@ -97,6 +123,7 @@ class FileBrowserModalContentConnector extends Component {
       <FileBrowserModalContent
         onFetchPaths={this.onFetchPaths}
         onClearPaths={this.onClearPaths}
+        onCreateFolder={this.onCreateFolder}
         {...this.props}
         onModalClose={this.onModalClose}
       />
@@ -106,6 +133,7 @@ class FileBrowserModalContentConnector extends Component {
 
 FileBrowserModalContentConnector.propTypes = {
   value: PropTypes.string,
+  isWindows: PropTypes.bool.isRequired,
   includeFiles: PropTypes.bool.isRequired,
   dispatchFetchPaths: PropTypes.func.isRequired,
   dispatchClearPaths: PropTypes.func.isRequired,
