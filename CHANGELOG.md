@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.23
+- Summary: add a script to import indexers from another Readarr instance via API.
+- Why: avoid manual SQL edits and reduce migration errors.
+- Impact: `scripts/import-indexers.sh` pulls from a source Readarr and posts to Bookdarr.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: run import-indexers.sh with the source host/port/API key.
+
 ## 1.2.22
 - Summary: make dev scripts executable in git to avoid permission errors on fresh clones.
 - Why: some setups were cloning scripts without execute bits, causing dev-build.sh to fail.
