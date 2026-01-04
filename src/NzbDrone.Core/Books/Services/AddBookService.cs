@@ -6,8 +6,8 @@ using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.ImportLists.Exclusions;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.Books
 {

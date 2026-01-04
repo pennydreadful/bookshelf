@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.50
+- Summary: fix stylecop ordering error from the AddBookService import change.
+- Why: builds fail when using directives are out of order.
+- Impact: update-dev.sh completes without the SA1210 error.
+- Files: src/NzbDrone.Core/Books/Services/AddBookService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and re-test author add and covers.
+
 ## 1.2.49
 - Summary: improve Google Books author results and cover handling.
 - Why: author adds were still too small and cover images were inconsistent or missing.
