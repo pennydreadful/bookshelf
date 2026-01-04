@@ -63,6 +63,8 @@ namespace Readarr.Api.V1.Author
                 books.ForEach(book => book.AddOptions.SearchForNewBook = true);
             }
 
+            books.ForEach(book => book.Monitored = true);
+
             var added = _addBookService.AddBooks(books);
 
             return Ok(MapToResource(added));

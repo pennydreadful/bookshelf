@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.64
+- Summary: make author refresh reload available books only, relabel the Books tab, and add available books as monitored.
+- Why: the author refresh action was adding all books unintentionally, the tab label was ambiguous, and available-book adds were coming in unmonitored.
+- Impact: refresh now re-fetches available books, the Books tab reads “Books added to Bookdarr,” and author-page adds are monitored by default.
+- Files: frontend/src/Author/Details/AuthorDetailsConnector.js, frontend/src/Author/Details/AuthorDetails.js, src/Readarr.Api.V1/Author/AuthorBooksController.cs, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, verify refresh only reloads Available Books, confirm tab label change, and add a book to verify it is monitored.
+
 ## 1.2.63
 - Summary: refine the Available Books grid layout to be compact and readable.
 - Why: the initial grid was overly tall with cramped text, making titles hard to read.

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { toggleAuthorMonitored } from 'Store/Actions/authorActions';
+import { fetchAuthorAvailableBooks } from 'Store/Actions/authorAvailableBooksActions';
 import { clearBookFiles, fetchBookFiles } from 'Store/Actions/bookFileActions';
 import { saveBookEditor } from 'Store/Actions/bookIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -108,7 +109,8 @@ function createMapStateToProps() {
     createAllAuthorSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (titleSlug, books, series, bookFiles, allAuthors, commands, dimensions) => {
+    (state) => state.authorAvailableBooks,
+    (titleSlug, books, series, bookFiles, allAuthors, commands, dimensions, authorAvailableBooks) => {
       const sortedAuthor = _.orderBy(allAuthors, 'sortNameLastFirst');
       const authorIndex = _.findIndex(sortedAuthor, { titleSlug });
       const author = sortedAuthor[authorIndex];
@@ -152,7 +154,8 @@ function createMapStateToProps() {
         isCommandExecuting(authorRefreshingCommand) &&
         !authorRefreshingCommand.body.authorId
       );
-      const isRefreshing = isAuthorRefreshing || allAuthorRefreshing;
+      const isAvailableBooksRefreshing = authorAvailableBooks.authorId === author.id && authorAvailableBooks.isFetching;
+      const isRefreshing = isAuthorRefreshing || allAuthorRefreshing || isAvailableBooksRefreshing;
       const isSearching = isCommandExecuting(findCommand(commands, { name: commandNames.AUTHOR_SEARCH, authorId: author.id }));
       const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, authorId: author.id }));
       const isRenamingAuthorCommand = findCommand(commands, { name: commandNames.RENAME_AUTHOR });
@@ -215,6 +218,7 @@ const mapDispatchToProps = {
   clearQueueDetails,
   clearReleases,
   cancelFetchReleases,
+  fetchAuthorAvailableBooks,
   executeCommand
 };
 
@@ -290,10 +294,7 @@ class AuthorDetailsConnector extends Component {
   };
 
   onRefreshPress = () => {
-    this.props.executeCommand({
-      name: commandNames.REFRESH_AUTHOR,
-      authorId: this.props.id
-    });
+    this.props.fetchAuthorAvailableBooks({ authorId: this.props.id });
   };
 
   onSearchPress = () => {
@@ -341,6 +342,7 @@ AuthorDetailsConnector.propTypes = {
   clearQueueDetails: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
   cancelFetchReleases: PropTypes.func.isRequired,
+  fetchAuthorAvailableBooks: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

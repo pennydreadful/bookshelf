@@ -280,10 +280,10 @@ class AuthorDetails extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={translate('RefreshAndScan')}
+              label={translate('RefreshAvailableBooks')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
-              title={translate('RefreshInformationAndScanDisk')}
+              title={translate('RefreshAvailableBooksHelpText')}
               isSpinning={isRefreshing}
               onPress={onRefreshPress}
             />
@@ -445,7 +445,7 @@ class AuthorDetails extends Component {
                       className={styles.tab}
                       selectedClassName={styles.selectedTab}
                     >
-                      {translate('BooksTotal', [totalBookCount])}
+                      {translate('BooksAddedToBookdarrTotal', [totalBookCount])}
                     </Tab>
 
                     <Tab
