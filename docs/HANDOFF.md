@@ -16,6 +16,7 @@ Use this file to onboard a new Codex chat.
 - Responses should be concise.
 - Always create a backup archive before pushing to GitHub.
 - When giving install commands, use sudo and chain with `&&`.
+- Always put commands or code the user should run in fenced code blocks.
 - Avoid adding repeated `apt-get update` steps in install/build flows.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
 

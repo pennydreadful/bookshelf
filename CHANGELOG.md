@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.32
+- Summary: record command formatting preference in the handoff doc.
+- Why: ensure future chats use fenced code blocks for commands.
+- Impact: HANDOFF.md now mandates code blocks for user-run commands.
+- Files: docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: keep command output consistently in code blocks going forward.
+
 ## 1.2.31
 - Summary: add a shared run script for Bookdarr and route dev runs through it.
 - Why: keep dev and Docker launch behavior consistent.
