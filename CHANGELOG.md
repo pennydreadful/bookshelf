@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.56
+- Summary: prevent edit saves from failing when editions are missing.
+- Why: PUT /api/v1/book could throw when editions or links were null, and UpdateMany was called with a null list.
+- Impact: Book edit saves no longer throw 500s or break BookEditedEvent broadcasts when editions are omitted.
+- Files: src/Readarr.Api.V1/Books/BookResource.cs, src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the Edit Book modal saves and closes.
+
 ## 1.2.55
 - Summary: avoid crashing Book save when edit payload omits editions.
 - Why: the Book Details edit modal triggers a PUT without editions, which caused a 500 error and made Save appear to do nothing.
