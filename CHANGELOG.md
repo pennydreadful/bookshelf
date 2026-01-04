@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.76
+- Summary: add Wikipedia direct lookup fallback for author images/blurbs.
+- Why: some authors (e.g., Dave Ramsey) lack Wikidata image data but do have Wikipedia summaries.
+- Impact: when Wikidata/Open Library fail, Bookdarr pulls a Wikipedia summary and thumbnail (if available) by author name, skipping disambiguation pages.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open the Dave Ramsey author page, and confirm the blurb/image are present if Wikipedia provides them.
+
 ## 1.2.75
 - Summary: fix build style error in MediaCoverService.
 - Why: StyleCop rejected a missing blank line, which stopped builds.

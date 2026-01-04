@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Added a Wikipedia-by-name fallback (summary + thumbnail) for authors without Wikidata/Open Library art.
 - Fixed a StyleCop build error in MediaCoverService.
 - Author posters now use remote URLs directly when no local cover exists (avoids proxy cache misses).
 - MediaCoverProxy now URL-encodes filenames so author images render even with quotes/unicode.

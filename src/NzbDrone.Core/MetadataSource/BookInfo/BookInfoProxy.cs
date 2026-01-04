@@ -1452,6 +1452,20 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 _logger.Debug(ex, "Open Library author image lookup failed for {0}", authorName);
             }
 
+            try
+            {
+                var wikipediaResult = TryGetWikipediaAuthorExtrasByName(authorName);
+                if (wikipediaResult?.ImageUrl.IsNotNullOrWhiteSpace() == true ||
+                    wikipediaResult?.Overview.IsNotNullOrWhiteSpace() == true)
+                {
+                    return wikipediaResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Wikipedia author lookup failed for {0}", authorName);
+            }
+
             return new AuthorExtraMetadata();
         }
 
@@ -1516,11 +1530,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var wikiTitle = entity?["sitelinks"]?["enwiki"]?["title"]?.ToString();
+            WikipediaSummary summary = null;
             string overview = null;
             var hasWikipediaLink = false;
             if (wikiTitle.IsNotNullOrWhiteSpace())
             {
-                var summary = TryGetWikipediaSummary(wikiTitle);
+                summary = TryGetWikipediaSummary(wikiTitle);
                 if (summary?.Overview.IsNotNullOrWhiteSpace() == true)
                 {
                     overview = summary.Overview;
@@ -1535,6 +1550,11 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
                 links.Add(new Links { Name = "Wikipedia", Url = wikipediaUrl });
                 hasWikipediaLink = wikipediaUrl.IsNotNullOrWhiteSpace();
+            }
+
+            if (imageUrl.IsNullOrWhiteSpace() && summary?.ImageUrl.IsNotNullOrWhiteSpace() == true)
+            {
+                imageUrl = summary.ImageUrl;
             }
 
             if (imageUrl.IsNullOrWhiteSpace() && overview.IsNullOrWhiteSpace() && !hasWikipediaLink)
@@ -1603,6 +1623,32 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return null;
         }
 
+        private AuthorExtraMetadata TryGetWikipediaAuthorExtrasByName(string authorName)
+        {
+            var summary = TryGetWikipediaSummary(authorName);
+            if (summary == null)
+            {
+                return null;
+            }
+
+            var url = summary.Url;
+            if (url.IsNullOrWhiteSpace())
+            {
+                var encoded = Uri.EscapeDataString(authorName.Replace(' ', '_'));
+                url = $"https://en.wikipedia.org/wiki/{encoded}";
+            }
+
+            return new AuthorExtraMetadata
+            {
+                ImageUrl = summary.ImageUrl,
+                Overview = summary.Overview,
+                Links = new List<Links>
+                {
+                    new Links { Name = "Wikipedia", Url = url }
+                }
+            };
+        }
+
         private WikipediaSummary TryGetWikipediaSummary(string wikiTitle)
         {
             if (wikiTitle.IsNullOrWhiteSpace())
@@ -1624,10 +1670,17 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var json = JObject.Parse(response.Content);
+            var type = json["type"]?.ToString();
+            if (string.Equals(type, "disambiguation", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
             var extract = NormalizeOverview(json["extract"]?.ToString());
             var url = json["content_urls"]?["desktop"]?["page"]?.ToString();
+            var imageUrl = json["thumbnail"]?["source"]?.ToString();
 
-            if (extract.IsNullOrWhiteSpace() && url.IsNullOrWhiteSpace())
+            if (extract.IsNullOrWhiteSpace() && url.IsNullOrWhiteSpace() && imageUrl.IsNullOrWhiteSpace())
             {
                 return null;
             }
@@ -1635,6 +1688,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return new WikipediaSummary
             {
                 Overview = extract,
+                ImageUrl = imageUrl,
                 Url = url
             };
         }
@@ -1693,6 +1747,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private class WikipediaSummary
         {
             public string Overview { get; set; }
+            public string ImageUrl { get; set; }
             public string Url { get; set; }
         }
 
