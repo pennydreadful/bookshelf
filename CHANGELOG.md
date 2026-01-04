@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.54
+- Summary: force monitored updates from the edit modal via the monitor endpoint.
+- Why: the Book Details edit modal was not reliably applying monitor/unmonitor changes.
+- Impact: toggling Monitored in the edit modal now updates the book immediately (including on the Book Details page).
+- Files: frontend/src/Book/Edit/EditBookModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify edit modal monitoring on the Book Details page.
+
 ## 1.2.53
 - Summary: return updated book data on save and expose selection checkboxes in Book Editor mode.
 - Why: unmonitor changes from the edit modal were not reflected in the UI, and bulk unmonitor was hard to access.
