@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.34
+- Summary: add a one-command update script for native dev installs.
+- Why: avoid build failures from a running process and simplify updates.
+- Impact: `scripts/update-dev.sh` stops, updates, builds, and restarts Bookdarr.
+- Files: scripts/update-dev.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: use update-dev.sh for future native updates.
+
 ## 1.2.33
 - Summary: add a Settings link for Development and update the System status links to Bookdarr.
 - Why: surface the hidden Development page and point “More info” at the correct repo.
