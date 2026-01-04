@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.53
+- Summary: return updated book data on save and expose selection checkboxes in Book Editor mode.
+- Why: unmonitor changes from the edit modal were not reflected in the UI, and bulk unmonitor was hard to access.
+- Impact: book edit saves update the local list immediately; Book Editor shows the select column so bulk unmonitoring is available in table view.
+- Files: src/Readarr.Api.V1/Books/BookController.cs, frontend/src/Book/Index/Table/BookIndexTable.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and verify unmonitoring from Edit Book and bulk unmonitor in Book Editor.
+
 ## 1.2.44
 - Summary: default author add to "All Books" when the add author modal opens.
 - Why: avoid only adding a single book when prior defaults were set to a single-book option.

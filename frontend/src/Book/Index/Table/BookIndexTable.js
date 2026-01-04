@@ -44,16 +44,38 @@ class BookIndexTable extends Component {
   //
   // Control
 
+  getColumns = () => {
+    const {
+      columns,
+      isEditorActive
+    } = this.props;
+
+    if (!isEditorActive) {
+      return columns;
+    }
+
+    return columns.map((column) => {
+      if (column.name !== 'select') {
+        return column;
+      }
+
+      return {
+        ...column,
+        isVisible: true
+      };
+    });
+  };
+
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
-      columns,
       selectedState,
       onSelectedChange,
       isEditorActive
     } = this.props;
 
     const book = items[rowIndex];
+    const columns = this.getColumns();
 
     return (
       <VirtualTableRow
@@ -81,7 +103,6 @@ class BookIndexTable extends Component {
   render() {
     const {
       items,
-      columns,
       sortKey,
       sortDirection,
       isSmallScreen,
@@ -94,6 +115,8 @@ class BookIndexTable extends Component {
       isEditorActive,
       selectedState
     } = this.props;
+
+    const columns = this.getColumns();
 
     return (
       <VirtualTable

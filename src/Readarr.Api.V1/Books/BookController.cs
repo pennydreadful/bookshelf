@@ -171,7 +171,7 @@ namespace Readarr.Api.V1.Books
 
             BroadcastResourceChange(ModelAction.Updated, model.Id);
 
-            return Accepted(model.Id);
+            return Accepted(MapToResource(model, false));
         }
 
         [RestDeleteById]
