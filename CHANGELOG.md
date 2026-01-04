@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.46
+- Summary: fix build error in Google Books author search.
+- Why: avoid variable shadowing that caused the dev build to fail.
+- Impact: update-dev.sh completes successfully again.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry adding J. K. Rowling as an author.
+
 ## 1.2.45
 - Summary: use `inauthor:` for Google Books author searches.
 - Why: generic Google Books queries can return unrelated authors and lead to partial catalogs.

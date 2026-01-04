@@ -189,9 +189,9 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                     return new List<Author>();
                 }
 
-                var books = SearchGoogleBooks($"inauthor:{query}");
+                var googleBooks = SearchGoogleBooks($"inauthor:{query}");
 
-                return books
+                return googleBooks
                     .Select(x => x.Author.Value)
                     .DistinctBy(x => x.ForeignAuthorId)
                     .ToList();
