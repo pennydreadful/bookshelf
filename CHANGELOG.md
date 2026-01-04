@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.26
+- Summary: show API key input in the import script prompts.
+- Why: allow copy/paste visibility when entering keys interactively.
+- Impact: import-indexers.sh no longer hides API key input.
+- Files: scripts/import-indexers.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: re-download import-indexers.sh and run it on the Bookdarr VM.
+
 ## 1.2.25
 - Summary: make indexer imports replace existing entries by default.
 - Why: simplify migration by updating matching indexers automatically.

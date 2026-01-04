@@ -46,8 +46,7 @@ if [ -z "${SOURCE_PORT}" ]; then
 fi
 
 if [ -z "${SOURCE_API_KEY}" ]; then
-  read -r -s -p "Source Readarr API key: " SOURCE_API_KEY
-  echo
+  read -r -p "Source Readarr API key: " SOURCE_API_KEY
 fi
 
 if [ -z "${TARGET_URL}" ]; then
@@ -83,8 +82,7 @@ PY
 fi
 
 if [ -z "${TARGET_API_KEY}" ]; then
-  read -r -s -p "Target Bookdarr API key: " TARGET_API_KEY
-  echo
+  read -r -p "Target Bookdarr API key: " TARGET_API_KEY
 fi
 
 if [ -z "${TARGET_API_KEY}" ]; then
