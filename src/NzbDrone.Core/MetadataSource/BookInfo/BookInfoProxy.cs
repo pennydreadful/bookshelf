@@ -32,6 +32,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private const string GoogleAuthorPrefix = "gba:";
         private const int GoogleBooksMaxResultsPerRequest = 40;
         private const int GoogleBooksAuthorMaxResults = 200;
+        private const int GoogleBooksAuthorMinResults = 5;
         private static readonly JsonSerializerOptions SerializerSettings = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false,
@@ -1120,7 +1121,8 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         {
             var authorId = BuildGoogleAuthorId(authorName);
             var metadata = BuildGoogleAuthorMetadata(authorId, authorName);
-            var books = SearchGoogleBooksPaged($"inauthor:{authorName}", GoogleBooksAuthorMaxResults);
+            var books = SearchGoogleBooksAuthor(authorName);
+            EnsureGoogleAuthorImage(metadata, books);
 
             var author = new Author
             {
@@ -1336,6 +1338,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         {
             var images = new List<MediaCover.MediaCover>();
             var url = imageLinks?.Thumbnail ?? imageLinks?.SmallThumbnail;
+            url = NormalizeGoogleImageUrl(url);
 
             if (url.IsNotNullOrWhiteSpace())
             {
@@ -1347,6 +1350,102 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             return images;
+        }
+
+        private static string NormalizeGoogleImageUrl(string url)
+        {
+            if (url.IsNullOrWhiteSpace())
+            {
+                return url;
+            }
+
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+            {
+                return "https://" + url.Substring("http://".Length);
+            }
+
+            return url;
+        }
+
+        private List<Book> SearchGoogleBooksAuthor(string authorName)
+        {
+            var results = new List<Book>();
+
+            foreach (var query in BuildGoogleAuthorQueries(authorName))
+            {
+                var page = SearchGoogleBooksPaged(query, GoogleBooksAuthorMaxResults);
+                results.AddRange(page);
+
+                if (results.Count >= GoogleBooksAuthorMinResults)
+                {
+                    break;
+                }
+            }
+
+            return results
+                .DistinctBy(x => x.ForeignBookId)
+                .ToList();
+        }
+
+        private static IEnumerable<string> BuildGoogleAuthorQueries(string authorName)
+        {
+            if (authorName.IsNullOrWhiteSpace())
+            {
+                yield break;
+            }
+
+            yield return $"inauthor:\"{authorName}\"";
+            yield return $"inauthor:{authorName}";
+
+            var normalized = NormalizeGoogleAuthorName(authorName);
+            if (normalized.IsNotNullOrWhiteSpace() && !normalized.Equals(authorName, StringComparison.OrdinalIgnoreCase))
+            {
+                yield return $"inauthor:{normalized}";
+            }
+
+            var lastName = normalized.Split(' ', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+            if (lastName.IsNotNullOrWhiteSpace() && lastName.Length >= 4)
+            {
+                yield return $"inauthor:{lastName}";
+            }
+        }
+
+        private static string NormalizeGoogleAuthorName(string authorName)
+        {
+            if (authorName.IsNullOrWhiteSpace())
+            {
+                return string.Empty;
+            }
+
+            var normalized = new string(authorName
+                .Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                .ToArray());
+
+            return normalized.CleanSpaces();
+        }
+
+        private static void EnsureGoogleAuthorImage(AuthorMetadata metadata, List<Book> books)
+        {
+            if (metadata.Images.Any() || books == null)
+            {
+                return;
+            }
+
+            var cover = books
+                .SelectMany(b => b.Editions?.Value ?? new List<Edition>())
+                .SelectMany(e => e.Images ?? new List<MediaCover.MediaCover>())
+                .FirstOrDefault(image => image.CoverType == MediaCoverTypes.Cover && image.Url.IsNotNullOrWhiteSpace());
+
+            if (cover == null)
+            {
+                return;
+            }
+
+            metadata.Images.Add(new MediaCover.MediaCover
+            {
+                Url = cover.Url,
+                CoverType = MediaCoverTypes.Poster
+            });
         }
 
         private static DateTime? ParseGooglePublishedDate(string publishedDate)

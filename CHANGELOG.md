@@ -7,6 +7,13 @@
 - Files: frontend/src/Search/Author/AddNewAuthorModalContentConnector.js, src/Directory.Build.props, CHANGELOG.md.
 - Next: run update-dev.sh and verify author adds now pull the full catalog.
 
+## 1.2.49
+- Summary: improve Google Books author results and cover handling.
+- Why: author adds were still too small and cover images were inconsistent or missing.
+- Impact: author adds try multiple Google Books queries, author posters fall back to the first book cover, Google thumbnails are forced to HTTPS, and manual book adds download their cover without triggering author refresh.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/NzbDrone.Core/Books/Services/AddBookService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and re-test J. K. Rowling and book/author covers.
+
 ## 1.2.48
 - Summary: fix Google Books paging build error.
 - Why: `HttpRequest` doesn’t expose `AddQueryParam`; paging must be added before request build.

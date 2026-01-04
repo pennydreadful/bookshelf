@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.MediaCover;
 
 namespace NzbDrone.Core.Books
 {
@@ -23,6 +24,7 @@ namespace NzbDrone.Core.Books
         private readonly IBookService _bookService;
         private readonly IProvideBookInfo _bookInfo;
         private readonly IImportListExclusionService _importListExclusionService;
+        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
 
         public AddBookService(IAuthorService authorService,
@@ -30,6 +32,7 @@ namespace NzbDrone.Core.Books
                                IBookService bookService,
                                IProvideBookInfo bookInfo,
                                IImportListExclusionService importListExclusionService,
+                               IMapCoversToLocal mediaCoverService,
                                Logger logger)
         {
             _authorService = authorService;
@@ -37,6 +40,7 @@ namespace NzbDrone.Core.Books
             _bookService = bookService;
             _bookInfo = bookInfo;
             _importListExclusionService = importListExclusionService;
+            _mediaCoverService = mediaCoverService;
             _logger = logger;
         }
 
@@ -76,6 +80,11 @@ namespace NzbDrone.Core.Books
             book.AuthorMetadataId = dbAuthor.AuthorMetadataId;
             var shouldRefresh = doRefresh && book.AddOptions.AddType != BookAddType.Manual;
             _bookService.AddBook(book, shouldRefresh);
+
+            if (book.AddOptions.AddType == BookAddType.Manual)
+            {
+                _mediaCoverService.EnsureBookCovers(book);
+            }
 
             return book;
         }
