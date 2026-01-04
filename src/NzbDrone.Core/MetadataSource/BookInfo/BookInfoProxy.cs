@@ -181,6 +181,22 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         public List<Author> SearchForNewAuthor(string title)
         {
+            if (UseGoogleBooks)
+            {
+                var query = title?.Trim();
+                if (query.IsNullOrWhiteSpace())
+                {
+                    return new List<Author>();
+                }
+
+                var books = SearchGoogleBooks($"inauthor:{query}");
+
+                return books
+                    .Select(x => x.Author.Value)
+                    .DistinctBy(x => x.ForeignAuthorId)
+                    .ToList();
+            }
+
             var books = SearchForNewBook(title, null);
 
             return books
