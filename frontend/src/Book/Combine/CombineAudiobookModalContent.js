@@ -36,7 +36,7 @@ class CombineAudiobookModalContent extends Component {
     this.state = {
       orderedFiles: sortFiles(props.files),
       dragIndex: null,
-      renameParts: true
+      renameParts: false
     };
   }
 
@@ -45,7 +45,7 @@ class CombineAudiobookModalContent extends Component {
       this.setState({
         orderedFiles: sortFiles(this.props.files),
         dragIndex: null,
-        renameParts: true
+        renameParts: false
       });
     }
   }

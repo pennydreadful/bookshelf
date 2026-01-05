@@ -1,6 +1,7 @@
 declare const styles: {
   body: string;
   reader: string;
+  loadError: string;
   pdf: string;
 };
 

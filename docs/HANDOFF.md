@@ -85,6 +85,8 @@ Use this file to onboard a new Codex chat.
 - Available Books: removal endpoint now returns JSON to avoid false error banners on success.
 - Available Books selection is explicit via “Select Available Books”/“Done Selecting”; checkboxes and batch buttons are hidden unless selection mode is enabled.
 - Book/Author selection buttons are renamed to “Book Select/Done Selecting” and “Author Select/Done Selecting.”
+- EPUB reader script now loads with API key auth and surfaces a load-failed message instead of a blank modal.
+- Combine Audiobook now defaults to keeping original filenames (rename is opt-in), and the book-file stream endpoint allows HEAD requests.
 
 ## Git Snapshot Convention
 - Create an annotated tag in the format `snapshot-YYYYMMDD-HHMM` before each push and push the tag to GitHub.

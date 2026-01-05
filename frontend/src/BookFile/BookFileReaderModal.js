@@ -13,6 +13,13 @@ import styles from './BookFileReaderModal.css';
 const EPUB_SCRIPT_PATH = '/Content/Scripts/epub.min.js';
 let epubLoadPromise;
 
+function getEpubScriptUrl() {
+  const apiKey = window.Readarr && window.Readarr.apiKey;
+  const query = apiKey ? `?apikey=${encodeURIComponent(apiKey)}` : '';
+
+  return getPathWithUrlBase(`${EPUB_SCRIPT_PATH}${query}`);
+}
+
 function loadEpubScript() {
   if (window.ePub) {
     return Promise.resolve();
@@ -24,7 +31,7 @@ function loadEpubScript() {
 
   epubLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = getPathWithUrlBase(EPUB_SCRIPT_PATH);
+    script.src = getEpubScriptUrl();
     script.async = true;
     script.onload = () => resolve();
     script.onerror = () => reject(new Error('Failed to load epub.js'));
@@ -42,6 +49,9 @@ class BookFileReaderModal extends Component {
     this.book = null;
     this.rendition = null;
     this.isReaderActive = false;
+    this.state = {
+      loadError: false
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -56,6 +66,7 @@ class BookFileReaderModal extends Component {
 
     if (isOpening || changedSource)
     {
+      this.setState({ loadError: false });
       this.initializeReader();
     }
   }
@@ -82,6 +93,7 @@ class BookFileReaderModal extends Component {
       .then(() => {
         if (!this.isReaderActive || !window.ePub)
         {
+          this.setState({ loadError: true });
           return;
         }
 
@@ -91,6 +103,7 @@ class BookFileReaderModal extends Component {
       })
       .catch(() => {
         this.isReaderActive = false;
+        this.setState({ loadError: true });
       });
   }
 
@@ -125,6 +138,7 @@ class BookFileReaderModal extends Component {
       title
     } = this.props;
 
+    const { loadError } = this.state;
     const isEpub = fileType === 'epub';
 
     return (
@@ -142,7 +156,13 @@ class BookFileReaderModal extends Component {
           <ModalBody className={styles.body}>
             {
               isEpub ?
-                <div className={styles.reader} ref={this.readerRef} /> :
+                (
+                  loadError ?
+                    <div className={styles.loadError}>
+                      {translate('EbookReaderLoadFailed')}
+                    </div> :
+                    <div className={styles.reader} ref={this.readerRef} />
+                ) :
                 <iframe
                   className={styles.pdf}
                   src={streamUrl}

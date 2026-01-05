@@ -163,6 +163,7 @@ namespace Readarr.Api.V1.BookFiles
         }
 
         [HttpGet("{id:int}/stream")]
+        [HttpHead("{id:int}/stream")]
         public IActionResult StreamBookFile(int id)
         {
             var bookFile = _mediaFileService.Get(id);

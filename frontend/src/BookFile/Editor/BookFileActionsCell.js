@@ -92,8 +92,10 @@ class BookFileActionsCell extends Component {
     const isEbook = isEpub || isPdf;
     const fileType = isEpub ? 'epub' : 'pdf';
 
+    const apiKey = window.Readarr && window.Readarr.apiKey;
+    const apiKeyQuery = apiKey ? `?apikey=${encodeURIComponent(apiKey)}` : '';
     const streamUrl = path ?
-      getPathWithUrlBase(`/api/v1/bookfile/${id}/stream?apikey=${encodeURIComponent(window.Readarr.apiKey)}`) :
+      getPathWithUrlBase(`/api/v1/bookfile/${id}/stream${apiKeyQuery}`) :
       null;
 
     return (

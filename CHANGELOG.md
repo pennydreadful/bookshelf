@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.96
+- Summary: load the EPUB reader script with API key auth and default combine renaming to off.
+- Why: authenticated static assets blocked the EPUB viewer, and renaming should be opt-in.
+- Impact: Read ebook now surfaces load failures and works with API key auth; Combine Audiobook defaults to keeping original filenames; stream endpoint allows HEAD requests.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/BookFileReaderModal.css, frontend/src/BookFile/BookFileReaderModal.css.d.ts, frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/Book/Combine/CombineAudiobookModalContent.js, src/Readarr.Api.V1/BookFiles/BookFileController.cs, src/NzbDrone.Core/Localization/Core/en.json, CHANGELOG.md.
+- Next: run update-dev.sh, confirm Play/Read buttons appear in Files, and verify EPUB opens without a blank modal.
+
 ## 1.2.95
 - Summary: fix missing ebook icon in the Files tab.
 - Why: the book reader icon was referenced but not exported.

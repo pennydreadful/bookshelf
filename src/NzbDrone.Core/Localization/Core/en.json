@@ -791,6 +791,7 @@
   "PlayAudio": "Play audio",
   "AudiobookPlayer": "Audiobook Player",
   "EbookReader": "Ebook Reader",
+  "EbookReaderLoadFailed": "Unable to load the ebook reader. Check your API key or refresh the page.",
   "Real": "Real",
   "Reason": "Reason",
   "RecentChanges": "Recent Changes",
