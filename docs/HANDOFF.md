@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Fixed Author Select blank page caused by missing merge props in AuthorIndex.
 - Added Author Merge flow in Author Select mode with left/right winner choice and overwrite warning.
 - Standard Book Format is always visible in Media Management; help text reminds users to enable Rename Books.
 - Removed redundant using directives that caused IDE0005 build failures.

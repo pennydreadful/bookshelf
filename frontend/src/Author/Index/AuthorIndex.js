@@ -297,11 +297,14 @@ class AuthorIndex extends Component {
       saveError,
       isDeleting,
       deleteError,
+      isMerging,
+      mergeError,
       onScroll,
       onSortSelect,
       onFilterSelect,
       onViewSelect,
       onRssSyncPress,
+      onMergeAuthors,
       ...otherProps
     } = this.props;
 

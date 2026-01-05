@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.83
+- Summary: fix Author Select view going blank after enabling merge UI.
+- Why: the AuthorIndex render referenced merge props that were not destructured, causing a runtime error.
+- Impact: Author Select no longer blanks the page; merge modal can be opened as expected.
+- Files: frontend/src/Author/Index/AuthorIndex.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, enter Author Select, and confirm the page stays visible.
+
 ## 1.2.82
 - Summary: add author merge flow to resolve duplicate authors.
 - Why: near-duplicate author names (e.g., spacing differences) can create duplicate author entries.
