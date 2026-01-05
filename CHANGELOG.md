@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.93
+- Summary: keep original filenames for multi-part MP3 audiobook imports.
+- Why: multi-file audiobooks already have meaningful part names and ordering.
+- Impact: when importing multiple MP3s for an audiobook, Bookdarr preserves original base filenames while still moving into the book folder.
+- Files: src/NzbDrone.Core/MediaFiles/BookFileMovingService.cs, CHANGELOG.md.
+- Next: run update-dev.sh, import a multi-part MP3 audiobook, and confirm the parts keep their original names.
+
 ## 1.2.92
 - Summary: allow Combine Audiobook to skip renaming when files are already ordered correctly.
 - Why: many audiobook parts already follow the desired naming, so renaming can be unnecessary.

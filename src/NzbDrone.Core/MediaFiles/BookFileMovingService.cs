@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile MoveBookFile(BookFile bookFile, LocalBook localBook)
         {
-            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+            var newFileName = GetImportFileName(localBook, bookFile);
             var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Edition, newFileName, Path.GetExtension(localBook.Path));
 
             EnsureTrackFolder(bookFile, localBook, filePath);
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile CopyBookFile(BookFile bookFile, LocalBook localBook)
         {
-            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+            var newFileName = GetImportFileName(localBook, bookFile);
             var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Edition, newFileName, Path.GetExtension(localBook.Path));
 
             EnsureTrackFolder(bookFile, localBook, filePath);
@@ -140,6 +140,41 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureTrackFolder(BookFile bookFile, LocalBook localBook, string filePath)
         {
             EnsureBookFolder(bookFile, localBook.Author, localBook.Book, filePath);
+        }
+
+        private string GetImportFileName(LocalBook localBook, BookFile bookFile)
+        {
+            if (ShouldPreserveOriginalName(localBook))
+            {
+                return Path.GetFileNameWithoutExtension(localBook.Path);
+            }
+
+            return _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+        }
+
+        private static bool ShouldPreserveOriginalName(LocalBook localBook)
+        {
+            if (localBook == null)
+            {
+                return false;
+            }
+
+            if (localBook.PartCount <= 1)
+            {
+                return false;
+            }
+
+            var extension = Path.GetExtension(localBook.Path);
+            if (!string.Equals(extension, ".mp3", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            var mediaType = localBook.MediaType != BookFileMediaType.Unknown
+                ? localBook.MediaType
+                : MediaFileExtensions.GetMediaTypeForPath(localBook.Path);
+
+            return mediaType == BookFileMediaType.Audiobook;
         }
 
         private void EnsureBookFolder(BookFile bookFile, Author author, Book book, string filePath)

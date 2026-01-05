@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Multi-part MP3 audiobook imports now preserve original filenames instead of renaming on import.
 - Combine Audiobook modal now includes a rename toggle so files can be combined without renaming.
 - Combine Audiobook now validates source paths, avoids overwriting part names, verifies output file size, and rolls back renamed parts if combining fails.
 - Added Audiobook Combining settings (mode, chapters, delete mode) and a manual Combine Audiobook flow on the book details page.
