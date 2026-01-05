@@ -24,6 +24,12 @@ function MergeAuthorModalContent(props) {
   const hasTwoAuthors = authors.length === 2;
   const leftAuthor = hasTwoAuthors ? authors[0] : null;
   const rightAuthor = hasTwoAuthors ? authors[1] : null;
+  const leftLabel = hasTwoAuthors ?
+    `${translate('MergeKeepLeft')}: ${leftAuthor.authorName}` :
+    translate('MergeKeepLeft');
+  const rightLabel = hasTwoAuthors ?
+    `${translate('MergeKeepRight')}: ${rightAuthor.authorName}` :
+    translate('MergeKeepRight');
 
   return (
     <ModalContent onModalClose={onModalClose}>
@@ -55,12 +61,12 @@ function MergeAuthorModalContent(props) {
 
               <div className={styles.compare}>
                 <div className={styles.compareColumn}>
-                  <div className={styles.compareLabel}>Left</div>
+                  <div className={styles.compareLabel}>Left selection</div>
                   <div className={styles.compareName}>{leftAuthor.authorName}</div>
                 </div>
 
                 <div className={styles.compareColumn}>
-                  <div className={styles.compareLabel}>Right</div>
+                  <div className={styles.compareLabel}>Right selection</div>
                   <div className={styles.compareName}>{rightAuthor.authorName}</div>
                 </div>
               </div>
@@ -83,7 +89,7 @@ function MergeAuthorModalContent(props) {
           isDisabled={!hasTwoAuthors || isMerging}
           onPress={() => onMergeConfirmed(leftAuthor.id, rightAuthor.id)}
         >
-          {translate('MergeKeepLeft')}
+          {leftLabel}
         </SpinnerButton>
 
         <SpinnerButton
@@ -92,7 +98,7 @@ function MergeAuthorModalContent(props) {
           isDisabled={!hasTwoAuthors || isMerging}
           onPress={() => onMergeConfirmed(rightAuthor.id, leftAuthor.id)}
         >
-          {translate('MergeKeepRight')}
+          {rightLabel}
         </SpinnerButton>
       </ModalFooter>
     </ModalContent>

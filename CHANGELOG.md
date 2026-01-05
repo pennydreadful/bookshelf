@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.85
+- Summary: make author merge choices clearer by showing names on the buttons.
+- Why: the left/right labels were easy to confuse without context.
+- Impact: merge modal buttons now include the author names for each side.
+- Files: frontend/src/Author/Editor/Merge/MergeAuthorModalContent.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the merge modal clearly shows which author you are keeping.
+
 ## 1.2.84
 - Summary: refresh book resources after author merge so author pages show merged books.
 - Why: merged books updated in the database but the UI list was stale because book update events were not broadcast.
