@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.95
+- Summary: fix missing ebook icon in the Files tab.
+- Why: the book reader icon was referenced but not exported.
+- Impact: Read ebook buttons now render correctly for EPUB/PDF files.
+- Files: frontend/src/Helpers/Props/icons.js, CHANGELOG.md.
+- Next: run update-dev.sh and confirm Play/Read buttons appear in the Files tab.
+
 ## 1.2.94
 - Summary: add in-app audio playback and ebook viewing from the Files tab.
 - Why: Bookdarr needed lightweight playback for M4B/MP3 and viewing for EPUB/PDF.

@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Fixed Files tab ebook icon export so Read buttons render.
 - Added Play/Read actions in the Files tab with audio and ebook modals plus a stream endpoint.
 - Multi-part MP3 audiobook imports now preserve original filenames instead of renaming on import.
 - Combine Audiobook modal now includes a rename toggle so files can be combined without renaming.

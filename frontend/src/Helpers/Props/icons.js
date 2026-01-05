@@ -124,6 +124,7 @@ export const ARROW_UP = fasArrowCircleUp;
 export const BACKUP = farFileArchive;
 export const BAN = fasBan;
 export const BOOK = fasBook;
+export const BOOK_READER = fasBookReader;
 export const BUG = fasBug;
 export const CALENDAR = fasCalendarAlt;
 export const CALENDAR_O = farCalendar;
