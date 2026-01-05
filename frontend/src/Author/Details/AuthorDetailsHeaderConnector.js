@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { toggleAuthorMonitored } from 'Store/Actions/authorActions';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import AuthorDetailsHeader from './AuthorDetailsHeader';
@@ -35,20 +34,9 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  toggleAuthorMonitored
 };
 
 class AuthorDetailsHeaderConnector extends Component {
-
-  //
-  // Listeners
-
-  onMonitorTogglePress = (monitored) => {
-    this.props.toggleAuthorMonitored({
-      authorId: this.props.authorId,
-      monitored
-    });
-  };
 
   //
   // Render
@@ -57,15 +45,13 @@ class AuthorDetailsHeaderConnector extends Component {
     return (
       <AuthorDetailsHeader
         {...this.props}
-        onMonitorTogglePress={this.onMonitorTogglePress}
       />
     );
   }
 }
 
 AuthorDetailsHeaderConnector.propTypes = {
-  authorId: PropTypes.number.isRequired,
-  toggleAuthorMonitored: PropTypes.func.isRequired
+  authorId: PropTypes.number.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AuthorDetailsHeaderConnector);

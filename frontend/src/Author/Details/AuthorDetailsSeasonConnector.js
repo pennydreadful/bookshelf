@@ -5,9 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { setAuthorDetailsId, setAuthorDetailsSort } from 'Store/Actions/authorDetailsActions';
-import { setBooksTableOption, toggleBooksMonitored } from 'Store/Actions/bookActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
+import { setBooksTableOption } from 'Store/Actions/bookActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -16,10 +14,9 @@ import AuthorDetailsSeason from './AuthorDetailsSeason';
 function createMapStateToProps() {
   return createSelector(
     createClientSideCollectionSelector('books', 'authorDetails'),
-    createAuthorSelector(),
     createDimensionsSelector(),
     createUISettingsSelector(),
-    (books, author, dimensions, uiSettings) => {
+    (books, dimensions, uiSettings) => {
 
       const booksInGroup = books.items;
 
@@ -36,7 +33,6 @@ function createMapStateToProps() {
         columns: books.columns,
         sortKey: books.sortKey,
         sortDirection: books.sortDirection,
-        authorMonitored: author.monitored,
         isSmallScreen: dimensions.isSmallScreen,
         uiSettings
       };
@@ -47,9 +43,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   setAuthorDetailsId,
   setAuthorDetailsSort,
-  toggleBooksMonitored,
-  setBooksTableOption,
-  executeCommand
+  setBooksTableOption
 };
 
 class AuthorDetailsSeasonConnector extends Component {
@@ -72,13 +66,6 @@ class AuthorDetailsSeasonConnector extends Component {
     this.props.setAuthorDetailsSort({ sortKey });
   };
 
-  onMonitorBookPress = (bookIds, monitored) => {
-    this.props.toggleBooksMonitored({
-      bookIds,
-      monitored
-    });
-  };
-
   //
   // Render
 
@@ -88,7 +75,6 @@ class AuthorDetailsSeasonConnector extends Component {
         {...this.props}
         onSortPress={this.onSortPress}
         onTableOptionChange={this.onTableOptionChange}
-        onMonitorBookPress={this.onMonitorBookPress}
       />
     );
   }
@@ -96,11 +82,9 @@ class AuthorDetailsSeasonConnector extends Component {
 
 AuthorDetailsSeasonConnector.propTypes = {
   authorId: PropTypes.number.isRequired,
-  toggleBooksMonitored: PropTypes.func.isRequired,
   setBooksTableOption: PropTypes.func.isRequired,
   setAuthorDetailsId: PropTypes.func.isRequired,
-  setAuthorDetailsSort: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  setAuthorDetailsSort: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AuthorDetailsSeasonConnector);

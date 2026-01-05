@@ -4,7 +4,6 @@ import BookSearchCellConnector from 'Book/BookSearchCellConnector';
 import BookTitleLink from 'Book/BookTitleLink';
 import IndexerFlags from 'Book/IndexerFlags';
 import Icon from 'Components/Icon';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import StarRating from 'Components/StarRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
@@ -49,10 +48,6 @@ class BookRow extends Component {
     this.setState({ isEditBookModalOpen: false });
   };
 
-  onMonitorBookPress = (monitored, options) => {
-    this.props.onMonitorBookPress(this.props.id, monitored, options);
-  };
-
   //
   // Render
 
@@ -68,8 +63,6 @@ class BookRow extends Component {
       position,
       pageCount,
       ratings,
-      isSaving,
-      authorMonitored,
       titleSlug,
       bookFiles,
       indexerFlags,
@@ -104,22 +97,6 @@ class BookRow extends Component {
                   isDisabled={false}
                   onSelectedChange={onSelectedChange}
                 />
-              );
-            }
-
-            if (name === 'monitored') {
-              return (
-                <TableRowCell
-                  key={name}
-                  className={styles.monitored}
-                >
-                  <MonitorToggleButton
-                    monitored={monitored}
-                    isDisabled={!authorMonitored}
-                    isSaving={isSaving}
-                    onPress={this.onMonitorBookPress}
-                  />
-                </TableRowCell>
               );
             }
 
@@ -261,14 +238,11 @@ BookRow.propTypes = {
   ratings: PropTypes.object.isRequired,
   indexerFlags: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  isSaving: PropTypes.bool,
-  authorMonitored: PropTypes.bool.isRequired,
   bookFiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   isEditorActive: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onMonitorBookPress: PropTypes.func.isRequired
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 BookRow.defaultProps = {

@@ -8,7 +8,6 @@ import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import Marquee from 'Components/Marquee';
 import Measure from 'Components/Measure';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
@@ -66,16 +65,13 @@ class AuthorDetailsHeader extends Component {
       path,
       statistics,
       qualityProfileId,
-      monitored,
       status,
       overview,
       links,
       images,
       alternateTitles,
       tags,
-      isSaving,
-      isSmallScreen,
-      onMonitorTogglePress
+      isSmallScreen
     } = this.props;
 
     const hasOverview = !!overview && overview.length > 0;
@@ -151,16 +147,6 @@ class AuthorDetailsHeader extends Component {
               onMeasure={this.onTitleMeasure}
             >
               <div className={styles.titleContainer}>
-                <div className={styles.toggleMonitoredContainer}>
-                  <MonitorToggleButton
-                    className={styles.monitorToggleButton}
-                    monitored={monitored}
-                    isSaving={isSaving}
-                    size={isSmallScreen ? 30: 40}
-                    onPress={onMonitorTogglePress}
-                  />
-                </div>
-
                 <div className={styles.title} style={{ width: marqueeWidth }}>
                   <Marquee text={authorName} />
                 </div>
@@ -241,20 +227,6 @@ class AuthorDetailsHeader extends Component {
                       qualityProfileId={qualityProfileId}
                     />
                   }
-                </span>
-              </Label>
-
-              <Label
-                className={styles.detailsLabel}
-                size={sizes.LARGE}
-              >
-                <Icon
-                  name={monitored ? icons.MONITORED : icons.UNMONITORED}
-                  size={17}
-                />
-
-                <span className={styles.qualityProfileName}>
-                  {monitored ? 'Monitored' : 'Unmonitored'}
                 </span>
               </Label>
 
@@ -353,16 +325,13 @@ AuthorDetailsHeader.propTypes = {
   path: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
-  monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
-  isSaving: PropTypes.bool.isRequired,
-  isSmallScreen: PropTypes.bool.isRequired,
-  onMonitorTogglePress: PropTypes.func.isRequired
+  isSmallScreen: PropTypes.bool.isRequired
 };
 
 export default AuthorDetailsHeader;

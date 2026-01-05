@@ -4,7 +4,6 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
 import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
 import AuthorHistoryTable from 'Author/History/AuthorHistoryTable';
-import MonitoringOptionsModal from 'Author/MonitoringOptions/MonitoringOptionsModal';
 import BookEditorFooter from 'Book/Editor/BookEditorFooter';
 import BookFileEditorTable from 'BookFile/Editor/BookFileEditorTable';
 import Alert from 'Components/Alert';
@@ -56,7 +55,6 @@ class AuthorDetails extends Component {
       isEditAuthorModalOpen: false,
       isDeleteAuthorModalOpen: false,
       isInteractiveImportModalOpen: false,
-      isMonitorOptionsModalOpen: false,
       isEditorActive: false,
       allExpanded: false,
       allCollapsed: false,
@@ -151,14 +149,6 @@ class AuthorDetails extends Component {
 
   onDeleteAuthorModalClose = () => {
     this.setState({ isDeleteAuthorModalOpen: false });
-  };
-
-  onMonitorOptionsPress = () => {
-    this.setState({ isMonitorOptionsModalOpen: true });
-  };
-
-  onMonitorOptionsClose = () => {
-    this.setState({ isMonitorOptionsModalOpen: false });
   };
 
   onBookEditorTogglePress = () => {
@@ -257,7 +247,6 @@ class AuthorDetails extends Component {
       isEditAuthorModalOpen,
       isDeleteAuthorModalOpen,
       isInteractiveImportModalOpen,
-      isMonitorOptionsModalOpen,
       isEditorActive,
       allSelected,
       selectedState,
@@ -331,12 +320,6 @@ class AuthorDetails extends Component {
             />
 
             <PageToolbarSeparator />
-
-            <PageToolbarButton
-              label={translate('BookMonitoring')}
-              iconName={icons.MONITORED}
-              onPress={this.onMonitorOptionsPress}
-            />
 
             <PageToolbarButton
               label={translate('Edit')}
@@ -598,12 +581,6 @@ class AuthorDetails extends Component {
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
           />
-
-          <MonitoringOptionsModal
-            isOpen={isMonitorOptionsModalOpen}
-            authorId={id}
-            onModalClose={this.onMonitorOptionsClose}
-          />
         </PageContentBody>
 
         {
@@ -652,7 +629,6 @@ AuthorDetails.propTypes = {
   previousAuthor: PropTypes.object.isRequired,
   nextAuthor: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshImagePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,

@@ -1,11 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { sortDirections } from 'Helpers/Props';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import getToggledRange from 'Utilities/Table/getToggledRange';
 import BookRowConnector from './BookRowConnector';
 import styles from './AuthorDetailsSeason.css';
 
@@ -13,14 +11,6 @@ class AuthorDetailsSeason extends Component {
 
   //
   // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      lastToggledBook: null
-    };
-  }
 
   componentDidMount() {
     this.props.setSelectedState(this.props.items);
@@ -44,24 +34,6 @@ class AuthorDetailsSeason extends Component {
 
   //
   // Listeners
-
-  onMonitorBookPress = (bookId, monitored, { shiftKey }) => {
-    const lastToggled = this.state.lastToggledBook;
-    const bookIds = [bookId];
-
-    if (shiftKey && lastToggled) {
-      const { lower, upper } = getToggledRange(this.props.items, bookId, lastToggled);
-      const items = this.props.items;
-
-      for (let i = lower; i < upper; i++) {
-        bookIds.push(items[i].id);
-      }
-    }
-
-    this.setState({ lastToggledBook: bookId });
-
-    this.props.onMonitorBookPress(_.uniq(bookIds), monitored);
-  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     const {
@@ -87,9 +59,9 @@ class AuthorDetailsSeason extends Component {
       selectedState
     } = this.props;
 
-    let titleColumns = columns;
+    let titleColumns = columns.filter((x) => x.name !== 'monitored');
     if (!isEditorActive) {
-      titleColumns = columns.filter((x) => x.name !== 'select');
+      titleColumns = titleColumns.filter((x) => x.name !== 'select');
     }
 
     return (
@@ -110,9 +82,8 @@ class AuthorDetailsSeason extends Component {
                   return (
                     <BookRowConnector
                       key={item.id}
-                      columns={columns}
+                      columns={titleColumns}
                       {...item}
-                      onMonitorBookPress={this.onMonitorBookPress}
                       isEditorActive={isEditorActive}
                       isSelected={selectedState[item.id]}
                       onSelectedChange={this.onSelectedChange}
@@ -140,7 +111,6 @@ AuthorDetailsSeason.propTypes = {
   setSelectedState: PropTypes.func.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
-  onMonitorBookPress: PropTypes.func.isRequired,
   uiSettings: PropTypes.object.isRequired
 };
 

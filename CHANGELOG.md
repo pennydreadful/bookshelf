@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.87
+- Summary: remove author/bookshelf/bulk monitoring controls and auto-unmonitor books once both ebook and audiobook files exist.
+- Why: monitoring should only be changed on the book details page, and completed media sets should stop monitoring automatically.
+- Impact: author details and Bookshelf no longer expose monitor toggles; book edit/bulk edit no longer offer monitoring changes; after import, any book with both media types is auto-unmonitored (multi-file audiobooks still count once imported).
+- Files: frontend/src/Author/Details/AuthorDetails.js, frontend/src/Author/Details/AuthorDetailsConnector.js, frontend/src/Author/Details/AuthorDetailsHeader.js, frontend/src/Author/Details/AuthorDetailsHeaderConnector.js, frontend/src/Author/Details/AuthorDetailsSeason.js, frontend/src/Author/Details/AuthorDetailsSeasonConnector.js, frontend/src/Author/Details/AuthorDetailsSeries.js, frontend/src/Author/Details/AuthorDetailsSeriesConnector.js, frontend/src/Author/Details/BookRow.js, frontend/src/Author/Details/BookRowConnector.js, frontend/src/Book/Edit/EditBookModalContent.js, frontend/src/Book/Edit/EditBookModalContentConnector.js, frontend/src/Book/Editor/BookEditorFooter.js, frontend/src/Bookshelf/Bookshelf.js, frontend/src/Bookshelf/BookshelfBook.js, frontend/src/Bookshelf/BookshelfRow.js, frontend/src/Bookshelf/BookshelfRowConnector.js, src/NzbDrone.Core/MediaFiles/BookImport/ImportApprovedBooks.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, confirm author/bookshelf monitoring controls are gone, and verify a book with both ebook + audiobook files auto-unmonitors after import.
+
 ## 1.2.86
 - Summary: show author names in merge selection boxes and keep buttons simple.
 - Why: author names were missing due to a trimmed selector, which made merge choices unclear.

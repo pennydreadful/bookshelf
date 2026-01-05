@@ -1,15 +1,12 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons, sortDirections } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import getToggledRange from 'Utilities/Table/getToggledRange';
 import BookRowConnector from './BookRowConnector';
 import styles from './AuthorDetailsSeries.css';
 
@@ -23,8 +20,7 @@ class AuthorDetailsSeries extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
-      isManageBooksOpen: false,
-      lastToggledBook: null
+      isManageBooksOpen: false
     };
   }
 
@@ -55,14 +51,6 @@ class AuthorDetailsSeries extends Component {
     onExpandPress(id, true);
   }
 
-  isSeriesMonitored(series) {
-    return series.items.every((book) => book.monitored);
-  }
-
-  isSeriesSaving(series) {
-    return series.items.some((book) => book.isSaving);
-  }
-
   //
   // Listeners
 
@@ -73,30 +61,6 @@ class AuthorDetailsSeries extends Component {
     } = this.props;
 
     this.props.onExpandPress(id, !isExpanded);
-  };
-
-  onMonitorBookPress = (bookId, monitored, { shiftKey }) => {
-    const lastToggled = this.state.lastToggledBook;
-    const bookIds = [bookId];
-
-    if (shiftKey && lastToggled) {
-      const { lower, upper } = getToggledRange(this.props.items, bookId, lastToggled);
-      const items = this.props.items;
-
-      for (let i = lower; i < upper; i++) {
-        bookIds.push(items[i].id);
-      }
-    }
-
-    this.setState({ lastToggledBook: bookId });
-
-    this.props.onMonitorBookPress(_.uniq(bookIds), monitored);
-  };
-
-  onMonitorSeriesPress = (monitored, { shiftKey }) => {
-    const bookIds = this.props.items.map((book) => book.id);
-
-    this.props.onMonitorBookPress(_.uniq(bookIds), monitored);
   };
 
   //
@@ -113,23 +77,16 @@ class AuthorDetailsSeries extends Component {
       sortDirection,
       onSortPress,
       isSmallScreen,
-      onTableOptionChange,
-      authorMonitored
+      onTableOptionChange
     } = this.props;
+
+    const tableColumns = columns.filter((column) => column.name !== 'monitored');
 
     return (
       <div
         className={styles.bookType}
       >
         <div className={styles.seriesTitle}>
-          <MonitorToggleButton
-            size={24}
-            monitored={this.isSeriesMonitored(this.props)}
-            isDisabled={!authorMonitored}
-            isSaving={this.isSeriesSaving(this.props)}
-            onPress={this.onMonitorSeriesPress}
-          />
-
           <Link
             className={styles.expandButton}
             onPress={this.onExpandPress}
@@ -171,7 +128,7 @@ class AuthorDetailsSeries extends Component {
             isExpanded &&
               <div className={styles.books}>
                 <Table
-                  columns={columns}
+                  columns={tableColumns}
                   sortKey={sortKey}
                   sortDirection={sortDirection}
                   onSortPress={onSortPress}
@@ -183,10 +140,9 @@ class AuthorDetailsSeries extends Component {
                         return (
                           <BookRowConnector
                             key={item.id}
-                            columns={columns}
+                            columns={tableColumns}
                             {...item}
                             position={positionMap[item.id]}
-                            onMonitorBookPress={this.onMonitorBookPress}
                           />
                         );
                       })
@@ -225,9 +181,7 @@ AuthorDetailsSeries.propTypes = {
   onTableOptionChange: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
-  onMonitorBookPress: PropTypes.func.isRequired,
-  uiSettings: PropTypes.object.isRequired,
-  authorMonitored: PropTypes.bool.isRequired
+  uiSettings: PropTypes.object.isRequired
 };
 
 export default AuthorDetailsSeries;

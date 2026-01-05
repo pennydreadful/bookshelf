@@ -27,10 +27,6 @@ import styles from './Bookshelf.css';
 
 const columns = [
   {
-    name: 'monitored',
-    isVisible: true
-  },
-  {
     name: 'status',
     isVisible: true
   },

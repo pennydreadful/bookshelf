@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { saveBook, setBookValue, toggleBooksMonitored } from 'Store/Actions/bookActions';
+import { saveBook, setBookValue } from 'Store/Actions/bookActions';
 import { saveEditions } from 'Store/Actions/editionActions';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import createBookSelector from 'Store/Selectors/createBookSelector';
@@ -30,7 +30,6 @@ function createMapStateToProps() {
       } = editionState;
 
       const bookSettings = _.pick(book, [
-        'monitored',
         'anyEditionOk'
       ]);
       bookSettings.editions = editionState.items;
@@ -57,8 +56,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   dispatchSetBookValue: setBookValue,
   dispatchSaveBook: saveBook,
-  dispatchSaveEditions: saveEditions,
-  dispatchToggleBooksMonitored: toggleBooksMonitored
+  dispatchSaveEditions: saveEditions
 };
 
 class EditBookModalContentConnector extends Component {
@@ -86,13 +84,6 @@ class EditBookModalContentConnector extends Component {
     this.props.dispatchSaveEditions({
       id: this.props.bookId
     });
-
-    if (this.props.bookId != null && Object.prototype.hasOwnProperty.call(this.props.pendingChanges, 'monitored')) {
-      this.props.dispatchToggleBooksMonitored({
-        bookIds: [this.props.bookId],
-        monitored: this.props.pendingChanges.monitored
-      });
-    }
   };
 
   //
@@ -116,7 +107,6 @@ EditBookModalContentConnector.propTypes = {
   dispatchSetBookValue: PropTypes.func.isRequired,
   dispatchSaveBook: PropTypes.func.isRequired,
   dispatchSaveEditions: PropTypes.func.isRequired,
-  dispatchToggleBooksMonitored: PropTypes.func.isRequired,
   pendingChanges: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

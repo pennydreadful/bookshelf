@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import AuthorNameLink from 'Author/AuthorNameLink';
 import { getAuthorStatusDetails } from 'Author/AuthorStatus';
 import Icon from 'Components/Icon';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import BookshelfBook from './BookshelfBook';
@@ -20,13 +19,9 @@ class BookshelfRow extends Component {
       status,
       titleSlug,
       authorName,
-      monitored,
       books,
-      isSaving,
       isSelected,
-      onSelectedChange,
-      onAuthorMonitoredPress,
-      onBookMonitoredPress
+      onSelectedChange
     } = this.props;
 
     const statusDetails = getAuthorStatusDetails(status);
@@ -40,15 +35,6 @@ class BookshelfRow extends Component {
           onSelectedChange={onSelectedChange}
           isDisabled={false}
         />
-
-        <VirtualTableRowCell className={styles.monitored}>
-          <MonitorToggleButton
-            monitored={monitored}
-            size={14}
-            isSaving={isSaving}
-            onPress={onAuthorMonitoredPress}
-          />
-        </VirtualTableRowCell>
 
         <VirtualTableRowCell className={styles.status}>
           <Icon
@@ -72,7 +58,6 @@ class BookshelfRow extends Component {
                 <BookshelfBook
                   key={book.id}
                   {...book}
-                  onBookMonitoredPress={onBookMonitoredPress}
                 />
               );
             })
@@ -88,17 +73,9 @@ BookshelfRow.propTypes = {
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
-  monitored: PropTypes.bool.isRequired,
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isSaving: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
-  onSelectedChange: PropTypes.func.isRequired,
-  onAuthorMonitoredPress: PropTypes.func.isRequired,
-  onBookMonitoredPress: PropTypes.func.isRequired
-};
-
-BookshelfRow.defaultProps = {
-  isSaving: false
+  onSelectedChange: PropTypes.func.isRequired
 };
 
 export default BookshelfRow;

@@ -348,6 +348,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 }
             }
 
+            AutoUnmonitorCompletedBooks(bookImports);
+
             //Adding all the rejected decisions
             importResults.AddRange(decisions.Where(c => !c.Approved)
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
@@ -368,6 +370,62 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             }
 
             return importResults;
+        }
+
+        private void AutoUnmonitorCompletedBooks(List<IGrouping<int, ImportResult>> bookImports)
+        {
+            var processedBookIds = new HashSet<int>();
+
+            foreach (var bookImport in bookImports)
+            {
+                if (!bookImport.Any(e => e.Errors.Count == 0))
+                {
+                    continue;
+                }
+
+                var book = bookImport.First().ImportDecision.Item.Book;
+                if (book == null || !processedBookIds.Add(book.Id))
+                {
+                    continue;
+                }
+
+                if (!book.Monitored)
+                {
+                    continue;
+                }
+
+                if (!HasCompleteMediaSet(book.Id))
+                {
+                    continue;
+                }
+
+                _logger.Debug("Auto-unmonitoring book {0} because both ebook and audiobook files are present.", book);
+                _bookService.SetBookMonitored(book.Id, false);
+            }
+        }
+
+        private bool HasCompleteMediaSet(int bookId)
+        {
+            var files = _mediaFileService.GetFilesByBook(bookId);
+            if (files == null || files.Count == 0)
+            {
+                return false;
+            }
+
+            var hasEbook = files.Any(file => GetEffectiveMediaType(file) == BookFileMediaType.Ebook);
+            var hasAudiobook = files.Any(file => GetEffectiveMediaType(file) == BookFileMediaType.Audiobook);
+
+            return hasEbook && hasAudiobook;
+        }
+
+        private static BookFileMediaType GetEffectiveMediaType(BookFile bookFile)
+        {
+            if (bookFile?.MediaType != BookFileMediaType.Unknown)
+            {
+                return bookFile.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(bookFile?.Path);
         }
 
         private Author EnsureAuthorAdded(List<ImportDecision<LocalBook>> decisions, List<Author> addedAuthors)

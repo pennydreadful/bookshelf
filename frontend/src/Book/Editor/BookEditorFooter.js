@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import { kinds } from 'Helpers/Props';
@@ -8,8 +7,6 @@ import translate from 'Utilities/String/translate';
 import BookEditorFooterLabel from './BookEditorFooterLabel';
 import DeleteBookModal from './Delete/DeleteBookModal';
 import styles from './BookEditorFooter.css';
-
-const NO_CHANGE = 'noChange';
 
 class BookEditorFooter extends Component {
 
@@ -20,9 +17,6 @@ class BookEditorFooter extends Component {
     super(props, context);
 
     this.state = {
-      monitored: NO_CHANGE,
-      rootFolderPath: NO_CHANGE,
-      savingTags: false,
       isDeleteBookModalOpen: false,
       isTagsModalOpen: false,
       isConfirmMoveModalOpen: false,
@@ -30,39 +24,8 @@ class BookEditorFooter extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      isSaving,
-      saveError
-    } = this.props;
-
-    if (prevProps.isSaving && !isSaving && !saveError) {
-      this.setState({
-        monitored: NO_CHANGE,
-        rootFolderPath: NO_CHANGE,
-        savingTags: false
-      });
-    }
-  }
-
   //
   // Listeners
-
-  onInputChange = ({ name, value }) => {
-    this.setState({ [name]: value });
-
-    if (value === NO_CHANGE) {
-      return;
-    }
-
-    switch (name) {
-      case 'monitored':
-        this.props.onSaveSelected({ [name]: value === 'monitored' });
-        break;
-      default:
-        this.props.onSaveSelected({ [name]: value });
-    }
-  };
 
   onDeleteSelectedPress = () => {
     this.setState({ isDeleteBookModalOpen: true });
@@ -79,38 +42,15 @@ class BookEditorFooter extends Component {
     const {
       bookIds,
       selectedCount,
-      isSaving,
       isDeleting
     } = this.props;
 
     const {
-      monitored,
       isDeleteBookModalOpen
     } = this.state;
 
-    const monitoredOptions = [
-      { key: NO_CHANGE, value: translate('NoChange'), isDisabled: true },
-      { key: 'monitored', value: translate('Monitored') },
-      { key: 'unmonitored', value: translate('Unmonitored') }
-    ];
-
     return (
       <PageContentFooter>
-        <div className={styles.inputContainer}>
-          <BookEditorFooterLabel
-            label={translate('MonitorBook')}
-            isSaving={isSaving && monitored !== NO_CHANGE}
-          />
-
-          <SelectInput
-            name="monitored"
-            value={monitored}
-            values={monitoredOptions}
-            isDisabled={!selectedCount}
-            onChange={this.onInputChange}
-          />
-        </div>
-
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
             <BookEditorFooterLabel
@@ -146,11 +86,8 @@ class BookEditorFooter extends Component {
 BookEditorFooter.propTypes = {
   bookIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedCount: PropTypes.number.isRequired,
-  isSaving: PropTypes.bool.isRequired,
-  saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
-  deleteError: PropTypes.object,
-  onSaveSelected: PropTypes.func.isRequired
+  deleteError: PropTypes.object
 };
 
 export default BookEditorFooter;

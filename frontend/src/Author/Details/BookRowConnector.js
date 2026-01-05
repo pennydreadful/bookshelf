@@ -32,7 +32,6 @@ function createMapStateToProps() {
       const bookFile = files[0];
 
       return {
-        authorMonitored: author.monitored,
         authorName: author.authorName,
         bookFiles: files,
         indexerFlags: bookFile ? bookFile.indexerFlags : 0

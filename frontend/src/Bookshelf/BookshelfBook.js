@@ -1,23 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import translate from 'Utilities/String/translate';
 import styles from './BookshelfBook.css';
 
 class BookshelfBook extends Component {
-
-  //
-  // Listeners
-
-  onBookMonitoredPress = () => {
-    const {
-      id,
-      monitored
-    } = this.props;
-
-    this.props.onBookMonitoredPress(id, !monitored);
-  };
 
   //
   // Render
@@ -27,8 +14,7 @@ class BookshelfBook extends Component {
       title,
       disambiguation,
       monitored,
-      statistics = {},
-      isSaving
+      statistics = {}
     } = this.props;
 
     const {
@@ -41,12 +27,6 @@ class BookshelfBook extends Component {
     return (
       <div className={styles.book}>
         <div className={styles.info}>
-          <MonitorToggleButton
-            monitored={monitored}
-            isSaving={isSaving}
-            onPress={this.onBookMonitoredPress}
-          />
-
           <span>
             {
               disambiguation ? `${title} (${disambiguation})` : `${title}`
@@ -80,13 +60,10 @@ BookshelfBook.propTypes = {
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
-  statistics: PropTypes.object.isRequired,
-  isSaving: PropTypes.bool.isRequired,
-  onBookMonitoredPress: PropTypes.func.isRequired
+  statistics: PropTypes.object.isRequired
 };
 
 BookshelfBook.defaultProps = {
-  isSaving: false,
   statistics: {
     bookFileCount: 0,
     totalBookCount: 0,

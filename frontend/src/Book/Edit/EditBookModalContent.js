@@ -48,7 +48,6 @@ class EditBookModalContent extends Component {
     } = this.props;
 
     const {
-      monitored,
       anyEditionOk,
       editions
     } = item;
@@ -66,20 +65,6 @@ class EditBookModalContent extends Component {
           <Form
             {...otherProps}
           >
-            <FormGroup>
-              <FormLabel>
-                {translate('Monitored')}
-              </FormLabel>
-
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="monitored"
-                helpText={translate('MonitoredHelpText')}
-                {...monitored}
-                onChange={onInputChange}
-              />
-            </FormGroup>
-
             <FormGroup>
               <FormLabel>
                 {translate('AutomaticallySwitchEdition')}

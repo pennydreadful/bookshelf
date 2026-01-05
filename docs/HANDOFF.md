@@ -43,6 +43,8 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Monitoring controls were removed from Author Details, Bookshelf, and Book Editor/Edit Modal; monitoring now only changes on Book Details.
+- Imports now auto-unmonitor books once both ebook + audiobook files exist (multi-file audiobook imports count as complete after import).
 - Author merge modal now shows author names in the left/right boxes; buttons are plain Keep Left/Keep Right.
 - Author merge modal buttons now include author names for clarity.
 - Author merge now broadcasts BookUpdated events so merged books appear on the winner's author page immediately.
