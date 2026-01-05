@@ -14,7 +14,7 @@ Use this file to onboard a new Codex chat.
 ## User Preferences
 - Keep changes small and methodical; avoid assumptions.
 - Responses should be concise.
-- Always create a backup archive before pushing to GitHub.
+- Create an annotated git tag snapshot before pushing to GitHub; no local tar backups.
 - When giving install commands, use sudo and chain with `&&`.
 - Always put commands or code the user should run in fenced code blocks.
 - Avoid adding repeated `apt-get update` steps in install/build flows.
@@ -68,5 +68,5 @@ Use this file to onboard a new Codex chat.
 - Available Books selection is explicit via “Select Available Books”/“Done Selecting”; checkboxes and batch buttons are hidden unless selection mode is enabled.
 - Book/Author selection buttons are renamed to “Book Select/Done Selecting” and “Author Select/Done Selecting.”
 
-## Local Backup Convention
-- Backups are stored under `/Users/joe/VS Code/Bookdarr-backups/` before each push.
+## Git Snapshot Convention
+- Create an annotated tag in the format `snapshot-YYYYMMDD-HHMM` before each push and push the tag to GitHub.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.81
+- Summary: switch backup policy to git tag snapshots only.
+- Why: tags allow quick reverts without creating large local archives.
+- Impact: handoff now directs tags (`snapshot-YYYYMMDD-HHMM`) and no local tar backups.
+- Files: docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: create and push a snapshot tag before the next GitHub push.
+
 ## 1.2.80
 - Summary: restore the Standard Book Format field even when Rename Books is disabled.
 - Why: users still need to see and set the global naming pattern while toggling rename behavior.
