@@ -87,6 +87,7 @@ Use this file to onboard a new Codex chat.
 - Book/Author selection buttons are renamed to “Book Select/Done Selecting” and “Author Select/Done Selecting.”
 - EPUB reader script now loads with API key auth and surfaces a load-failed message instead of a blank modal.
 - Combine Audiobook now defaults to keeping original filenames (rename is opt-in), and the book-file stream endpoint allows HEAD requests.
+- Play actions now show for audiobook rows using media type/quality detection in addition to file extension.
 
 ## Git Snapshot Convention
 - Create an annotated tag in the format `snapshot-YYYYMMDD-HHMM` before each push and push the tag to GitHub.

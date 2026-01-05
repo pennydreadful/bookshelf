@@ -74,7 +74,9 @@ class BookFileActionsCell extends Component {
 
     const {
       id,
-      path
+      path,
+      quality,
+      mediaType
     } = this.props;
 
     const {
@@ -86,10 +88,23 @@ class BookFileActionsCell extends Component {
 
     const extensionIndex = path ? path.lastIndexOf('.') : -1;
     const extension = extensionIndex > -1 ? path.slice(extensionIndex).toLowerCase() : '';
-    const isAudio = extension === '.mp3' || extension === '.m4b' || extension === '.m4a';
+    const mediaTypeValue = typeof mediaType === 'string' ? mediaType.toLowerCase() : mediaType;
+    const isAudioByMediaType = mediaTypeValue === 'audiobook' || mediaTypeValue === 2;
+    const isEbookByMediaType = mediaTypeValue === 'ebook' || mediaTypeValue === 1;
+
+    const qualityName = quality && quality.quality && quality.quality.name ?
+      quality.quality.name.toLowerCase() :
+      '';
+    const isAudioByQuality = ['m4b', 'mp3', 'm4a', 'aac', 'audiobook'].includes(qualityName);
+    const isEbookByQuality = ['epub', 'pdf', 'ebook'].includes(qualityName);
+
+    const isAudioByExtension = extension === '.mp3' || extension === '.m4b' || extension === '.m4a';
     const isEpub = extension === '.epub';
     const isPdf = extension === '.pdf';
-    const isEbook = isEpub || isPdf;
+    const isEbookByExtension = isEpub || isPdf;
+
+    const isAudio = isAudioByExtension || isAudioByMediaType || isAudioByQuality;
+    const isEbook = isEbookByExtension || isEbookByMediaType || isEbookByQuality;
     const fileType = isEpub ? 'epub' : 'pdf';
 
     const apiKey = window.Readarr && window.Readarr.apiKey;
@@ -174,6 +189,8 @@ class BookFileActionsCell extends Component {
 BookFileActionsCell.propTypes = {
   id: PropTypes.number.isRequired,
   path: PropTypes.string,
+  quality: PropTypes.object,
+  mediaType: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   deleteBookFile: PropTypes.func.isRequired
 };
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.97
+- Summary: show Play actions for audiobook files using media type/quality detection.
+- Why: some audiobook rows weren’t showing the Play icon despite M4B files being present.
+- Impact: Play now appears for M4B/MP3 files even when extension detection fails.
+- Files: frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/BookFile/Editor/BookFileEditorRow.js, CHANGELOG.md.
+- Next: run update-dev.sh and confirm M4B rows show the Play icon.
+
 ## 1.2.96
 - Summary: load the EPUB reader script with API key auth and default combine renaming to off.
 - Why: authenticated static assets blocked the EPUB viewer, and renaming should be opt-in.
