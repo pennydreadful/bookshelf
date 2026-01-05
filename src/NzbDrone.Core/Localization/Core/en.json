@@ -93,7 +93,7 @@
   "Automatic": "Automatic",
   "AutomaticAdd": "Automatic Add",
   "AutomaticUpdatesDisabledDocker": "Automatic updates are not directly supported when using the Docker update mechanism. You will need to update the container image outside of {appName} or use a script",
-  "AutomaticallySwitchEdition": "Automatically Switch Edition",
+  "AutomaticallySwitchEdition": "Automatically Switch Edition/Monitoring",
   "AvailableBooks": "Available Books",
   "SelectAvailableBooks": "Select Available Books",
   "DoneSelecting": "Done Selecting",

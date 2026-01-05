@@ -3,10 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MoveAuthorModal from 'Author/MoveAuthor/MoveAuthorModal';
 import MetadataProfileSelectInputConnector from 'Components/Form/MetadataProfileSelectInputConnector';
-import MonitorNewItemsSelectInput from 'Components/Form/MonitorNewItemsSelectInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
-import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import { kinds } from 'Helpers/Props';
@@ -33,8 +31,6 @@ class AuthorEditorFooter extends Component {
     super(props, context);
 
     this.state = {
-      monitored: NO_CHANGE,
-      monitorNewItems: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
       metadataProfileId: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
@@ -64,8 +60,6 @@ class AuthorEditorFooter extends Component {
 
     if (prevProps.isSaving && !isSaving && !saveError) {
       this.setState({
-        monitored: NO_CHANGE,
-        monitorNewItems: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
         metadataProfileId: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
@@ -94,9 +88,6 @@ class AuthorEditorFooter extends Component {
           isConfirmMoveModalOpen: true,
           destinationRootFolder: value
         });
-        break;
-      case 'monitored':
-        this.props.onSaveSelected({ [name]: value === 'monitored' });
         break;
       default:
         this.props.onSaveSelected({ [name]: value });
@@ -187,8 +178,6 @@ class AuthorEditorFooter extends Component {
     } = this.props;
 
     const {
-      monitored,
-      monitorNewItems,
       qualityProfileId,
       metadataProfileId,
       rootFolderPath,
@@ -200,12 +189,6 @@ class AuthorEditorFooter extends Component {
       destinationRootFolder
     } = this.state;
 
-    const monitoredOptions = [
-      { key: NO_CHANGE, value: translate('NoChange'), isDisabled: true },
-      { key: 'monitored', value: translate('Monitored') },
-      { key: 'unmonitored', value: translate('Unmonitored') }
-    ];
-
     const mergeCandidates = (selectedAuthors || [])
       .slice(0, 2)
       .sort((left, right) => (left.authorName || '').localeCompare(right.authorName || ''));
@@ -215,36 +198,6 @@ class AuthorEditorFooter extends Component {
       <PageContentFooter>
         <div className={styles.footer}>
           <div className={styles.dropdownContainer}>
-            <div className={styles.inputContainer}>
-              <AuthorEditorFooterLabel
-                label={translate('MonitorAuthor')}
-                isSaving={isSaving && monitored !== NO_CHANGE}
-              />
-
-              <SelectInput
-                name="monitored"
-                value={monitored}
-                values={monitoredOptions}
-                isDisabled={!selectedCount}
-                onChange={this.onInputChange}
-              />
-            </div>
-
-            <div className={styles.inputContainer}>
-              <AuthorEditorFooterLabel
-                label={translate('MonitorNewItems')}
-                isSaving={isSaving && monitored !== NO_CHANGE}
-              />
-
-              <MonitorNewItemsSelectInput
-                name="monitorNewItems"
-                value={monitorNewItems}
-                includeNoChange={true}
-                isDisabled={!selectedCount}
-                onChange={this.onInputChange}
-              />
-            </div>
-
             <div className={styles.inputContainer}>
               <AuthorEditorFooterLabel
                 label={translate('QualityProfile')}

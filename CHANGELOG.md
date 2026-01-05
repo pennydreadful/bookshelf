@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.88
+- Summary: remove author-level monitoring controls in Author Select and Edit, and clarify the book edit label.
+- Why: monitoring should be managed at the book level only; the author-level controls were still visible.
+- Impact: Author Select no longer shows Monitor Author/Monitor New Books; author edit modal no longer includes the Monitored/Monitor New Books fields; book edit label now reads “Automatically Switch Edition/Monitoring”.
+- Files: frontend/src/Author/Editor/AuthorEditorFooter.js, frontend/src/Author/Edit/EditAuthorModalContent.js, frontend/src/Author/Edit/EditAuthorModalContentConnector.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, confirm Author Select and Edit no longer show monitoring fields, and verify the book edit label text.
+
 ## 1.2.87
 - Summary: remove author/bookshelf/bulk monitoring controls and auto-unmonitor books once both ebook and audiobook files exist.
 - Why: monitoring should only be changed on the book details page, and completed media sets should stop monitoring automatically.

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AuthorMetadataProfilePopoverContent from 'AddAuthor/AuthorMetadataProfilePopoverContent';
-import AuthorMonitorNewItemsOptionsPopoverContent from 'AddAuthor/AuthorMonitorNewItemsOptionsPopoverContent';
 import MoveAuthorModal from 'Author/MoveAuthor/MoveAuthorModal';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
@@ -77,8 +76,6 @@ class EditAuthorModalContent extends Component {
     } = this.props;
 
     const {
-      monitored,
-      monitorNewItems,
       qualityProfileId,
       metadataProfileId,
       path,
@@ -93,45 +90,6 @@ class EditAuthorModalContent extends Component {
 
         <ModalBody>
           <Form {...otherProps}>
-            <FormGroup>
-              <FormLabel>
-                {translate('Monitored')}
-              </FormLabel>
-
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="monitored"
-                helpText={translate('MonitoredHelpText')}
-                {...monitored}
-                onChange={onInputChange}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <FormLabel>
-                {translate('MonitorNewItems')}
-                <Popover
-                  anchor={
-                    <Icon
-                      className={styles.labelIcon}
-                      name={icons.INFO}
-                    />
-                  }
-                  title={translate('MonitorNewItems')}
-                  body={<AuthorMonitorNewItemsOptionsPopoverContent />}
-                  position={tooltipPositions.RIGHT}
-                />
-              </FormLabel>
-
-              <FormInputGroup
-                type={inputTypes.MONITOR_NEW_ITEMS_SELECT}
-                name="monitorNewItems"
-                helpText={translate('MonitorNewItemsHelpText')}
-                {...monitorNewItems}
-                onChange={onInputChange}
-              />
-            </FormGroup>
-
             <FormGroup>
               <FormLabel>
                 {translate('QualityProfile')}

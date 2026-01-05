@@ -43,6 +43,9 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author Select no longer shows Monitor Author/Monitor New Books controls.
+- Author edit modal no longer includes Monitored/Monitor New Books fields.
+- Book edit label now reads “Automatically Switch Edition/Monitoring”.
 - Monitoring controls were removed from Author Details, Bookshelf, and Book Editor/Edit Modal; monitoring now only changes on Book Details.
 - Imports now auto-unmonitor books once both ebook + audiobook files exist (multi-file audiobook imports count as complete after import).
 - Author merge modal now shows author names in the left/right boxes; buttons are plain Keep Left/Keep Right.
