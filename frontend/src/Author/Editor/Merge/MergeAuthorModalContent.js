@@ -24,12 +24,9 @@ function MergeAuthorModalContent(props) {
   const hasTwoAuthors = authors.length === 2;
   const leftAuthor = hasTwoAuthors ? authors[0] : null;
   const rightAuthor = hasTwoAuthors ? authors[1] : null;
-  const leftLabel = hasTwoAuthors ?
-    `${translate('MergeKeepLeft')}: ${leftAuthor.authorName}` :
-    translate('MergeKeepLeft');
-  const rightLabel = hasTwoAuthors ?
-    `${translate('MergeKeepRight')}: ${rightAuthor.authorName}` :
-    translate('MergeKeepRight');
+
+  const leftName = leftAuthor?.authorName || leftAuthor?.authorNameLastFirst || leftAuthor?.sortName || '';
+  const rightName = rightAuthor?.authorName || rightAuthor?.authorNameLastFirst || rightAuthor?.sortName || '';
 
   return (
     <ModalContent onModalClose={onModalClose}>
@@ -62,12 +59,12 @@ function MergeAuthorModalContent(props) {
               <div className={styles.compare}>
                 <div className={styles.compareColumn}>
                   <div className={styles.compareLabel}>Left selection</div>
-                  <div className={styles.compareName}>{leftAuthor.authorName}</div>
+                  <div className={styles.compareName}>{leftName}</div>
                 </div>
 
                 <div className={styles.compareColumn}>
                   <div className={styles.compareLabel}>Right selection</div>
-                  <div className={styles.compareName}>{rightAuthor.authorName}</div>
+                  <div className={styles.compareName}>{rightName}</div>
                 </div>
               </div>
 
@@ -89,7 +86,7 @@ function MergeAuthorModalContent(props) {
           isDisabled={!hasTwoAuthors || isMerging}
           onPress={() => onMergeConfirmed(leftAuthor.id, rightAuthor.id)}
         >
-          {leftLabel}
+          {translate('MergeKeepLeft')}
         </SpinnerButton>
 
         <SpinnerButton
@@ -98,7 +95,7 @@ function MergeAuthorModalContent(props) {
           isDisabled={!hasTwoAuthors || isMerging}
           onPress={() => onMergeConfirmed(rightAuthor.id, leftAuthor.id)}
         >
-          {rightLabel}
+          {translate('MergeKeepRight')}
         </SpinnerButton>
       </ModalFooter>
     </ModalContent>

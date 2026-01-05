@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.86
+- Summary: show author names in merge selection boxes and keep buttons simple.
+- Why: author names were missing due to a trimmed selector, which made merge choices unclear.
+- Impact: left/right boxes now show author names; buttons read “Keep Left/Keep Right”.
+- Files: frontend/src/Store/Selectors/createAuthorClientSideCollectionItemsSelector.js, frontend/src/Author/Editor/Merge/MergeAuthorModalContent.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and confirm the merge modal shows author names in the selection boxes.
+
 ## 1.2.85
 - Summary: make author merge choices clearer by showing names on the buttons.
 - Why: the left/right labels were easy to confuse without context.

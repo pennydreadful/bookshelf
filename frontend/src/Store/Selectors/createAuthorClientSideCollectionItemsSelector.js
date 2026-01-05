@@ -9,12 +9,16 @@ function createUnoptimizedSelector(uiSection) {
       const items = authors.items.map((s) => {
         const {
           id,
+          authorName,
+          authorNameLastFirst,
           sortName,
           sortNameLastFirst
         } = s;
 
         return {
           id,
+          authorName,
+          authorNameLastFirst,
           sortName,
           sortNameLastFirst
         };

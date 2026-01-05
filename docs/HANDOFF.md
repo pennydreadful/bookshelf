@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Author merge modal now shows author names in the left/right boxes; buttons are plain Keep Left/Keep Right.
 - Author merge modal buttons now include author names for clarity.
 - Author merge now broadcasts BookUpdated events so merged books appear on the winner's author page immediately.
 - Fixed Author Select blank page caused by missing merge props in AuthorIndex.
