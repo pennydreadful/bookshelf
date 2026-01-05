@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using NzbDrone.Common.Disk;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -30,6 +32,8 @@ namespace Readarr.Api.V1.BookFiles
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
         private readonly IUpgradableSpecification _upgradableSpecification;
+        private readonly IDiskProvider _diskProvider;
+        private readonly FileExtensionContentTypeProvider _contentTypeProvider;
 
         public BookFileController(IBroadcastSignalRMessage signalRBroadcaster,
                                IMediaFileService mediaFileService,
@@ -37,7 +41,8 @@ namespace Readarr.Api.V1.BookFiles
                                IMetadataTagService metadataTagService,
                                IAuthorService authorService,
                                IBookService bookService,
-                               IUpgradableSpecification upgradableSpecification)
+                               IUpgradableSpecification upgradableSpecification,
+                               IDiskProvider diskProvider)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
@@ -46,6 +51,8 @@ namespace Readarr.Api.V1.BookFiles
             _authorService = authorService;
             _bookService = bookService;
             _upgradableSpecification = upgradableSpecification;
+            _diskProvider = diskProvider;
+            _contentTypeProvider = new FileExtensionContentTypeProvider();
         }
 
         private BookFileResource MapToResource(BookFile bookFile)
@@ -155,6 +162,25 @@ namespace Readarr.Api.V1.BookFiles
             }
         }
 
+        [HttpGet("{id:int}/stream")]
+        public IActionResult StreamBookFile(int id)
+        {
+            var bookFile = _mediaFileService.Get(id);
+
+            if (bookFile == null)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.NotFound, "Book file not found");
+            }
+
+            var path = bookFile.Path;
+            if (!_diskProvider.FileExists(path))
+            {
+                throw new NzbDroneClientException(HttpStatusCode.NotFound, "Book file not found");
+            }
+
+            return PhysicalFile(path, GetContentType(path), enableRangeProcessing: true);
+        }
+
         [HttpDelete("bulk")]
         public object DeleteTrackFiles([FromBody] BookFileListResource resource)
         {
@@ -185,6 +211,16 @@ namespace Readarr.Api.V1.BookFiles
         public void Handle(BookFileDeletedEvent message)
         {
             BroadcastResourceChange(ModelAction.Deleted, MapToResource(message.BookFile));
+        }
+
+        private string GetContentType(string path)
+        {
+            if (!_contentTypeProvider.TryGetContentType(path, out var contentType))
+            {
+                return "application/octet-stream";
+            }
+
+            return contentType;
         }
     }
 }

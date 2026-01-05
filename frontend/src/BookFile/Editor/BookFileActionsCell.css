@@ -1,6 +1,6 @@
 .TrackActionsCell {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
-  width: 70px;
+  width: 120px;
   white-space: nowrap;
 }

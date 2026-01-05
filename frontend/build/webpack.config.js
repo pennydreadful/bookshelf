@@ -142,6 +142,12 @@ module.exports = (env) => {
                 destination: path.join(distFolder, 'Content/Fonts'),
               },
 
+              // Scripts
+              {
+                source: 'frontend/src/Content/Scripts/*.*',
+                destination: path.join(distFolder, 'Content/Scripts'),
+              },
+
               // Icon Images
               {
                 source: 'frontend/src/Content/Images/Icons/*.*',

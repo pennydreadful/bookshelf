@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.94
+- Summary: add in-app audio playback and ebook viewing from the Files tab.
+- Why: Bookdarr needed lightweight playback for M4B/MP3 and viewing for EPUB/PDF.
+- Impact: Files rows now include Play/Read actions, a streaming endpoint, and a modal audio player/ebook reader.
+- Files: frontend/src/BookFile/BookFileAudioModal.js, frontend/src/BookFile/BookFileAudioModal.css, frontend/src/BookFile/BookFileAudioModal.css.d.ts, frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/BookFileReaderModal.css, frontend/src/BookFile/BookFileReaderModal.css.d.ts, frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/BookFile/Editor/BookFileActionsCell.css, frontend/src/Content/Scripts/epub.min.js, frontend/build/webpack.config.js, src/Readarr.Api.V1/BookFiles/BookFileController.cs, src/NzbDrone.Core/Localization/Core/en.json, CHANGELOG.md.
+- Next: run update-dev.sh, open a book with M4B/EPUB files, and verify Play/Read works from the Files tab.
+
 ## 1.2.93
 - Summary: keep original filenames for multi-part MP3 audiobook imports.
 - Why: multi-file audiobooks already have meaningful part names and ordering.

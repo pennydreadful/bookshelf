@@ -1,0 +1,15 @@
+.body {
+  height: 70vh;
+}
+
+.reader {
+  height: 100%;
+  width: 100%;
+  background: #1f1f1f;
+}
+
+.pdf {
+  border: 0;
+  height: 100%;
+  width: 100%;
+}
