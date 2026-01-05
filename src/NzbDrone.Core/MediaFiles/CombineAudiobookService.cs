@@ -91,43 +91,56 @@ namespace NzbDrone.Core.MediaFiles
             var book = _bookService.GetBook(command.BookId);
             var author = book.Author.Value;
 
-            NormalizePartFiles(book, orderedFiles);
-
-            var partInfos = BuildPartInfos(orderedFiles);
-            var outputPath = BuildOutputPath(author, edition, orderedFiles.First());
-
-            EnsureOutputAvailable(outputPath);
-
-            var workFolder = _diskProvider.GetParentFolder(orderedFiles.First().Path);
-            var token = Guid.NewGuid().ToString("N");
-            var concatListPath = Path.Combine(workFolder, $".bookdarr-concat-{token}.txt");
-            var metadataPath = Path.Combine(workFolder, $".bookdarr-metadata-{token}.txt");
-            var includeChapters = _configService.CombineAudiobookChapters && partInfos.All(p => p.Duration > TimeSpan.Zero);
+            List<FileRename> renames = null;
 
             try
             {
-                _diskProvider.WriteAllText(concatListPath, BuildConcatList(partInfos));
+                renames = NormalizePartFiles(book, orderedFiles);
 
-                if (includeChapters)
+                var partInfos = BuildPartInfos(orderedFiles);
+                var outputPath = BuildOutputPath(author, edition, orderedFiles.First());
+
+                EnsureOutputAvailable(outputPath);
+
+                var workFolder = _diskProvider.GetParentFolder(orderedFiles.First().Path);
+                var token = Guid.NewGuid().ToString("N");
+                var concatListPath = Path.Combine(workFolder, $".bookdarr-concat-{token}.txt");
+                var metadataPath = Path.Combine(workFolder, $".bookdarr-metadata-{token}.txt");
+                var includeChapters = _configService.CombineAudiobookChapters && partInfos.All(p => p.Duration > TimeSpan.Zero);
+
+                try
                 {
-                    _diskProvider.WriteAllText(metadataPath, BuildChapterMetadata(partInfos));
+                    _diskProvider.WriteAllText(concatListPath, BuildConcatList(partInfos));
+
+                    if (includeChapters)
+                    {
+                        _diskProvider.WriteAllText(metadataPath, BuildChapterMetadata(partInfos));
+                    }
+
+                    RunFfmpeg(concatListPath, metadataPath, includeChapters, outputPath, partInfos);
+                }
+                finally
+                {
+                    SafeDelete(concatListPath);
+                    if (includeChapters)
+                    {
+                        SafeDelete(metadataPath);
+                    }
                 }
 
-                RunFfmpeg(concatListPath, metadataPath, includeChapters, outputPath, partInfos);
+                EnsureOutputValid(outputPath);
+                _mediaFileService.Update(orderedFiles);
+
+                var outputFile = CreateOutputBookFile(author, edition, outputPath);
+                _mediaFileService.Add(outputFile);
+
+                HandleSourceCleanup(orderedFiles);
             }
-            finally
+            catch (Exception)
             {
-                SafeDelete(concatListPath);
-                if (includeChapters)
-                {
-                    SafeDelete(metadataPath);
-                }
+                RestoreRenamedFiles(renames);
+                throw;
             }
-
-            var outputFile = CreateOutputBookFile(author, edition, outputPath);
-            _mediaFileService.Add(outputFile);
-
-            HandleSourceCleanup(orderedFiles);
         }
 
         private void ValidateFiles(List<BookFile> orderedFiles)
@@ -143,14 +156,20 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        private void NormalizePartFiles(Book book, List<BookFile> orderedFiles)
+        private List<FileRename> NormalizePartFiles(Book book, List<BookFile> orderedFiles)
         {
+            var renames = new List<FileRename>();
             var padding = orderedFiles.Count.ToString(CultureInfo.InvariantCulture).Length;
             var cleanTitle = FileNameBuilder.CleanFileName(book.Title);
 
             for (var i = 0; i < orderedFiles.Count; i++)
             {
                 var file = orderedFiles[i];
+                if (!_diskProvider.FileExists(file.Path))
+                {
+                    throw new InvalidOperationException($"Source audiobook file not found: {file.Path}");
+                }
+
                 var partNumber = (i + 1).ToString(CultureInfo.InvariantCulture).PadLeft(padding, '0');
                 var extension = Path.GetExtension(file.Path);
                 var folder = _diskProvider.GetParentFolder(file.Path);
@@ -159,7 +178,13 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (!file.Path.PathEquals(newPath))
                 {
-                    _diskProvider.MoveFile(file.Path, newPath, true);
+                    if (_diskProvider.FileExists(newPath))
+                    {
+                        throw new InvalidOperationException($"Target audiobook filename already exists: {newPath}");
+                    }
+
+                    _diskProvider.MoveFile(file.Path, newPath);
+                    renames.Add(new FileRename(file, file.Path, newPath));
                     file.Path = newPath;
                 }
 
@@ -170,7 +195,7 @@ namespace NzbDrone.Core.MediaFiles
                 file.Modified = fileInfo.LastWriteTimeUtc;
             }
 
-            _mediaFileService.Update(orderedFiles);
+            return renames;
         }
 
         private List<PartInfo> BuildPartInfos(List<BookFile> orderedFiles)
@@ -347,6 +372,51 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
+        private void EnsureOutputValid(string outputPath)
+        {
+            if (!_diskProvider.FileExists(outputPath))
+            {
+                throw new InvalidOperationException("Combined audiobook output file was not created.");
+            }
+
+            var outputInfo = _diskProvider.GetFileInfo(outputPath);
+            if (outputInfo.Length <= 0)
+            {
+                throw new InvalidOperationException("Combined audiobook output file is empty.");
+            }
+        }
+
+        private void RestoreRenamedFiles(List<FileRename> renames)
+        {
+            if (renames == null || renames.Count == 0)
+            {
+                return;
+            }
+
+            for (var i = renames.Count - 1; i >= 0; i--)
+            {
+                var rename = renames[i];
+                try
+                {
+                    if (_diskProvider.FileExists(rename.NewPath) && !rename.NewPath.PathEquals(rename.OriginalPath))
+                    {
+                        if (_diskProvider.FileExists(rename.OriginalPath))
+                        {
+                            _logger.Warn("Unable to restore audiobook part because target already exists: {0}", rename.OriginalPath);
+                            continue;
+                        }
+
+                        _diskProvider.MoveFile(rename.NewPath, rename.OriginalPath);
+                        rename.BookFile.Path = rename.OriginalPath;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to restore audiobook part {0}", rename.NewPath);
+                }
+            }
+        }
+
         private void DeleteSourceFiles(List<BookFile> orderedFiles)
         {
             foreach (var file in orderedFiles)
@@ -462,6 +532,20 @@ namespace NzbDrone.Core.MediaFiles
             public string Name { get; set; }
             public double StartSeconds { get; set; }
             public double EndSeconds { get; set; }
+        }
+
+        private class FileRename
+        {
+            public FileRename(BookFile bookFile, string originalPath, string newPath)
+            {
+                BookFile = bookFile;
+                OriginalPath = originalPath;
+                NewPath = newPath;
+            }
+
+            public BookFile BookFile { get; }
+            public string OriginalPath { get; }
+            public string NewPath { get; }
         }
     }
 }

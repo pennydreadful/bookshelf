@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.91
+- Summary: make Combine Audiobook safer when renaming or ffmpeg fails.
+- Why: missing source files or name collisions caused ffmpeg failures and left renamed parts without clear recovery.
+- Impact: combine validates source/target paths, avoids overwriting part names, verifies output size, and rolls back renamed parts when combining fails.
+- Files: src/NzbDrone.Core/MediaFiles/CombineAudiobookService.cs, CHANGELOG.md.
+- Next: run update-dev.sh, set delete mode to Keep, retry Combine Audiobook, and confirm files remain if ffmpeg fails.
+
 ## 1.2.90
 - Summary: add a manual audiobook combine tool with reorder modal and progress bar.
 - Why: multi-part MP3 audiobooks need to be merged into a single MP3/M4B with optional chapters.
