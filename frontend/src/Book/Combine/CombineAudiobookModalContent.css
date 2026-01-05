@@ -4,6 +4,34 @@
   font-size: 13px;
 }
 
+.renamePartsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.renamePartsLabel {
+  font-size: 13px;
+}
+
+.renamePartsInputContainer {
+  composes: container from '~Components/Form/CheckInput.css';
+
+  flex: 0 1 0;
+}
+
+.renamePartsInput {
+  composes: input from '~Components/Form/CheckInput.css';
+
+  margin-top: 0;
+}
+
+.renamePartsHelp {
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--helpTextColor);
+}
+
 .list {
   max-height: 55vh;
   overflow-y: auto;

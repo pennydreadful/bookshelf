@@ -7,6 +7,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
     {
         public int BookId { get; set; }
         public List<int> BookFileIds { get; set; }
+        public bool RenameParts { get; set; } = true;
 
         public override bool SendUpdatesToClient => true;
         public override bool RequiresDiskAccess => true;

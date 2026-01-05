@@ -95,7 +95,15 @@ namespace NzbDrone.Core.MediaFiles
 
             try
             {
-                renames = NormalizePartFiles(book, orderedFiles);
+                if (command.RenameParts)
+                {
+                    renames = NormalizePartFiles(book, orderedFiles);
+                }
+                else
+                {
+                    EnsureSourceFilesExist(orderedFiles);
+                    renames = new List<FileRename>();
+                }
 
                 var partInfos = BuildPartInfos(orderedFiles);
                 var outputPath = BuildOutputPath(author, edition, orderedFiles.First());
@@ -129,7 +137,10 @@ namespace NzbDrone.Core.MediaFiles
                 }
 
                 EnsureOutputValid(outputPath);
-                _mediaFileService.Update(orderedFiles);
+                if (command.RenameParts)
+                {
+                    _mediaFileService.Update(orderedFiles);
+                }
 
                 var outputFile = CreateOutputBookFile(author, edition, outputPath);
                 _mediaFileService.Add(outputFile);
@@ -154,6 +165,8 @@ namespace NzbDrone.Core.MediaFiles
             {
                 throw new InvalidOperationException("Only MP3 audiobook files can be combined.");
             }
+
+            EnsureSourceFilesExist(orderedFiles);
         }
 
         private List<FileRename> NormalizePartFiles(Book book, List<BookFile> orderedFiles)
@@ -165,11 +178,6 @@ namespace NzbDrone.Core.MediaFiles
             for (var i = 0; i < orderedFiles.Count; i++)
             {
                 var file = orderedFiles[i];
-                if (!_diskProvider.FileExists(file.Path))
-                {
-                    throw new InvalidOperationException($"Source audiobook file not found: {file.Path}");
-                }
-
                 var partNumber = (i + 1).ToString(CultureInfo.InvariantCulture).PadLeft(padding, '0');
                 var extension = Path.GetExtension(file.Path);
                 var folder = _diskProvider.GetParentFolder(file.Path);
@@ -196,6 +204,17 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return renames;
+        }
+
+        private void EnsureSourceFilesExist(List<BookFile> orderedFiles)
+        {
+            foreach (var file in orderedFiles)
+            {
+                if (!_diskProvider.FileExists(file.Path))
+                {
+                    throw new InvalidOperationException($"Source audiobook file not found: {file.Path}");
+                }
+            }
         }
 
         private List<PartInfo> BuildPartInfos(List<BookFile> orderedFiles)

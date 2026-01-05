@@ -7,6 +7,11 @@ interface CssExports {
   'fileName': string;
   'isDragging': string;
   'list': string;
+  'renamePartsContainer': string;
+  'renamePartsHelp': string;
+  'renamePartsInput': string;
+  'renamePartsInputContainer': string;
+  'renamePartsLabel': string;
   'row': string;
 }
 export const cssExports: CssExports;

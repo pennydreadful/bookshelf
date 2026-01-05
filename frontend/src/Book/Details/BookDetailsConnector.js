@@ -211,11 +211,12 @@ class BookDetailsConnector extends Component {
     });
   };
 
-  onCombinePress = (bookFileIds) => {
+  onCombinePress = (bookFileIds, renameParts) => {
     this.props.executeCommand({
       name: commandNames.COMBINE_AUDIOBOOK,
       bookId: this.props.id,
       bookFileIds,
+      renameParts,
       suppressMessages: true
     });
   };

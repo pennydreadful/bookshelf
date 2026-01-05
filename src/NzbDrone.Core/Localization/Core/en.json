@@ -810,6 +810,8 @@
   "CombineAudiobookModalDescription": "Drag the MP3 parts to set the playback order before combining.",
   "CombineAudiobookModalTitle": "Combine audiobook files - {0}",
   "CombineAudiobookProgressText": "Encoding {0}%",
+  "CombineAudiobookRenameParts": "Rename parts before combining",
+  "CombineAudiobookRenamePartsHelpText": "Keep filenames as-is if they are already ordered correctly.",
   "DragToReorder": "Drag to reorder",
   "Redownload": "Redownload",
   "RedownloadFailed": "Redownload Failed",

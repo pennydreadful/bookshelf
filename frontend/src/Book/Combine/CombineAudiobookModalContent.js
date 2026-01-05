@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import CheckInput from 'Components/Form/CheckInput';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import Icon from 'Components/Icon';
@@ -34,7 +35,8 @@ class CombineAudiobookModalContent extends Component {
 
     this.state = {
       orderedFiles: sortFiles(props.files),
-      dragIndex: null
+      dragIndex: null,
+      renameParts: true
     };
   }
 
@@ -42,10 +44,15 @@ class CombineAudiobookModalContent extends Component {
     if (this.props.isOpen && !prevProps.isOpen) {
       this.setState({
         orderedFiles: sortFiles(this.props.files),
-        dragIndex: null
+        dragIndex: null,
+        renameParts: true
       });
     }
   }
+
+  onCheckInputChange = ({ name, value }) => {
+    this.setState({ [name]: value });
+  };
 
   onDragStart = (index) => (event) => {
     event.dataTransfer.effectAllowed = 'move';
@@ -87,9 +94,9 @@ class CombineAudiobookModalContent extends Component {
       onCombinePress
     } = this.props;
 
-    const { orderedFiles } = this.state;
+    const { orderedFiles, renameParts } = this.state;
 
-    onCombinePress(orderedFiles.map((file) => file.id));
+    onCombinePress(orderedFiles.map((file) => file.id), renameParts);
   };
 
   render() {
@@ -99,7 +106,7 @@ class CombineAudiobookModalContent extends Component {
       onModalClose
     } = this.props;
 
-    const { orderedFiles, dragIndex } = this.state;
+    const { orderedFiles, dragIndex, renameParts } = this.state;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -110,6 +117,23 @@ class CombineAudiobookModalContent extends Component {
         <ModalBody>
           <div className={styles.description}>
             {translate('CombineAudiobookModalDescription')}
+          </div>
+
+          <label className={styles.renamePartsContainer}>
+            <span className={styles.renamePartsLabel}>
+              {translate('CombineAudiobookRenameParts')}
+            </span>
+
+            <CheckInput
+              containerClassName={styles.renamePartsInputContainer}
+              className={styles.renamePartsInput}
+              name="renameParts"
+              value={renameParts}
+              onChange={this.onCheckInputChange}
+            />
+          </label>
+          <div className={styles.renamePartsHelp}>
+            {translate('CombineAudiobookRenamePartsHelpText')}
           </div>
 
           <div className={styles.list}>

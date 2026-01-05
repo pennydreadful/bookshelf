@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.92
+- Summary: allow Combine Audiobook to skip renaming when files are already ordered correctly.
+- Why: many audiobook parts already follow the desired naming, so renaming can be unnecessary.
+- Impact: combine modal now includes a rename toggle; backend respects it and only renames when enabled.
+- Files: frontend/src/Book/Combine/CombineAudiobookModalContent.js, frontend/src/Book/Combine/CombineAudiobookModalContent.css, frontend/src/Book/Combine/CombineAudiobookModalContent.css.d.ts, frontend/src/Book/Details/BookDetails.js, frontend/src/Book/Details/BookDetailsConnector.js, frontend/src/Commands/Command.ts, src/NzbDrone.Core/MediaFiles/Commands/CombineAudiobookCommand.cs, src/NzbDrone.Core/MediaFiles/CombineAudiobookService.cs, src/NzbDrone.Core/Localization/Core/en.json, CHANGELOG.md.
+- Next: run update-dev.sh, try combine with rename unchecked, and verify parts keep their original names.
+
 ## 1.2.91
 - Summary: make Combine Audiobook safer when renaming or ffmpeg fails.
 - Why: missing source files or name collisions caused ffmpeg failures and left renamed parts without clear recovery.

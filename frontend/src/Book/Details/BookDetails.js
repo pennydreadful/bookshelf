@@ -97,10 +97,10 @@ class BookDetails extends Component {
     this.setState({ isCombineModalOpen: false });
   };
 
-  onCombineConfirm = (bookFileIds) => {
+  onCombineConfirm = (bookFileIds, renameParts) => {
     const { onCombinePress } = this.props;
 
-    onCombinePress(bookFileIds);
+    onCombinePress(bookFileIds, renameParts);
     this.setState({ isCombineModalOpen: false });
   };
 

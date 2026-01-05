@@ -17,6 +17,7 @@ export interface CommandBody {
   bookId?: number;
   bookIds?: number[];
   bookFileIds?: number[];
+  renameParts?: boolean;
 }
 
 interface Command extends ModelBase {
