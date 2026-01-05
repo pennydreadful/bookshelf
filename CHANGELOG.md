@@ -1,10 +1,17 @@
 # Changelog
 
-## 1.2.97
-- Summary: fix missing Play icon export and show Play actions for audiobook files using media type/quality detection.
+## 1.2.98
+- Summary: export the Play icon so audiobook rows can render the Play button.
 - Why: the Play icon constant was missing, so M4B rows couldn’t render the button even when detected.
-- Impact: Play now appears for audiobook files, including M4B/MP3, regardless of extension or quality detection.
-- Files: frontend/src/Helpers/Props/icons.js, frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/BookFile/Editor/BookFileEditorRow.js, CHANGELOG.md.
+- Impact: Play now appears for audiobook files once detection flags them as audio.
+- Files: frontend/src/Helpers/Props/icons.js, CHANGELOG.md.
+- Next: run update-dev.sh and confirm M4B rows show the Play icon.
+
+## 1.2.97
+- Summary: show Play actions for audiobook files using media type/quality detection.
+- Why: some audiobook rows weren’t showing the Play icon despite M4B files being present.
+- Impact: Play now appears for M4B/MP3 files even when extension detection fails.
+- Files: frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/BookFile/Editor/BookFileEditorRow.js, CHANGELOG.md.
 - Next: run update-dev.sh and confirm M4B rows show the Play icon.
 
 ## 1.2.96
