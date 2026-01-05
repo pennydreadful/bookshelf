@@ -31,6 +31,7 @@ const selectBookFiles = createSelector(
     const hasBookFiles = !!items.length;
 
     return {
+      bookFiles: items,
       isBookFilesFetching: isFetching,
       isBookFilesPopulated: isPopulated,
       bookFilesError: error,
@@ -61,6 +62,7 @@ function createMapStateToProps() {
       }
 
       const {
+        bookFiles: bookFileItems,
         isBookFilesFetching,
         isBookFilesPopulated,
         bookFilesError,
@@ -85,6 +87,8 @@ function createMapStateToProps() {
         isCommandExecuting(isRenamingAuthorCommand) &&
         isRenamingAuthorCommand.body.authorIds.indexOf(author.id) > -1
       );
+      const combineCommand = findCommand(commands, { name: commandNames.COMBINE_AUDIOBOOK, bookId: book.id });
+      const isCombining = combineCommand ? isCommandExecuting(combineCommand) : false;
 
       const isFetching = isBookFilesFetching || editions.isFetching;
       const isPopulated = isBookFilesPopulated && editions.isPopulated;
@@ -100,7 +104,10 @@ function createMapStateToProps() {
         isFetching,
         isPopulated,
         bookFilesError,
+        bookFiles: bookFileItems,
         hasBookFiles,
+        combineCommand,
+        isCombining,
         previousBook,
         nextBook,
         isSmallScreen: dimensions.isSmallScreen
@@ -204,6 +211,15 @@ class BookDetailsConnector extends Component {
     });
   };
 
+  onCombinePress = (bookFileIds) => {
+    this.props.executeCommand({
+      name: commandNames.COMBINE_AUDIOBOOK,
+      bookId: this.props.id,
+      bookFileIds,
+      suppressMessages: true
+    });
+  };
+
   //
   // Render
 
@@ -214,6 +230,7 @@ class BookDetailsConnector extends Component {
         onMonitorTogglePress={this.onMonitorTogglePress}
         onRefreshPress={this.onRefreshPress}
         onSearchPress={this.onSearchPress}
+        onCombinePress={this.onCombinePress}
       />
     );
   }
@@ -227,6 +244,7 @@ BookDetailsConnector.propTypes = {
   isBookFetching: PropTypes.bool,
   isBookPopulated: PropTypes.bool,
   titleSlug: PropTypes.string.isRequired,
+  bookFiles: PropTypes.arrayOf(PropTypes.object),
   fetchBookFiles: PropTypes.func.isRequired,
   clearBookFiles: PropTypes.func.isRequired,
   fetchEditions: PropTypes.func.isRequired,

@@ -39,6 +39,18 @@ const fileDateOptions = [
   { key: 'bookReleaseDate', value: 'Book Release Date' }
 ];
 
+const combineAudiobookModeOptions = [
+  { key: 'disabled', value: 'Disabled' },
+  { key: 'mp3ToMp3', value: 'Multi-file MP3 to single MP3' },
+  { key: 'mp3ToM4b', value: 'Multi-file MP3 to single M4B' }
+];
+
+const combineAudiobookDeleteModeOptions = [
+  { key: 'deleteImmediately', value: 'Delete source MP3 parts' },
+  { key: 'deleteAfterOneHour', value: 'Keep for 1 hour, then delete' },
+  { key: 'keep', value: 'Keep source MP3 parts' }
+];
+
 class MediaManagement extends Component {
 
   //
@@ -385,6 +397,57 @@ class MediaManagement extends Component {
                       min={0}
                       onChange={onInputChange}
                       {...settings.recycleBinCleanupDays}
+                    />
+                  </FormGroup>
+                </FieldSet>
+
+                <FieldSet
+                  legend={translate('AudiobookCombining')}
+                >
+                  <FormGroup size={sizes.MEDIUM}>
+                    <FormLabel>
+                      {translate('CombineAudiobookMode')}
+                    </FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="combineAudiobookMode"
+                      helpTexts={[
+                        translate('CombineAudiobookModeHelpText'),
+                        translate('CombineAudiobookModeHelpTextM4b')
+                      ]}
+                      values={combineAudiobookModeOptions}
+                      onChange={onInputChange}
+                      {...settings.combineAudiobookMode}
+                    />
+                  </FormGroup>
+
+                  <FormGroup size={sizes.MEDIUM}>
+                    <FormLabel>
+                      {translate('CombineAudiobookChapters')}
+                    </FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="combineAudiobookChapters"
+                      helpText={translate('CombineAudiobookChaptersHelpText')}
+                      onChange={onInputChange}
+                      {...settings.combineAudiobookChapters}
+                    />
+                  </FormGroup>
+
+                  <FormGroup size={sizes.MEDIUM}>
+                    <FormLabel>
+                      {translate('CombineAudiobookDeleteMode')}
+                    </FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="combineAudiobookDeleteMode"
+                      helpText={translate('CombineAudiobookDeleteModeHelpText')}
+                      values={combineAudiobookDeleteModeOptions}
+                      onChange={onInputChange}
+                      {...settings.combineAudiobookDeleteMode}
                     />
                   </FormGroup>
                 </FieldSet>

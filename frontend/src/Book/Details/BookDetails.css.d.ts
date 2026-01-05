@@ -4,6 +4,7 @@ interface CssExports {
   'bookNavigationButton': string;
   'bookNavigationButtons': string;
   'bookUpButton': string;
+  'combineIcon': string;
   'contentContainer': string;
   'filterIcon': string;
   'innerContentBody': string;

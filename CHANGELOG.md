@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.90
+- Summary: add a manual audiobook combine tool with reorder modal and progress bar.
+- Why: multi-part MP3 audiobooks need to be merged into a single MP3/M4B with optional chapters.
+- Impact: Media Management adds Audiobook Combining settings; Book Details adds a Combine Audiobook button, a drag-order modal, and a top progress bar; backend combines parts via ffmpeg and optionally deletes source files.
+- Files: frontend/src/Book/Combine/CombineAudiobookModal.js, frontend/src/Book/Combine/CombineAudiobookModalContent.js, frontend/src/Book/Combine/CombineAudiobookModalContent.css, frontend/src/Book/Combine/CombineAudiobookModalContent.css.d.ts, frontend/src/Book/Details/BookDetails.js, frontend/src/Book/Details/BookDetails.css, frontend/src/Book/Details/BookDetails.css.d.ts, frontend/src/Book/Details/BookDetailsConnector.js, frontend/src/Book/Details/CombineAudiobookProgress.js, frontend/src/Book/Details/CombineAudiobookProgress.css, frontend/src/Book/Details/CombineAudiobookProgress.css.d.ts, frontend/src/Commands/commandNames.js, frontend/src/Components/Page/Toolbar/PageToolbarButton.js, frontend/src/Commands/Command.ts, frontend/src/Settings/MediaManagement/MediaManagement.js, src/NzbDrone.Core/MediaFiles/CombineAudiobookService.cs, src/NzbDrone.Core/MediaFiles/CombineAudiobookMode.cs, src/NzbDrone.Core/MediaFiles/CombineAudiobookDeleteMode.cs, src/NzbDrone.Core/MediaFiles/Commands/CombineAudiobookCommand.cs, src/NzbDrone.Core/Configuration/ConfigService.cs, src/NzbDrone.Core/Configuration/IConfigService.cs, src/Readarr.Api.V1/Config/MediaManagementConfigResource.cs, src/NzbDrone.Core/Localization/Core/en.json, CHANGELOG.md.
+- Next: run update-dev.sh, open a book with multiple audiobook MP3s, combine them, and verify the progress bar plus the new output file in the Files tab.
+
 ## 1.2.89
 - Summary: remove the Bookshelf page from navigation and routing.
 - Why: the page is non-functional and should be hidden/disabled.

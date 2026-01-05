@@ -14,6 +14,9 @@ export interface CommandBody {
   suppressMessages: boolean;
   authorId?: number;
   authorIds?: number[];
+  bookId?: number;
+  bookIds?: number[];
+  bookFileIds?: number[];
 }
 
 interface Command extends ModelBase {

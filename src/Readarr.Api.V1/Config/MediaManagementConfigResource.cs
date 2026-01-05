@@ -17,6 +17,9 @@ namespace Readarr.Api.V1.Config
         public bool WatchLibraryForChanges { get; set; }
         public RescanAfterRefreshType RescanAfterRefresh { get; set; }
         public AllowFingerprinting AllowFingerprinting { get; set; }
+        public CombineAudiobookMode CombineAudiobookMode { get; set; }
+        public bool CombineAudiobookChapters { get; set; }
+        public CombineAudiobookDeleteMode CombineAudiobookDeleteMode { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
         public string ChmodFolder { get; set; }
@@ -45,6 +48,9 @@ namespace Readarr.Api.V1.Config
                 WatchLibraryForChanges = model.WatchLibraryForChanges,
                 RescanAfterRefresh = model.RescanAfterRefresh,
                 AllowFingerprinting = model.AllowFingerprinting,
+                CombineAudiobookMode = model.CombineAudiobookMode,
+                CombineAudiobookChapters = model.CombineAudiobookChapters,
+                CombineAudiobookDeleteMode = model.CombineAudiobookDeleteMode,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 ChmodFolder = model.ChmodFolder,

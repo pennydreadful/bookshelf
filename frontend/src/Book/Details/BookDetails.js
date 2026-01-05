@@ -20,8 +20,18 @@ import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
 import translate from 'Utilities/String/translate';
+import CombineAudiobookModal from 'Book/Combine/CombineAudiobookModal';
+import CombineAudiobookProgress from './CombineAudiobookProgress';
 import BookDetailsHeaderConnector from './BookDetailsHeaderConnector';
 import styles from './BookDetails.css';
+
+function isAudiobookMp3(file) {
+  const mediaType = (file.mediaType || '').toString().toLowerCase();
+  const isAudiobook = mediaType === 'audiobook' || mediaType === '2';
+  const path = (file.path || '').toLowerCase();
+
+  return isAudiobook && path.endsWith('.mp3');
+}
 
 class BookDetails extends Component {
 
@@ -36,6 +46,7 @@ class BookDetails extends Component {
       isRetagModalOpen: false,
       isEditBookModalOpen: false,
       isDeleteBookModalOpen: false,
+      isCombineModalOpen: false,
       selectedTabIndex: 0
     };
   }
@@ -78,6 +89,21 @@ class BookDetails extends Component {
     this.setState({ isDeleteBookModalOpen: false });
   };
 
+  onCombineModalOpen = () => {
+    this.setState({ isCombineModalOpen: true });
+  };
+
+  onCombineModalClose = () => {
+    this.setState({ isCombineModalOpen: false });
+  };
+
+  onCombineConfirm = (bookFileIds) => {
+    const { onCombinePress } = this.props;
+
+    onCombinePress(bookFileIds);
+    this.setState({ isCombineModalOpen: false });
+  };
+
   onTabSelect = (index, lastIndex) => {
     this.setState({ selectedTabIndex: index });
   };
@@ -93,11 +119,14 @@ class BookDetails extends Component {
       isFetching,
       isPopulated,
       bookFilesError,
+      bookFiles,
       hasBookFiles,
       author,
       previousBook,
       nextBook,
       isSearching,
+      isCombining,
+      combineCommand,
       onRefreshPress,
       onSearchPress,
       statistics = {}
@@ -112,11 +141,16 @@ class BookDetails extends Component {
       isRetagModalOpen,
       isEditBookModalOpen,
       isDeleteBookModalOpen,
+      isCombineModalOpen,
       selectedTabIndex
     } = this.state;
 
+    const audioFiles = (bookFiles || []).filter(isAudiobookMp3);
+    const canCombine = audioFiles.length > 1;
+
     return (
       <PageContent title={title}>
+        <CombineAudiobookProgress command={combineCommand} />
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -149,6 +183,16 @@ class BookDetails extends Component {
               iconName={icons.RETAG}
               isDisabled={!hasBookFiles}
               onPress={this.onRetagPress}
+            />
+
+            <PageToolbarSeparator />
+
+            <PageToolbarButton
+              label={translate('CombineAudiobook')}
+              iconName={icons.ORGANIZE}
+              iconClassName={styles.combineIcon}
+              isDisabled={!canCombine || isCombining}
+              onPress={this.onCombineModalOpen}
             />
 
             <PageToolbarSeparator />
@@ -323,6 +367,15 @@ class BookDetails extends Component {
             onModalClose={this.onDeleteBookModalClose}
           />
 
+          <CombineAudiobookModal
+            isOpen={isCombineModalOpen}
+            bookTitle={title}
+            files={audioFiles}
+            isCombining={isCombining}
+            onCombinePress={this.onCombineConfirm}
+            onModalClose={this.onCombineModalClose}
+          />
+
         </PageContentBody>
       </PageContent>
     );
@@ -349,18 +402,24 @@ BookDetails.propTypes = {
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,
   bookFilesError: PropTypes.object,
+  bookFiles: PropTypes.arrayOf(PropTypes.object),
   hasBookFiles: PropTypes.bool.isRequired,
   author: PropTypes.object,
   previousBook: PropTypes.object,
   nextBook: PropTypes.object,
   isSmallScreen: PropTypes.bool.isRequired,
+  isCombining: PropTypes.bool.isRequired,
+  combineCommand: PropTypes.object,
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func,
-  onSearchPress: PropTypes.func.isRequired
+  onSearchPress: PropTypes.func.isRequired,
+  onCombinePress: PropTypes.func.isRequired
 };
 
 BookDetails.defaultProps = {
-  isSaving: false
+  isSaving: false,
+  bookFiles: [],
+  combineCommand: null
 };
 
 export default BookDetails;

@@ -43,6 +43,8 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Added Audiobook Combining settings (mode, chapters, delete mode) and a manual Combine Audiobook flow on the book details page.
+- Combine modal supports drag-reordering MP3 parts and triggers an ffmpeg-based combine command with a top progress bar; output files are added and source parts are deleted per settings.
 - Bookshelf page is removed from the sidebar and no longer routed at `/shelf`.
 - Author Select no longer shows Monitor Author/Monitor New Books controls.
 - Author edit modal no longer includes Monitored/Monitor New Books fields.

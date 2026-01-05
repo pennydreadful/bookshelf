@@ -58,6 +58,11 @@
   }
 }
 
+.combineIcon {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .contentContainer {
     padding: 20px 0;

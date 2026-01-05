@@ -1,0 +1,17 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  padding: 10px 16px;
+  background-color: var(--pageBackgroundColor);
+  border-bottom: 1px solid var(--borderColor);
+  box-shadow: 0 2px 6px var(--popoverShadowColor);
+}
+
+.detail {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--helpTextColor);
+}

@@ -38,6 +38,9 @@ namespace NzbDrone.Core.Configuration
         bool WatchLibraryForChanges { get; set; }
         RescanAfterRefreshType RescanAfterRefresh { get; set; }
         AllowFingerprinting AllowFingerprinting { get; set; }
+        CombineAudiobookMode CombineAudiobookMode { get; set; }
+        bool CombineAudiobookChapters { get; set; }
+        CombineAudiobookDeleteMode CombineAudiobookDeleteMode { get; set; }
 
         //Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }

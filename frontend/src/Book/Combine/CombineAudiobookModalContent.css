@@ -1,0 +1,50 @@
+.description {
+  margin-bottom: 12px;
+  color: var(--helpTextColor);
+  font-size: 13px;
+}
+
+.list {
+  max-height: 55vh;
+  overflow-y: auto;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--borderColor);
+  background-color: var(--cardBackgroundColor);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.isDragging {
+  opacity: 0.6;
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: var(--helpTextColor);
+}
+
+.fileName {
+  font-weight: 600;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.fileMeta {
+  font-size: 12px;
+  color: var(--helpTextColor);
+  white-space: nowrap;
+}

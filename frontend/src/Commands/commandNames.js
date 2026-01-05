@@ -3,6 +3,7 @@ export const BACKUP = 'Backup';
 export const REFRESH_MONITORED_DOWNLOADS = 'RefreshMonitoredDownloads';
 export const CLEAR_BLOCKLIST = 'ClearBlocklist';
 export const CLEAR_LOGS = 'ClearLog';
+export const COMBINE_AUDIOBOOK = 'CombineAudiobook';
 export const CUTOFF_UNMET_BOOK_SEARCH = 'CutoffUnmetBookSearch';
 export const DELETE_LOG_FILES = 'DeleteLogFiles';
 export const DELETE_UPDATE_LOG_FILES = 'DeleteUpdateLogFiles';

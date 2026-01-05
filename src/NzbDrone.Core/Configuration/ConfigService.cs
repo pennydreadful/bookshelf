@@ -249,6 +249,24 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AllowFingerprinting", value); }
         }
 
+        public CombineAudiobookMode CombineAudiobookMode
+        {
+            get { return GetValueEnum("CombineAudiobookMode", CombineAudiobookMode.Disabled); }
+            set { SetValue("CombineAudiobookMode", value); }
+        }
+
+        public bool CombineAudiobookChapters
+        {
+            get { return GetValueBoolean("CombineAudiobookChapters", true); }
+            set { SetValue("CombineAudiobookChapters", value); }
+        }
+
+        public CombineAudiobookDeleteMode CombineAudiobookDeleteMode
+        {
+            get { return GetValueEnum("CombineAudiobookDeleteMode", CombineAudiobookDeleteMode.DeleteImmediately); }
+            set { SetValue("CombineAudiobookDeleteMode", value); }
+        }
+
         public bool SetPermissionsLinux
         {
             get { return GetValueBoolean("SetPermissionsLinux", false); }
