@@ -189,6 +189,7 @@ export const PAUSED = fasPause;
 export const PENDING = farClock;
 export const PROFILE = fasUser;
 export const POSTER = fasTh;
+export const PLAY = fasPlay;
 export const QUEUED = fasCloud;
 export const QUICK = fasRocket;
 export const REFRESH = fasSync;
