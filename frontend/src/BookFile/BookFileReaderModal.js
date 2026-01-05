@@ -48,6 +48,7 @@ class BookFileReaderModal extends Component {
     this.readerRef = React.createRef();
     this.book = null;
     this.rendition = null;
+    this.epubObjectUrl = null;
     this.isReaderActive = false;
     this.state = {
       loadError: false
@@ -94,16 +95,47 @@ class BookFileReaderModal extends Component {
         if (!this.isReaderActive || !window.ePub)
         {
           this.setState({ loadError: true });
+          return Promise.reject(new Error('epub reader unavailable'));
+        }
+
+        return this.loadEpubFile(this.props.streamUrl);
+      })
+      .then((epubUrl) => {
+        if (!this.isReaderActive || !window.ePub)
+        {
+          this.setState({ loadError: true });
           return;
         }
 
-        this.book = window.ePub(this.props.streamUrl);
+        this.book = window.ePub(epubUrl, { openAs: 'epub' });
         this.rendition = this.book.renderTo(container, { width: '100%', height: '100%' });
         this.rendition.display();
       })
       .catch(() => {
         this.isReaderActive = false;
         this.setState({ loadError: true });
+      });
+  }
+
+  loadEpubFile(streamUrl) {
+    if (this.epubObjectUrl)
+    {
+      URL.revokeObjectURL(this.epubObjectUrl);
+      this.epubObjectUrl = null;
+    }
+
+    return fetch(streamUrl, { credentials: 'same-origin' })
+      .then((response) => {
+        if (!response.ok)
+        {
+          throw new Error('Failed to fetch epub');
+        }
+
+        return response.blob();
+      })
+      .then((blob) => {
+        this.epubObjectUrl = URL.createObjectURL(blob);
+        return this.epubObjectUrl;
       });
   }
 
@@ -122,6 +154,12 @@ class BookFileReaderModal extends Component {
 
     this.rendition = null;
     this.book = null;
+
+    if (this.epubObjectUrl)
+    {
+      URL.revokeObjectURL(this.epubObjectUrl);
+      this.epubObjectUrl = null;
+    }
 
     if (this.readerRef.current)
     {

@@ -86,26 +86,27 @@ class BookFileActionsCell extends Component {
       isReaderModalOpen
     } = this.state;
 
-    const extensionIndex = path ? path.lastIndexOf('.') : -1;
-    const extension = extensionIndex > -1 ? path.slice(extensionIndex).toLowerCase() : '';
-    const mediaTypeValue = typeof mediaType === 'string' ? mediaType.toLowerCase() : mediaType;
-    const isAudioByMediaType = mediaTypeValue === 'audiobook' || mediaTypeValue === 2;
-    const isEbookByMediaType = mediaTypeValue === 'ebook' || mediaTypeValue === 1;
+    const pathLower = path ? path.toLowerCase() : '';
+    const extensionIndex = pathLower.lastIndexOf('.');
+    const extension = extensionIndex > -1 ? pathLower.slice(extensionIndex) : '';
+    const mediaTypeValue = typeof mediaType === 'string' ? mediaType.toLowerCase().trim() : mediaType;
+    const isAudioByMediaType = mediaTypeValue === 'audiobook' || mediaTypeValue === 2 || mediaTypeValue === '2';
+    const isEbookByMediaType = mediaTypeValue === 'ebook' || mediaTypeValue === 1 || mediaTypeValue === '1';
 
     const qualityName = quality && quality.quality && quality.quality.name ?
       quality.quality.name.toLowerCase() :
       '';
-    const isAudioByQuality = ['m4b', 'mp3', 'm4a', 'aac', 'audiobook'].includes(qualityName);
-    const isEbookByQuality = ['epub', 'pdf', 'ebook'].includes(qualityName);
+    const isAudioByQuality = ['m4b', 'mp3', 'm4a', 'aac', 'audiobook'].some((value) => qualityName.includes(value));
+    const isEbookByQuality = ['epub', 'pdf', 'ebook'].some((value) => qualityName.includes(value));
 
-    const isAudioByExtension = extension === '.mp3' || extension === '.m4b' || extension === '.m4a';
-    const isEpub = extension === '.epub';
-    const isPdf = extension === '.pdf';
+    const isAudioByExtension = ['.mp3', '.m4b', '.m4a', '.aac'].some((value) => pathLower.endsWith(value));
+    const isEpub = pathLower.endsWith('.epub');
+    const isPdf = pathLower.endsWith('.pdf');
     const isEbookByExtension = isEpub || isPdf;
 
     const isAudio = isAudioByExtension || isAudioByMediaType || isAudioByQuality;
     const isEbook = isEbookByExtension || isEbookByMediaType || isEbookByQuality;
-    const fileType = isEpub ? 'epub' : 'pdf';
+    const fileType = isPdf ? 'pdf' : 'epub';
 
     const apiKey = window.Readarr && window.Readarr.apiKey;
     const apiKeyQuery = apiKey ? `?apikey=${encodeURIComponent(apiKey)}` : '';

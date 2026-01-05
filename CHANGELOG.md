@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.99
+- Summary: harden audiobook detection and load EPUBs via a blob URL.
+- Why: some M4B rows still hid Play, and the EPUB modal could render blank despite a valid stream.
+- Impact: Play actions show for more audiobook metadata/extension variants, and EPUBs render reliably through the reader modal.
+- Files: frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/BookFile/BookFileReaderModal.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, confirm the Play icon appears for M4B files, and verify EPUB content renders in the reader modal.
+
 ## 1.2.98
 - Summary: export the Play icon so audiobook rows can render the Play button.
 - Why: the Play icon constant was missing, so M4B rows couldn’t render the button even when detected.
