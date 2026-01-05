@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.84
+- Summary: refresh book resources after author merge so author pages show merged books.
+- Why: merged books updated in the database but the UI list was stale because book update events were not broadcast.
+- Impact: after merging, book updates are broadcast and author pages show all merged books without a manual refresh.
+- Files: src/NzbDrone.Core/Books/Services/AuthorMergeService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, merge two authors, and confirm merged books appear immediately on the winner's author page.
+
 ## 1.2.83
 - Summary: fix Author Select view going blank after enabling merge UI.
 - Why: the AuthorIndex render referenced merge props that were not destructured, causing a runtime error.

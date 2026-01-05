@@ -75,6 +75,12 @@ namespace NzbDrone.Core.Books
                 }
 
                 _bookService.UpdateMany(booksToMove);
+
+                foreach (var book in booksToMove)
+                {
+                    var updatedBook = _bookService.GetBook(book.Id);
+                    _eventAggregator.PublishEvent(new BookUpdatedEvent(updatedBook));
+                }
             }
 
             _authorService.DeleteAuthor(loser.Id, false);
