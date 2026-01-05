@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
-import { saveAuthorEditor, setAuthorFilter, setAuthorSort, setAuthorTableOption, setAuthorView } from 'Store/Actions/authorIndexActions';
+import { mergeAuthors, saveAuthorEditor, setAuthorFilter, setAuthorSort, setAuthorTableOption, setAuthorView } from 'Store/Actions/authorIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import scrollPositions from 'Store/scrollPositions';
 import createAuthorClientSideCollectionItemsSelector from 'Store/Selectors/createAuthorClientSideCollectionItemsSelector';
@@ -63,6 +63,10 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(saveAuthorEditor(payload));
     },
 
+    dispatchMergeAuthors(payload) {
+      dispatch(mergeAuthors(payload));
+    },
+
     onRefreshAuthorPress(items) {
       dispatch(executeCommand({
         name: commandNames.BULK_REFRESH_AUTHOR,
@@ -91,6 +95,10 @@ class AuthorIndexConnector extends Component {
     this.props.dispatchSaveAuthorEditor(payload);
   };
 
+  onMergeAuthors = (payload) => {
+    this.props.dispatchMergeAuthors(payload);
+  };
+
   onScroll = ({ scrollTop }) => {
     scrollPositions.authorIndex = scrollTop;
   };
@@ -105,6 +113,7 @@ class AuthorIndexConnector extends Component {
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
         onSaveSelected={this.onSaveSelected}
+        onMergeAuthors={this.onMergeAuthors}
       />
     );
   }
@@ -114,7 +123,8 @@ AuthorIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   dispatchSetAuthorView: PropTypes.func.isRequired,
-  dispatchSaveAuthorEditor: PropTypes.func.isRequired
+  dispatchSaveAuthorEditor: PropTypes.func.isRequired,
+  dispatchMergeAuthors: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(

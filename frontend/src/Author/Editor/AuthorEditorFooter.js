@@ -14,6 +14,7 @@ import { fetchRootFolders } from 'Store/Actions/Settings/rootFolders';
 import translate from 'Utilities/String/translate';
 import AuthorEditorFooterLabel from './AuthorEditorFooterLabel';
 import DeleteAuthorModal from './Delete/DeleteAuthorModal';
+import MergeAuthorModal from './Merge/MergeAuthorModal';
 import TagsModal from './Tags/TagsModal';
 import styles from './AuthorEditorFooter.css';
 
@@ -39,6 +40,7 @@ class AuthorEditorFooter extends Component {
       rootFolderPath: NO_CHANGE,
       savingTags: false,
       isDeleteAuthorModalOpen: false,
+      isMergeModalOpen: false,
       isTagsModalOpen: false,
       isConfirmMoveModalOpen: false,
       destinationRootFolder: null
@@ -55,7 +57,9 @@ class AuthorEditorFooter extends Component {
   componentDidUpdate(prevProps) {
     const {
       isSaving,
-      saveError
+      saveError,
+      isMerging,
+      mergeError
     } = this.props;
 
     if (prevProps.isSaving && !isSaving && !saveError) {
@@ -67,6 +71,10 @@ class AuthorEditorFooter extends Component {
         rootFolderPath: NO_CHANGE,
         savingTags: false
       });
+    }
+
+    if (prevProps.isMerging && !isMerging && !mergeError) {
+      this.setState({ isMergeModalOpen: false });
     }
   }
 
@@ -123,6 +131,22 @@ class AuthorEditorFooter extends Component {
     this.setState({ isTagsModalOpen: false });
   };
 
+  onMergeSelectedPress = () => {
+    this.setState({ isMergeModalOpen: true });
+  };
+
+  onMergeModalClose = () => {
+    this.setState({ isMergeModalOpen: false });
+  };
+
+  onMergeConfirmed = (winnerAuthorId, loserAuthorId) => {
+    this.props.onMergeAuthors({
+      winnerAuthorId,
+      loserAuthorId,
+      moveFiles: true
+    });
+  };
+
   onSaveRootFolderPress = () => {
     this.setState({
       isConfirmMoveModalOpen: false,
@@ -151,8 +175,11 @@ class AuthorEditorFooter extends Component {
     const {
       authorIds,
       selectedCount,
+      selectedAuthors,
       isSaving,
       isDeleting,
+      isMerging,
+      mergeError,
       isOrganizingAuthor,
       isRetaggingAuthor,
       onOrganizeAuthorPress,
@@ -168,6 +195,7 @@ class AuthorEditorFooter extends Component {
       savingTags,
       isTagsModalOpen,
       isDeleteAuthorModalOpen,
+      isMergeModalOpen,
       isConfirmMoveModalOpen,
       destinationRootFolder
     } = this.state;
@@ -177,6 +205,11 @@ class AuthorEditorFooter extends Component {
       { key: 'monitored', value: translate('Monitored') },
       { key: 'unmonitored', value: translate('Unmonitored') }
     ];
+
+    const mergeCandidates = (selectedAuthors || [])
+      .slice(0, 2)
+      .sort((left, right) => (left.authorName || '').localeCompare(right.authorName || ''));
+    const canMerge = selectedCount === 2;
 
     return (
       <PageContentFooter>
@@ -303,6 +336,16 @@ class AuthorEditorFooter extends Component {
                 </SpinnerButton>
 
                 <SpinnerButton
+                  className={styles.mergeSelectedButton}
+                  kind={kinds.WARNING}
+                  isSpinning={isMerging}
+                  isDisabled={!canMerge || isOrganizingAuthor || isRetaggingAuthor || isDeleting}
+                  onPress={this.onMergeSelectedPress}
+                >
+                  {translate('MergeAuthors')}
+                </SpinnerButton>
+
+                <SpinnerButton
                   className={styles.deleteSelectedButton}
                   kind={kinds.DANGER}
                   isSpinning={isDeleting}
@@ -330,6 +373,15 @@ class AuthorEditorFooter extends Component {
           onModalClose={this.onDeleteAuthorModalClose}
         />
 
+        <MergeAuthorModal
+          isOpen={isMergeModalOpen}
+          authors={mergeCandidates}
+          isMerging={isMerging}
+          mergeError={mergeError}
+          onMergeConfirmed={this.onMergeConfirmed}
+          onModalClose={this.onMergeModalClose}
+        />
+
         <MoveAuthorModal
           destinationRootFolder={destinationRootFolder}
           isOpen={isConfirmMoveModalOpen}
@@ -345,16 +397,20 @@ class AuthorEditorFooter extends Component {
 AuthorEditorFooter.propTypes = {
   authorIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedCount: PropTypes.number.isRequired,
+  selectedAuthors: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
+  isMerging: PropTypes.bool.isRequired,
+  mergeError: PropTypes.object,
   isOrganizingAuthor: PropTypes.bool.isRequired,
   isRetaggingAuthor: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
   onOrganizeAuthorPress: PropTypes.func.isRequired,
   onRetagAuthorPress: PropTypes.func.isRequired,
+  onMergeAuthors: PropTypes.func.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired
 };
 

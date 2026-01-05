@@ -318,6 +318,7 @@ class AuthorIndex extends Component {
     } = this.state;
 
     const selectedAuthorIds = this.getSelectedIds();
+    const selectedAuthors = items.filter((author) => selectedAuthorIds.includes(author.id));
 
     const ViewComponent = getViewComponent(view);
     const isLoaded = !!(!error && isPopulated && items.length && scroller);
@@ -504,16 +505,20 @@ class AuthorIndex extends Component {
             <AuthorEditorFooter
               authorIds={selectedAuthorIds}
               selectedCount={selectedAuthorIds.length}
+              selectedAuthors={selectedAuthors}
               isSaving={isSaving}
               saveError={saveError}
               isDeleting={isDeleting}
               deleteError={deleteError}
+              isMerging={isMerging}
+              mergeError={mergeError}
               isOrganizingAuthor={isOrganizingAuthor}
               isRetaggingAuthor={isRetaggingAuthor}
               showMetadataProfile={true}
               onSaveSelected={this.onSaveSelected}
               onOrganizeAuthorPress={this.onOrganizeAuthorPress}
               onRetagAuthorPress={this.onRetagAuthorPress}
+              onMergeAuthors={onMergeAuthors}
             />
         }
 
@@ -566,13 +571,16 @@ AuthorIndex.propTypes = {
   saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
+  isMerging: PropTypes.bool.isRequired,
+  mergeError: PropTypes.object,
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onViewSelect: PropTypes.func.isRequired,
   onRefreshAuthorPress: PropTypes.func.isRequired,
   onRssSyncPress: PropTypes.func.isRequired,
   onScroll: PropTypes.func.isRequired,
-  onSaveSelected: PropTypes.func.isRequired
+  onSaveSelected: PropTypes.func.isRequired,
+  onMergeAuthors: PropTypes.func.isRequired
 };
 
 export default AuthorIndex;

@@ -32,7 +32,8 @@
 }
 
 .organizeSelectedButton,
-.tagsButton {
+.tagsButton,
+.mergeSelectedButton {
   composes: button from '~Components/Link/SpinnerButton.css';
 
   margin-right: 10px;

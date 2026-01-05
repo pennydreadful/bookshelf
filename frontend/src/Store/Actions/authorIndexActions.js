@@ -24,6 +24,8 @@ export const defaultState = {
   saveError: null,
   isDeleting: false,
   deleteError: null,
+  isMerging: false,
+  mergeError: null,
   sortKey: 'sortNameLastFirst',
   sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'sortNameLastFirst',
@@ -346,6 +348,7 @@ export const SET_AUTHOR_BANNER_OPTION = 'authorIndex/setAuthorBannerOption';
 export const SET_AUTHOR_OVERVIEW_OPTION = 'authorIndex/setAuthorOverviewOption';
 export const SAVE_AUTHOR_EDITOR = 'authorIndex/saveAuthorEditor';
 export const BULK_DELETE_AUTHOR = 'authorIndex/bulkDeleteAuthor';
+export const MERGE_AUTHORS = 'authorIndex/mergeAuthors';
 
 //
 // Action Creators
@@ -359,6 +362,7 @@ export const setAuthorBannerOption = createAction(SET_AUTHOR_BANNER_OPTION);
 export const setAuthorOverviewOption = createAction(SET_AUTHOR_OVERVIEW_OPTION);
 export const saveAuthorEditor = createThunk(SAVE_AUTHOR_EDITOR);
 export const bulkDeleteAuthor = createThunk(BULK_DELETE_AUTHOR);
+export const mergeAuthors = createThunk(MERGE_AUTHORS);
 
 //
 // Action Handlers
@@ -432,6 +436,49 @@ export const actionHandlers = handleThunks({
         section,
         isDeleting: false,
         deleteError: xhr
+      }));
+    });
+  },
+
+  [MERGE_AUTHORS]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      isMerging: true,
+      mergeError: null
+    }));
+
+    const promise = createAjaxRequest({
+      url: '/author/merge',
+      method: 'POST',
+      data: JSON.stringify(payload),
+      dataType: 'json'
+    }).request;
+
+    promise.done((author) => {
+      const updates = [
+        set({
+          section,
+          isMerging: false,
+          mergeError: null
+        })
+      ];
+
+      if (author && author.id) {
+        updates.unshift(updateItem({
+          id: author.id,
+          section: 'authors',
+          ...author
+        }));
+      }
+
+      dispatch(batchActions(updates));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section,
+        isMerging: false,
+        mergeError: xhr
       }));
     });
   }

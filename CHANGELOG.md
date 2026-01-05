@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.82
+- Summary: add author merge flow to resolve duplicate authors.
+- Why: near-duplicate author names (e.g., spacing differences) can create duplicate author entries.
+- Impact: Author Select mode offers a Merge Authors action with a left/right winner choice, warning about overwriting files; merge moves loser files into the winner folder, reassigns books, and deletes the loser.
+- Files: frontend/src/Author/Editor/AuthorEditorFooter.js, frontend/src/Author/Editor/AuthorEditorFooter.css, frontend/src/Author/Editor/Merge/MergeAuthorModal.js, frontend/src/Author/Editor/Merge/MergeAuthorModalContent.js, frontend/src/Author/Editor/Merge/MergeAuthorModalContent.css, frontend/src/Author/Index/AuthorIndex.js, frontend/src/Author/Index/AuthorIndexConnector.js, frontend/src/Store/Actions/authorIndexActions.js, src/Readarr.Api.V1/Author/AuthorController.cs, src/Readarr.Api.V1/Author/MergeAuthorsResource.cs, src/NzbDrone.Core/Books/Services/AuthorMergeService.cs, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, select exactly two authors in Author Select mode, merge, and confirm books/files move into the winning author folder.
+
 ## 1.2.81
 - Summary: switch backup policy to git tag snapshots only.
 - Why: tags allow quick reverts without creating large local archives.

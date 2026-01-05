@@ -42,6 +42,7 @@ namespace Readarr.Api.V1.Author
         private readonly IAddAuthorService _addAuthorService;
         private readonly IAuthorStatisticsService _authorStatisticsService;
         private readonly IAuthorExtraMetadataProvider _authorExtraMetadataProvider;
+        private readonly IAuthorMergeService _authorMergeService;
         private readonly IAuthorMetadataService _authorMetadataService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
@@ -53,6 +54,7 @@ namespace Readarr.Api.V1.Author
                             IAddAuthorService addAuthorService,
                             IAuthorStatisticsService authorStatisticsService,
                             IAuthorExtraMetadataProvider authorExtraMetadataProvider,
+                            IAuthorMergeService authorMergeService,
                             IAuthorMetadataService authorMetadataService,
                             IMapCoversToLocal coverMapper,
                             IManageCommandQueue commandQueueManager,
@@ -74,6 +76,7 @@ namespace Readarr.Api.V1.Author
             _addAuthorService = addAuthorService;
             _authorStatisticsService = authorStatisticsService;
             _authorExtraMetadataProvider = authorExtraMetadataProvider;
+            _authorMergeService = authorMergeService;
             _authorMetadataService = authorMetadataService;
 
             _coverMapper = coverMapper;
@@ -248,6 +251,27 @@ namespace Readarr.Api.V1.Author
 
             author = _authorService.GetAuthor(id);
             return GetAuthorResource(author);
+        }
+
+        [HttpPost("merge")]
+        public ActionResult<AuthorResource> MergeAuthors([FromBody] MergeAuthorsResource resource)
+        {
+            if (resource == null)
+            {
+                return BadRequest();
+            }
+
+            if (resource.WinnerAuthorId == resource.LoserAuthorId)
+            {
+                return BadRequest("WinnerAuthorId and LoserAuthorId must be different.");
+            }
+
+            var winner = _authorService.GetAuthor(resource.WinnerAuthorId);
+            var loser = _authorService.GetAuthor(resource.LoserAuthorId);
+
+            var merged = _authorMergeService.MergeAuthors(winner, loser, resource.MoveFiles);
+
+            return GetAuthorResource(merged);
         }
 
         private void MapCoversToLocal(params AuthorResource[] authors)
