@@ -27,6 +27,7 @@ Use this file to onboard a new Codex chat.
   - multiline method parameters each on their own line.
 - Build uses `_output` assets; UI built via `yarn build` and server via `dotnet msbuild`.
 - Install script: `scripts/install-bookdarr.sh` (logs to `/opt/bookdarr/install.log`).
+- Dev scripts live in `scripts/`: `dev-ubuntu.sh` (one-shot setup), `dev-setup-ubuntu.sh` (deps only), `dev-build.sh`, `dev-run.sh`, `update-dev.sh`.
 
 ## Metadata Notes
 - Provider default: `MetadataProvider=googlebooks` (config/env `METADATA_PROVIDER` overrides).
@@ -92,3 +93,10 @@ Use this file to onboard a new Codex chat.
 
 ## Git Snapshot Convention
 - Create an annotated tag in the format `snapshot-YYYYMMDD-HHMM` before each push and push the tag to GitHub.
+
+## New Machine Bootstrap (Dev)
+- Target path: `/opt/bookdarr-dev` with config at `/opt/bookdarr-dev/config`.
+- Recommended one-shot setup (Ubuntu): download and run `scripts/dev-ubuntu.sh` from `develop`, which installs Node 20 + Yarn 1.22.19 + .NET 6 SDK and builds/starts the app.
+- Update flow on the VM: `sudo /opt/bookdarr-dev/scripts/update-dev.sh` (stop → pull → build → start).
+- Manual dev run: `sudo -u joe /opt/bookdarr-dev/scripts/dev-run.sh` (foreground) or `sudo -u joe nohup /opt/bookdarr-dev/scripts/dev-run.sh >/opt/bookdarr-dev/run.log 2>&1 &` (background).
+- Dev instance serves at `http://<vm-ip>:8787` and reports status at `/api/v1/system/status`.
