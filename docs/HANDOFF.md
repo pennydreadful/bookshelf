@@ -43,6 +43,7 @@ Use this file to onboard a new Codex chat.
 - Overseerr-like request page.
 
 ## Recent Changes (since last handoff)
+- Bookshelf page is removed from the sidebar and no longer routed at `/shelf`.
 - Author Select no longer shows Monitor Author/Monitor New Books controls.
 - Author edit modal no longer includes Monitored/Monitor New Books fields.
 - Book edit label now reads “Automatically Switch Edition/Monitoring”.

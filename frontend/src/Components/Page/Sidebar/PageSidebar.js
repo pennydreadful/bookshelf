@@ -38,10 +38,6 @@ const links = [
         to: '/add/search'
       },
       {
-        title: () => translate('Bookshelf'),
-        to: '/shelf'
-      },
-      {
         title: () => translate('UnmappedFiles'),
         to: '/unmapped'
       }

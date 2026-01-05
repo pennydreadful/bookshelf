@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.89
+- Summary: remove the Bookshelf page from navigation and routing.
+- Why: the page is non-functional and should be hidden/disabled.
+- Impact: the Bookshelf link is gone from the sidebar and `/shelf` no longer routes to the page.
+- Files: frontend/src/App/AppRoutes.js, frontend/src/Components/Page/Sidebar/PageSidebar.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, confirm the Bookshelf link is gone, and verify `/shelf` is no longer accessible.
+
 ## 1.2.88
 - Summary: remove author-level monitoring controls in Author Select and Edit, and clarify the book edit label.
 - Why: monitoring should be managed at the book level only; the author-level controls were still visible.

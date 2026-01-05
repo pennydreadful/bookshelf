@@ -8,7 +8,6 @@ import AuthorDetailsPageConnector from 'Author/Details/AuthorDetailsPageConnecto
 import AuthorIndexConnector from 'Author/Index/AuthorIndexConnector';
 import BookDetailsPageConnector from 'Book/Details/BookDetailsPageConnector';
 import BookIndexConnector from 'Book/Index/BookIndexConnector';
-import BookshelfConnector from 'Bookshelf/BookshelfConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
@@ -80,12 +79,6 @@ function AppRoutes(props) {
       <Route
         path="/add/search"
         component={AddNewItemConnector}
-      />
-
-      <Route
-        exact={true}
-        path="/shelf"
-        component={BookshelfConnector}
       />
 
       <Route
