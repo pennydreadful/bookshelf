@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.107
+- Summary: apply light/dark text styling inside the EPUB reader and bump the app version.
+- Why: EPUB content was rendering dark text on a dark background in dark mode.
+- Impact: dark mode uses light text on a dark background, light mode uses dark text on a light background, and the UI reports 1.2.107.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm text colors match the active theme.
+
 ## 1.2.106
 - Summary: move EPUB navigation arrows to a modal overlay and bump the app version.
 - Why: the in-reader buttons were not visible over the cover.

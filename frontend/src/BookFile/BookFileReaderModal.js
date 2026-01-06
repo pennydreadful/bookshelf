@@ -88,10 +88,82 @@ class BookFileReaderModal extends Component {
     this.rendition = null;
     this.epubObjectUrl = null;
     this.isReaderActive = false;
+    this.themesRegistered = false;
     this.state = {
       loadError: false
     };
   }
+
+  getReaderThemeName = () => {
+    const rawTheme = window.Readarr && window.Readarr.theme ? `${window.Readarr.theme}` : '';
+    const theme = rawTheme.toLowerCase();
+
+    if (theme === 'dark' || theme === 'light')
+    {
+      return theme;
+    }
+
+    if (theme === 'auto')
+    {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      {
+        return 'dark';
+      }
+
+      return 'light';
+    }
+
+    return 'dark';
+  };
+
+  registerReaderThemes = () => {
+    if (!this.rendition || !this.rendition.themes || this.themesRegistered)
+    {
+      return;
+    }
+
+    this.themesRegistered = true;
+
+    this.rendition.themes.register('bookdarr-dark', {
+      'html, body': {
+        'background': '#121212 !important',
+        'color': '#f1f1f1 !important'
+      },
+      'body *': {
+        'color': '#f1f1f1 !important'
+      },
+      a: {
+        'color': '#8ab4f8 !important'
+      }
+    });
+
+    this.rendition.themes.register('bookdarr-light', {
+      'html, body': {
+        'background': '#ffffff !important',
+        'color': '#111111 !important'
+      },
+      'body *': {
+        'color': '#111111 !important'
+      },
+      a: {
+        'color': '#0b57d0 !important'
+      }
+    });
+  };
+
+  applyReaderTheme = () => {
+    if (!this.rendition || !this.rendition.themes)
+    {
+      return;
+    }
+
+    this.registerReaderThemes();
+
+    const themeName = this.getReaderThemeName();
+    const selectedTheme = themeName === 'light' ? 'bookdarr-light' : 'bookdarr-dark';
+
+    this.rendition.themes.select(selectedTheme);
+  };
 
   onPreviousPress = () => {
     if (this.rendition && this.rendition.prev)
@@ -172,6 +244,7 @@ class BookFileReaderModal extends Component {
 
         this.book = window.ePub(epubUrl, { openAs: 'epub' });
         this.rendition = this.book.renderTo(container, { width: '100%', height: '100%' });
+        this.applyReaderTheme();
         if (this.book.ready && this.book.ready.catch)
         {
           this.book.ready.catch(this.handleReaderError);
@@ -185,6 +258,12 @@ class BookFileReaderModal extends Component {
         if (this.rendition.on)
         {
           this.rendition.on('displayError', this.handleReaderError);
+          this.rendition.on('rendered', () => {
+            if (this.isReaderActive)
+            {
+              this.applyReaderTheme();
+            }
+          });
         }
 
         const displayPromise = this.rendition.display();
