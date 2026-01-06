@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
 import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
-import AuthorHistoryTable from 'Author/History/AuthorHistoryTable';
 import BookEditorFooter from 'Book/Editor/BookEditorFooter';
 import BookFileEditorTable from 'BookFile/Editor/BookFileEditorTable';
 import Alert from 'Components/Alert';
@@ -453,13 +452,6 @@ class AuthorDetails extends Component {
                       className={styles.tab}
                       selectedClassName={styles.selectedTab}
                     >
-                      {translate('History')}
-                    </Tab>
-
-                    <Tab
-                      className={styles.tab}
-                      selectedClassName={styles.selectedTab}
-                    >
                       {translate('Search')}
                     </Tab>
 
@@ -471,7 +463,7 @@ class AuthorDetails extends Component {
                     </Tab>
 
                     {
-                      selectedTabIndex === 3 &&
+                      selectedTabIndex === 2 &&
                         <div className={styles.filterIcon}>
                           <InteractiveSearchFilterMenuConnector
                             type="author"
@@ -515,12 +507,6 @@ class AuthorDetails extends Component {
                           }
                         </div>
                     }
-                  </TabPanel>
-
-                  <TabPanel>
-                    <AuthorHistoryTable
-                      authorId={id}
-                    />
                   </TabPanel>
 
                   <TabPanel>

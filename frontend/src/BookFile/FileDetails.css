@@ -9,3 +9,41 @@
 
   font-family: $monoSpaceFontFamily;
 }
+
+.history {
+  border-top: 1px solid $borderColor;
+  padding-top: 15px;
+}
+
+.historyTitle {
+  font-size: $defaultFontSize;
+  font-weight: $semibold;
+  margin-bottom: 10px;
+}
+
+.historyError {
+  color: $dangerColor;
+}
+
+.historyEmpty {
+  color: $dimColor;
+}
+
+.historyItems {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.historyItem {
+  background: $panelBackgroundColor;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  padding: 10px 12px;
+}
+
+.historyItemTitle {
+  font-size: $defaultFontSize;
+  font-weight: $semibold;
+  margin-bottom: 8px;
+}

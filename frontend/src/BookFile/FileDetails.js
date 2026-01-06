@@ -1,11 +1,13 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
 import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import Link from 'Components/Link/Link';
+import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import stripHtml from 'Utilities/String/stripHtml';
 import translate from 'Utilities/String/translate';
 import styles from './FileDetails.css';
@@ -34,8 +36,38 @@ function FileDetails(props) {
   const {
     filename,
     audioTags,
-    rejections
+    rejections,
+    historyItems,
+    isHistoryFetching,
+    historyError
   } = props;
+
+  const hasHistory = historyItems && historyItems.length > 0;
+
+  const historyTitle = (eventType) => {
+    switch (eventType) {
+      case 'grabbed':
+        return translate('Grabbed');
+      case 'downloadImported':
+        return translate('DownloadCompleted');
+      case 'bookFileImported':
+        return translate('BookImported');
+      case 'downloadFailed':
+        return translate('DownloadFailed');
+      case 'bookFileDeleted':
+        return translate('BookFileDeleted');
+      case 'bookFileRenamed':
+        return translate('BookFileRenamed');
+      case 'bookFileRetagged':
+        return translate('BookFileTagsUpdated');
+      case 'bookImportIncomplete':
+        return translate('BookImportIncomplete');
+      case 'downloadIgnored':
+        return translate('DownloadIgnored');
+      default:
+        return translate('Unknown');
+    }
+  };
 
   return (
     <Fragment>
@@ -228,6 +260,53 @@ function FileDetails(props) {
           }
         </DescriptionList>
       </div>
+
+      <div className={styles.history}>
+        <div className={styles.historyTitle}>
+          {translate('History')}
+        </div>
+
+        {
+          isHistoryFetching &&
+            <LoadingIndicator />
+        }
+
+        {
+          !isHistoryFetching && historyError &&
+            <div className={styles.historyError}>
+              {translate('UnableToLoadHistory')}
+            </div>
+        }
+
+        {
+          !isHistoryFetching && !historyError && !hasHistory &&
+            <div className={styles.historyEmpty}>
+              {translate('NoHistory')}
+            </div>
+        }
+
+        {
+          !isHistoryFetching && !historyError && hasHistory &&
+            <div className={styles.historyItems}>
+              {
+                historyItems.map((item) => {
+                  return (
+                    <div key={item.id} className={styles.historyItem}>
+                      <div className={styles.historyItemTitle}>
+                        {historyTitle(item.eventType)}
+                      </div>
+                      <HistoryDetailsConnector
+                        eventType={item.eventType}
+                        sourceTitle={item.sourceTitle}
+                        data={item.data}
+                      />
+                    </div>
+                  );
+                })
+              }
+            </div>
+        }
+      </div>
     </Fragment>
   );
 }
@@ -235,7 +314,10 @@ function FileDetails(props) {
 FileDetails.propTypes = {
   filename: PropTypes.string,
   audioTags: PropTypes.object.isRequired,
-  rejections: PropTypes.arrayOf(PropTypes.object)
+  rejections: PropTypes.arrayOf(PropTypes.object),
+  historyItems: PropTypes.arrayOf(PropTypes.object),
+  isHistoryFetching: PropTypes.bool,
+  historyError: PropTypes.object
 };
 
 export default FileDetails;

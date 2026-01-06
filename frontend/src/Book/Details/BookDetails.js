@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
-import AuthorHistoryTable from 'Author/History/AuthorHistoryTable';
 import DeleteBookModal from 'Book/Delete/DeleteBookModal';
 import EditBookModalConnector from 'Book/Edit/EditBookModalConnector';
 import BookFileEditorTable from 'BookFile/Editor/BookFileEditorTable';
@@ -308,13 +307,6 @@ class BookDetails extends Component {
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  {translate('History')}
-                </Tab>
-
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
                   {translate('Search')}
                 </Tab>
 
@@ -326,7 +318,7 @@ class BookDetails extends Component {
                 </Tab>
 
                 {
-                  selectedTabIndex === 1 &&
+                  selectedTabIndex === 0 &&
                     <div className={styles.filterIcon}>
                       <InteractiveSearchFilterMenuConnector
                         type="book"
@@ -335,13 +327,6 @@ class BookDetails extends Component {
                 }
 
               </TabList>
-
-              <TabPanel>
-                <AuthorHistoryTable
-                  authorId={author.id}
-                  bookId={id}
-                />
-              </TabPanel>
 
               <TabPanel>
                 <InteractiveSearchTable

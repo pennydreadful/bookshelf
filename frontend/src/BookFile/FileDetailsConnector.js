@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import { fetchBookFiles } from 'Store/Actions/bookFileActions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import FileDetails from './FileDetails';
 
@@ -28,9 +29,77 @@ class FileDetailsConnector extends Component {
   //
   // Lifecycle
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      historyItems: [],
+      isHistoryFetching: false,
+      historyError: null,
+      historyKey: null
+    };
+  }
+
   componentDidMount() {
     this.props.fetchBookFiles({ id: this.props.id });
   }
+
+  componentDidUpdate() {
+    const item = _.find(this.props.items, { id: this.props.id });
+    if (!item) {
+      return;
+    }
+
+    const historyKey = `${item.authorId}-${item.bookId}-${item.id}`;
+    if (this.state.historyKey === historyKey) {
+      return;
+    }
+
+    this.fetchHistory(item, historyKey);
+  }
+
+  //
+  // Helpers
+
+  fetchHistory = (item, historyKey) => {
+    if (!item.authorId || !item.bookId) {
+      this.setState({
+        historyItems: [],
+        isHistoryFetching: false,
+        historyError: null,
+        historyKey
+      });
+      return;
+    }
+
+    this.setState({ isHistoryFetching: true, historyError: null, historyKey });
+
+    const promise = createAjaxRequest({
+      url: '/history/author',
+      data: {
+        authorId: item.authorId,
+        bookId: item.bookId
+      }
+    }).request;
+
+    promise.done((data) => {
+      const historyItems = _.orderBy(data || [], ['date'], ['desc']);
+
+      this.setState({
+        historyItems,
+        isHistoryFetching: false,
+        historyError: null
+      });
+    });
+
+    promise.fail((xhr) => {
+      this.setState({
+        historyItems: [],
+        isHistoryFetching: false,
+        historyError: xhr
+      });
+    });
+  };
 
   //
   // Render
@@ -60,6 +129,9 @@ class FileDetailsConnector extends Component {
       <FileDetails
         audioTags={item.audioTags}
         filename={item.path}
+        historyItems={this.state.historyItems}
+        isHistoryFetching={this.state.isHistoryFetching}
+        historyError={this.state.historyError}
       />
     );
 
