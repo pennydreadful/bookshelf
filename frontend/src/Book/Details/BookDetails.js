@@ -307,18 +307,18 @@ class BookDetails extends Component {
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  {translate('Search')}
+                  {translate('FilesTotal', [bookFileCount])}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  {translate('FilesTotal', [bookFileCount])}
+                  {translate('Search')}
                 </Tab>
 
                 {
-                  selectedTabIndex === 0 &&
+                  selectedTabIndex === 1 &&
                     <div className={styles.filterIcon}>
                       <InteractiveSearchFilterMenuConnector
                         type="book"
@@ -329,16 +329,16 @@ class BookDetails extends Component {
               </TabList>
 
               <TabPanel>
-                <InteractiveSearchTable
+                <BookFileEditorTable
+                  authorId={author.id}
                   bookId={id}
-                  type="book"
                 />
               </TabPanel>
 
               <TabPanel>
-                <BookFileEditorTable
-                  authorId={author.id}
+                <InteractiveSearchTable
                   bookId={id}
+                  type="book"
                 />
               </TabPanel>
             </Tabs>

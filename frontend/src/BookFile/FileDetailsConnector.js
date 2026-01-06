@@ -83,7 +83,7 @@ class FileDetailsConnector extends Component {
     }).request;
 
     promise.done((data) => {
-      const historyItems = _.orderBy(data || [], ['date'], ['desc']);
+      const historyItems = this.filterHistoryItems(data || [], item);
 
       this.setState({
         historyItems,
@@ -100,6 +100,49 @@ class FileDetailsConnector extends Component {
       });
     });
   };
+
+  filterHistoryItems(items, fileItem) {
+    const fileId = fileItem.id ? String(fileItem.id) : null;
+    const filePath = this.normalizePath(fileItem.path);
+
+    return _.orderBy(items, ['date'], ['desc']).filter((historyItem) => {
+      const data = historyItem.data || {};
+      const dataPaths = [
+        data.importedPath,
+        data.ImportedPath,
+        data.droppedPath,
+        data.DroppedPath,
+        data.sourcePath,
+        data.SourcePath,
+        data.path,
+        data.Path,
+        historyItem.sourceTitle
+      ].filter(Boolean).map((path) => this.normalizePath(path));
+
+      const dataIds = [
+        data.fileId,
+        data.FileId
+      ].filter(Boolean).map((id) => String(id));
+
+      if (fileId && dataIds.includes(fileId)) {
+        return true;
+      }
+
+      if (!filePath) {
+        return false;
+      }
+
+      return dataPaths.includes(filePath);
+    });
+  }
+
+  normalizePath(path) {
+    if (!path) {
+      return '';
+    }
+
+    return String(path).replace(/\\/g, '/').toLowerCase();
+  }
 
   //
   // Render

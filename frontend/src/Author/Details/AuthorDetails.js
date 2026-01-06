@@ -445,7 +445,7 @@ class AuthorDetails extends Component {
                       className={styles.tab}
                       selectedClassName={styles.selectedTab}
                     >
-                      {translate('SeriesTotal', [series.length])}
+                      {translate('FilesTotal', [bookFileCount])}
                     </Tab>
 
                     <Tab
@@ -459,7 +459,7 @@ class AuthorDetails extends Component {
                       className={styles.tab}
                       selectedClassName={styles.selectedTab}
                     >
-                      {translate('FilesTotal', [bookFileCount])}
+                      {translate('SeriesTotal', [series.length])}
                     </Tab>
 
                     {
@@ -489,6 +489,19 @@ class AuthorDetails extends Component {
                   </TabPanel>
 
                   <TabPanel>
+                    <BookFileEditorTable
+                      authorId={id}
+                    />
+                  </TabPanel>
+
+                  <TabPanel>
+                    <InteractiveSearchTable
+                      type="author"
+                      authorId={id}
+                    />
+                  </TabPanel>
+
+                  <TabPanel>
                     {
                       isPopulated && hasSeries &&
                         <div>
@@ -507,19 +520,6 @@ class AuthorDetails extends Component {
                           }
                         </div>
                     }
-                  </TabPanel>
-
-                  <TabPanel>
-                    <InteractiveSearchTable
-                      type="author"
-                      authorId={id}
-                    />
-                  </TabPanel>
-
-                  <TabPanel>
-                    <BookFileEditorTable
-                      authorId={id}
-                    />
                   </TabPanel>
                 </Tabs>
             }
