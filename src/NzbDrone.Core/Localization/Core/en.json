@@ -833,6 +833,8 @@
   "RefreshBook": "Refresh Book",
   "RefreshBookMetadata": "Refresh book cover/description",
   "RefreshBookMetadataHelpText": "Re-download the book cover and overview using the current UI language",
+  "RescanBookFiles": "Rescan book files",
+  "RescanBookFilesHelpText": "Scan the author folder and re-link files to this book",
   "RefreshInformation": "Refresh information",
   "RefreshInformationAndScanDisk": "Refresh information and scan disk",
   "RequestAllBooks": "Request All Books",

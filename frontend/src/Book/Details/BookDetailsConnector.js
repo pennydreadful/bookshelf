@@ -81,6 +81,11 @@ function createMapStateToProps() {
         isCommandExecuting(isSearchingCommand) &&
         isSearchingCommand.body.bookIds.indexOf(book.id) > -1
       );
+      const rescanCommand = findCommand(commands, {
+        name: commandNames.RESCAN_FOLDERS,
+        authorIds: [author.id]
+      });
+      const isRescanningFiles = rescanCommand ? isCommandExecuting(rescanCommand) : false;
       const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, authorId: author.id }));
       const isRenamingAuthorCommand = findCommand(commands, { name: commandNames.RENAME_AUTHOR });
       const isRenamingAuthor = (
@@ -99,6 +104,7 @@ function createMapStateToProps() {
         author,
         isRefreshing,
         isSearching,
+        isRescanningFiles,
         isRenamingFiles,
         isRenamingAuthor,
         isFetching,
@@ -227,6 +233,22 @@ class BookDetailsConnector extends Component {
     }
   };
 
+  onRescanFilesPress = () => {
+    const { author } = this.props;
+
+    if (!author?.path) {
+      return;
+    }
+
+    this.props.executeCommand({
+      name: commandNames.RESCAN_FOLDERS,
+      folders: [author.path],
+      authorIds: [author.id],
+      filter: 'matched',
+      addNewAuthors: false
+    });
+  };
+
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.BOOK_SEARCH,
@@ -255,6 +277,7 @@ class BookDetailsConnector extends Component {
         onMonitorTogglePress={this.onMonitorTogglePress}
         onRefreshPress={this.onRefreshPress}
         onRefreshMetadataPress={this.onRefreshMetadataPress}
+        onRescanFilesPress={this.onRescanFilesPress}
         onSearchPress={this.onSearchPress}
         onCombinePress={this.onCombinePress}
       />

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.116
+- Summary: add a rescan action for book files after edition changes.
+- Why: files can become unlinked when switching editions and need a manual recovery path.
+- Impact: the book toolbar now offers a rescan that re-links files from the author folder.
+- Files: frontend/src/Book/Details/BookDetails.js, frontend/src/Book/Details/BookDetailsConnector.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, click Rescan book files on a book, and confirm files reappear.
+
 ## 1.2.115
 - Summary: relink book files and refresh the books list after edition changes.
 - Why: switching editions changed the slug and orphaned file mappings, leading to a 404 page and empty file lists.

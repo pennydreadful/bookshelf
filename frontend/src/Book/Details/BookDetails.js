@@ -127,9 +127,11 @@ class BookDetails extends Component {
       isSearching,
       isCombining,
       combineCommand,
+      isRescanningFiles,
       isRefreshingMetadata,
       onRefreshPress,
       onRefreshMetadataPress,
+      onRescanFilesPress,
       onSearchPress,
       statistics = {}
     } = this.props;
@@ -171,6 +173,14 @@ class BookDetails extends Component {
               title={translate('RefreshBookMetadataHelpText')}
               isSpinning={isRefreshingMetadata}
               onPress={onRefreshMetadataPress}
+            />
+
+            <PageToolbarButton
+              label={translate('RescanBookFiles')}
+              iconName={icons.RESCAN}
+              title={translate('RescanBookFilesHelpText')}
+              isSpinning={isRescanningFiles}
+              onPress={onRescanFilesPress}
             />
 
             <PageToolbarButton
@@ -411,6 +421,7 @@ BookDetails.propTypes = {
   isRefreshing: PropTypes.bool,
   isRefreshingMetadata: PropTypes.bool,
   isSearching: PropTypes.bool,
+  isRescanningFiles: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,
   bookFilesError: PropTypes.object,
@@ -425,12 +436,14 @@ BookDetails.propTypes = {
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func,
   onRefreshMetadataPress: PropTypes.func,
+  onRescanFilesPress: PropTypes.func,
   onSearchPress: PropTypes.func.isRequired,
   onCombinePress: PropTypes.func.isRequired
 };
 
 BookDetails.defaultProps = {
   isSaving: false,
+  isRescanningFiles: false,
   bookFiles: [],
   combineCommand: null
 };
