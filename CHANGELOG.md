@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.104
+- Summary: always show EPUB navigation arrows and bump the app version.
+- Why: navigation buttons were hidden until the reader signaled readiness, so they never appeared for some EPUBs.
+- Impact: EPUB modals show left/right arrows immediately for page turning, and the UI reports 1.2.104.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm the arrows appear and page turns work.
+
 ## 1.2.103
 - Summary: add EPUB page navigation controls and bump the app version.
 - Why: the reader showed only the cover without navigation controls.

@@ -188,6 +188,18 @@ class BookFileReaderModal extends Component {
         if (this.rendition.on)
         {
           this.rendition.on('displayError', this.handleReaderError);
+          this.rendition.on('rendered', () => {
+            if (this.isReaderActive)
+            {
+              this.setState({ isReady: true });
+            }
+          });
+          this.rendition.on('displayed', () => {
+            if (this.isReaderActive)
+            {
+              this.setState({ isReady: true });
+            }
+          });
         }
 
         const displayPromise = this.rendition.display();
@@ -286,7 +298,7 @@ class BookFileReaderModal extends Component {
     const isEpub = fileType === 'epub';
     const isPdf = fileType === 'pdf';
     const isUnsupported = fileType === 'unknown';
-    const showNavigation = isEpub && !isUnsupported && !loadError && isReady;
+    const showNavigation = isEpub && !isUnsupported && !loadError;
 
     return (
       <Modal
