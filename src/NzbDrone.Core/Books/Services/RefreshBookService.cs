@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Books
     {
         bool RefreshBookInfo(Book book, List<Book> remoteBooks, Author remoteData, bool forceUpdateFileTags);
         bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceBookRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
+        bool RefreshBookInfo(Book book);
     }
 
     public class RefreshBookService : RefreshEntityServiceBase<Book, Edition>,

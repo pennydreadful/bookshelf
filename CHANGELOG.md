@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.109
+- Summary: fix book metadata refresh build error and bump the app version.
+- Why: API controller used a RefreshBookInfo overload that was missing from the interface.
+- Impact: build succeeds and metadata refresh endpoint compiles cleanly.
+- Files: src/NzbDrone.Core/Books/Services/RefreshBookService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry the build/refresh flow on the VM.
+
 ## 1.2.108
 - Summary: add a book metadata refresh that re-downloads covers and uses the UI language for metadata requests.
 - Why: book cover/description refresh needed to pull updated metadata and respect the system UI language.
