@@ -1,13 +1,17 @@
-[2026-01-06 22:48:40 UTC] Stopping Bookdarr
-[2026-01-06 22:48:40 UTC] Updating repo
+[2026-01-06 22:57:34 UTC] Stopping Bookdarr
+[2026-01-06 22:57:34 UTC] Updating repo
+From https://github.com/thashiznit2003/Bookdarr
+   3d7ea3136..04ca02dd6  develop                -> origin/develop
+ * [new tag]             snapshot-20260106-2256 -> snapshot-20260106-2256
 Already on 'develop'
-Your branch is up to date with 'origin/develop'.
-HEAD is now at 3d7ea3136 Move history details to file info and remove history tabs
-[2026-01-06 22:48:41 UTC] Building
+Your branch is behind 'origin/develop' by 2 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+HEAD is now at 04ca02dd6 Fix file details history styles and bump version
+[2026-01-06 22:57:35 UTC] Building
 yarn install v1.22.19
 [1/4] Resolving packages...
 success Already up-to-date.
-Done in 0.28s.
+Done in 0.29s.
 yarn run v1.22.19
 $ yarn clean
 $ rimraf ./_output/UI && rimraf --glob "**/*.js.map"
@@ -20,8 +24,8 @@ isProfiling: false
 <i> [FileManagerPlugin] copied "frontend/src/Content/robots.txt" to "/opt/bookdarr-dev/_output/UI/Content/robots.txt
 <i> [FileManagerPlugin] copied "frontend/src/*.html" to "/opt/bookdarr-dev/_output/UI
 <i> [FileManagerPlugin] copied "frontend/src/Content/Fonts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Fonts
-<i> [FileManagerPlugin] copied "frontend/src/Content/Images/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images
 <i> [FileManagerPlugin] copied "frontend/src/Content/Scripts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Scripts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images
 <i> [FileManagerPlugin] copied "frontend/src/Content/Images/Icons/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images/Icons
 <w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/opt/bookdarr-dev/node_modules/css-modules-typescript-loader/index.js!/opt/bookdarr-dev/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!/opt/bookdarr-dev/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!/opt/bookdarr-dev/frontend/src/BookFile/FileDetails.css': No serializer registered for SyntaxError
 <w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> SyntaxError
@@ -44,14 +48,14 @@ ERROR in ./frontend/src/BookFile/FileDetails.css (./frontend/src/BookFile/FileDe
 Module build failed (from ./node_modules/postcss-loader/dist/cjs.js):
 SyntaxError
 
-(14:3) postcss-simple-vars: /opt/bookdarr-dev/frontend/src/BookFile/FileDetails.css Undefined variable $borderColor
+(20:3) postcss-simple-vars: /opt/bookdarr-dev/frontend/src/BookFile/FileDetails.css Undefined variable $semibold
 
-  12 | 
-  13 | .history {
-> 14 |   border-top: 1px solid $borderColor;
+  18 | .historyTitle {
+  19 |   font-size: $defaultFontSize;
+> 20 |   font-weight: $semibold;
      |   ^
-  15 |   padding-top: 15px;
-  16 | }
+  21 |   margin-bottom: 10px;
+  22 | }
  @ ./frontend/src/BookFile/FileDetails.css
  @ ./frontend/src/BookFile/FileDetails.js 14:0-39 84:15-31 101:26-41 347:15-29 355:15-34 370:15-34 378:15-34 386:15-34 396:17-35 404:17-40
  @ ./frontend/src/BookFile/FileDetailsConnector.js 11:0-40 126:44-55
@@ -125,6 +129,6 @@ Generated code for /opt/bookdarr-dev/node_modules/css-modules-typescript-loader/
  @ ./frontend/src/bootstrap.tsx 6:0-28 11:42-45
  @ ./frontend/src/index.ts 15:10-31
 
-webpack 5.95.0 compiled with 2 errors in 5560 ms
+webpack 5.95.0 compiled with 2 errors in 5484 ms
 error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
