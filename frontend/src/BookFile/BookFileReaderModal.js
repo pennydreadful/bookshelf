@@ -337,12 +337,14 @@ class BookFileReaderModal extends Component {
                                 className={classNames(styles.navButton, styles.navButtonLeft)}
                                 name={icons.ARROW_LEFT}
                                 title={translate('PreviousPage')}
+                                size={18}
                                 onPress={this.onPreviousPress}
                               />
                               <IconButton
                                 className={classNames(styles.navButton, styles.navButtonRight)}
                                 name={icons.ARROW_RIGHT}
                                 title={translate('NextPage')}
+                                size={18}
                                 onPress={this.onNextPress}
                               />
                             </>

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.105
+- Summary: make EPUB navigation arrows larger and ensure they layer above the reader.
+- Why: the buttons were not visible over the cover in some readers.
+- Impact: navigation arrows display more clearly on top of the EPUB content, and the UI reports 1.2.105.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/BookFileReaderModal.css, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm the arrows are visible and page turns work.
+
 ## 1.2.104
 - Summary: always show EPUB navigation arrows and bump the app version.
 - Why: navigation buttons were hidden until the reader signaled readiness, so they never appeared for some EPUBs.

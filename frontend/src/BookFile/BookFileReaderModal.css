@@ -11,23 +11,27 @@
 
 .reader {
   height: 100%;
+  position: relative;
   width: 100%;
   background: #1f1f1f;
+  z-index: 1;
 }
 
 .navButton {
   align-items: center;
   background: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
   border-radius: 999px;
   color: #f1f1f1;
+  cursor: pointer;
   display: flex;
-  height: 40px;
+  height: 48px;
   justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  z-index: 2;
+  width: 48px;
+  z-index: 50;
 
   &:hover {
     background: rgba(0, 0, 0, 0.6);
