@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.102
+- Summary: improve ebook reader resilience, handle unsupported formats, and bump the app version.
+- Why: the reader could fail silently for unsupported or flaky loads, and the UI version needed to reflect updates.
+- Impact: unsupported ebook types show a clear message, EPUB render attempts are more defensive, and the UI reports 1.2.102.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/Editor/BookFileActionsCell.js, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm the modal renders while the version shows 1.2.102.
+
 ## 1.2.101
 - Summary: load JSZip before the EPUB reader so ebook rendering works.
 - Why: epub.js depends on JSZip, and missing it can result in a blank reader.

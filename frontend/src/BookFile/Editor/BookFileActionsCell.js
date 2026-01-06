@@ -106,7 +106,7 @@ class BookFileActionsCell extends Component {
 
     const isAudio = isAudioByExtension || isAudioByMediaType || isAudioByQuality;
     const isEbook = isEbookByExtension || isEbookByMediaType || isEbookByQuality;
-    const fileType = isPdf ? 'pdf' : 'epub';
+    const fileType = isPdf ? 'pdf' : (isEpub ? 'epub' : 'unknown');
 
     const apiKey = window.Readarr && window.Readarr.apiKey;
     const apiKeyQuery = apiKey ? `?apikey=${encodeURIComponent(apiKey)}` : '';

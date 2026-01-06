@@ -93,6 +93,16 @@ class BookFileReaderModal extends Component {
     };
   }
 
+  handleReaderError = () => {
+    if (!this.isReaderActive)
+    {
+      return;
+    }
+
+    this.isReaderActive = false;
+    this.setState({ loadError: true });
+  };
+
   componentDidUpdate(prevProps) {
     const isOpening = this.props.isOpen && !prevProps.isOpen;
     const isClosing = !this.props.isOpen && prevProps.isOpen;
@@ -133,7 +143,7 @@ class BookFileReaderModal extends Component {
       .then(() => {
         if (!this.isReaderActive || !window.ePub)
         {
-          this.setState({ loadError: true });
+          this.handleReaderError();
           return Promise.reject(new Error('epub reader unavailable'));
         }
 
@@ -142,17 +152,45 @@ class BookFileReaderModal extends Component {
       .then((epubUrl) => {
         if (!this.isReaderActive || !window.ePub)
         {
-          this.setState({ loadError: true });
+          this.handleReaderError();
           return;
         }
 
         this.book = window.ePub(epubUrl, { openAs: 'epub' });
         this.rendition = this.book.renderTo(container, { width: '100%', height: '100%' });
-        this.rendition.display();
+        if (this.book.ready && this.book.ready.catch)
+        {
+          this.book.ready.catch(this.handleReaderError);
+        }
+
+        if (this.book.on)
+        {
+          this.book.on('openFailed', this.handleReaderError);
+        }
+
+        if (this.rendition.on)
+        {
+          this.rendition.on('displayError', this.handleReaderError);
+        }
+
+        const displayPromise = this.rendition.display();
+        if (displayPromise && displayPromise.catch)
+        {
+          displayPromise.catch(this.handleReaderError);
+        }
+
+        if (this.rendition.resize)
+        {
+          requestAnimationFrame(() => {
+            if (this.isReaderActive && this.readerRef.current && this.rendition)
+            {
+              this.rendition.resize(this.readerRef.current.clientWidth, this.readerRef.current.clientHeight);
+            }
+          });
+        }
       })
       .catch(() => {
-        this.isReaderActive = false;
-        this.setState({ loadError: true });
+        this.handleReaderError();
       });
   }
 
@@ -163,7 +201,10 @@ class BookFileReaderModal extends Component {
       this.epubObjectUrl = null;
     }
 
-    return fetch(streamUrl, { credentials: 'same-origin' })
+    const apiKey = window.Readarr && window.Readarr.apiKey;
+    const headers = apiKey ? { 'X-Api-Key': apiKey } : undefined;
+
+    return fetch(streamUrl, { credentials: 'same-origin', headers })
       .then((response) => {
         if (!response.ok)
         {
@@ -217,6 +258,8 @@ class BookFileReaderModal extends Component {
 
     const { loadError } = this.state;
     const isEpub = fileType === 'epub';
+    const isPdf = fileType === 'pdf';
+    const isUnsupported = fileType === 'unknown';
 
     return (
       <Modal
@@ -235,6 +278,10 @@ class BookFileReaderModal extends Component {
             scrollDirection={scrollDirections.NONE}
           >
             {
+              isUnsupported ?
+                <div className={styles.loadError}>
+                  {translate('EbookReaderUnsupportedFormat')}
+                </div> :
               isEpub ?
                 (
                   loadError ?
@@ -243,11 +290,15 @@ class BookFileReaderModal extends Component {
                     </div> :
                     <div className={styles.reader} ref={this.readerRef} />
                 ) :
-                <iframe
-                  className={styles.pdf}
-                  src={streamUrl}
-                  title={title}
-                />
+                (
+                  isPdf ?
+                    <iframe
+                      className={styles.pdf}
+                      src={streamUrl}
+                      title={title}
+                    /> :
+                    null
+                )
             }
           </ModalBody>
 
@@ -266,7 +317,7 @@ BookFileReaderModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   streamUrl: PropTypes.string.isRequired,
-  fileType: PropTypes.oneOf(['epub', 'pdf']).isRequired,
+  fileType: PropTypes.oneOf(['epub', 'pdf', 'unknown']).isRequired,
   title: PropTypes.string
 };
 
