@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.108
+- Summary: add a book metadata refresh that re-downloads covers and uses the UI language for metadata requests.
+- Why: book cover/description refresh needed to pull updated metadata and respect the system UI language.
+- Impact: book details can refresh cover/overview on demand, and metadata requests include the UI language header.
+- Files: frontend/src/Book/Details/BookDetails.js, frontend/src/Book/Details/BookDetailsConnector.js, frontend/src/Store/Actions/bookActions.js, src/NzbDrone.Core/Localization/Core/en.json, src/NzbDrone.Core/MediaCover/MediaCoverService.cs, src/NzbDrone.Core/MetadataSource/MetadataRequestBuilder.cs, src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, refresh a book from the toolbar, and confirm the cover/overview update in your UI language.
+
 ## 1.2.107
 - Summary: apply light/dark text styling inside the EPUB reader and bump the app version.
 - Why: EPUB content was rendering dark text on a dark background in dark mode.

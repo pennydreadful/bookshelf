@@ -35,6 +35,7 @@ namespace Readarr.Api.V1.Books
         protected readonly IAuthorService _authorService;
         protected readonly IEditionService _editionService;
         protected readonly IAddBookService _addBookService;
+        private readonly IRefreshBookService _refreshBookService;
 
         public BookController(IAuthorService authorService,
                           IBookService bookService,
@@ -42,6 +43,7 @@ namespace Readarr.Api.V1.Books
                           IEditionService editionService,
                           ISeriesBookLinkService seriesBookLinkService,
                           IAuthorStatisticsService authorStatisticsService,
+                          IRefreshBookService refreshBookService,
                           IMapCoversToLocal coverMapper,
                           IUpgradableSpecification upgradableSpecification,
                           IBroadcastSignalRMessage signalRBroadcaster,
@@ -53,6 +55,7 @@ namespace Readarr.Api.V1.Books
             _authorService = authorService;
             _editionService = editionService;
             _addBookService = addBookService;
+            _refreshBookService = refreshBookService;
 
             PostValidator.RuleFor(s => s.ForeignBookId).NotEmpty();
             PostValidator.RuleFor(s => s.Author.QualityProfileId).SetValidator(qualityProfileExistsValidator);
@@ -149,6 +152,20 @@ namespace Readarr.Api.V1.Books
                 id,
                 overview
             };
+        }
+
+        [HttpPost("{id:int}/refresh-metadata")]
+        public ActionResult<BookResource> RefreshMetadata(int id)
+        {
+            var book = _bookService.GetBook(id);
+
+            _refreshBookService.RefreshBookInfo(book);
+
+            var refreshed = _bookService.GetBook(id);
+            _coverMapper.DeleteBookCovers(refreshed.Id);
+            _coverMapper.EnsureBookCovers(refreshed);
+
+            return Accepted(MapToResource(refreshed, true));
         }
 
         [RestPostById]

@@ -285,6 +285,7 @@ export const CLEAR_BOOKS = 'books/clearBooks';
 export const SET_BOOK_VALUE = 'books/setBookValue';
 export const SAVE_BOOK = 'books/saveBook';
 export const DELETE_BOOK = 'books/deleteBook';
+export const REFRESH_BOOK_METADATA = 'books/refreshBookMetadata';
 export const DELETE_AUTHOR_BOOKS = 'books/deleteAuthorBooks';
 export const TOGGLE_BOOK_MONITORED = 'books/toggleBookMonitored';
 export const TOGGLE_BOOKS_MONITORED = 'books/toggleBooksMonitored';
@@ -300,6 +301,7 @@ export const toggleBookMonitored = createThunk(TOGGLE_BOOK_MONITORED);
 export const toggleBooksMonitored = createThunk(TOGGLE_BOOKS_MONITORED);
 
 export const saveBook = createThunk(SAVE_BOOK);
+export const refreshBookMetadata = createThunk(REFRESH_BOOK_METADATA);
 
 export const deleteBook = createThunk(DELETE_BOOK, (payload) => {
   return {
@@ -370,6 +372,43 @@ export const actionHandlers = handleThunks({
     });
 
     return abortRequest;
+  },
+
+  [REFRESH_BOOK_METADATA]: (getState, payload, dispatch) => {
+    const {
+      bookId: id
+    } = payload;
+
+    dispatch(updateItem({
+      id,
+      section,
+      isSaving: true
+    }));
+
+    const request = createAjaxRequest({
+      url: `/book/${id}/refresh-metadata`,
+      method: 'POST',
+      dataType: 'json'
+    }).request;
+
+    request.done((data) => {
+      dispatch(updateItem({
+        id,
+        section,
+        isSaving: false,
+        ...data
+      }));
+    });
+
+    request.fail(() => {
+      dispatch(updateItem({
+        id,
+        section,
+        isSaving: false
+      }));
+    });
+
+    return request;
   },
 
   [SAVE_BOOK]: createSaveProviderHandler(section, '/book'),

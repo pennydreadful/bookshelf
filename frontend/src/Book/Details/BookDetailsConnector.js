@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
-import { toggleBooksMonitored } from 'Store/Actions/bookActions';
+import { refreshBookMetadata, toggleBooksMonitored } from 'Store/Actions/bookActions';
 import { clearBookFiles, fetchBookFiles } from 'Store/Actions/bookFileActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearEditions, fetchEditions } from 'Store/Actions/editionActions';
@@ -124,6 +124,7 @@ const mapDispatchToProps = {
   clearEditions,
   clearReleases,
   cancelFetchReleases,
+  refreshBookMetadata,
   toggleBooksMonitored
 };
 
@@ -132,6 +133,9 @@ function getMonitoredEditions(props) {
 }
 
 class BookDetailsConnector extends Component {
+  state = {
+    isRefreshingMetadata: false
+  };
 
   componentDidMount() {
     registerPagePopulator(this.populate);
@@ -204,6 +208,25 @@ class BookDetailsConnector extends Component {
     });
   };
 
+  onRefreshMetadataPress = () => {
+    this.setState({ isRefreshingMetadata: true });
+
+    const bookId = this.props.id;
+    const request = this.props.refreshBookMetadata({ bookId });
+
+    if (request && request.done) {
+      request.done(() => {
+        this.props.fetchEditions({ bookId });
+      });
+    }
+
+    if (request && request.always) {
+      request.always(() => this.setState({ isRefreshingMetadata: false }));
+    } else {
+      this.setState({ isRefreshingMetadata: false });
+    }
+  };
+
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.BOOK_SEARCH,
@@ -228,8 +251,10 @@ class BookDetailsConnector extends Component {
     return (
       <BookDetails
         {...this.props}
+        isRefreshingMetadata={this.state.isRefreshingMetadata}
         onMonitorTogglePress={this.onMonitorTogglePress}
         onRefreshPress={this.onRefreshPress}
+        onRefreshMetadataPress={this.onRefreshMetadataPress}
         onSearchPress={this.onSearchPress}
         onCombinePress={this.onCombinePress}
       />
@@ -252,6 +277,7 @@ BookDetailsConnector.propTypes = {
   clearEditions: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
   cancelFetchReleases: PropTypes.func.isRequired,
+  refreshBookMetadata: PropTypes.func.isRequired,
   toggleBooksMonitored: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };

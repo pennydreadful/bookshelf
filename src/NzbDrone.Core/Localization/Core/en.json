@@ -831,6 +831,8 @@
   "RefreshAuthorPictureHelpText": "Re-fetch the author poster from metadata sources",
   "RefreshAuthor": "Refresh Author",
   "RefreshBook": "Refresh Book",
+  "RefreshBookMetadata": "Refresh book cover/description",
+  "RefreshBookMetadataHelpText": "Re-download the book cover and overview using the current UI language",
   "RefreshInformation": "Refresh information",
   "RefreshInformationAndScanDisk": "Refresh information and scan disk",
   "RequestAllBooks": "Request All Books",

@@ -127,7 +127,9 @@ class BookDetails extends Component {
       isSearching,
       isCombining,
       combineCommand,
+      isRefreshingMetadata,
       onRefreshPress,
+      onRefreshMetadataPress,
       onSearchPress,
       statistics = {}
     } = this.props;
@@ -160,6 +162,15 @@ class BookDetails extends Component {
               title={translate('RefreshInformation')}
               isSpinning={isRefreshing}
               onPress={onRefreshPress}
+            />
+
+            <PageToolbarButton
+              label={translate('RefreshBookMetadata')}
+              iconName={icons.REFRESH}
+              spinningName={icons.REFRESH}
+              title={translate('RefreshBookMetadataHelpText')}
+              isSpinning={isRefreshingMetadata}
+              onPress={onRefreshMetadataPress}
             />
 
             <PageToolbarButton
@@ -398,6 +409,7 @@ BookDetails.propTypes = {
   shortDateFormat: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
   isRefreshing: PropTypes.bool,
+  isRefreshingMetadata: PropTypes.bool,
   isSearching: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,
@@ -412,6 +424,7 @@ BookDetails.propTypes = {
   combineCommand: PropTypes.object,
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func,
+  onRefreshMetadataPress: PropTypes.func,
   onSearchPress: PropTypes.func.isRequired,
   onCombinePress: PropTypes.func.isRequired
 };

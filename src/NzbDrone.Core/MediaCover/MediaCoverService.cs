@@ -20,6 +20,7 @@ namespace NzbDrone.Core.MediaCover
     {
         void ConvertToLocalUrls(int entityId, MediaCoverEntity coverEntity, IEnumerable<MediaCover> covers);
         string GetCoverPath(int entityId, MediaCoverEntity coverEntity, MediaCoverTypes coverType, string extension, int? height = null);
+        void DeleteBookCovers(int bookId);
         void EnsureBookCovers(Book book);
     }
 
@@ -277,6 +278,15 @@ namespace NzbDrone.Core.MediaCover
                 {
                     _logger.Error(e, "Couldn't download media cover for {0}", book);
                 }
+            }
+        }
+
+        public void DeleteBookCovers(int bookId)
+        {
+            var path = GetBookCoverPath(bookId);
+            if (_diskProvider.FolderExists(path))
+            {
+                _diskProvider.DeleteFolder(path, true);
             }
         }
 

@@ -20,9 +20,11 @@ using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Http;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.MetadataSource.GoogleBooks;
+using NzbDrone.Core.Parser;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NzbDrone.Core.MetadataSource.BookInfo
@@ -92,6 +94,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private bool UseGoogleBooks
         {
             get { return string.Equals(_configService.MetadataProvider, "googlebooks", StringComparison.OrdinalIgnoreCase); }
+        }
+
+        private string GetUiLanguageCode()
+        {
+            var isoLanguage = IsoLanguages.Get((Language)_configService.UILanguage) ?? IsoLanguages.Get(Language.English);
+            return isoLanguage?.TwoLetterCode;
         }
 
         public HashSet<string> GetChangedAuthors(DateTime startTime)
@@ -1285,6 +1293,13 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 {
                     builder.AddQueryParam(pair.Key, pair.Value);
                 }
+            }
+
+            var languageCode = GetUiLanguageCode();
+            if (languageCode.IsNotNullOrWhiteSpace())
+            {
+                builder.AddQueryParam("hl", languageCode);
+                builder.SetHeader("Accept-Language", languageCode);
             }
 
             return builder.Build();
