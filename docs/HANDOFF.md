@@ -21,6 +21,7 @@ Use this file to onboard a new Codex chat.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
 - Push to GitHub after every update.
 - Provide update commands in fenced code blocks.
+- Increment the version number after each change.
 
 ## Build/Style Notes
 - StyleCop is strict. In `BookInfoProxy.cs`, keep:
