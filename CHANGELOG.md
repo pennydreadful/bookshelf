@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.115
+- Summary: relink book files and refresh the books list after edition changes.
+- Why: switching editions changed the slug and orphaned file mappings, leading to a 404 page and empty file lists.
+- Impact: the UI updates the books collection after edition selection and reattaches existing files to the new edition.
+- Files: frontend/src/Components/Form/BookEditionSelectInputConnector.js, src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, switch editions, and confirm no 404 plus files remain listed.
+
 ## 1.2.114
 - Summary: keep the edit-modal edition switch from navigating to a 404 page.
 - Why: changing editions can alter the book slug, leaving the current route stale.

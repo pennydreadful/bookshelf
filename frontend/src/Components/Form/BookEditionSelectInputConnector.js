@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { updateItem } from 'Store/Actions/baseActions';
+import { fetchBooks } from 'Store/Actions/bookActions';
 import { fetchEditions } from 'Store/Actions/editionActions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import titleCase from 'Utilities/String/titleCase';
@@ -137,6 +138,7 @@ class BookEditionSelectInputConnector extends Component {
     const {
       bookId,
       fetchEditions,
+      fetchBooks,
       push,
       updateBookItem
     } = this.props;
@@ -162,6 +164,9 @@ class BookEditionSelectInputConnector extends Component {
       this.setState({ lookupEditions: null });
       if (data?.id && updateBookItem) {
         updateBookItem(data);
+      }
+      if (fetchBooks) {
+        fetchBooks();
       }
       if (data?.titleSlug && push) {
         push(`/book/${data.titleSlug}`);
@@ -230,6 +235,7 @@ BookEditionSelectInputConnector.propTypes = {
   onChange: PropTypes.func.isRequired,
   bookEditions: PropTypes.object,
   isDisabled: PropTypes.bool,
+  fetchBooks: PropTypes.func,
   push: PropTypes.func,
   updateBookItem: PropTypes.func
 };
@@ -237,11 +243,13 @@ BookEditionSelectInputConnector.propTypes = {
 BookEditionSelectInputConnector.defaultProps = {
   fetchEditions: null,
   isDisabled: false,
+  fetchBooks: null,
   push: null,
   updateBookItem: null
 };
 
 const mapDispatchToProps = {
+  fetchBooks,
   fetchEditions,
   push,
   updateBookItem: (item) => updateItem({ section: 'books', ...item })

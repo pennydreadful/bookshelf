@@ -40,6 +40,7 @@ namespace Readarr.Api.V1.Books
         protected readonly IEditionService _editionService;
         protected readonly IAddBookService _addBookService;
         private readonly IRefreshBookService _refreshBookService;
+        private readonly IMediaFileService _mediaFileService;
         private readonly IConfigService _configService;
         private readonly ISearchForNewBook _bookSearchProxy;
 
@@ -50,6 +51,7 @@ namespace Readarr.Api.V1.Books
                           ISeriesBookLinkService seriesBookLinkService,
                           IAuthorStatisticsService authorStatisticsService,
                           IRefreshBookService refreshBookService,
+                          IMediaFileService mediaFileService,
                           IConfigService configService,
                           ISearchForNewBook bookSearchProxy,
                           IMapCoversToLocal coverMapper,
@@ -64,6 +66,7 @@ namespace Readarr.Api.V1.Books
             _editionService = editionService;
             _addBookService = addBookService;
             _refreshBookService = refreshBookService;
+            _mediaFileService = mediaFileService;
             _configService = configService;
             _bookSearchProxy = bookSearchProxy;
 
@@ -252,6 +255,8 @@ namespace Readarr.Api.V1.Books
             book.ForeignBookId = resource.ForeignBookId;
             book.AnyEditionOk = false;
 
+            var bookFiles = _mediaFileService.GetFilesByBook(id);
+
             _refreshBookService.RefreshBookInfo(book);
 
             var editions = _editionService.GetEditionsByBook(id);
@@ -259,6 +264,16 @@ namespace Readarr.Api.V1.Books
             if (selectedEdition != null)
             {
                 _editionService.SetMonitored(selectedEdition);
+
+                if (bookFiles.Any())
+                {
+                    foreach (var bookFile in bookFiles)
+                    {
+                        bookFile.EditionId = selectedEdition.Id;
+                    }
+
+                    _mediaFileService.Update(bookFiles);
+                }
             }
 
             var refreshed = _bookService.GetBook(id);
