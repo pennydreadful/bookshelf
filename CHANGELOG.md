@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.110
+- Summary: prefer a UI-language edition when refreshing book metadata.
+- Why: some books return non-English descriptions unless the edition language is switched.
+- Impact: refresh book cover/description now attempts to select an edition matching the UI language before updating covers.
+- Files: src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, refresh a book, and confirm the overview switches to English when an English edition exists.
+
 ## 1.2.109
 - Summary: fix book metadata refresh build error and bump the app version.
 - Why: API controller used a RefreshBookInfo overload that was missing from the interface.

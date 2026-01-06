@@ -6,14 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.AuthorStats;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Http.REST.Attributes;
@@ -36,6 +39,7 @@ namespace Readarr.Api.V1.Books
         protected readonly IEditionService _editionService;
         protected readonly IAddBookService _addBookService;
         private readonly IRefreshBookService _refreshBookService;
+        private readonly IConfigService _configService;
 
         public BookController(IAuthorService authorService,
                           IBookService bookService,
@@ -44,6 +48,7 @@ namespace Readarr.Api.V1.Books
                           ISeriesBookLinkService seriesBookLinkService,
                           IAuthorStatisticsService authorStatisticsService,
                           IRefreshBookService refreshBookService,
+                          IConfigService configService,
                           IMapCoversToLocal coverMapper,
                           IUpgradableSpecification upgradableSpecification,
                           IBroadcastSignalRMessage signalRBroadcaster,
@@ -56,6 +61,7 @@ namespace Readarr.Api.V1.Books
             _editionService = editionService;
             _addBookService = addBookService;
             _refreshBookService = refreshBookService;
+            _configService = configService;
 
             PostValidator.RuleFor(s => s.ForeignBookId).NotEmpty();
             PostValidator.RuleFor(s => s.Author.QualityProfileId).SetValidator(qualityProfileExistsValidator);
@@ -161,11 +167,66 @@ namespace Readarr.Api.V1.Books
 
             _refreshBookService.RefreshBookInfo(book);
 
+            var editions = _editionService.GetEditionsByBook(id);
+            var preferredEdition = GetPreferredEdition(editions);
+            if (preferredEdition != null && !preferredEdition.Monitored)
+            {
+                _editionService.SetMonitored(preferredEdition);
+            }
+
             var refreshed = _bookService.GetBook(id);
             _coverMapper.DeleteBookCovers(refreshed.Id);
             _coverMapper.EnsureBookCovers(refreshed);
 
             return Accepted(MapToResource(refreshed, true));
+        }
+
+        private Edition GetPreferredEdition(List<Edition> editions)
+        {
+            if (editions == null || editions.Count == 0)
+            {
+                return null;
+            }
+
+            var isoLanguage = IsoLanguages.Get((Language)_configService.UILanguage) ?? IsoLanguages.Get(Language.English);
+            if (isoLanguage == null)
+            {
+                return null;
+            }
+
+            return editions
+                .Where(edition => LanguageMatches(edition.Language, isoLanguage))
+                .OrderByDescending(edition => edition.Images?.Any() == true)
+                .ThenByDescending(edition => edition.Overview.IsNotNullOrWhiteSpace())
+                .FirstOrDefault();
+        }
+
+        private static bool LanguageMatches(string editionLanguage, IsoLanguage uiLanguage)
+        {
+            if (editionLanguage.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            var normalized = editionLanguage.Trim().Replace('_', '-').ToLowerInvariant();
+            var uiTwoLetter = uiLanguage.TwoLetterCode?.ToLowerInvariant();
+            var uiThreeLetter = uiLanguage.ThreeLetterCode?.ToLowerInvariant();
+            var uiName = uiLanguage.EnglishName?.ToLowerInvariant();
+
+            if (normalized == uiTwoLetter ||
+                normalized == uiThreeLetter ||
+                normalized == uiName)
+            {
+                return true;
+            }
+
+            if (uiTwoLetter.IsNotNullOrWhiteSpace() && normalized.StartsWith(uiTwoLetter + "-"))
+            {
+                return true;
+            }
+
+            var iso = IsoLanguages.Find(normalized);
+            return iso != null && iso.Language == uiLanguage.Language;
         }
 
         [RestPostById]
