@@ -11,14 +11,51 @@ import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 import translate from 'Utilities/String/translate';
 import styles from './BookFileReaderModal.css';
 
+const JSZIP_SCRIPT_PATH = '/Content/Scripts/jszip.min.js';
 const EPUB_SCRIPT_PATH = '/Content/Scripts/epub.min.js';
+let jszipLoadPromise;
 let epubLoadPromise;
 
-function getEpubScriptUrl() {
+function getScriptUrl(scriptPath) {
   const apiKey = window.Readarr && window.Readarr.apiKey;
   const query = apiKey ? `?apikey=${encodeURIComponent(apiKey)}` : '';
 
-  return getPathWithUrlBase(`${EPUB_SCRIPT_PATH}${query}`);
+  return getPathWithUrlBase(`${scriptPath}${query}`);
+}
+
+function getJsZipScriptUrl() {
+  return getScriptUrl(JSZIP_SCRIPT_PATH);
+}
+
+function getEpubScriptUrl() {
+  return getScriptUrl(EPUB_SCRIPT_PATH);
+}
+
+function loadJsZipScript() {
+  if (window.JSZip) {
+    return Promise.resolve();
+  }
+
+  if (jszipLoadPromise) {
+    return jszipLoadPromise;
+  }
+
+  jszipLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = getJsZipScriptUrl();
+    script.async = true;
+    script.onload = () => {
+      if (window.JSZip) {
+        resolve();
+      } else {
+        reject(new Error('JSZip unavailable'));
+      }
+    };
+    script.onerror = () => reject(new Error('Failed to load JSZip'));
+    document.body.appendChild(script);
+  });
+
+  return jszipLoadPromise;
 }
 
 function loadEpubScript() {
@@ -91,7 +128,8 @@ class BookFileReaderModal extends Component {
 
     this.isReaderActive = true;
 
-    loadEpubScript()
+    loadJsZipScript()
+      .then(() => loadEpubScript())
       .then(() => {
         if (!this.isReaderActive || !window.ePub)
         {

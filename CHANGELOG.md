@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.101
+- Summary: load JSZip before the EPUB reader so ebook rendering works.
+- Why: epub.js depends on JSZip, and missing it can result in a blank reader.
+- Impact: EPUBs render in the modal once JSZip loads with the reader script.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/Content/Scripts/jszip.min.js, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB from the Files tab, and confirm the reader displays.
+
 ## 1.2.100
 - Summary: fix EPUB reader rendering in the modal and use an open-book icon for Read actions.
 - Why: the reader modal body used a scrolling wrapper that collapsed the reader, and the icon should better match the action.
