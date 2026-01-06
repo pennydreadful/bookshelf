@@ -1,17 +1,16 @@
-[2026-01-06 22:57:34 UTC] Stopping Bookdarr
-[2026-01-06 22:57:34 UTC] Updating repo
+[2026-01-06 22:59:58 UTC] Stopping Bookdarr
+[2026-01-06 22:59:58 UTC] Updating repo
 From https://github.com/thashiznit2003/Bookdarr
-   3d7ea3136..04ca02dd6  develop                -> origin/develop
- * [new tag]             snapshot-20260106-2256 -> snapshot-20260106-2256
+   04ca02dd6..960d1b17f  develop    -> origin/develop
 Already on 'develop'
-Your branch is behind 'origin/develop' by 2 commits, and can be fast-forwarded.
+Your branch is behind 'origin/develop' by 1 commit, and can be fast-forwarded.
   (use "git pull" to update your local branch)
-HEAD is now at 04ca02dd6 Fix file details history styles and bump version
-[2026-01-06 22:57:35 UTC] Building
+HEAD is now at 960d1b17f Add files via upload
+[2026-01-06 22:59:59 UTC] Building
 yarn install v1.22.19
 [1/4] Resolving packages...
 success Already up-to-date.
-Done in 0.29s.
+Done in 0.28s.
 yarn run v1.22.19
 $ yarn clean
 $ rimraf ./_output/UI && rimraf --glob "**/*.js.map"
@@ -129,6 +128,6 @@ Generated code for /opt/bookdarr-dev/node_modules/css-modules-typescript-loader/
  @ ./frontend/src/bootstrap.tsx 6:0-28 11:42-45
  @ ./frontend/src/index.ts 15:10-31
 
-webpack 5.95.0 compiled with 2 errors in 5484 ms
+webpack 5.95.0 compiled with 2 errors in 5571 ms
 error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
