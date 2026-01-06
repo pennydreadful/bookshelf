@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.114
+- Summary: keep the edit-modal edition switch from navigating to a 404 page.
+- Why: changing editions can alter the book slug, leaving the current route stale.
+- Impact: after selecting an edition, the UI updates the book state and redirects to the new slug if needed.
+- Files: frontend/src/Components/Form/BookEditionSelectInputConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, change an edition, and confirm the book page stays on the updated title.
+
 ## 1.2.113
 - Summary: fix using-directive ordering after adding edition lookup endpoints.
 - Why: style analysis failed the build.

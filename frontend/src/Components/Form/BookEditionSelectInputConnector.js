@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
+import { updateItem } from 'Store/Actions/baseActions';
 import { fetchEditions } from 'Store/Actions/editionActions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import titleCase from 'Utilities/String/titleCase';
@@ -134,7 +136,9 @@ class BookEditionSelectInputConnector extends Component {
   applyLookupEdition = (edition) => {
     const {
       bookId,
-      fetchEditions
+      fetchEditions,
+      push,
+      updateBookItem
     } = this.props;
 
     if (!bookId || !edition?.foreignBookId) {
@@ -154,8 +158,14 @@ class BookEditionSelectInputConnector extends Component {
       })
     }).request;
 
-    request.done(() => {
+    request.done((data) => {
       this.setState({ lookupEditions: null });
+      if (data?.id && updateBookItem) {
+        updateBookItem(data);
+      }
+      if (data?.titleSlug && push) {
+        push(`/book/${data.titleSlug}`);
+      }
       if (fetchEditions) {
         fetchEditions({ bookId });
       }
@@ -219,16 +229,22 @@ BookEditionSelectInputConnector.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   bookEditions: PropTypes.object,
-  isDisabled: PropTypes.bool
+  isDisabled: PropTypes.bool,
+  push: PropTypes.func,
+  updateBookItem: PropTypes.func
 };
 
 BookEditionSelectInputConnector.defaultProps = {
   fetchEditions: null,
-  isDisabled: false
+  isDisabled: false,
+  push: null,
+  updateBookItem: null
 };
 
 const mapDispatchToProps = {
-  fetchEditions
+  fetchEditions,
+  push,
+  updateBookItem: (item) => updateItem({ section: 'books', ...item })
 };
 
 export default connect(null, mapDispatchToProps)(BookEditionSelectInputConnector);
