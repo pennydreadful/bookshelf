@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.111
+- Summary: fix using-directive ordering in the book controller and bump the app version.
+- Why: style analysis failed the build.
+- Impact: build passes style checks for Readarr.Api.V1.
+- Files: src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry the build on the VM.
+
 ## 1.2.110
 - Summary: prefer a UI-language edition when refreshing book metadata.
 - Why: some books return non-English descriptions unless the edition language is switched.
