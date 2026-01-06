@@ -1,7 +1,6 @@
 .audioTags {
   padding-top: 15px;
   padding-bottom: 15px;
-  /* border-top: 1px solid $borderColor; */
 }
 
 .filename {
@@ -17,7 +16,7 @@
 
 .historyTitle {
   font-size: $defaultFontSize;
-  font-weight: $semibold;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
@@ -44,6 +43,6 @@
 
 .historyItemTitle {
   font-size: $defaultFontSize;
-  font-weight: $semibold;
+  font-weight: 600;
   margin-bottom: 8px;
 }
