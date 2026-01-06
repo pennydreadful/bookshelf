@@ -19,6 +19,8 @@ Use this file to onboard a new Codex chat.
 - Always put commands or code the user should run in fenced code blocks.
 - Avoid adding repeated `apt-get update` steps in install/build flows.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
+- Push to GitHub after every update.
+- Provide update commands in fenced code blocks.
 
 ## Build/Style Notes
 - StyleCop is strict. In `BookInfoProxy.cs`, keep:
