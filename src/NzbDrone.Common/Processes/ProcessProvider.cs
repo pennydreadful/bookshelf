@@ -110,7 +110,13 @@ namespace NzbDrone.Common.Processes
         {
             (path, args) = GetPathAndArgs(path, args);
 
-            var logger = LogManager.GetLogger(new FileInfo(path).Name);
+            var loggerName = Path.GetFileName(path);
+            if (string.IsNullOrWhiteSpace(loggerName))
+            {
+                loggerName = path;
+            }
+
+            var logger = LogManager.GetLogger(loggerName);
 
             var startInfo = new ProcessStartInfo(path, args)
             {
@@ -122,6 +128,7 @@ namespace NzbDrone.Common.Processes
                 StandardOutputEncoding = Encoding.UTF8,
                 StandardErrorEncoding = Encoding.UTF8
             };
+            startInfo.WorkingDirectory = GetSafeWorkingDirectory();
 
             if (environmentVariables != null)
             {
@@ -359,6 +366,29 @@ namespace NzbDrone.Common.Processes
             }
 
             return processes;
+        }
+
+        private static string GetSafeWorkingDirectory()
+        {
+            try
+            {
+                var current = Directory.GetCurrentDirectory();
+                if (!string.IsNullOrWhiteSpace(current) && Directory.Exists(current))
+                {
+                    return current;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            if (!string.IsNullOrWhiteSpace(baseDirectory) && Directory.Exists(baseDirectory))
+            {
+                return baseDirectory;
+            }
+
+            return Path.GetTempPath();
         }
 
         private (string Path, string Args) GetPathAndArgs(string path, string args)
