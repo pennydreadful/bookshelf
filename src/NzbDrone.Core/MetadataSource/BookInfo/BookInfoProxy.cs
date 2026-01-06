@@ -37,6 +37,9 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private const int GoogleBooksAuthorMaxResults = 200;
         private const int GoogleBooksAuthorMinResults = 5;
         private const int AuthorImageCacheDays = 7;
+        private const string OpenLibrarySeriesPrefix = "ol-series:";
+        private const int OpenLibraryMaxGenres = 25;
+        private const int OpenLibraryMaxCovers = 1;
         private static readonly JsonSerializerOptions SerializerSettings = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false,
@@ -55,6 +58,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private readonly IHttpRequestBuilderFactory _googleBooksRequestBuilder;
         private readonly ICached<HashSet<string>> _cache;
         private readonly ICached<AuthorExtraMetadata> _authorExtrasCache;
+        private readonly ICached<OpenLibraryBookData> _openLibraryBookCache;
         private readonly CachingService _authorCache;
 
         public BookInfoProxy(IHttpClient httpClient,
@@ -78,6 +82,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             _requestBuilder = requestBuilder;
             _cache = cacheManager.GetCache<HashSet<string>>(GetType());
             _authorExtrasCache = cacheManager.GetCache<AuthorExtraMetadata>(GetType(), "authorImage");
+            _openLibraryBookCache = cacheManager.GetCache<OpenLibraryBookData>(GetType(), "openLibraryBook");
             _logger = logger;
 
             _googleBooksRequestBuilder = new HttpRequestBuilder("https://www.googleapis.com/books/v1/{route}")
@@ -1128,6 +1133,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var authorMetadata = book.AuthorMetadata.Value;
+            TryEnrichGoogleBookFromOpenLibrary(book, GetOpenLibraryIsbn(volume.VolumeInfo?.IndustryIdentifiers));
             return Tuple.Create(authorMetadata.ForeignAuthorId, book, new List<AuthorMetadata> { authorMetadata });
         }
 
@@ -1152,7 +1158,76 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 book.AuthorMetadata = metadata;
             }
 
+            TryEnrichGoogleAuthorBooksFromOpenLibrary(author);
+
             return author;
+        }
+
+        private void TryEnrichGoogleBookFromOpenLibrary(Book book, string isbnOverride = null)
+        {
+            if (book?.Editions?.Value == null || !book.Editions.Value.Any())
+            {
+                return;
+            }
+
+            var edition = GetPrimaryEdition(book);
+            if (edition == null)
+            {
+                return;
+            }
+
+            var isbn = isbnOverride.IsNotNullOrWhiteSpace() ? isbnOverride : edition.Isbn13;
+            var data = GetOpenLibraryBookData(isbn);
+            if (data == null)
+            {
+                return;
+            }
+
+            ApplyOpenLibraryMetadata(book, edition, data);
+        }
+
+        private void TryEnrichGoogleAuthorBooksFromOpenLibrary(Author author)
+        {
+            var books = author?.Books?.Value;
+            if (books == null || !books.Any())
+            {
+                return;
+            }
+
+            var seriesById = new Dictionary<string, Series>(StringComparer.OrdinalIgnoreCase);
+            if (author.Series?.Value != null)
+            {
+                foreach (var series in author.Series.Value)
+                {
+                    if (series?.ForeignSeriesId.IsNullOrWhiteSpace() == false)
+                    {
+                        seriesById[series.ForeignSeriesId] = series;
+                    }
+                }
+            }
+
+            foreach (var book in books)
+            {
+                var edition = GetPrimaryEdition(book);
+                if (edition == null)
+                {
+                    continue;
+                }
+
+                var data = GetOpenLibraryBookData(edition.Isbn13);
+                if (data == null)
+                {
+                    continue;
+                }
+
+                ApplyOpenLibraryMetadata(book, edition, data);
+                ApplyOpenLibrarySeries(book, author, data, seriesById);
+            }
+
+            if (seriesById.Any())
+            {
+                author.Series = seriesById.Values.ToList();
+            }
         }
 
         private GoogleBooksVolume GetGoogleVolume(string volumeId)
@@ -1275,6 +1350,471 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             return book;
+        }
+
+        private static Edition GetPrimaryEdition(Book book)
+        {
+            return book?.Editions?.Value?.FirstOrDefault(x => x.Monitored) ?? book?.Editions?.Value?.FirstOrDefault();
+        }
+
+        private void ApplyOpenLibraryMetadata(Book book, Edition edition, OpenLibraryBookData data)
+        {
+            if (book == null || edition == null || data == null)
+            {
+                return;
+            }
+
+            if (IsPlaceholderTitle(book.Title) && data.WorkTitle.IsNotNullOrWhiteSpace())
+            {
+                book.Title = data.WorkTitle;
+            }
+
+            if (IsPlaceholderTitle(edition.Title) && data.EditionTitle.IsNotNullOrWhiteSpace())
+            {
+                edition.Title = data.EditionTitle;
+            }
+
+            if (!book.ReleaseDate.HasValue)
+            {
+                book.ReleaseDate = data.FirstPublishDate ?? data.PublishDate;
+            }
+
+            if (!edition.ReleaseDate.HasValue)
+            {
+                edition.ReleaseDate = data.PublishDate ?? data.FirstPublishDate;
+            }
+
+            if ((book.Genres == null || !book.Genres.Any()) && data.Subjects?.Any() == true)
+            {
+                book.Genres = data.Subjects;
+            }
+
+            if (edition.Publisher.IsNullOrWhiteSpace() && data.Publisher.IsNotNullOrWhiteSpace())
+            {
+                edition.Publisher = data.Publisher;
+            }
+
+            if (edition.PageCount == 0 && data.PageCount.HasValue)
+            {
+                edition.PageCount = data.PageCount.Value;
+            }
+
+            if (edition.Overview.IsNullOrWhiteSpace() && data.Description.IsNotNullOrWhiteSpace())
+            {
+                edition.Overview = data.Description;
+            }
+
+            if (edition.Language.IsNullOrWhiteSpace() && data.Language.IsNotNullOrWhiteSpace())
+            {
+                edition.Language = data.Language;
+            }
+
+            edition.Images ??= new List<MediaCover.MediaCover>();
+            if (!edition.Images.Any())
+            {
+                foreach (var image in BuildOpenLibraryImages(data))
+                {
+                    if (edition.Images.Any(x => x.Url.Equals(image.Url, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    edition.Images.Add(image);
+                }
+            }
+
+            AddOpenLibraryLink(book.Links, data.WorkKey);
+            AddOpenLibraryLink(edition.Links, data.EditionKey ?? data.WorkKey);
+        }
+
+        private void ApplyOpenLibrarySeries(Book book, Author author, OpenLibraryBookData data, IDictionary<string, Series> seriesById)
+        {
+            if (book == null || author?.Metadata?.Value == null || data?.Series?.Any() != true)
+            {
+                return;
+            }
+
+            var links = book.SeriesLinks?.Value ?? new List<SeriesBookLink>();
+            book.SeriesLinks = links;
+
+            foreach (var seriesTitle in data.Series)
+            {
+                if (seriesTitle.IsNullOrWhiteSpace())
+                {
+                    continue;
+                }
+
+                var normalizedTitle = seriesTitle.CleanSpaces();
+                var seriesId = BuildOpenLibrarySeriesId(author.Metadata.Value.ForeignAuthorId, normalizedTitle);
+                if (seriesId.IsNullOrWhiteSpace())
+                {
+                    continue;
+                }
+
+                if (!seriesById.TryGetValue(seriesId, out var series))
+                {
+                    series = new Series
+                    {
+                        ForeignSeriesId = seriesId,
+                        Title = normalizedTitle,
+                        ForeignAuthorId = author.Metadata.Value.ForeignAuthorId,
+                        LinkItems = new List<SeriesBookLink>()
+                    };
+
+                    seriesById[seriesId] = series;
+                }
+
+                var seriesLinks = series.LinkItems?.Value ?? new List<SeriesBookLink>();
+                series.LinkItems = seriesLinks;
+
+                if (links.Any(l => l.Series?.Value?.ForeignSeriesId == seriesId))
+                {
+                    continue;
+                }
+
+                var link = new SeriesBookLink
+                {
+                    Book = book,
+                    Series = series,
+                    IsPrimary = true,
+                    Position = null,
+                    SeriesPosition = 0
+                };
+
+                links.Add(link);
+                seriesLinks.Add(link);
+            }
+        }
+
+        private static string BuildOpenLibrarySeriesId(string authorForeignId, string seriesTitle)
+        {
+            if (authorForeignId.IsNullOrWhiteSpace() || seriesTitle.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var normalized = $"{authorForeignId}:{seriesTitle.Trim().ToLowerInvariant()}";
+            return $"{OpenLibrarySeriesPrefix}{Base64UrlEncode(normalized)}";
+        }
+
+        private static bool IsPlaceholderTitle(string title)
+        {
+            return title.IsNullOrWhiteSpace() || title.Equals("Unknown Title", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string GetOpenLibraryIsbn(List<GoogleBooksIndustryIdentifier> identifiers)
+        {
+            return GetIndustryIdentifier(identifiers, "ISBN_13") ??
+                GetIndustryIdentifier(identifiers, "ISBN_10");
+        }
+
+        private OpenLibraryBookData GetOpenLibraryBookData(string isbn)
+        {
+            var normalizedIsbn = NormalizeOpenLibraryIsbn(isbn);
+            if (normalizedIsbn.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            return _openLibraryBookCache.Get(normalizedIsbn, () =>
+            {
+                try
+                {
+                    return LookupOpenLibraryBookData(normalizedIsbn);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "Open Library lookup failed for ISBN {0}", normalizedIsbn);
+                    return null;
+                }
+            }, TimeSpan.FromDays(1));
+        }
+
+        private OpenLibraryBookData LookupOpenLibraryBookData(string isbn)
+        {
+            var request = new HttpRequestBuilder($"https://openlibrary.org/isbn/{isbn}.json")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get(request);
+            if (response.HasHttpError)
+            {
+                return null;
+            }
+
+            var editionJson = JObject.Parse(response.Content);
+            var data = new OpenLibraryBookData
+            {
+                EditionKey = editionJson["key"]?.ToString(),
+                EditionTitle = editionJson["title"]?.ToString(),
+                Description = GetOpenLibraryDescription(editionJson["description"]),
+                PublishDate = ParseOpenLibraryPublishedDate(editionJson["publish_date"]?.ToString()),
+                Publisher = GetOpenLibraryPublisher(editionJson["publishers"]),
+                PageCount = ParseOpenLibraryPageCount(editionJson["number_of_pages"]),
+                Language = ParseOpenLibraryLanguage(editionJson["languages"]),
+                EditionCoverIds = ParseOpenLibraryCoverIds(editionJson["covers"]),
+                WorkKey = editionJson["works"]?.FirstOrDefault()?["key"]?.ToString()
+            };
+
+            if (data.WorkKey.IsNotNullOrWhiteSpace())
+            {
+                PopulateOpenLibraryWorkData(data);
+            }
+
+            data.Subjects = NormalizeOpenLibrarySubjects(data.Subjects);
+            data.Series = NormalizeOpenLibrarySeries(data.Series);
+
+            return data;
+        }
+
+        private void PopulateOpenLibraryWorkData(OpenLibraryBookData data)
+        {
+            var request = new HttpRequestBuilder($"https://openlibrary.org{data.WorkKey}.json")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get(request);
+            if (response.HasHttpError)
+            {
+                return;
+            }
+
+            var workJson = JObject.Parse(response.Content);
+            data.WorkTitle = workJson["title"]?.ToString();
+            if (data.Description.IsNullOrWhiteSpace())
+            {
+                data.Description = GetOpenLibraryDescription(workJson["description"]);
+            }
+
+            data.FirstPublishDate = ParseOpenLibraryPublishedDate(workJson["first_publish_date"]?.ToString());
+            data.Subjects = ParseOpenLibraryStringList(workJson["subjects"]);
+            data.Series = ParseOpenLibrarySeriesList(workJson["series"]);
+            data.WorkCoverIds = ParseOpenLibraryCoverIds(workJson["covers"]);
+        }
+
+        private static string NormalizeOpenLibraryIsbn(string isbn)
+        {
+            if (isbn.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var normalized = new string(isbn.Where(c => char.IsDigit(c) || c == 'X' || c == 'x').ToArray());
+            if (normalized.Length != 10 && normalized.Length != 13)
+            {
+                return null;
+            }
+
+            return normalized;
+        }
+
+        private static string GetOpenLibraryDescription(JToken token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+
+            if (token.Type == JTokenType.String)
+            {
+                return token.ToString();
+            }
+
+            if (token.Type == JTokenType.Object)
+            {
+                return token["value"]?.ToString();
+            }
+
+            return null;
+        }
+
+        private static string GetOpenLibraryPublisher(JToken token)
+        {
+            if (token is not JArray publishers)
+            {
+                return null;
+            }
+
+            return publishers.FirstOrDefault()?.ToString();
+        }
+
+        private static int? ParseOpenLibraryPageCount(JToken token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+
+            if (token.Type == JTokenType.Integer)
+            {
+                return token.Value<int>();
+            }
+
+            if (int.TryParse(token.ToString(), out var pages))
+            {
+                return pages;
+            }
+
+            return null;
+        }
+
+        private static string ParseOpenLibraryLanguage(JToken token)
+        {
+            var key = token?.FirstOrDefault()?["key"]?.ToString();
+            if (key.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            return key.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+        }
+
+        private static DateTime? ParseOpenLibraryPublishedDate(string publishedDate)
+        {
+            if (publishedDate.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            if (DateTime.TryParse(publishedDate,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal,
+                    out var parsed))
+            {
+                return parsed;
+            }
+
+            return null;
+        }
+
+        private static List<int> ParseOpenLibraryCoverIds(JToken token)
+        {
+            if (token is not JArray covers)
+            {
+                return new List<int>();
+            }
+
+            var results = new List<int>();
+            foreach (var cover in covers)
+            {
+                if (int.TryParse(cover.ToString(), out var id))
+                {
+                    results.Add(id);
+                }
+            }
+
+            return results;
+        }
+
+        private static List<string> ParseOpenLibraryStringList(JToken token)
+        {
+            if (token is not JArray values)
+            {
+                return new List<string>();
+            }
+
+            return values
+                .Select(x => x?.ToString())
+                .Where(x => x.IsNotNullOrWhiteSpace())
+                .ToList();
+        }
+
+        private static List<string> ParseOpenLibrarySeriesList(JToken token)
+        {
+            if (token == null)
+            {
+                return new List<string>();
+            }
+
+            if (token.Type == JTokenType.String)
+            {
+                return new List<string> { token.ToString() };
+            }
+
+            if (token is JArray values)
+            {
+                return values
+                    .Select(x => x?.ToString())
+                    .Where(x => x.IsNotNullOrWhiteSpace())
+                    .ToList();
+            }
+
+            return new List<string>();
+        }
+
+        private static List<string> NormalizeOpenLibrarySubjects(IEnumerable<string> subjects)
+        {
+            if (subjects == null)
+            {
+                return new List<string>();
+            }
+
+            return subjects
+                .Select(x => x.CleanSpaces())
+                .Where(x => x.IsNotNullOrWhiteSpace())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Take(OpenLibraryMaxGenres)
+                .ToList();
+        }
+
+        private static List<string> NormalizeOpenLibrarySeries(IEnumerable<string> series)
+        {
+            if (series == null)
+            {
+                return new List<string>();
+            }
+
+            return series
+                .Select(x => x.CleanSpaces())
+                .Where(x => x.IsNotNullOrWhiteSpace())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        private static List<MediaCover.MediaCover> BuildOpenLibraryImages(OpenLibraryBookData data)
+        {
+            var coverIds = data?.EditionCoverIds?.Any() == true ? data.EditionCoverIds : data?.WorkCoverIds;
+            if (coverIds?.Any() != true)
+            {
+                return new List<MediaCover.MediaCover>();
+            }
+
+            return coverIds
+                .Distinct()
+                .Take(OpenLibraryMaxCovers)
+                .Select(id => new MediaCover.MediaCover
+                {
+                    Url = $"https://covers.openlibrary.org/b/id/{id}-L.jpg",
+                    CoverType = MediaCoverTypes.Cover
+                })
+                .ToList();
+        }
+
+        private static void AddOpenLibraryLink(List<Links> links, string key)
+        {
+            if (links == null || key.IsNullOrWhiteSpace())
+            {
+                return;
+            }
+
+            var url = key.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                ? key
+                : $"https://openlibrary.org{key}";
+
+            if (links.Any(x => x.Url.Equals(url, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            links.Add(new Links
+            {
+                Name = "Open Library",
+                Url = url
+            });
         }
 
         private HttpRequest BuildGoogleBooksRequest(string route, Dictionary<string, string> queryParams)
@@ -1773,6 +2313,24 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             return cleaned;
+        }
+
+        private class OpenLibraryBookData
+        {
+            public string EditionKey { get; set; }
+            public string WorkKey { get; set; }
+            public string EditionTitle { get; set; }
+            public string WorkTitle { get; set; }
+            public string Description { get; set; }
+            public DateTime? PublishDate { get; set; }
+            public DateTime? FirstPublishDate { get; set; }
+            public string Publisher { get; set; }
+            public int? PageCount { get; set; }
+            public string Language { get; set; }
+            public List<string> Subjects { get; set; } = new List<string>();
+            public List<string> Series { get; set; } = new List<string>();
+            public List<int> EditionCoverIds { get; set; } = new List<int>();
+            public List<int> WorkCoverIds { get; set; } = new List<int>();
         }
 
         private class WikipediaSummary
