@@ -11,7 +11,7 @@
 }
 
 .history {
-  border-top: 1px solid $borderColor;
+  border-top: 1px solid var(--borderColor);
   padding-top: 15px;
 }
 
@@ -22,11 +22,11 @@
 }
 
 .historyError {
-  color: $dangerColor;
+  color: var(--dangerColor);
 }
 
 .historyEmpty {
-  color: $dimColor;
+  color: var(--dimColor);
 }
 
 .historyItems {
@@ -36,9 +36,9 @@
 }
 
 .historyItem {
-  background: $panelBackgroundColor;
-  border: 1px solid $borderColor;
-  border-radius: $borderRadius;
+  background: var(--cardBackgroundColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
   padding: 10px 12px;
 }
 
