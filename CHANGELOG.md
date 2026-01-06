@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.103
+- Summary: add EPUB page navigation controls and bump the app version.
+- Why: the reader showed only the cover without navigation controls.
+- Impact: EPUB reader now includes previous/next arrow buttons to turn pages, and the UI reports 1.2.103.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/BookFileReaderModal.css, frontend/src/BookFile/BookFileReaderModal.css.d.ts, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm page turns using the left/right arrows.
+
 ## 1.2.102
 - Summary: improve ebook reader resilience, handle unsupported formats, and bump the app version.
 - Why: the reader could fail silently for unsupported or flaky loads, and the UI version needed to reflect updates.

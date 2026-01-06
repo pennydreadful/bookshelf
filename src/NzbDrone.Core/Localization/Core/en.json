@@ -790,6 +790,8 @@
   "ReadEbook": "Read ebook",
   "PlayAudio": "Play audio",
   "AudiobookPlayer": "Audiobook Player",
+  "PreviousPage": "Previous page",
+  "NextPage": "Next page",
   "EbookReader": "Ebook Reader",
   "EbookReaderLoadFailed": "Unable to load the ebook reader. Check your API key or refresh the page.",
   "EbookReaderUnsupportedFormat": "Unsupported ebook format. Only EPUB and PDF files can be opened.",

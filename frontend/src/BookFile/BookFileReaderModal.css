@@ -1,11 +1,46 @@
 .body {
   height: 70vh;
+  position: relative;
+}
+
+.readerContainer {
+  height: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .reader {
   height: 100%;
   width: 100%;
   background: #1f1f1f;
+}
+
+.navButton {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 999px;
+  color: #f1f1f1;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  z-index: 2;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+  }
+}
+
+.navButtonLeft {
+  left: 12px;
+}
+
+.navButtonRight {
+  right: 12px;
 }
 
 .loadError {
