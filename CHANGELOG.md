@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.113
+- Summary: fix using-directive ordering after adding edition lookup endpoints.
+- Why: style analysis failed the build.
+- Impact: Readarr.Api.V1 builds cleanly again.
+- Files: src/Readarr.Api.V1/Books/BookController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh and retry the build on the VM.
+
 ## 1.2.112
 - Summary: enable edition lookup from the edit modal and allow switching to a newly searched edition.
 - Why: users can get stuck with a wrong-language edition and need a way to re-search metadata.
