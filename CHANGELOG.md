@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.100
+- Summary: fix EPUB reader rendering in the modal and use an open-book icon for Read actions.
+- Why: the reader modal body used a scrolling wrapper that collapsed the reader, and the icon should better match the action.
+- Impact: EPUBs render inside the modal instead of a blank panel, and the Files tab shows an open-book Read icon.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/Editor/BookFileActionsCell.js, frontend/src/Helpers/Props/icons.js, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB from the Files tab, and confirm the reader renders with the open-book icon.
+
 ## 1.2.99
 - Summary: harden audiobook detection and load EPUBs via a blob URL.
 - Why: some M4B rows still hid Play, and the EPUB modal could render blank despite a valid stream.

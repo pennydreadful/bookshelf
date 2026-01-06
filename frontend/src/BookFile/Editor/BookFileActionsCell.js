@@ -134,7 +134,7 @@ class BookFileActionsCell extends Component {
         {
           path && isEbook &&
             <IconButton
-              name={icons.BOOK_READER}
+              name={icons.BOOK_OPEN}
               title={translate('ReadEbook')}
               onPress={this.onReaderPress}
             />

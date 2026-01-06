@@ -28,6 +28,7 @@ import {
   faBars as fasBars,
   faBolt as fasBolt,
   faBook as fasBook,
+  faBookOpen as fasBookOpen,
   faBookmark as fasBookmark,
   faBookReader as fasBookReader,
   faBroadcastTower as fasBroadcastTower,
@@ -124,6 +125,7 @@ export const ARROW_UP = fasArrowCircleUp;
 export const BACKUP = farFileArchive;
 export const BAN = fasBan;
 export const BOOK = fasBook;
+export const BOOK_OPEN = fasBookOpen;
 export const BOOK_READER = fasBookReader;
 export const BUG = fasBug;
 export const CALENDAR = fasCalendarAlt;

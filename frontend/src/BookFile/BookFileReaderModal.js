@@ -6,6 +6,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
+import { scrollDirections } from 'Helpers/Props';
 import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 import translate from 'Utilities/String/translate';
 import styles from './BookFileReaderModal.css';
@@ -191,7 +192,10 @@ class BookFileReaderModal extends Component {
             {translate('EbookReader')}
           </ModalHeader>
 
-          <ModalBody className={styles.body}>
+          <ModalBody
+            className={styles.body}
+            scrollDirection={scrollDirections.NONE}
+          >
             {
               isEpub ?
                 (
