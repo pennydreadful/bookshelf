@@ -15,6 +15,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
@@ -40,6 +41,7 @@ namespace Readarr.Api.V1.Books
         protected readonly IAddBookService _addBookService;
         private readonly IRefreshBookService _refreshBookService;
         private readonly IConfigService _configService;
+        private readonly ISearchForNewBook _bookSearchProxy;
 
         public BookController(IAuthorService authorService,
                           IBookService bookService,
@@ -49,6 +51,7 @@ namespace Readarr.Api.V1.Books
                           IAuthorStatisticsService authorStatisticsService,
                           IRefreshBookService refreshBookService,
                           IConfigService configService,
+                          ISearchForNewBook bookSearchProxy,
                           IMapCoversToLocal coverMapper,
                           IUpgradableSpecification upgradableSpecification,
                           IBroadcastSignalRMessage signalRBroadcaster,
@@ -62,6 +65,7 @@ namespace Readarr.Api.V1.Books
             _addBookService = addBookService;
             _refreshBookService = refreshBookService;
             _configService = configService;
+            _bookSearchProxy = bookSearchProxy;
 
             PostValidator.RuleFor(s => s.ForeignBookId).NotEmpty();
             PostValidator.RuleFor(s => s.Author.QualityProfileId).SetValidator(qualityProfileExistsValidator);
@@ -172,6 +176,89 @@ namespace Readarr.Api.V1.Books
             if (preferredEdition != null && !preferredEdition.Monitored)
             {
                 _editionService.SetMonitored(preferredEdition);
+            }
+
+            var refreshed = _bookService.GetBook(id);
+            _coverMapper.DeleteBookCovers(refreshed.Id);
+            _coverMapper.EnsureBookCovers(refreshed);
+
+            return Accepted(MapToResource(refreshed, true));
+        }
+
+        [HttpGet("{id:int}/edition-lookup")]
+        public ActionResult<List<EditionLookupResource>> LookupEditions(int id)
+        {
+            var book = _bookService.GetBook(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var author = book.Author?.Value ?? _authorService.GetAuthor(book.AuthorId);
+            var authorName = author?.Name;
+
+            var results = _bookSearchProxy.SearchForNewBook(book.Title, authorName, true);
+            var lookupResults = new List<EditionLookupResource>();
+
+            foreach (var result in results.Take(5))
+            {
+                var resultAuthorName = result.Author?.Value?.Name ?? authorName;
+                var editions = result.Editions?.Value ?? new List<Edition>();
+
+                foreach (var edition in editions)
+                {
+                    lookupResults.Add(new EditionLookupResource
+                    {
+                        ForeignBookId = result.ForeignBookId,
+                        ForeignEditionId = edition.ForeignEditionId,
+                        BookTitle = result.Title,
+                        AuthorName = resultAuthorName,
+                        Title = edition.Title,
+                        Disambiguation = edition.Disambiguation,
+                        Language = edition.Language,
+                        Publisher = edition.Publisher,
+                        Isbn13 = edition.Isbn13,
+                        Format = edition.Format,
+                        IsEbook = edition.IsEbook,
+                        PageCount = edition.PageCount,
+                        ReleaseDate = edition.ReleaseDate,
+                        Ratings = edition.Ratings
+                    });
+                }
+            }
+
+            return lookupResults
+                .DistinctBy(result => result.ForeignEditionId)
+                .OrderBy(result => result.BookTitle)
+                .ThenBy(result => result.Title)
+                .ToList();
+        }
+
+        [HttpPost("{id:int}/select-edition")]
+        public ActionResult<BookResource> SelectEdition(int id, [FromBody] SelectEditionResource resource)
+        {
+            if (resource?.ForeignBookId.IsNullOrWhiteSpace() != false ||
+                resource.ForeignEditionId.IsNullOrWhiteSpace())
+            {
+                return BadRequest();
+            }
+
+            var book = _bookService.GetBook(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            book.ForeignBookId = resource.ForeignBookId;
+            book.AnyEditionOk = false;
+
+            _refreshBookService.RefreshBookInfo(book);
+
+            var editions = _editionService.GetEditionsByBook(id);
+            var selectedEdition = editions.SingleOrDefault(edition => edition.ForeignEditionId == resource.ForeignEditionId);
+            if (selectedEdition != null)
+            {
+                _editionService.SetMonitored(selectedEdition);
             }
 
             var refreshed = _bookService.GetBook(id);

@@ -29,7 +29,8 @@ class SelectInput extends Component {
       hasError,
       hasWarning,
       autoFocus,
-      onBlur
+      onBlur,
+      onFocus
     } = this.props;
 
     return (
@@ -46,6 +47,7 @@ class SelectInput extends Component {
         autoFocus={autoFocus}
         onChange={this.onChange}
         onBlur={onBlur}
+        onFocus={onFocus}
       >
         {
           values.map((option) => {
@@ -84,7 +86,8 @@ SelectInput.propTypes = {
   hasWarning: PropTypes.bool,
   autoFocus: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func
 };
 
 SelectInput.defaultProps = {

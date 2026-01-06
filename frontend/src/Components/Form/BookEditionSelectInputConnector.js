@@ -2,92 +2,233 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
+import { fetchEditions } from 'Store/Actions/editionActions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import titleCase from 'Utilities/String/titleCase';
 import SelectInput from './SelectInput';
 
-function createMapStateToProps() {
-  return createSelector(
-    (state, { bookEditions }) => bookEditions,
-    (bookEditions) => {
-      const values = _.map(bookEditions.value, (bookEdition) => {
+class BookEditionSelectInputConnector extends Component {
+  state = {
+    lookupEditions: null,
+    isLookingUp: false,
+    isApplying: false
+  };
 
-        let value = `${bookEdition.title}`;
+  componentWillUnmount() {
+    if (this._abortLookup) {
+      this._abortLookup();
+      this._abortLookup = null;
+    }
+  }
 
-        if (bookEdition.disambiguation) {
-          value = `${value} (${titleCase(bookEdition.disambiguation)})`;
-        }
+  getSourceEditions = () => {
+    const bookEditions = this.props.bookEditions?.value ?? [];
+    const lookupEditions = this.state.lookupEditions;
 
-        const extras = [];
-        if (bookEdition.language) {
-          extras.push(bookEdition.language);
-        }
-        if (bookEdition.publisher) {
-          extras.push(bookEdition.publisher);
-        }
-        if (bookEdition.isbn13) {
-          extras.push(bookEdition.isbn13);
-        }
-        if (bookEdition.format) {
-          extras.push(bookEdition.format);
-        }
-        if (bookEdition.pageCount > 0) {
-          extras.push(`${bookEdition.pageCount}p`);
-        }
+    if (!lookupEditions || !lookupEditions.length) {
+      return bookEditions;
+    }
 
-        if (extras) {
-          value = `${value} [${extras.join(', ')}]`;
-        }
+    const merged = [...lookupEditions];
 
-        return {
-          key: bookEdition.foreignEditionId,
-          value
-        };
-      });
+    bookEditions.forEach((edition) => {
+      if (!merged.some((item) => item.foreignEditionId === edition.foreignEditionId)) {
+        merged.push(edition);
+      }
+    });
 
-      const sortedValues = _.orderBy(values, ['value']);
+    return merged;
+  };
 
-      const value = _.find(bookEditions.value, { monitored: true }).foreignEditionId;
+  buildValues = (editions) => {
+    const values = _.map(editions, (bookEdition) => {
+
+      let value = `${bookEdition.title}`;
+
+      if (bookEdition.disambiguation) {
+        value = `${value} (${titleCase(bookEdition.disambiguation)})`;
+      }
+
+      const extras = [];
+      if (bookEdition.language) {
+        extras.push(bookEdition.language);
+      }
+      if (bookEdition.publisher) {
+        extras.push(bookEdition.publisher);
+      }
+      if (bookEdition.isbn13) {
+        extras.push(bookEdition.isbn13);
+      }
+      if (bookEdition.format) {
+        extras.push(bookEdition.format);
+      }
+      if (bookEdition.pageCount > 0) {
+        extras.push(`${bookEdition.pageCount}p`);
+      }
+      if (bookEdition.bookTitle) {
+        extras.push(bookEdition.bookTitle);
+      }
+      if (bookEdition.authorName) {
+        extras.push(bookEdition.authorName);
+      }
+
+      if (extras.length) {
+        value = `${value} [${extras.join(', ')}]`;
+      }
 
       return {
-        values: sortedValues,
+        key: bookEdition.foreignEditionId,
         value
       };
-    }
-  );
-}
+    });
 
-class BookEditionSelectInputConnector extends Component {
+    return _.orderBy(values, ['value']);
+  };
+
+  getSelectedValue = () => {
+    const bookEditions = this.props.bookEditions?.value ?? [];
+    const monitored = _.find(bookEditions, { monitored: true });
+
+    if (monitored) {
+      return monitored.foreignEditionId;
+    }
+
+    const sourceEditions = this.getSourceEditions();
+    return sourceEditions[0]?.foreignEditionId ?? '';
+  };
+
+  lookupEditions = () => {
+    const { bookId } = this.props;
+
+    if (!bookId || this.state.isLookingUp) {
+      return;
+    }
+
+    if (this._abortLookup) {
+      this._abortLookup();
+    }
+
+    this.setState({ isLookingUp: true });
+
+    const { request, abortRequest } = createAjaxRequest({
+      url: `/book/${bookId}/edition-lookup`,
+      dataType: 'json'
+    });
+
+    this._abortLookup = abortRequest;
+
+    request.done((data) => {
+      this._abortLookup = null;
+      this.setState({
+        lookupEditions: Array.isArray(data) ? data : [],
+        isLookingUp: false
+      });
+    });
+
+    request.fail(() => {
+      this._abortLookup = null;
+      this.setState({ isLookingUp: false });
+    });
+  };
+
+  applyLookupEdition = (edition) => {
+    const {
+      bookId,
+      fetchEditions
+    } = this.props;
+
+    if (!bookId || !edition?.foreignBookId) {
+      return;
+    }
+
+    this.setState({ isApplying: true });
+
+    const request = createAjaxRequest({
+      url: `/book/${bookId}/select-edition`,
+      method: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        foreignBookId: edition.foreignBookId,
+        foreignEditionId: edition.foreignEditionId
+      })
+    }).request;
+
+    request.done(() => {
+      this.setState({ lookupEditions: null });
+      if (fetchEditions) {
+        fetchEditions({ bookId });
+      }
+    });
+
+    request.always(() => {
+      this.setState({ isApplying: false });
+    });
+  };
 
   //
   // Listeners
 
   onChange = ({ name, value }) => {
-    const {
-      bookEditions
-    } = this.props;
+    const sourceEditions = this.getSourceEditions();
+    const selectedEdition = sourceEditions.find((edition) => edition.foreignEditionId === value);
 
-    const updatedEditions = _.map(bookEditions.value, (e) => ({ ...e, monitored: false }));
-    _.find(updatedEditions, { foreignEditionId: value }).monitored = true;
+    if (!selectedEdition) {
+      return;
+    }
+
+    if (selectedEdition.foreignBookId) {
+      this.applyLookupEdition(selectedEdition);
+      return;
+    }
+
+    const updatedEditions = sourceEditions.map((edition) => ({
+      ...edition,
+      monitored: edition.foreignEditionId === value
+    }));
 
     this.props.onChange({ name, value: updatedEditions });
   };
 
   render() {
+    const {
+      isDisabled,
+      ...otherProps
+    } = this.props;
+
+    const sourceEditions = this.getSourceEditions();
+    const values = this.buildValues(sourceEditions);
+    const value = this.getSelectedValue();
 
     return (
       <SelectInput
-        {...this.props}
+        {...otherProps}
+        isDisabled={isDisabled || this.state.isApplying}
+        values={values}
+        value={value}
         onChange={this.onChange}
+        onFocus={this.lookupEditions}
       />
     );
   }
 }
 
 BookEditionSelectInputConnector.propTypes = {
+  bookId: PropTypes.number,
+  fetchEditions: PropTypes.func,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  bookEditions: PropTypes.object
+  bookEditions: PropTypes.object,
+  isDisabled: PropTypes.bool
 };
 
-export default connect(createMapStateToProps)(BookEditionSelectInputConnector);
+BookEditionSelectInputConnector.defaultProps = {
+  fetchEditions: null,
+  isDisabled: false
+};
+
+const mapDispatchToProps = {
+  fetchEditions
+};
+
+export default connect(null, mapDispatchToProps)(BookEditionSelectInputConnector);

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.112
+- Summary: enable edition lookup from the edit modal and allow switching to a newly searched edition.
+- Why: users can get stuck with a wrong-language edition and need a way to re-search metadata.
+- Impact: the edition dropdown always opens, fetches edition lookup results from the metadata provider, and applies selected editions directly.
+- Files: frontend/src/Book/Edit/EditBookModalContent.js, frontend/src/Components/Form/BookEditionSelectInputConnector.js, frontend/src/Components/Form/SelectInput.js, src/Readarr.Api.V1/Books/BookController.cs, src/Readarr.Api.V1/Books/EditionLookupResource.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open Edit on a book, click the Edition dropdown, and choose an English edition from the lookup list.
+
 ## 1.2.111
 - Summary: fix using-directive ordering in the book controller and bump the app version.
 - Why: style analysis failed the build.

@@ -34,6 +34,7 @@ class EditBookModalContent extends Component {
 
   render() {
     const {
+      bookId,
       title,
       authorName,
       statistics,
@@ -100,7 +101,7 @@ class EditBookModalContent extends Component {
                     type={inputTypes.BOOK_EDITION_SELECT}
                     name="editions"
                     helpText={translate('EditionsHelpText')}
-                    isDisabled={anyEditionOk.value && hasFile}
+                    bookId={bookId}
                     bookEditions={editions}
                     onChange={onInputChange}
                   />
