@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.106
+- Summary: move EPUB navigation arrows to a modal overlay and bump the app version.
+- Why: the in-reader buttons were not visible over the cover.
+- Impact: EPUB modals now show prominent left/right arrow buttons for page turns, and the UI reports 1.2.106.
+- Files: frontend/src/BookFile/BookFileReaderModal.js, frontend/src/BookFile/BookFileReaderModal.css, frontend/src/BookFile/BookFileReaderModal.css.d.ts, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, open an EPUB, and confirm the arrows appear and page turns work.
+
 ## 1.2.105
 - Summary: make EPUB navigation arrows larger and ensure they layer above the reader.
 - Why: the buttons were not visible over the cover in some readers.

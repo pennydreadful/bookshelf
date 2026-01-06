@@ -1,14 +1,12 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from 'Components/Link/Button';
-import IconButton from 'Components/Link/IconButton';
 import Modal from 'Components/Modal/Modal';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { icons, scrollDirections } from 'Helpers/Props';
+import { scrollDirections } from 'Helpers/Props';
 import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 import translate from 'Utilities/String/translate';
 import styles from './BookFileReaderModal.css';
@@ -91,8 +89,7 @@ class BookFileReaderModal extends Component {
     this.epubObjectUrl = null;
     this.isReaderActive = false;
     this.state = {
-      loadError: false,
-      isReady: false
+      loadError: false
     };
   }
 
@@ -117,7 +114,7 @@ class BookFileReaderModal extends Component {
     }
 
     this.isReaderActive = false;
-    this.setState({ loadError: true, isReady: false });
+    this.setState({ loadError: true });
   };
 
   componentDidUpdate(prevProps) {
@@ -132,7 +129,7 @@ class BookFileReaderModal extends Component {
 
     if (isOpening || changedSource)
     {
-      this.setState({ loadError: false, isReady: false });
+      this.setState({ loadError: false });
       this.initializeReader();
     }
   }
@@ -188,18 +185,6 @@ class BookFileReaderModal extends Component {
         if (this.rendition.on)
         {
           this.rendition.on('displayError', this.handleReaderError);
-          this.rendition.on('rendered', () => {
-            if (this.isReaderActive)
-            {
-              this.setState({ isReady: true });
-            }
-          });
-          this.rendition.on('displayed', () => {
-            if (this.isReaderActive)
-            {
-              this.setState({ isReady: true });
-            }
-          });
         }
 
         const displayPromise = this.rendition.display();
@@ -209,12 +194,7 @@ class BookFileReaderModal extends Component {
         }
         if (displayPromise && displayPromise.then)
         {
-          displayPromise.then(() => {
-            if (this.isReaderActive)
-            {
-              this.setState({ isReady: true });
-            }
-          });
+          displayPromise.then(() => null);
         }
 
         if (this.rendition.resize)
@@ -294,7 +274,7 @@ class BookFileReaderModal extends Component {
       title
     } = this.props;
 
-    const { loadError, isReady } = this.state;
+    const { loadError } = this.state;
     const isEpub = fileType === 'epub';
     const isPdf = fileType === 'pdf';
     const isUnsupported = fileType === 'unknown';
@@ -329,28 +309,6 @@ class BookFileReaderModal extends Component {
                     </div> :
                     <div className={styles.readerContainer}>
                       <div className={styles.reader} ref={this.readerRef} />
-                      {
-                        showNavigation ?
-                          (
-                            <>
-                              <IconButton
-                                className={classNames(styles.navButton, styles.navButtonLeft)}
-                                name={icons.ARROW_LEFT}
-                                title={translate('PreviousPage')}
-                                size={18}
-                                onPress={this.onPreviousPress}
-                              />
-                              <IconButton
-                                className={classNames(styles.navButton, styles.navButtonRight)}
-                                name={icons.ARROW_RIGHT}
-                                title={translate('NextPage')}
-                                size={18}
-                                onPress={this.onNextPress}
-                              />
-                            </>
-                          ) :
-                          null
-                      }
                     </div>
                 ) :
                 (
@@ -364,6 +322,33 @@ class BookFileReaderModal extends Component {
                 )
             }
           </ModalBody>
+
+          {
+            showNavigation ?
+              (
+                <div className={styles.readerNav}>
+                  <button
+                    className={styles.readerNavButton}
+                    data-reader-nav="prev"
+                    type="button"
+                    aria-label={translate('PreviousPage')}
+                    onClick={this.onPreviousPress}
+                  >
+                    {'<'}
+                  </button>
+                  <button
+                    className={styles.readerNavButton}
+                    data-reader-nav="next"
+                    type="button"
+                    aria-label={translate('NextPage')}
+                    onClick={this.onNextPress}
+                  >
+                    {'>'}
+                  </button>
+                </div>
+              ) :
+              null
+          }
 
           <ModalFooter>
             <Button onPress={onModalClose}>

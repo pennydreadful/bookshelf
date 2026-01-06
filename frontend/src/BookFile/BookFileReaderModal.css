@@ -17,34 +17,43 @@
   z-index: 1;
 }
 
-.navButton {
+.readerNav {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 200;
+}
+
+.readerNavButton {
   align-items: center;
-  background: rgba(0, 0, 0, 0.45);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
+  border: 0;
   border-radius: 999px;
-  color: #f1f1f1;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
   cursor: pointer;
   display: flex;
-  height: 48px;
+  font-size: 28px;
+  font-weight: 600;
+  height: 54px;
   justify-content: center;
+  pointer-events: auto;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  z-index: 50;
+  width: 54px;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.6);
-    color: #ffffff;
+    background: rgba(0, 0, 0, 0.7);
   }
 }
 
-.navButtonLeft {
-  left: 12px;
+.readerNavButton[data-reader-nav="prev"] {
+  left: 18px;
 }
 
-.navButtonRight {
-  right: 12px;
+.readerNavButton[data-reader-nav="next"] {
+  right: 18px;
 }
 
 .loadError {
