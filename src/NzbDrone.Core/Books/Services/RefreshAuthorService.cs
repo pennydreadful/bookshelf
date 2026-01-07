@@ -46,6 +46,7 @@ namespace NzbDrone.Core.Books
         private readonly IConfigService _configService;
         private readonly IImportListExclusionService _importListExclusionService;
         private readonly Logger _logger;
+        private bool _skipNewBooks;
 
         public RefreshAuthorService(IProvideAuthorInfo authorInfo,
                                     IAuthorService authorService,
@@ -232,7 +233,18 @@ namespace NzbDrone.Core.Books
             var all = filtered.DistinctBy(m => m.ForeignBookId).ToList();
             var ids = all.Select(x => x.ForeignBookId).ToList();
             var excluded = _importListExclusionService.FindByForeignId(ids).Select(x => x.ForeignId).ToList();
-            return all.Where(x => !excluded.Contains(x.ForeignBookId)).ToList();
+            var available = all.Where(x => !excluded.Contains(x.ForeignBookId)).ToList();
+
+            if (!_skipNewBooks)
+            {
+                return available;
+            }
+
+            var existingIds = _bookService.GetBooksByAuthorMetadataId(local.AuthorMetadataId)
+                .Select(book => book.ForeignBookId)
+                .ToHashSet();
+
+            return available.Where(book => existingIds.Contains(book.ForeignBookId)).ToList();
         }
 
         protected override List<Book> GetLocalChildren(Author entity, List<Book> remoteChildren)
@@ -338,7 +350,7 @@ namespace NzbDrone.Core.Books
             }
         }
 
-        private void RefreshSelectedAuthors(List<int> authorIds, bool isNew, CommandTrigger trigger)
+        private void RefreshSelectedAuthors(List<int> authorIds, bool isNew, CommandTrigger trigger, bool skipNewBooks)
         {
             var updated = false;
             var authors = _authorService.GetAuthors(authorIds);
@@ -348,17 +360,27 @@ namespace NzbDrone.Core.Books
                 authorIds = authors.Select(x => x.Id).ToList();
             }
 
-            foreach (var author in authors)
+            var previousSkipNewBooks = _skipNewBooks;
+            _skipNewBooks = skipNewBooks;
+
+            try
             {
-                try
+                foreach (var author in authors)
                 {
-                    var data = GetSkyhookData(author.ForeignAuthorId);
-                    updated |= RefreshEntityInfo(author, null, data, true, false, null);
+                    try
+                    {
+                        var data = GetSkyhookData(author.ForeignAuthorId);
+                        updated |= RefreshEntityInfo(author, null, data, true, false, null);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Couldn't refresh info for {0}", author);
+                    }
                 }
-                catch (Exception e)
-                {
-                    _logger.Error(e, "Couldn't refresh info for {0}", author);
-                }
+            }
+            finally
+            {
+                _skipNewBooks = previousSkipNewBooks;
             }
 
             Rescan(authorIds, isNew, trigger, updated);
@@ -366,17 +388,19 @@ namespace NzbDrone.Core.Books
 
         public void Execute(BulkRefreshAuthorCommand message)
         {
-            RefreshSelectedAuthors(message.AuthorIds, message.AreNewAuthors, message.Trigger);
+            var skipNewBooks = message.SkipNewBooks || message.Trigger == CommandTrigger.Manual;
+            RefreshSelectedAuthors(message.AuthorIds, message.AreNewAuthors, message.Trigger, skipNewBooks);
         }
 
         public void Execute(RefreshAuthorCommand message)
         {
             var trigger = message.Trigger;
             var isNew = message.IsNewAuthor;
+            var skipNewBooks = message.SkipNewBooks || message.Trigger == CommandTrigger.Manual;
 
             if (message.AuthorId.HasValue)
             {
-                RefreshSelectedAuthors(new List<int> { message.AuthorId.Value }, isNew, trigger);
+                RefreshSelectedAuthors(new List<int> { message.AuthorId.Value }, isNew, trigger, skipNewBooks);
             }
             else
             {
@@ -391,29 +415,39 @@ namespace NzbDrone.Core.Books
                     updatedGoodreadsAuthors = _authorInfo.GetChangedAuthors(message.LastStartTime.Value);
                 }
 
-                foreach (var author in authors)
-                {
-                    var manualTrigger = message.Trigger == CommandTrigger.Manual;
+                var previousSkipNewBooks = _skipNewBooks;
+                _skipNewBooks = skipNewBooks;
 
-                    if ((updatedGoodreadsAuthors == null && _checkIfAuthorShouldBeRefreshed.ShouldRefresh(author)) ||
-                        (updatedGoodreadsAuthors != null && updatedGoodreadsAuthors.Contains(author.ForeignAuthorId)) ||
-                        manualTrigger)
+                try
+                {
+                    foreach (var author in authors)
                     {
-                        try
+                        var manualTrigger = message.Trigger == CommandTrigger.Manual;
+
+                        if ((updatedGoodreadsAuthors == null && _checkIfAuthorShouldBeRefreshed.ShouldRefresh(author)) ||
+                            (updatedGoodreadsAuthors != null && updatedGoodreadsAuthors.Contains(author.ForeignAuthorId)) ||
+                            manualTrigger)
                         {
-                            LogProgress(author);
-                            var data = GetSkyhookData(author.ForeignAuthorId);
-                            updated |= RefreshEntityInfo(author, null, data, manualTrigger, false, message.LastStartTime);
+                            try
+                            {
+                                LogProgress(author);
+                                var data = GetSkyhookData(author.ForeignAuthorId);
+                                updated |= RefreshEntityInfo(author, null, data, manualTrigger, false, message.LastStartTime);
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.Error(e, "Couldn't refresh info for {0}", author);
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            _logger.Error(e, "Couldn't refresh info for {0}", author);
+                            _logger.Info("Skipping refresh of author: {0}", author.Name);
                         }
                     }
-                    else
-                    {
-                        _logger.Info("Skipping refresh of author: {0}", author.Name);
-                    }
+                }
+                finally
+                {
+                    _skipNewBooks = previousSkipNewBooks;
                 }
 
                 Rescan(authorIds, isNew, trigger, updated);

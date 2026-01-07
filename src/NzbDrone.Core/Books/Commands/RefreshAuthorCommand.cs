@@ -6,6 +6,7 @@ namespace NzbDrone.Core.Books.Commands
     {
         public int? AuthorId { get; set; }
         public bool IsNewAuthor { get; set; }
+        public bool SkipNewBooks { get; set; }
 
         public RefreshAuthorCommand()
         {
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Books.Commands
         {
             AuthorId = authorId;
             IsNewAuthor = isNewAuthor;
+            SkipNewBooks = false;
         }
 
         public override bool SendUpdatesToClient => true;

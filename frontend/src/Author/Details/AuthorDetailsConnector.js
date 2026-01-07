@@ -293,6 +293,14 @@ class AuthorDetailsConnector extends Component {
     this.props.fetchAuthorAvailableBooks({ authorId: this.props.id });
   };
 
+  onRefreshAuthorPress = () => {
+    this.props.executeCommand({
+      name: commandNames.REFRESH_AUTHOR,
+      authorId: this.props.id,
+      skipNewBooks: true
+    });
+  };
+
   onRefreshImagePress = () => {
     this.setState({ isRefreshingImage: true });
 
@@ -323,6 +331,7 @@ class AuthorDetailsConnector extends Component {
       <AuthorDetails
         {...this.props}
         isRefreshingImage={this.state.isRefreshingImage}
+        onRefreshAuthorPress={this.onRefreshAuthorPress}
         onRefreshPress={this.onRefreshPress}
         onRefreshImagePress={this.onRefreshImagePress}
         onSearchPress={this.onSearchPress}

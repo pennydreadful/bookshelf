@@ -13,10 +13,12 @@ namespace NzbDrone.Core.Books.Commands
         {
             AuthorIds = authorIds;
             AreNewAuthors = areNewAuthors;
+            SkipNewBooks = false;
         }
 
         public List<int> AuthorIds { get; set; }
         public bool AreNewAuthors { get; set; }
+        public bool SkipNewBooks { get; set; }
 
         public override bool SendUpdatesToClient => true;
 

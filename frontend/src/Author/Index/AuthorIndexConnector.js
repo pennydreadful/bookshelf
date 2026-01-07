@@ -70,7 +70,8 @@ function createMapDispatchToProps(dispatch, props) {
     onRefreshAuthorPress(items) {
       dispatch(executeCommand({
         name: commandNames.BULK_REFRESH_AUTHOR,
-        authorIds: items
+        authorIds: items,
+        skipNewBooks: true
       }));
     },
 

@@ -96,7 +96,8 @@ class AuthorIndexItemConnector extends Component {
   onRefreshAuthorPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_AUTHOR,
-      authorId: this.props.id
+      authorId: this.props.id,
+      skipNewBooks: true
     });
   };
 

@@ -212,6 +212,7 @@ class AuthorDetails extends Component {
       path,
       monitored,
       isRefreshing,
+      isAuthorRefreshing,
       isRefreshingImage,
       isSearching,
       isFetching,
@@ -225,6 +226,7 @@ class AuthorDetails extends Component {
       hasBookFiles,
       previousAuthor,
       nextAuthor,
+      onRefreshAuthorPress,
       onRefreshPress,
       onRefreshImagePress,
       onSearchPress,
@@ -269,6 +271,14 @@ class AuthorDetails extends Component {
       <PageContent title={authorName}>
         <PageToolbar>
           <PageToolbarSection>
+            <PageToolbarButton
+              label={translate('RefreshAuthor')}
+              iconName={icons.REFRESH}
+              spinningName={icons.REFRESH}
+              isSpinning={isAuthorRefreshing}
+              onPress={onRefreshAuthorPress}
+            />
+
             <PageToolbarButton
               label={translate('RefreshAvailableBooks')}
               iconName={icons.REFRESH}
@@ -601,6 +611,7 @@ AuthorDetails.propTypes = {
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   isRefreshing: PropTypes.bool.isRequired,
+  isAuthorRefreshing: PropTypes.bool.isRequired,
   isRefreshingImage: PropTypes.bool.isRequired,
   isSearching: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -615,6 +626,7 @@ AuthorDetails.propTypes = {
   previousAuthor: PropTypes.object.isRequired,
   nextAuthor: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  onRefreshAuthorPress: PropTypes.func.isRequired,
   onRefreshImagePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,
