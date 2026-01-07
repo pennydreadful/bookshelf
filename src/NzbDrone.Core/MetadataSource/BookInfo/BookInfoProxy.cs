@@ -1516,18 +1516,21 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 return null;
             }
 
-            return _openLibraryBookCache.Get(normalizedIsbn, () =>
-            {
-                try
+            return _openLibraryBookCache.Get(
+                normalizedIsbn,
+                () =>
                 {
-                    return LookupOpenLibraryBookData(normalizedIsbn);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Debug(ex, "Open Library lookup failed for ISBN {0}", normalizedIsbn);
-                    return null;
-                }
-            }, TimeSpan.FromDays(1));
+                    try
+                    {
+                        return LookupOpenLibraryBookData(normalizedIsbn);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex, "Open Library lookup failed for ISBN {0}", normalizedIsbn);
+                        return null;
+                    }
+                },
+                TimeSpan.FromDays(1));
         }
 
         private OpenLibraryBookData LookupOpenLibraryBookData(string isbn)
