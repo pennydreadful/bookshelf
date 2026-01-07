@@ -63,6 +63,7 @@ namespace NzbDrone.Core.DecisionEngine
                 _logger.ProgressInfo("No results found");
             }
 
+            var sizeHint = BuildSizeBasedQualityHint(reports, searchCriteria);
             var reportNumber = 1;
 
             foreach (var report in reports)
@@ -119,6 +120,8 @@ namespace NzbDrone.Core.DecisionEngine
                             remoteBook.ParsedBookInfo.Quality = QualityParser.ParseQuality(report.Title, null, report.Categories);
                         }
 
+                        ApplySizeBasedQualityHint(sizeHint, remoteBook.ParsedBookInfo.Quality, report.Size);
+
                         if (remoteBook.Author == null)
                         {
                             decision = new DownloadDecision(remoteBook, new Rejection("Unknown Author"));
@@ -160,6 +163,8 @@ namespace NzbDrone.Core.DecisionEngine
                             };
                         }
 
+                        ApplySizeBasedQualityHint(sizeHint, parsedBookInfo.Quality, report.Size);
+
                         if (parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
                         {
                             var remoteBook = new RemoteBook
@@ -181,6 +186,8 @@ namespace NzbDrone.Core.DecisionEngine
                                 Quality = QualityParser.ParseQuality(report.Title, null, report.Categories)
                             };
                         }
+
+                        ApplySizeBasedQualityHint(sizeHint, parsedBookInfo.Quality, report.Size);
 
                         if (parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
                         {
@@ -257,6 +264,93 @@ namespace NzbDrone.Core.DecisionEngine
             }
 
             return new DownloadDecision(remoteBook, reasons.ToArray());
+        }
+
+        private static void ApplySizeBasedQualityHint(SizeBasedQualityHint hint, QualityModel qualityModel, long size)
+        {
+            if (hint == null || qualityModel == null || size <= 0)
+            {
+                return;
+            }
+
+            if (qualityModel.Quality != Quality.Unknown)
+            {
+                return;
+            }
+
+            if (size >= hint.AudioMinSize)
+            {
+                qualityModel.Quality = Quality.UnknownAudio;
+            }
+        }
+
+        private SizeBasedQualityHint BuildSizeBasedQualityHint(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria)
+        {
+            if (searchCriteria == null || reports == null)
+            {
+                return null;
+            }
+
+            var sizes = reports.Select(r => r.Size)
+                               .Where(s => s > 0)
+                               .OrderBy(s => s)
+                               .ToList();
+
+            if (sizes.Count < 4)
+            {
+                return null;
+            }
+
+            var ratios = new List<(int index, double ratio)>();
+
+            for (var i = 0; i < sizes.Count - 1; i++)
+            {
+                if (sizes[i] == 0)
+                {
+                    continue;
+                }
+
+                ratios.Add((i, (double)sizes[i + 1] / sizes[i]));
+            }
+
+            if (!ratios.Any())
+            {
+                return null;
+            }
+
+            var ordered = ratios.OrderByDescending(r => r.ratio).ToList();
+            var best = ordered[0];
+            var leftCount = best.index + 1;
+            var rightCount = sizes.Count - leftCount;
+
+            if (leftCount < 2 || rightCount < 2)
+            {
+                return null;
+            }
+
+            var secondRatio = ordered.Count > 1 ? ordered[1].ratio : 1.0;
+
+            if (best.ratio < 2.0 || best.ratio < (secondRatio * 1.3))
+            {
+                return null;
+            }
+
+            var hint = new SizeBasedQualityHint(sizes[best.index], sizes[best.index + 1]);
+            _logger.Debug("Size-based quality hint: text <= {0} bytes, audio >= {1} bytes (gap ratio {2:0.00})",
+                hint.TextMaxSize, hint.AudioMinSize, best.ratio);
+            return hint;
+        }
+
+        private sealed class SizeBasedQualityHint
+        {
+            public SizeBasedQualityHint(long textMaxSize, long audioMinSize)
+            {
+                TextMaxSize = textMaxSize;
+                AudioMinSize = audioMinSize;
+            }
+
+            public long TextMaxSize { get; }
+            public long AudioMinSize { get; }
         }
 
         private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteBook remoteBook, SearchCriteriaBase searchCriteriaBase = null)

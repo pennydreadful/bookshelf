@@ -5,6 +5,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -342,6 +343,55 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.GetRssDecision(_reports).Should().HaveCount(1);
 
             ExceptionVerification.ExpectedErrors(1);
+        }
+
+        [Test]
+        public void should_apply_size_based_hint_for_unknown_quality_in_search()
+        {
+            GivenSpecifications(_pass1);
+
+            var author = new Author { Name = "Some Author" };
+            var book = new Book
+            {
+                Title = "Some Book",
+                Editions = new List<Edition>
+                {
+                    new Edition { Title = "Some Book", Monitored = true }
+                }
+            };
+
+            var criteria = new BookSearchCriteria
+            {
+                Author = author,
+                Books = new List<Book> { book }
+            };
+
+            _reports = new List<ReleaseInfo>
+            {
+                new ReleaseInfo { Title = "Some Author - Some Book Small 1", Size = 5.Megabytes() },
+                new ReleaseInfo { Title = "Some Author - Some Book Small 2", Size = 6.Megabytes() },
+                new ReleaseInfo { Title = "Some Author - Some Book Large 1", Size = 500.Megabytes() },
+                new ReleaseInfo { Title = "Some Author - Some Book Large 2", Size = 700.Megabytes() }
+            };
+
+            Mocker.GetMock<IParsingService>()
+                .Setup(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
+                .Returns((ParsedBookInfo parsed, SearchCriteriaBase search) => new RemoteBook
+                {
+                    Author = author,
+                    Books = search.Books,
+                    ParsedBookInfo = parsed
+                });
+
+            var decisions = Subject.GetSearchDecision(_reports, criteria);
+
+            var qualityBySize = decisions.ToDictionary(d => d.RemoteBook.Release.Size,
+                d => d.RemoteBook.ParsedBookInfo.Quality.Quality);
+
+            qualityBySize[5.Megabytes()].Should().Be(Quality.Unknown);
+            qualityBySize[6.Megabytes()].Should().Be(Quality.Unknown);
+            qualityBySize[500.Megabytes()].Should().Be(Quality.UnknownAudio);
+            qualityBySize[700.Megabytes()].Should().Be(Quality.UnknownAudio);
         }
     }
 }
