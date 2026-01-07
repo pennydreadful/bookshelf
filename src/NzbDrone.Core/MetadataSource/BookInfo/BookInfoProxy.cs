@@ -2199,7 +2199,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             foreach (var doc in docs.Take(OpenLibraryAuthorLookupLimit))
             {
-                var linkKey = doc["key"]?.ToString();
+                var linkKey = NormalizeOpenLibraryAuthorKey(doc["key"]?.ToString());
                 if (linkKey.IsNotNullOrWhiteSpace())
                 {
                     var byKey = TryGetOpenLibraryAuthorExtrasByKey(linkKey);
@@ -2239,6 +2239,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         private AuthorExtraMetadata TryGetOpenLibraryAuthorExtrasByKey(string authorKey)
         {
+            authorKey = NormalizeOpenLibraryAuthorKey(authorKey);
             if (authorKey.IsNullOrWhiteSpace())
             {
                 return null;
@@ -2352,6 +2353,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         private string TryGetOpenLibraryAuthorOverview(string authorKey)
         {
+            authorKey = NormalizeOpenLibraryAuthorKey(authorKey);
             if (authorKey.IsNullOrWhiteSpace())
             {
                 return null;
@@ -2386,6 +2388,32 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             return NormalizeOverview(bioToken["value"]?.ToString());
+        }
+
+        private static string NormalizeOpenLibraryAuthorKey(string authorKey)
+        {
+            if (authorKey.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            if (authorKey.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                var uri = new Uri(authorKey);
+                authorKey = uri.AbsolutePath;
+            }
+
+            if (authorKey.StartsWith("/authors/", StringComparison.OrdinalIgnoreCase))
+            {
+                return authorKey;
+            }
+
+            if (authorKey.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            {
+                return authorKey;
+            }
+
+            return $"/authors/{authorKey}";
         }
 
         private static string NormalizeOverview(string overview)
