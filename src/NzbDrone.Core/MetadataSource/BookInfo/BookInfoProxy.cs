@@ -40,6 +40,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
         private const string OpenLibrarySeriesPrefix = "ol-series:";
         private const int OpenLibraryMaxGenres = 25;
         private const int OpenLibraryMaxCovers = 1;
+        private const int OpenLibraryAuthorLookupLimit = 5;
         private static readonly JsonSerializerOptions SerializerSettings = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false,
@@ -2196,14 +2197,23 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 return null;
             }
 
-            foreach (var doc in docs)
+            foreach (var doc in docs.Take(OpenLibraryAuthorLookupLimit))
             {
+                var linkKey = doc["key"]?.ToString();
+                if (linkKey.IsNotNullOrWhiteSpace())
+                {
+                    var byKey = TryGetOpenLibraryAuthorExtrasByKey(linkKey);
+                    if (byKey?.ImageUrl.IsNotNullOrWhiteSpace() == true ||
+                        byKey?.Overview.IsNotNullOrWhiteSpace() == true)
+                    {
+                        return byKey;
+                    }
+                }
+
                 var photoToken = doc["photo_id"] ?? doc["photos"]?.FirstOrDefault();
                 var photoId = photoToken?.ToString();
-                var linkKey = doc["key"]?.ToString();
-                var overview = TryGetOpenLibraryAuthorOverview(linkKey);
 
-                if (photoId.IsNullOrWhiteSpace() && overview.IsNullOrWhiteSpace())
+                if (photoId.IsNullOrWhiteSpace())
                 {
                     continue;
                 }
@@ -2219,12 +2229,55 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 return new AuthorExtraMetadata
                 {
                     ImageUrl = imageUrl,
-                    Overview = overview,
+                    Overview = null,
                     Links = links
                 };
             }
 
             return null;
+        }
+
+        private AuthorExtraMetadata TryGetOpenLibraryAuthorExtrasByKey(string authorKey)
+        {
+            if (authorKey.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var request = new HttpRequestBuilder($"https://openlibrary.org{authorKey}.json")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get(request);
+            if (response.HasHttpError)
+            {
+                return null;
+            }
+
+            var json = JObject.Parse(response.Content);
+            var overview = ParseOpenLibraryAuthorOverview(json["bio"]);
+            var photoToken = json["photo_id"] ?? json["photos"]?.FirstOrDefault();
+            var photoId = photoToken?.ToString();
+            var imageUrl = photoId.IsNullOrWhiteSpace() ? null : $"https://covers.openlibrary.org/a/id/{photoId}-L.jpg";
+
+            if (imageUrl.IsNullOrWhiteSpace() && overview.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var links = new List<Links>
+            {
+                new Links { Name = "Open Library", Url = $"https://openlibrary.org{authorKey}" }
+            };
+
+            return new AuthorExtraMetadata
+            {
+                ImageUrl = imageUrl,
+                Overview = overview,
+                Links = links
+            };
         }
 
         private AuthorExtraMetadata TryGetWikipediaAuthorExtrasByName(string authorName)
@@ -2317,8 +2370,11 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var json = JObject.Parse(response.Content);
-            var bioToken = json["bio"];
+            return ParseOpenLibraryAuthorOverview(json["bio"]);
+        }
 
+        private static string ParseOpenLibraryAuthorOverview(JToken bioToken)
+        {
             if (bioToken == null)
             {
                 return null;
