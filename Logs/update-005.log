@@ -1,0 +1,84 @@
+[2026-01-07 00:00:13 UTC] Stopping Bookdarr
+[2026-01-07 00:00:13 UTC] Updating repo
+From https://github.com/thashiznit2003/Bookdarr
+   2eaac288e..c240872f1  develop                -> origin/develop
+ * [new tag]             snapshot-20260106-1656 -> snapshot-20260106-1656
+Already on 'develop'
+Your branch is behind 'origin/develop' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+HEAD is now at c240872f1 Add Open Library fallback for Google Books metadata
+[2026-01-07 00:00:14 UTC] Building
+yarn install v1.22.19
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.28s.
+yarn run v1.22.19
+$ yarn clean
+$ rimraf ./_output/UI && rimraf --glob "**/*.js.map"
+$ webpack --config ./frontend/build/webpack.config.js
+Source Folder: /opt/bookdarr-dev/frontend/src
+Output Folder: /opt/bookdarr-dev/_output/UI
+Cache Directory: /opt/bookdarr-dev/_cache/webpack
+isProduction: false
+isProfiling: false
+<i> [FileManagerPlugin] copied "frontend/src/Content/robots.txt" to "/opt/bookdarr-dev/_output/UI/Content/robots.txt
+<i> [FileManagerPlugin] copied "frontend/src/*.html" to "/opt/bookdarr-dev/_output/UI
+<i> [FileManagerPlugin] copied "frontend/src/Content/Scripts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Scripts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Fonts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Fonts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/Icons/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images/Icons
+assets by status 29.9 MiB [big]
+  asset vendors-node_modules_fortawesome_react-fontawesome_index_es_js-node_modules_microsoft_signalr-2ca2aa.js 15.6 MiB [emitted] [big] (id hint: vendors)
+  asset frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.js 13.9 MiB [emitted] [big]
+  asset Content/frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.css 497 KiB [emitted] [big]
+assets by chunk 122 KiB (name: index)
+  asset index.js 122 KiB [emitted] (name: index)
+  asset Content/styles.css 913 bytes [emitted] (name: index)
+asset index.html 2.34 KiB [emitted]
+Entrypoint index 122 KiB = Content/styles.css 913 bytes index.js 122 KiB
+cached modules 9.06 MiB (javascript) 201 KiB (css/mini-extract) 11.2 KiB (runtime) [cached] 2561 modules
+./frontend/src/Components/Page/Header/fuse.worker.js 118 KiB [not cacheable] [built]
+webpack 5.95.0 compiled successfully in 5421 ms
+Done in 7.39s.
+MSBuild version 17.3.4+a400405ba for .NET
+  Determining projects to restore...
+  The project /opt/bookdarr-dev/src/NzbDrone.Windows.Test/Readarr.Windows.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Windows/Readarr.Windows.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/ServiceHelpers/ServiceUninstall/ServiceUninstall.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/Readarr.Api.V1/Readarr.Api.V1.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/Readarr.Http/Readarr.Http.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/ServiceHelpers/ServiceInstall/ServiceInstall.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Update.Test/Readarr.Update.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Test.Dummy/Readarr.Test.Dummy.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Test.Common/Readarr.Test.Common.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.SignalR/Readarr.SignalR.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Mono/Readarr.Mono.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Mono.Test/Readarr.Mono.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Libraries.Test/Readarr.Libraries.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Integration.Test/Readarr.Integration.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Host/Readarr.Host.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Host.Test/Readarr.Host.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Core.Test/Readarr.Core.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Console/Readarr.Console.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Common/Readarr.Common.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Common.Test/Readarr.Common.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Automation.Test/Readarr.Automation.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Api.Test/Readarr.Api.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  All projects are up-to-date for restore.
+  Readarr.Test.Dummy -> /opt/bookdarr-dev/_tests/net6.0/linux-x64/Readarr.Test.Dummy.dll
+  Readarr.Test.Dummy -> /opt/bookdarr-dev/_tests/net6.0/linux-x64/publish/
+  ServiceInstall -> /opt/bookdarr-dev/_output/net6.0/linux-x64/ServiceInstall.dll
+  ServiceUninstall -> /opt/bookdarr-dev/_output/net6.0/linux-x64/ServiceUninstall.dll
+  ServiceInstall -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
+  ServiceUninstall -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
+  Readarr.Common -> /opt/bookdarr-dev/_output/net6.0/linux-x64/Readarr.Common.dll
+  Readarr.Common -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
+  Readarr.Windows -> /opt/bookdarr-dev/_output/net6.0/linux-x64/Readarr.Windows.dll
+  Readarr.Windows -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
+  Readarr.Update -> /opt/bookdarr-dev/_output/Readarr.Update/net6.0/linux-x64/Readarr.Update.dll
+  Readarr.Update -> /opt/bookdarr-dev/_output/Readarr.Update/net6.0/linux-x64/publish/
+/opt/bookdarr-dev/src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs(1530,16): error SA1117: The parameters should all be placed on the same line or each parameter should be placed on its own line. [/opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj]
+  Readarr.Mono -> /opt/bookdarr-dev/_output/net6.0/linux-x64/Readarr.Mono.dll
+  Readarr.Mono -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
