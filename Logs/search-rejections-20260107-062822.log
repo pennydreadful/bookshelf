@@ -1,0 +1,1282 @@
+Generated: 2026-01-07T06:28:22Z
+Source: /opt/bookdarr-dev/Logs/readarr.debug.txt
+Pattern: Release rejected|Unable to parse release|Unable to parse books|Unknown Author|not wanted in profile|Processing release|Parsing string|Quality parsed|Author/Book null|reparsing with search criteria|Release rejected for the following reasons
+----
+3:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+6:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+8:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+11:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+13:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+16:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+18:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+21:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+23:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+26:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+28:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+31:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+33:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+36:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+38:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+41:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+43:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+46:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+48:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+51:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+53:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+56:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+58:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+61:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+63:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+66:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+68:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+71:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+73:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+76:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+78:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+81:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+83:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+86:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+88:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+91:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+93:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+96:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+98:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+101:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+103:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+106:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+108:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+111:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+113:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+116:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+118:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+121:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+123:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+126:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+128:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+131:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+133:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+136:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+138:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+141:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+143:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+146:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+148:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+151:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+153:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+156:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+158:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+161:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+163:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+166:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+168:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+171:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+173:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+176:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+178:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+181:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+183:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+186:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+188:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+191:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+193:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+196:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+198:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+201:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+203:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+206:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+208:2026-01-06 16:54:13.9|Debug|Parser|Parsing string '[Английский] Cline Ernest / Клайн Эрнест - Ready Player One / Первому игроку приготовиться [Wil Wheaton, 2011 г., MP3, 192 kbps]'
+211:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: MP3 v1
+213:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ready Player One  Ernest Cline'
+215:2026-01-06 16:54:13.9|Debug|Parser|Parsing string '[bitsearch.to] Cline, Ernest - Ready Player One [627] (r2.6)'
+218:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+220:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+223:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: Unknown Text v1
+225:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Cline, Ernest - Ready Player One [627] (r2.6).epub'
+228:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: EPUB v1
+230:2026-01-06 16:54:13.9|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One.Two.(2021).[azw3.epub.mobi.pdf]'
+233:2026-01-06 16:54:13.9|Debug|Parser|Quality parsed: AZW3 v1
+248:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+252:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+256:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+260:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+264:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+268:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+272:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+276:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+280:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+284:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+288:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+292:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+296:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+300:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+304:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+308:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+312:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+316:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+320:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+324:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+328:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+332:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+336:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+340:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+344:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+348:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+352:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+356:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+360:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+364:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+368:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+372:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+376:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+380:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+384:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+388:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+392:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+396:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+400:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+404:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+408:2026-01-06 16:54:32.4|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+472:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+475:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+477:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+480:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+482:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+485:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+487:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+490:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+492:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+495:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+497:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+500:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+502:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+505:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+507:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+510:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+512:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+516:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+518:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+521:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+523:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+526:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+528:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+531:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+533:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+536:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+538:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+541:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+543:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+546:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+548:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+551:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+553:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+556:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+558:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+561:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+563:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+566:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+568:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+571:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+573:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+576:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+578:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+581:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+583:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+586:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+588:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+591:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+593:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+596:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+598:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+601:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+603:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+606:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+608:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+611:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+613:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+616:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+618:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+621:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+623:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+626:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+628:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+631:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+633:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+636:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+638:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+641:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+643:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+646:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+648:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+651:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+653:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+656:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+658:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+661:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+663:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+666:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+668:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+671:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+673:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+676:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+678:2026-01-06 16:56:47.6|Debug|Parser|Parsing string '[Английский] Cline Ernest / Клайн Эрнест - Ready Player One / Первому игроку приготовиться [Wil Wheaton, 2011 г., MP3, 192 kbps]'
+681:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: MP3 v1
+683:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ready Player One  Ernest Cline'
+685:2026-01-06 16:56:47.6|Debug|Parser|Parsing string '[bitsearch.to] Cline, Ernest - Ready Player One [627] (r2.6)'
+688:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+690:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+693:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: Unknown Text v1
+695:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Cline, Ernest - Ready Player One [627] (r2.6).epub'
+698:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: EPUB v1
+700:2026-01-06 16:56:47.6|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One.Two.(2021).[azw3.epub.mobi.pdf]'
+703:2026-01-06 16:56:47.6|Debug|Parser|Quality parsed: AZW3 v1
+726:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Rick Braun - Rick Braun (2022, Brauntosoarus)' from 'Bitsearch'
+727:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Rick Braun - Rick Braun (2022, Brauntosoarus)'
+730:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+735:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+736:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Captain.of.Industry.v2026.01.02.rar' from 'Bitsearch'
+737:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Captain.of.Industry.v2026.01.02.rar'
+739:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'GFNTHBQCM' from 'Bitsearch'
+740:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'GFNTHBQCM'
+742:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Вальтер Макс - Жажда 04, Браконьер 4 [Илья Дементьев]' from 'Bitsearch'
+743:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Вальтер Макс - Жажда 04, Браконьер 4 [Илья Дементьев]'
+746:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+751:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+752:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Rudo г.Севастополь' from 'Bitsearch'
+753:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Rudo г.Севастополь'
+755:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Yaoling.Mythical.Journey.v0.95f2.rar' from 'Bitsearch'
+756:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Yaoling.Mythical.Journey.v0.95f2.rar'
+758:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '[津路参汰] 【特別編】夏だよ！金ビキニ永井さん！【第三回】.zip' from 'Bitsearch'
+759:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '[津路参汰] 【特別編】夏だよ！金ビキニ永井さん！【第三回】.zip'
+761:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Effects of Sprint Interval Training on Glucose and Lipid Metabolism in Diverse Populations: A Multi-level Meta-analysis' from 'Internet Archive'
+762:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Effects of Sprint Interval Training on Glucose and Lipid Metabolism in Diverse Populations: A Multi-level Meta-analysis'
+764:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Phish - 2022-06-01 - Credit One Stadium - Charleston, SC' from 'Internet Archive'
+765:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Phish - 2022-06-01 - Credit One Stadium - Charleston, SC'
+767:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Ana Krce Favorites' from 'Internet Archive'
+768:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Ana Krce Favorites'
+770:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Hicki-hoy' from 'Internet Archive'
+771:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Hicki-hoy'
+773:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Package Insert VAQTA DANSK' from 'Internet Archive'
+774:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Package Insert VAQTA DANSK'
+776:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Emma’s Steamships (emmassteamshipswikiwiki) - https://emmassteamshipswiki.miraheze.org - Miraheze' from 'Internet Archive'
+777:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Emma’s Steamships (emmassteamshipswikiwiki) - https://emmassteamshipswiki.miraheze.org - Miraheze'
+779:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'nattles777 Favorites' from 'Internet Archive'
+780:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'nattles777 Favorites'
+782:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Jeff Kinney, Het leven van een Loser 3 - Bekijk het maar!' from 'Internet Archive'
+783:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Jeff Kinney, Het leven van een Loser 3 - Bekijk het maar!'
+785:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '[PR-800] Curtis Garland (1977) ¡Déjate matar, cariño!' from 'Internet Archive'
+786:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '[PR-800] Curtis Garland (1977) ¡Déjate matar, cariño!'
+789:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+794:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+795:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'em:t wiki (emitwikiwiki) - https://emitwiki.miraheze.org - Miraheze' from 'Internet Archive'
+796:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'em:t wiki (emitwikiwiki) - https://emitwiki.miraheze.org - Miraheze'
+798:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (19 Juli 2018)' from 'Internet Archive'
+799:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (19 Juli 2018)'
+802:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+807:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+808:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'USO DE LA GRAMATICA ESPAÑ OLA NIVEL ELEMENTAL' from 'Internet Archive'
+809:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'USO DE LA GRAMATICA ESPAÑ OLA NIVEL ELEMENTAL'
+811:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'La Guerre Des Etoiles T 01' from 'Internet Archive'
+812:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'La Guerre Des Etoiles T 01'
+814:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '[PR-799] Ray Lester (1977) Sabueso provisional' from 'Internet Archive'
+815:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '[PR-799] Ray Lester (1977) Sabueso provisional'
+818:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+823:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+824:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'God Forskningssed VR 2017' from 'Internet Archive'
+825:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'God Forskningssed VR 2017'
+827:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'El Emisario Invernal Wiki (emisarioinvernalwiki) - https://emisarioinvernal.miraheze.org - Miraheze' from 'Internet Archive'
+828:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'El Emisario Invernal Wiki (emisarioinvernalwiki) - https://emisarioinvernal.miraheze.org - Miraheze'
+830:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'SaskLar Favorites' from 'Internet Archive'
+831:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'SaskLar Favorites'
+833:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (18 Juli 2018)' from 'Internet Archive'
+834:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (18 Juli 2018)'
+837:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+842:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+843:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'L'Haltérophile Moderne. 1962' from 'Internet Archive'
+844:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'L'Haltérophile Moderne. 1962'
+846:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Original Autel Maxisys MS908S Pro One Year Update Service (Total Care Program Autel)' from 'Internet Archive'
+847:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Original Autel Maxisys MS908S Pro One Year Update Service (Total Care Program Autel)'
+849:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Diario La Nación 18880930' from 'Internet Archive'
+850:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Diario La Nación 18880930'
+852:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'AbvReigns Favorites' from 'Internet Archive'
+853:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'AbvReigns Favorites'
+855:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '[PR-798] Burton Hare (1977) Escultura de carne y sangre' from 'Internet Archive'
+856:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '[PR-798] Burton Hare (1977) Escultura de carne y sangre'
+859:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+864:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+865:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Victory Free Will Baptist Church - Marion Indiana - 2009 CD 63' from 'Internet Archive'
+866:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Victory Free Will Baptist Church - Marion Indiana - 2009 CD 63'
+869:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+874:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+875:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (17 Juli 2018)' from 'Internet Archive'
+876:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (17 Juli 2018)'
+879:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+884:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+885:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Islamic Emirate of Jatland (emirateofjatlandwiki) - https://emirateofjatland.miraheze.org - Miraheze' from 'Internet Archive'
+886:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Islamic Emirate of Jatland (emirateofjatlandwiki) - https://emirateofjatland.miraheze.org - Miraheze'
+888:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Slider (From "Super Mario 64")' from 'Internet Archive'
+889:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Slider (From "Super Mario 64")'
+891:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Uebersetzung der Algemeinen Welthistorie die in Engeland durch eine Geselschaft von Gelehrten ausgefertiget worden: Nebst den Anmerkungen der holländischen Uebersetzung auch vielen neuen Kupfern und Karten. 49,3' from 'Internet Archive'
+892:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Uebersetzung der Algemeinen Welthistorie die in Engeland durch eine Geselschaft von Gelehrten ausgefertiget worden: Nebst den Anmerkungen der holländischen Uebersetzung auch vielen neuen Kupfern und Karten. 49,3'
+894:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Mes Archives784 Favorites' from 'Internet Archive'
+895:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Mes Archives784 Favorites'
+897:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0217' from 'Internet Archive'
+898:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155130_0217'
+900:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Sour - Olivia Rodrigo - CD ripped by valentino' from 'Internet Archive'
+901:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Sour - Olivia Rodrigo - CD ripped by valentino'
+903:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '#493: 1,000 Books to Read Before You Die' from 'Internet Archive'
+904:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '#493: 1,000 Books to Read Before You Die'
+906:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Erklärende Anmerkungen zum Homer. 3' from 'Internet Archive'
+907:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Erklärende Anmerkungen zum Homer. 3'
+909:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'BBC World Service, October 29, 2017.' from 'Internet Archive'
+910:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'BBC World Service, October 29, 2017.'
+912:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (16 Juli 2018)' from 'Internet Archive'
+913:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (16 Juli 2018)'
+916:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+921:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+922:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Emily's Armily (emilysarmilywiki) - https://emilysarmily.miraheze.org - Miraheze' from 'Internet Archive'
+923:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Emily's Armily (emilysarmilywiki) - https://emilysarmily.miraheze.org - Miraheze'
+925:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Etude du rythme' from 'Internet Archive'
+926:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Etude du rythme'
+928:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Grundzüge der Naturgeschichte des Mineral-Reichs: ein Handbuch für Lehrer auf Gymnasien, und für Naturfreunde zum eignen Unterricht. 1,1' from 'Internet Archive'
+929:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Grundzüge der Naturgeschichte des Mineral-Reichs: ein Handbuch für Lehrer auf Gymnasien, und für Naturfreunde zum eignen Unterricht. 1,1'
+931:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0216' from 'Internet Archive'
+932:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155130_0216'
+934:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release '呼吸都能变强，你说我最弱天赋？' from 'Internet Archive'
+935:2026-01-06 16:57:51.6|Debug|Parser|Parsing string '呼吸都能变强，你说我最弱天赋？'
+937:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Old Junsei_09 Content so far #3 (The Rake Film)' from 'Internet Archive'
+938:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Old Junsei_09 Content so far #3 (The Rake Film)'
+940:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (14 Juli 2018)' from 'Internet Archive'
+941:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (14 Juli 2018)'
+944:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+949:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+950:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Europe Map Game (emgwiki) - https://emg.miraheze.org - Miraheze' from 'Internet Archive'
+951:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Europe Map Game (emgwiki) - https://emg.miraheze.org - Miraheze'
+953:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'الراديو صديقي ـ حلقة 06/01/2026 _ إعداد وتقديم الإعلامية القديرة ـ رشا أنور' from 'Internet Archive'
+954:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'الراديو صديقي ـ حلقة 06/01/2026 _ إعداد وتقديم الإعلامية القديرة ـ رشا أنور'
+956:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Mathematische Anfangsgründe. 1,2' from 'Internet Archive'
+957:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Mathematische Anfangsgründe. 1,2'
+959:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Mallory Dunbar Favorites' from 'Internet Archive'
+960:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Mallory Dunbar Favorites'
+962:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (13 Juli 2018)' from 'Internet Archive'
+963:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (13 Juli 2018)'
+966:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+971:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+972:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Systematische Eisenhüttenkunde mit Anwendung der neuern chemischen Theorie' from 'Internet Archive'
+973:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Systematische Eisenhüttenkunde mit Anwendung der neuern chemischen Theorie'
+975:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0215' from 'Internet Archive'
+976:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155130_0215'
+978:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155132_0131' from 'Internet Archive'
+979:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155132_0131'
+981:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155128_0277' from 'Internet Archive'
+982:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155128_0277'
+984:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155128_0278' from 'Internet Archive'
+985:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155128_0278'
+987:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Das Friedensfest, wie solches zu Mildheim gefeyert worden: nebst der Vorlesung des Korporal Wackersinn vom Soldatenleben und Kriegswesen und der Predigt vom ewigen Frieden, welche der Herr Pfarrer Starke auf dem Luftplatze gehalten' from 'Internet Archive'
+988:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Das Friedensfest, wie solches zu Mildheim gefeyert worden: nebst der Vorlesung des Korporal Wackersinn vom Soldatenleben und Kriegswesen und der Predigt vom ewigen Frieden, welche der Herr Pfarrer Starke auf dem Luftplatze gehalten'
+990:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Environment 8/3/2004' from 'Internet Archive'
+991:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Environment 8/3/2004'
+993:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Rechtfertigung der Schutzblattern-Impfung gegen die Einwendungen des Pr. M. Herz ...' from 'Internet Archive'
+994:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Rechtfertigung der Schutzblattern-Impfung gegen die Einwendungen des Pr. M. Herz ...'
+996:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0214' from 'Internet Archive'
+997:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155130_0214'
+999:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Slateport City (From "Pokémon Ruby and Sapphire") (Cover Version)' from 'Internet Archive'
+1000:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Slateport City (From "Pokémon Ruby and Sapphire") (Cover Version)'
+1002:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (12 Juli 2018)' from 'Internet Archive'
+1003:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (12 Juli 2018)'
+1006:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+1011:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1012:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155132_0130' from 'Internet Archive'
+1013:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155132_0130'
+1015:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'الجماعة والجماعات' from 'Internet Archive'
+1016:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'الجماعة والجماعات'
+1018:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Tiara% 20 Andini,% 20 Arsy% 20 Widianto% 20 % 20 Lagu% 20 Pernikahan% 20 Kita% 20% 5 BZe Fpig Ra Xb I% 5 D' from 'Internet Archive'
+1019:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Tiara% 20 Andini,% 20 Arsy% 20 Widianto% 20 % 20 Lagu% 20 Pernikahan% 20 Kita% 20% 5 BZe Fpig Ra Xb I% 5 D'
+1021:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Zwey physicalische Abhandlungen: I. Von den Donnerwettern ...' from 'Internet Archive'
+1022:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Zwey physicalische Abhandlungen: I. Von den Donnerwettern ...'
+1024:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Wörterbuch zur Erklärung und Verdeutschung der unserer Sprache aufgedrungenen fremden Ausdrücke: Ein Ergänzungsband zu Adelungs Wörterbuche ; In zwei Bänden. 1' from 'Internet Archive'
+1025:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Wörterbuch zur Erklärung und Verdeutschung der unserer Sprache aufgedrungenen fremden Ausdrücke: Ein Ergänzungsband zu Adelungs Wörterbuche ; In zwei Bänden. 1'
+1027:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Xhorse XKAU01EN Wire Universal Flip Remote Key 3 Button for Audi 5pcs/lot' from 'Internet Archive'
+1028:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Xhorse XKAU01EN Wire Universal Flip Remote Key 3 Button for Audi 5pcs/lot'
+1030:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Washing Machine Repair Under $ 40 (the No Headache Guide To Emley, Douglas' from 'Internet Archive'
+1031:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Washing Machine Repair Under $ 40 (the No Headache Guide To Emley, Douglas'
+1033:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Gelehrtes Fürstenthum Baireut: oder biographische und literarische Nachrichten von allen Schriftstellern, welche in dem Fürstenthum Baireut geboren sind und in oder ausser demselben gelebet haben und noch leben ; in alphabetischer Ordnung. 4' from 'Internet Archive'
+1034:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Gelehrtes Fürstenthum Baireut: oder biographische und literarische Nachrichten von allen Schriftstellern, welche in dem Fürstenthum Baireut geboren sind und in oder ausser demselben gelebet haben und noch leben ; in alphabetischer Ordnung. 4'
+1036:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Silvia880 Favorites' from 'Internet Archive'
+1037:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Silvia880 Favorites'
+1039:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (11 Juli 2018)' from 'Internet Archive'
+1040:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Amigoe - Aruba (11 Juli 2018)'
+1043:2026-01-06 16:57:51.6|Debug|Parser|Quality parsed: Unknown Text v1
+1048:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1049:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'bygog Favorites' from 'Internet Archive'
+1050:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'bygog Favorites'
+1052:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'European Music Festival (emfwiki) - https://emf.miraheze.org - Miraheze' from 'Internet Archive'
+1053:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'European Music Festival (emfwiki) - https://emf.miraheze.org - Miraheze'
+1055:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Epigrammatographie oder Sammlung von Inschriften der ältern, mittlern und neueren Zeiten der niederdeutschen Provinzen, darunter die mehreren ungedruckt sind. 1' from 'Internet Archive'
+1056:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Epigrammatographie oder Sammlung von Inschriften der ältern, mittlern und neueren Zeiten der niederdeutschen Provinzen, darunter die mehreren ungedruckt sind. 1'
+1058:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Maggie Lin289 Favorites' from 'Internet Archive'
+1059:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Maggie Lin289 Favorites'
+1061:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'TP2Y Favorites' from 'Internet Archive'
+1062:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'TP2Y Favorites'
+1064:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155132_0129' from 'Internet Archive'
+1065:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155132_0129'
+1067:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155121_0441' from 'Internet Archive'
+1068:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'micro_IA41155121_0441'
+1070:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Ueber Vogt- und Rügegerichte' from 'Internet Archive'
+1071:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Ueber Vogt- und Rügegerichte'
+1073:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Kurze Geschichte der Französischen Revolution: in lateinischer Urschrift und deutscher Übersetzung' from 'Internet Archive'
+1074:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Kurze Geschichte der Französischen Revolution: in lateinischer Urschrift und deutscher Übersetzung'
+1076:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Escritor Emerson (emersondelossantoswiki) - https://emersondelossantos.miraheze.org - Miraheze' from 'Internet Archive'
+1077:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Escritor Emerson (emersondelossantoswiki) - https://emersondelossantos.miraheze.org - Miraheze'
+1079:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Yhuv Favorites' from 'Internet Archive'
+1080:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Yhuv Favorites'
+1082:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'NURUOSMANIYE 997 شرح الشفا على حقوق المصطفى علي القاري' from 'Internet Archive'
+1083:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'NURUOSMANIYE 997 شرح الشفا على حقوق المصطفى علي القاري'
+1085:2026-01-06 16:57:51.6|Debug|DownloadDecisionMaker|Processing release 'Gelehrtes Fürstenthum Baireut: oder biographische und literarische Nachrichten von allen Schriftstellern, welche in dem Fürstenthum Baireut geboren sind und in oder ausser demselben gelebet haben und noch leben ; in alphabetischer Ordnung. 4' from 'Internet Archive'
+1086:2026-01-06 16:57:51.6|Debug|Parser|Parsing string 'Gelehrtes Fürstenthum Baireut: oder biographische und literarische Nachrichten von allen Schriftstellern, welche in dem Fürstenthum Baireut geboren sind und in oder ausser demselben gelebet haben und noch leben ; in alphabetischer Ordnung. 4'
+1088:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Ferrandino: Fortsetzung der Geschichte des Räuberhauptmanns Rinaldini. 7/9' from 'Internet Archive'
+1089:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Ferrandino: Fortsetzung der Geschichte des Räuberhauptmanns Rinaldini. 7/9'
+1091:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0213' from 'Internet Archive'
+1092:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155130_0213'
+1094:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (10 Juli 2018)' from 'Internet Archive'
+1095:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Amigoe - Aruba (10 Juli 2018)'
+1098:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1103:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1104:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Messenger Creation 709095103452779' from 'Internet Archive'
+1105:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Messenger Creation 709095103452779'
+1107:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Shaheen920 Favorites' from 'Internet Archive'
+1108:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Shaheen920 Favorites'
+1110:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '784 yuknvbv xoz' from 'Internet Archive'
+1111:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '784 yuknvbv xoz'
+1113:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155130_0212' from 'Internet Archive'
+1114:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155130_0212'
+1116:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155128_0275' from 'Internet Archive'
+1117:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155128_0275'
+1119:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Diario La Nación 18880929' from 'Internet Archive'
+1120:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Diario La Nación 18880929'
+1122:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155132_0128' from 'Internet Archive'
+1123:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155132_0128'
+1125:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Emeritos Luzakos (emeritosluzakosversewiki) - https://emeritosluzakosverse.miraheze.org - Miraheze' from 'Internet Archive'
+1126:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Emeritos Luzakos (emeritosluzakosversewiki) - https://emeritosluzakosverse.miraheze.org - Miraheze'
+1128:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155128_0276' from 'Internet Archive'
+1129:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155128_0276'
+1131:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'micro_IA41155115_0861' from 'Internet Archive'
+1132:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'micro_IA41155115_0861'
+1134:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Them noon-day blues' from 'Internet Archive'
+1135:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Them noon-day blues'
+1137:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Amigoe - Aruba (9 Juli 2018)' from 'Internet Archive'
+1138:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Amigoe - Aruba (9 Juli 2018)'
+1141:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1146:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1147:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'ALGO VA A SALIR 6 ENERO' from 'Internet Archive'
+1148:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'ALGO VA A SALIR 6 ENERO'
+1150:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Abstract of the Answers and Returns made pursuant to an Act passed in the 41. Year of King George III. intitled : An act for taking an Account of the Population of Great Britain .... 2' from 'Internet Archive'
+1151:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Abstract of the Answers and Returns made pursuant to an Act passed in the 41. Year of King George III. intitled : An act for taking an Account of the Population of Great Britain .... 2'
+1153:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Katelyn Rogerson Favorites' from 'Internet Archive'
+1154:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Katelyn Rogerson Favorites'
+1156:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Route 10 (From "Pokémon Black & White") (Cover Version)' from 'Internet Archive'
+1157:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Route 10 (From "Pokémon Black & White") (Cover Version)'
+1159:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Symphony X (2011) Iconoclast + Remaster FLAC' from 'kickasstorrents.to'
+1160:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Symphony X (2011) Iconoclast + Remaster FLAC'
+1162:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Michał Bajor – Piosenki Marka Grechuty I Jonasza Kofty (2CD) (2009)' from 'kickasstorrents.to'
+1163:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Michał Bajor – Piosenki Marka Grechuty I Jonasza Kofty (2CD) (2009)'
+1165:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'ノルウェイの森 上下  村上春樹 - Haruki Murakami' from 'kickasstorrents.to'
+1166:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'ノルウェイの森 上下  村上春樹 - Haruki Murakami'
+1168:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Tokio blues. Norwegian Wood - Haruki Murakami' from 'kickasstorrents.to'
+1169:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Tokio blues. Norwegian Wood - Haruki Murakami'
+1171:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Newspaper Collection The Hindu 6th January 2026' from 'kickasstorrents.to'
+1172:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Newspaper Collection The Hindu 6th January 2026'
+1174:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'How Super Cool Tech Works By DK' from 'kickasstorrents.ws'
+1175:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'How Super Cool Tech Works By DK'
+1177:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Homemade Vietnamese Recipes Cookbook - Glimpse the Amazing World ...' from 'kickasstorrents.ws'
+1178:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Homemade Vietnamese Recipes Cookbook - Glimpse the Amazing World ...'
+1180:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '週刊少年サンデー 2026年6号（2026年1月7日発売号） [雑誌]' from 'Knaben'
+1181:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '週刊少年サンデー 2026年6号（2026年1月7日発売号） [雑誌]'
+1183:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lykke Li - Wounded Rhymes (Anniversary Edition) (2011) FLAC' from 'Knaben'
+1184:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lykke Li - Wounded Rhymes (Anniversary Edition) (2011) FLAC'
+1187:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: FLAC v1
+1191:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1192:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '週刊少年マガジン 2026年6号[2026年1月7日発売] [雑誌]' from 'Knaben'
+1193:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '週刊少年マガジン 2026年6号[2026年1月7日発売] [雑誌]'
+1195:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[2025.03.21] HIGHSCHOOL OF THE DEAD[2021] [FLAC 96kHz24bit]' from 'Knaben'
+1196:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[2025.03.21] HIGHSCHOOL OF THE DEAD[2021] [FLAC 96kHz24bit]'
+1198:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lykke Li - Little Bit (2007) FLAC' from 'Knaben'
+1199:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lykke Li - Little Bit (2007) FLAC'
+1202:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: FLAC v1
+1206:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1207:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[2010.08.18] HIGHSCHOOL OF THE DEAD [FLAC 96kHz24bit]' from 'Knaben'
+1208:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[2010.08.18] HIGHSCHOOL OF THE DEAD [FLAC 96kHz24bit]'
+1210:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'バリボー！ 低身長でバカにされていた俺が分析力で高校バレーのスーパーエースに！！ 第01-03巻' from 'Knaben'
+1211:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'バリボー！ 低身長でバカにされていた俺が分析力で高校バレーのスーパーエースに！！ 第01-03巻'
+1213:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'お前の表情を確かめたい 第01巻 [Omae no Hyosho wo Tashikametai vol 01]' from 'Knaben'
+1214:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'お前の表情を確かめたい 第01巻 [Omae no Hyosho wo Tashikametai vol 01]'
+1216:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 25 09 26 Leilani Li Breathe In Stretched Out XXX 10' from 'Knaben'
+1217:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 25 09 26 Leilani Li Breathe In Stretched Out XXX 10'
+1219:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 23 06 28 Mini Stallion And Tori Easton Fucking Her' from 'Knaben'
+1220:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 23 06 28 Mini Stallion And Tori Easton Fucking Her'
+1222:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Jack El-Hai - The Nazi and the Psychiatrist' from 'Knaben'
+1223:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Jack El-Hai - The Nazi and the Psychiatrist'
+1225:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 22 12 02 Asia Belle Lola Morena And Tori Easton All' from 'Knaben'
+1226:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 22 12 02 Asia Belle Lola Morena And Tori Easton All'
+1228:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Brown L., Holme T. Chemistry for Engineering Students 5ed 2026' from 'Knaben'
+1229:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Brown L., Holme T. Chemistry for Engineering Students 5ed 2026'
+1231:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Xiao R. Multi-field Modeling of Soft Active Materials.Properties and Design 2026' from 'Knaben'
+1232:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Xiao R. Multi-field Modeling of Soft Active Materials.Properties and Design 2026'
+1234:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'くのいちはずかしい 第01-03巻 [Kunoichi Hazukashi vol 01-03]' from 'Knaben'
+1235:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'くのいちはずかしい 第01-03巻 [Kunoichi Hazukashi vol 01-03]'
+1238:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1243:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1244:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '学園恋愛者！ 第01-05巻 [Gakuen Renai Sha! vol 01-05]' from 'Knaben'
+1245:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '学園恋愛者！ 第01-05巻 [Gakuen Renai Sha! vol 01-05]'
+1248:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1253:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1254:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The Alan Parsons Project - Best Of [Flac24-48-Bubanee]' from 'Knaben'
+1255:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The Alan Parsons Project - Best Of [Flac24-48-Bubanee]'
+1258:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1263:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1264:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Masood S. Conceptual Approach to Quantum Electrodynamics and Applications...2025' from 'Knaben'
+1265:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Masood S. Conceptual Approach to Quantum Electrodynamics and Applications...2025'
+1267:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Hamilton K. Quantum Machine Learning. Concepts and possibilities 2025' from 'Knaben'
+1268:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Hamilton K. Quantum Machine Learning. Concepts and possibilities 2025'
+1270:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Jenkins D. Nuclear Data. Applications to society and industry 2025' from 'Knaben'
+1271:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Jenkins D. Nuclear Data. Applications to society and industry 2025'
+1273:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Burshtein Z. Conductors, Semiconductors, Insulators, and Crystal-Growth...2026' from 'Knaben'
+1274:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Burshtein Z. Conductors, Semiconductors, Insulators, and Crystal-Growth...2026'
+1276:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Michał Bajor – Piosenki Marka Grechuty I Jonasza Kofty (2CD) (2009)' from 'Knaben'
+1277:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Michał Bajor – Piosenki Marka Grechuty I Jonasza Kofty (2CD) (2009)'
+1279:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Singh P. Perovskite Solar Cells. Sustainable Materials, Device Design,...2025' from 'Knaben'
+1280:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Singh P. Perovskite Solar Cells. Sustainable Materials, Device Design,...2025'
+1282:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「鎧真伝サムライトルーパー」OPテーマ「YOAKE」／blank paper [FLAC]' from 'Knaben'
+1283:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「鎧真伝サムライトルーパー」OPテーマ「YOAKE」／blank paper [FLAC]'
+1285:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '女性に風俗って必要ですか？～アラサー独女の再就職先が女性向け風俗店の裏方だった件～ 第01巻 [Josei ni fuzokutte hitsuyodesuka ? Arasa dokujo no saishushokusaki ga josei muke fuzokuten no urakatadatta ken vol 01]' from 'Knaben'
+1286:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '女性に風俗って必要ですか？～アラサー独女の再就職先が女性向け風俗店の裏方だった件～ 第01巻 [Josei ni fuzokutte hitsuyodesuka ? Arasa dokujo no saishushokusaki ga josei muke fuzokuten no urakatadatta ken vol 01]'
+1288:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Miao Z. Weak Grid Integration of Inverter-Based Resources...Solutions 2025' from 'Knaben'
+1289:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Miao Z. Weak Grid Integration of Inverter-Based Resources...Solutions 2025'
+1291:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Mark Knopfler - Copenhagen 1996 (1996) (2 CD) [FLAC] [rjk]' from 'Knaben'
+1292:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Mark Knopfler - Copenhagen 1996 (1996) (2 CD) [FLAC] [rjk]'
+1295:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: FLAC v1
+1299:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1300:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Howard Stern Show - 01.05.2026-TrumpSux.mp3' from 'Knaben'
+1301:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Howard Stern Show - 01.05.2026-TrumpSux.mp3'
+1303:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'ALSScan 26 01 06 Ricki Rose Journey To The Center BTS XXX 2160p' from 'Knaben'
+1304:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'ALSScan 26 01 06 Ricki Rose Journey To The Center BTS XXX 2160p'
+1306:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Blue Exorcist v01-02 (Colored) (Digital) (PZG)' from 'Knaben'
+1307:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Blue Exorcist v01-02 (Colored) (Digital) (PZG)'
+1310:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1315:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1316:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'ガールズ＆パンツァー アバンティ！ アンツィオ高校 第01-03巻 [Girls und Panzer Avanti! Anzio Koko vol 01-03]' from 'Knaben'
+1317:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'ガールズ＆パンツァー アバンティ！ アンツィオ高校 第01-03巻 [Girls und Panzer Avanti! Anzio Koko vol 01-03]'
+1320:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1325:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1326:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'M.P.Thompson.LIVE.Hipodrom.Zagreb.2025.1080p.h264.[ExYuSubs]' from 'Knaben'
+1327:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'M.P.Thompson.LIVE.Hipodrom.Zagreb.2025.1080p.h264.[ExYuSubs]'
+1329:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] D4DJ エルシィ - PRIMA HERO [FLAC]' from 'Knaben'
+1330:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] D4DJ エルシィ - PRIMA HERO [FLAC]'
+1332:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Ghenai C. Fundamental Principles of Sustainable Hydrogen Energy Value Chain 2025' from 'Knaben'
+1333:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Ghenai C. Fundamental Principles of Sustainable Hydrogen Energy Value Chain 2025'
+1335:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '10DANCE 第01-02巻' from 'Knaben'
+1336:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '10DANCE 第01-02巻'
+1338:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Stuber G. Introductory Digital Wireless Communications 2026' from 'Knaben'
+1339:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Stuber G. Introductory Digital Wireless Communications 2026'
+1341:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「穏やか貴族の休暇のすすめ。」EDテーマ「うっすら」／直田姫奈 [FLAC]' from 'Knaben'
+1342:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「穏やか貴族の休暇のすすめ。」EDテーマ「うっすら」／直田姫奈 [FLAC]'
+1344:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「穏やか貴族の休暇のすすめ。」OPテーマ「Gypso」／牧島輝 [FLAC]' from 'Knaben'
+1345:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「穏やか貴族の休暇のすすめ。」OPテーマ「Gypso」／牧島輝 [FLAC]'
+1347:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'ＳＴＡＲＴＩＮＧ ＧＡＴＥ！ ―ウマ娘プリティーダービー― 第01-06巻' from 'Knaben'
+1348:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'ＳＴＡＲＴＩＮＧ ＧＡＴＥ！ ―ウマ娘プリティーダービー― 第01-06巻'
+1350:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「真夜中ハートチューン」OPテーマ「月に向かって撃て」／星街すいせい [FLAC 48kHz/24bit]' from 'Knaben'
+1351:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「真夜中ハートチューン」OPテーマ「月に向かって撃て」／星街すいせい [FLAC 48kHz/24bit]'
+1353:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「地獄先生ぬ～べ～ (2025)」OP2テーマ「ERASE」／THE ORAL CIGARETTES [FLAC 96kHz/24bit]' from 'Knaben'
+1354:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「地獄先生ぬ～べ～ (2025)」OP2テーマ「ERASE」／THE ORAL CIGARETTES [FLAC 96kHz/24bit]'
+1356:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「死亡遊戯で飯を食う。」EDテーマ「祈り」／藤川千愛 [FLAC 48kHz/24bit]' from 'Knaben'
+1357:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「死亡遊戯で飯を食う。」EDテーマ「祈り」／藤川千愛 [FLAC 48kHz/24bit]'
+1359:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「違国日記」OPテーマ「ソナーレ」／TOMOO [FLAC 48kHz/24bit]' from 'Knaben'
+1360:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「違国日記」OPテーマ「ソナーレ」／TOMOO [FLAC 48kHz/24bit]'
+1362:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Carr J. Practical Antenna Handbook 6ed 2024' from 'Knaben'
+1363:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Carr J. Practical Antenna Handbook 6ed 2024'
+1365:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「ハイスクール！奇面組 (2026)」EDテーマ「ステキッ!!」／離婚伝説 [FLAC 48kHz/24bit]' from 'Knaben'
+1366:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「ハイスクール！奇面組 (2026)」EDテーマ「ステキッ!!」／離婚伝説 [FLAC 48kHz/24bit]'
+1368:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「29歳独身中堅冒険者の日常」OPテーマ「君が灯してくれた光を今」／HoneyWorks feat.Hanon [FLAC 96kHz/24bit]' from 'Knaben'
+1369:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「29歳独身中堅冒険者の日常」OPテーマ「君が灯してくれた光を今」／HoneyWorks feat.Hanon [FLAC 96kHz/24bit]'
+1371:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ／KAWAII♡めたもる交響曲 [FLAC 96kHz/24bit]' from 'Knaben'
+1372:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ／KAWAII♡めたもる交響曲 [FLAC 96kHz/24bit]'
+1374:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Singh D. Handbook of Bio-Based Materials for Smart Manufacturing 2025' from 'Knaben'
+1375:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Singh D. Handbook of Bio-Based Materials for Smart Manufacturing 2025'
+1377:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Bhoi N. Novel Applications of Functionally Graded Materials 2026 ...' from 'Knaben'
+1378:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Bhoi N. Novel Applications of Functionally Graded Materials 2026 ...'
+1380:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] ウマ娘 プリティーダービー カバーソング「僕らは今のなかで」[FLAC]' from 'Knaben'
+1381:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] ウマ娘 プリティーダービー カバーソング「僕らは今のなかで」[FLAC]'
+1383:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「最推しの義兄を愛でるため、長生きします！」EDテーマ「Endless You」／蒼井翔太 [FLAC]' from 'Knaben'
+1384:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「最推しの義兄を愛でるため、長生きします！」EDテーマ「Endless You」／蒼井翔太 [FLAC]'
+1386:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '[JMAX] [2026.01.07] TVアニメ「異世界の沙汰は社畜次第」EDテーマ「Back to Back」／MORISAKI WIN [FLAC]' from 'Knaben'
+1387:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '[JMAX] [2026.01.07] TVアニメ「異世界の沙汰は社畜次第」EDテーマ「Back to Back」／MORISAKI WIN [FLAC]'
+1389:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Sahota P. Toxicologic Pathology. An Atlas 2026' from 'Knaben'
+1390:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Sahota P. Toxicologic Pathology. An Atlas 2026'
+1392:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'VA - Super Hits 80's [01-05] (1996-1998) MP3' from 'Knaben'
+1393:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'VA - Super Hits 80's [01-05] (1996-1998) MP3'
+1396:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1400:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1401:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Wall Street Journal Tuesday January 6, 2026' from 'Knaben'
+1402:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Wall Street Journal Tuesday January 6, 2026'
+1404:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Seance Room - Seance Room - 2025, MP3' from 'Knaben'
+1405:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Seance Room - Seance Room - 2025, MP3'
+1408:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1412:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1413:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Wayd - Reinvent - 2025, MP3' from 'Knaben'
+1414:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Wayd - Reinvent - 2025, MP3'
+1417:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1421:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1422:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Serveth - El Verdadero El Dorado - 2025, MP3' from 'Knaben'
+1423:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Serveth - El Verdadero El Dorado - 2025, MP3'
+1426:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1430:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1431:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Selfgod - Left Hand Pagan - 2025, MP3' from 'Knaben'
+1432:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Selfgod - Left Hand Pagan - 2025, MP3'
+1435:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1439:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1440:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Banach M., Surma S. The Link Between Coffee and Health 2025' from 'Knaben'
+1441:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Banach M., Surma S. The Link Between Coffee and Health 2025'
+1443:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'VRConk - Lexi Luna - One Piece Boa Hancock - A Porn Parody 4096p ...' from 'Knaben'
+1444:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'VRConk - Lexi Luna - One Piece Boa Hancock - A Porn Parody 4096p ...'
+1447:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1452:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1453:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Hercai  Amore e Vendetta (2021) s03e108 109 110 [Mkv  720p H264  Ita Ac3 2 0]' from 'LimeTorrents'
+1454:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Hercai  Amore e Vendetta (2021) s03e108 109 110 [Mkv  720p H264  Ita Ac3 2 0]'
+1456:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Jeopardy 2026 01 05 720p HDTV H 264' from 'LimeTorrents'
+1457:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Jeopardy 2026 01 05 720p HDTV H 264'
+1459:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'SimplyAnal 25 12 29 Maggy And Vanessa Decker XXX 2160p MP4 MaMi' from 'LimeTorrents'
+1460:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'SimplyAnal 25 12 29 Maggy And Vanessa Decker XXX 2160p MP4 MaMi'
+1462:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lykke Li  Wounded Rhymes (Anniversary Edition) (2011) FLAC' from 'LimeTorrents'
+1463:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lykke Li  Wounded Rhymes (Anniversary Edition) (2011) FLAC'
+1465:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '3rd Street Blackout 2015 1080p AMZN WEBRip DDP5 1 x264 monkee' from 'LimeTorrents'
+1466:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '3rd Street Blackout 2015 1080p AMZN WEBRip DDP5 1 x264 monkee'
+1468:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'SweetSinner 26 01 06 Addison Vodka Sneaking Around XXX 1080p MP' from 'LimeTorrents'
+1469:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'SweetSinner 26 01 06 Addison Vodka Sneaking Around XXX 1080p MP'
+1471:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 13 Serene Siren And Scarlet Skies XXX 21' from 'LimeTorrents'
+1472:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 13 Serene Siren And Scarlet Skies XXX 21'
+1474:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'SimplyAnal 25 12 29 Maggy And Vanessa Decker XXX 1080p MP4 MaMi' from 'LimeTorrents'
+1475:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'SimplyAnal 25 12 29 Maggy And Vanessa Decker XXX 1080p MP4 MaMi'
+1477:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 20 Sera Ryder And Jessica Starling XXX 1' from 'LimeTorrents'
+1478:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 20 Sera Ryder And Jessica Starling XXX 1'
+1480:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 20 Sera Ryder And Jessica Starling XXX 2' from 'LimeTorrents'
+1481:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 20 Sera Ryder And Jessica Starling XXX 2'
+1483:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 27 Syren De Mer And Jade Kimiko XXX 1080' from 'LimeTorrents'
+1484:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 27 Syren De Mer And Jade Kimiko XXX 1080'
+1486:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 27 Syren De Mer And Jade Kimiko XXX 2160' from 'LimeTorrents'
+1487:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 27 Syren De Mer And Jade Kimiko XXX 2160'
+1489:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'DadsLovePorn 26 01 06 Carmen Caliente XXX 1080p MP4 WRB [XC]' from 'LimeTorrents'
+1490:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'DadsLovePorn 26 01 06 Carmen Caliente XXX 1080p MP4 WRB [XC]'
+1492:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Teenage Anal Fantasy 4 [Cutie Pie 2025] XXX WEB DL MP4 P2P [XC]' from 'LimeTorrents'
+1493:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Teenage Anal Fantasy 4 [Cutie Pie 2025] XXX WEB DL MP4 P2P [XC]'
+1495:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 23 06 02 Demi Sutra And Emma Rose Nailed At The Nai' from 'LimeTorrents'
+1496:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 23 06 02 Demi Sutra And Emma Rose Nailed At The Nai'
+1498:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 06 Angel Youngs And Sophia Locke XXX 108' from 'LimeTorrents'
+1499:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 06 Angel Youngs And Sophia Locke XXX 108'
+1501:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'FemaleFakeTaxi 26 01 06 Cherry Candle XXX 1080p MP4 WRB [XC]' from 'LimeTorrents'
+1502:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'FemaleFakeTaxi 26 01 06 Cherry Candle XXX 1080p MP4 WRB [XC]'
+1504:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'DadsLovePorn 26 01 06 Carmen Caliente XXX 2160p MP4 WRB [XC]' from 'LimeTorrents'
+1505:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'DadsLovePorn 26 01 06 Carmen Caliente XXX 2160p MP4 WRB [XC]'
+1507:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The Tank Aka Der Tiger 2025 1080p WEB H264 MULti YG⭐' from 'LimeTorrents'
+1508:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The Tank Aka Der Tiger 2025 1080p WEB H264 MULti YG⭐'
+1510:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'My Moms Love Triangle 3 [Nubiles 2025] XXX WEB DL MP4 P2P [XC]' from 'LimeTorrents'
+1511:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'My Moms Love Triangle 3 [Nubiles 2025] XXX WEB DL MP4 P2P [XC]'
+1513:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'CentoxCento 23 11 10 Due Cazzi E Una Squirtata iTALiAN XXX 480p' from 'LimeTorrents'
+1514:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'CentoxCento 23 11 10 Due Cazzi E Una Squirtata iTALiAN XXX 480p'
+1516:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'PrimalFetish 24 06 03 Brittany Andrews XXX 480p MP4 XXX [XC]' from 'LimeTorrents'
+1517:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'PrimalFetish 24 06 03 Brittany Andrews XXX 480p MP4 XXX [XC]'
+1519:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'BrazzersExxtra 26 01 06 Raw And Rough The Best Of Dominant Sex' from 'LimeTorrents'
+1520:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'BrazzersExxtra 26 01 06 Raw And Rough The Best Of Dominant Sex'
+1522:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 23 07 05 Emma Rose Hard Lick Maneuver XXX 1080p MP4' from 'LimeTorrents'
+1523:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 23 07 05 Emma Rose Hard Lick Maneuver XXX 1080p MP4'
+1525:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'LetsPostIt 26 01 06 Tiny Khloe Hotel Bartender Is A Flirt XXX 1' from 'LimeTorrents'
+1526:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'LetsPostIt 26 01 06 Tiny Khloe Hotel Bartender Is A Flirt XXX 1'
+1528:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 06 Angel Youngs And Sophia Locke XXX 216' from 'LimeTorrents'
+1529:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 06 Angel Youngs And Sophia Locke XXX 216'
+1531:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'GirlfriendsFilms 23 12 13 Serene Siren And Scarlet Skies XXX 10' from 'LimeTorrents'
+1532:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'GirlfriendsFilms 23 12 13 Serene Siren And Scarlet Skies XXX 10'
+1534:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lykke Li  Little Bit (2007) FLAC' from 'LimeTorrents'
+1535:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lykke Li  Little Bit (2007) FLAC'
+1537:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '42 Up 1998 Part2 1080p BluRay x264 USURY' from 'LimeTorrents'
+1538:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '42 Up 1998 Part2 1080p BluRay x264 USURY'
+1540:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '45 Days to Be Rich 2021 1080p AMZN WEB DL DDP2 0 H 264 SYMBIOTES' from 'LimeTorrents'
+1541:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '45 Days to Be Rich 2021 1080p AMZN WEB DL DDP2 0 H 264 SYMBIOTES'
+1543:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Kings 2021 1080p NF WEB DL DDP5 1 x264 HBO' from 'LimeTorrents'
+1544:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Kings 2021 1080p NF WEB DL DDP5 1 x264 HBO'
+1546:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '42 Up 1998 Part1 1080p BluRay x264 USURY' from 'LimeTorrents'
+1547:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '42 Up 1998 Part1 1080p BluRay x264 USURY'
+1549:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Days 2016 1080p AMZN WEB DL DDP2 0 H 264 Q0SWEB' from 'LimeTorrents'
+1550:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Days 2016 1080p AMZN WEB DL DDP2 0 H 264 Q0SWEB'
+1552:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Dedalus (2024) 720p h264 Ita SUB ENG' from 'LimeTorrents'
+1553:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Dedalus (2024) 720p h264 Ita SUB ENG'
+1555:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'CentoxCento 22 04 14 La Prima Inculata Non Si Scorda Mai iTALiA' from 'LimeTorrents'
+1556:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'CentoxCento 22 04 14 La Prima Inculata Non Si Scorda Mai iTALiA'
+1558:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Asian Domestic Zone Self Filmed Pack 245' from 'LimeTorrents'
+1559:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Asian Domestic Zone Self Filmed Pack 245'
+1561:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Diesel( Mark Denis Lizotte)  Classic Album Collection (5 CD Boxset)  2011' from 'LimeTorrents'
+1562:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Diesel( Mark Denis Lizotte)  Classic Album Collection (5 CD Boxset)  2011'
+1564:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '420 Friendly Comedy Special 2014 1080p BluRay x264 SADPANDA' from 'LimeTorrents'
+1565:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '420 Friendly Comedy Special 2014 1080p BluRay x264 SADPANDA'
+1567:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '42nd Street The Musical 2019 1080p AMZN WEB DL DDP5 1 H 264 QOQ' from 'LimeTorrents'
+1568:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '42nd Street The Musical 2019 1080p AMZN WEB DL DDP5 1 H 264 QOQ'
+1570:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '49 Up 2005 Part1 1080p BluRay x264 USURY' from 'LimeTorrents'
+1571:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '49 Up 2005 Part1 1080p BluRay x264 USURY'
+1573:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '49 Up 2005 Part2 1080p BluRay x264 USURY' from 'LimeTorrents'
+1574:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '49 Up 2005 Part2 1080p BluRay x264 USURY'
+1576:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Minute Mile 2014 1080p AMZN WEB DL DDP5 1 H 264 TEPES' from 'LimeTorrents'
+1577:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Minute Mile 2014 1080p AMZN WEB DL DDP5 1 H 264 TEPES'
+1579:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Presidents 2020 1080p AMZN WEB DL DDP2 0 H 264 TEPES' from 'LimeTorrents'
+1580:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Presidents 2020 1080p AMZN WEB DL DDP2 0 H 264 TEPES'
+1582:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Carats 1973 1080p AMZN WEBRip DDP2 0 x264 ABM' from 'LimeTorrents'
+1583:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Carats 1973 1080p AMZN WEBRip DDP2 0 x264 ABM'
+1585:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Guns to Apache Pass 1967 1080p AMZN WEB DL DDP2 0 H 264 PLiSSK   ' from 'LimeTorrents'
+1586:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Guns to Apache Pass 1967 1080p AMZN WEB DL DDP2 0 H 264 PLiSSK   '
+1588:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Love 2021 1080p AMZN WEBRip DDP5 1 x264 NOGRP' from 'LimeTorrents'
+1589:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Love 2021 1080p AMZN WEBRip DDP5 1 x264 NOGRP'
+1591:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Under 40 2013 1080p WEB DL AAC2 0 H 264 ARTiFEEK' from 'LimeTorrents'
+1592:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Under 40 2013 1080p WEB DL AAC2 0 H 264 ARTiFEEK'
+1594:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Years Young 2022 1080p WEB h264 KOGi' from 'LimeTorrents'
+1595:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Years Young 2022 1080p WEB h264 KOGi'
+1597:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Years a Prisoner 2020 1080p AMZN WEBRip DDP5 1 x264 NWD' from 'LimeTorrents'
+1598:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Years a Prisoner 2020 1080p AMZN WEBRip DDP5 1 x264 NWD'
+1600:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Years of Rocky The Birth of a Classic 2020 1080p AMZN WEB DL D   ' from 'LimeTorrents'
+1601:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Years of Rocky The Birth of a Classic 2020 1080p AMZN WEB DL D   '
+1603:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '400 Bullets 2021 1080p BluRay x264 VETO' from 'LimeTorrents'
+1604:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '400 Bullets 2021 1080p BluRay x264 VETO'
+1606:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '419 2012 1080p AMZN WEB DL DDP2 0 H 264 MRCS' from 'LimeTorrents'
+1607:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '419 2012 1080p AMZN WEB DL DDP2 0 H 264 MRCS'
+1609:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '42 Grams 2017 1080p AMZN WEB DL DDP2 0 H 264 TEPES' from 'LimeTorrents'
+1610:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '42 Grams 2017 1080p AMZN WEB DL DDP2 0 H 264 TEPES'
+1612:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Harry Potter and the Half Blood Prince 2009 1080p 3D SBS HEVC ENG   ' from 'LimeTorrents'
+1613:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Harry Potter and the Half Blood Prince 2009 1080p 3D SBS HEVC ENG   '
+1615:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Harry Potter and the Order of the Phoenix 2007 1080p 3D SBS HEVC    ' from 'LimeTorrents'
+1616:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Harry Potter and the Order of the Phoenix 2007 1080p 3D SBS HEVC    '
+1618:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '36 Husbands 2019 1080p AMZN WEB DL DDP2 0 H 264 SYMBIOTES' from 'LimeTorrents'
+1619:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '36 Husbands 2019 1080p AMZN WEB DL DDP2 0 H 264 SYMBIOTES'
+1621:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '365 Nights 1948 JAPANESE 1080p NF WEBRip DDP2 0 x264 Imagine' from 'LimeTorrents'
+1622:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '365 Nights 1948 JAPANESE 1080p NF WEBRip DDP2 0 x264 Imagine'
+1624:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '3801 Lancaster American Tragedy 2015 1080p WEB h264 OPUS' from 'LimeTorrents'
+1625:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '3801 Lancaster American Tragedy 2015 1080p WEB h264 OPUS'
+1627:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '3rd Reich Evil Deceptions 2016 1080p AMZN WEB DL DDP2 0 H 264 ART   ' from 'LimeTorrents'
+1628:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '3rd Reich Evil Deceptions 2016 1080p AMZN WEB DL DDP2 0 H 264 ART   '
+1630:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Horror Tales Hidden Floor 2006 1080p Amazon WEB DL DD2 0 H 264    ' from 'LimeTorrents'
+1631:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Horror Tales Hidden Floor 2006 1080p Amazon WEB DL DD2 0 H 264    '
+1633:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'PrimalFetish 24 06 10 London River XXX 480p MP4 XXX [XC]' from 'LimeTorrents'
+1634:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'PrimalFetish 24 06 10 London River XXX 480p MP4 XXX [XC]'
+1636:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'TransAngels 25 09 26 Leilani Li Breathe In Stretched Out XXX 10' from 'LimeTorrents'
+1637:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'TransAngels 25 09 26 Leilani Li Breathe In Stretched Out XXX 10'
+1639:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The Touchstone 2017 1080p AMZN WEB DL DD 2 0 H 264 playWEB' from 'LimeTorrents'
+1640:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The Touchstone 2017 1080p AMZN WEB DL DD 2 0 H 264 playWEB'
+1642:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Easy German Platinum 11 0 2 Pre Activated [AppDoze]' from 'LimeTorrents'
+1643:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Easy German Platinum 11 0 2 Pre Activated [AppDoze]'
+1645:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Print Artist Premier 25 0 3 4 Pre Activated [AppDoze]' from 'LimeTorrents'
+1646:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Print Artist Premier 25 0 3 4 Pre Activated [AppDoze]'
+1648:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Reallusion Cartoon Animator 5 34 4905 1   Crack [AppDoze]' from 'LimeTorrents'
+1649:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Reallusion Cartoon Animator 5 34 4905 1   Crack [AppDoze]'
+1651:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Jimmy Fallon 2026 01 05 Sadie Sink 1080p WEB h264 JOAN' from 'LimeTorrents'
+1652:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Jimmy Fallon 2026 01 05 Sadie Sink 1080p WEB h264 JOAN'
+1654:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Billion Dollar Hobo 1977 1080p AMZN WEB DL DDP2 0 H 264 SNAKE' from 'LimeTorrents'
+1655:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Billion Dollar Hobo 1977 1080p AMZN WEB DL DDP2 0 H 264 SNAKE'
+1657:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '45 2006 1080p AMZN WEB DL DDP5 1 H 264 NTG' from 'LimeTorrents'
+1658:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '45 2006 1080p AMZN WEB DL DDP5 1 H 264 NTG'
+1660:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '48 Below 2010 1080p AMZN WEB DL DDP2 0 H 264 MeLON' from 'LimeTorrents'
+1661:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '48 Below 2010 1080p AMZN WEB DL DDP2 0 H 264 MeLON'
+1663:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '49 Pulses 2017 1080p AMZN WEB DL DDP2 0 H 264 TEPES' from 'LimeTorrents'
+1664:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '49 Pulses 2017 1080p AMZN WEB DL DDP2 0 H 264 TEPES'
+1666:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '499 2021 1080p BluRay x264 OFT' from 'LimeTorrents'
+1667:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '499 2021 1080p BluRay x264 OFT'
+1669:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Perfect Sense (2016) 720p HDTV H264 AAC2 0 WITH' from 'LimeTorrents'
+1670:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Perfect Sense (2016) 720p HDTV H264 AAC2 0 WITH'
+1672:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The O  039 Briens (2013) [720p] [WEBRip]' from 'LimeTorrents'
+1673:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The O  039 Briens (2013) [720p] [WEBRip]'
+1675:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '4 Little Girls 1997 1080p AMZN WEB DL DD2 0 H 264 SiGMA' from 'LimeTorrents'
+1676:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '4 Little Girls 1997 1080p AMZN WEB DL DD2 0 H 264 SiGMA'
+1678:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 The Temptation of Christ 1080p AMZN WEB DL DDP5 1 H 264 CMRG' from 'LimeTorrents'
+1679:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 The Temptation of Christ 1080p AMZN WEB DL DDP5 1 H 264 CMRG'
+1681:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '40 Years in the Making The Magic Music Movie 2017 1080p AMZN WEBR   ' from 'LimeTorrents'
+1682:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '40 Years in the Making The Magic Music Movie 2017 1080p AMZN WEBR   '
+1684:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Predator Badlands (2025) 1080p H265 10Bit iTA EnG AC3 Sub iTA EnG   ' from 'LimeTorrents'
+1685:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Predator Badlands (2025) 1080p H265 10Bit iTA EnG AC3 Sub iTA EnG   '
+1687:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Kill List  Horror 2011 Eng Rus Multi Subs 1080p [H264 mp4]' from 'LimeTorrents'
+1688:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Kill List  Horror 2011 Eng Rus Multi Subs 1080p [H264 mp4]'
+1690:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Jean-Fran&ccedil;ois G. Practical Playwright Test. Next-Generation Web Testing...2026' from 'Therarbg'
+1691:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Jean-Fran&ccedil;ois G. Practical Playwright Test. Next-Generation Web Testing...2026'
+1694:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1699:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1700:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Xiong M. Mathematical Foundations of Artificial Intelligence...2026' from 'Therarbg'
+1701:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Xiong M. Mathematical Foundations of Artificial Intelligence...2026'
+1703:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The CIA as Organized Crime: How Illegal Operations Corrupt America and the World' from 'Therarbg'
+1704:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The CIA as Organized Crime: How Illegal Operations Corrupt America and the World'
+1706:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Aydan O. Earthquake Science and Engineering 2022' from 'Therarbg'
+1707:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Aydan O. Earthquake Science and Engineering 2022'
+1709:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Kramer S., Stewart J. Geotechnical Earthquake Engineering 2ed 2025' from 'Therarbg'
+1710:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Kramer S., Stewart J. Geotechnical Earthquake Engineering 2ed 2025'
+1712:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Assche J. Event-Driven Circuit Architectures...Adaptive Sensor Readout 2025' from 'Therarbg'
+1713:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Assche J. Event-Driven Circuit Architectures...Adaptive Sensor Readout 2025'
+1715:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Wall Street Journal Monday January 5, 2026' from 'Therarbg'
+1716:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Wall Street Journal Monday January 5, 2026'
+1718:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Sanderson C. Data Contracts. Developing Production-Grade Pipelines at Scale 2026' from 'Therarbg'
+1719:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Sanderson C. Data Contracts. Developing Production-Grade Pipelines at Scale 2026'
+1721:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Briggs W. C++26 for Lazy Programmers. Quick, Easy,...for Beginners 3ed 2025' from 'Therarbg'
+1722:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Briggs W. C++26 for Lazy Programmers. Quick, Easy,...for Beginners 3ed 2025'
+1724:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lee A. AutoCAD and AutoCAD LT. All-In-One for Dummies 2ed 2026' from 'Therarbg'
+1725:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lee A. AutoCAD and AutoCAD LT. All-In-One for Dummies 2ed 2026'
+1728:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1733:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1734:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'RADIO ETHER PROGRAM 2,102 (SCORCHED EARTH NEW YEAR ETHERLAND #48)' from 'Therarbg'
+1735:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'RADIO ETHER PROGRAM 2,102 (SCORCHED EARTH NEW YEAR ETHERLAND #48)'
+1737:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Readers-Digest USA 2025 Complete' from 'Therarbg'
+1738:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Readers-Digest USA 2025 Complete'
+1740:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Hustler-s Taboo 2025 Complete' from 'Therarbg'
+1741:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Hustler-s Taboo 2025 Complete'
+1743:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'CryptoLearn.com Udemy - Crypto Wallet Management 2026' from 'Therarbg'
+1744:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'CryptoLearn.com Udemy - Crypto Wallet Management 2026'
+1747:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1752:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1753:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Exellent XXX Magazines January 2026' from 'Therarbg'
+1754:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Exellent XXX Magazines January 2026'
+1756:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Assorted Magazines - January 4 2026 (True PDF)' from 'Therarbg'
+1757:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Assorted Magazines - January 4 2026 (True PDF)'
+1760:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: PDF v1
+1764:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1765:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Hellslaught - Violent Iconoclasm - 2025, MP3' from 'Therarbg'
+1766:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Hellslaught - Violent Iconoclasm - 2025, MP3'
+1769:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1773:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1774:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Contempt - Portal - 2025, MP3' from 'Therarbg'
+1775:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Contempt - Portal - 2025, MP3'
+1778:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1782:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1783:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Wergild - Ravagers Of The Borderlands - 2025, MP3' from 'Therarbg'
+1784:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Wergild - Ravagers Of The Borderlands - 2025, MP3'
+1787:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1791:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1792:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release '9 Cookbook Magazines 3 January 2026' from 'Therarbg'
+1793:2026-01-06 16:57:51.7|Debug|Parser|Parsing string '9 Cookbook Magazines 3 January 2026'
+1795:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'MagazinesCrypto Bitcoin Wallet Book Collection' from 'Therarbg'
+1796:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'MagazinesCrypto Bitcoin Wallet Book Collection'
+1798:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Magazines Crypto Bitcoin  NFT  Collection 2026' from 'Therarbg'
+1799:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Magazines Crypto Bitcoin  NFT  Collection 2026'
+1801:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Reader's Digest USA 2026 Complete' from 'Therarbg'
+1802:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Reader's Digest USA 2026 Complete'
+1804:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'APIE, Andy Cap - 2026-01-04 Florence MA' from 'Therarbg'
+1805:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'APIE, Andy Cap - 2026-01-04 Florence MA'
+1807:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'CryptoLearn.com Udemy - Crypto Wallet Management 2026' from 'Therarbg'
+1808:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'CryptoLearn.com Udemy - Crypto Wallet Management 2026'
+1811:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: Unknown Text v1
+1816:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1817:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Binah - Discography (3 releases) 2012-2025, MP3' from 'Therarbg'
+1818:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Binah - Discography (3 releases) 2012-2025, MP3'
+1821:2026-01-06 16:57:51.7|Debug|Parser|Quality parsed: MP3 v1
+1825:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1826:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'The Doors &ndash; The Doors Box Set (4 CD) [FLAC] [rjk]' from 'Therarbg'
+1827:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'The Doors &ndash; The Doors Box Set (4 CD) [FLAC] [rjk]'
+1829:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Boulanger B. Linear and Nonlinear Crystal Optics 2026' from 'Therarbg'
+1830:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Boulanger B. Linear and Nonlinear Crystal Optics 2026'
+1832:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Lundstrom M. Essential Semiconductor Physics 2026' from 'Therarbg'
+1833:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Lundstrom M. Essential Semiconductor Physics 2026'
+1835:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Khalil S. Beyond the Standard Model of Particle Physics 2026' from 'Therarbg'
+1836:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Khalil S. Beyond the Standard Model of Particle Physics 2026'
+1838:2026-01-06 16:57:51.7|Debug|DownloadDecisionMaker|Processing release 'Rana H. Mathematical Methods for Cryocoolers 2025' from 'Therarbg'
+1839:2026-01-06 16:57:51.7|Debug|Parser|Parsing string 'Rana H. Mathematical Methods for Cryocoolers 2025'
+1841:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Cheng Y. Hydropower Station. Concepts, Theories, and Design Principles 2026' from 'Therarbg'
+1842:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Cheng Y. Hydropower Station. Concepts, Theories, and Design Principles 2026'
+1844:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Koop - Gl&ouml;md (1997) FLAC' from 'Therarbg'
+1845:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Koop - Gl&ouml;md (1997) FLAC'
+1848:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: FLAC v1
+1852:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1853:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Delta Rae - The Light (2020) FLAC' from 'Therarbg'
+1854:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Delta Rae - The Light (2020) FLAC'
+1857:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: FLAC v1
+1861:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1862:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Heteropsy - Embalming - 2025, MP3' from 'Therarbg'
+1863:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Heteropsy - Embalming - 2025, MP3'
+1866:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1870:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1871:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'New Scientist Magazine - January 3 2026 - True PDF' from 'Therarbg'
+1872:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'New Scientist Magazine - January 3 2026 - True PDF'
+1875:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: PDF v1
+1879:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1880:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'The Verve - Forth (2008 Rock) [Flac 16-44]' from 'Therarbg'
+1881:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'The Verve - Forth (2008 Rock) [Flac 16-44]'
+1884:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: FLAC v1
+1888:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1889:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Sabrina Carpenter - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1890:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Sabrina Carpenter - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1893:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1897:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1898:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Rihanna - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1899:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Rihanna - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1902:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1906:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1907:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Myles Smith - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1908:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Myles Smith - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1911:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1915:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1916:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Miley Cyrus - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1917:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Miley Cyrus - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1920:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1924:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1925:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Creedence Clearwater Revival - Collection I II III [V0-Bubanee]' from 'Therarbg'
+1926:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Creedence Clearwater Revival - Collection I II III [V0-Bubanee]'
+1929:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: Unknown Text v1
+1934:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1935:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Mariah Carey - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1936:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Mariah Carey - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1939:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1943:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1944:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Mariah Carey - Christmas Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1945:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Mariah Carey - Christmas Essentials (2025) Mp3 (320kbps) [Hunter]'
+1948:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1952:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1953:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Lorde - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1954:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Lorde - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1957:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1961:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1962:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Lizzo - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1963:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Lizzo - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1966:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1970:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1971:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Lady Gaga - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1972:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Lady Gaga - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1975:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1979:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1980:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Jessie Murph - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1981:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Jessie Murph - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1984:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1988:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1989:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Gracie Abrams - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1990:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Gracie Abrams - Essentials (2025) Mp3 (320kbps) [Hunter]'
+1993:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+1997:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+1998:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Ed Sheeran - Essentials (2025) Mp3 (320kbps) [Hunter]' from 'Therarbg'
+1999:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Ed Sheeran - Essentials (2025) Mp3 (320kbps) [Hunter]'
+2002:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: MP3 v1
+2006:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+2007:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Hustler USA 2025 Complete' from 'TorrentDownload (Prowlarr)'
+2008:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Hustler USA 2025 Complete'
+2010:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Encyclopedia of Rare Drug Plants - Exploring The World Of Uncommon Medicines by ..' from 'TorrentDownload (Prowlarr)'
+2011:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Encyclopedia of Rare Drug Plants - Exploring The World Of Uncommon Medicines by ..'
+2013:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Mastering the Stock Market - High Probability Market Timing and Stock Selection ..' from 'TorrentDownload (Prowlarr)'
+2014:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Mastering the Stock Market - High Probability Market Timing and Stock Selection ..'
+2016:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Assorted Magazines January 1 2026 (True PDF)' from 'TorrentDownload (Prowlarr)'
+2017:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Assorted Magazines January 1 2026 (True PDF)'
+2019:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'From Java 21 to Java 25   Upgrade to Java 25 from Java 21 by Fu Cheng' from 'TorrentDownload (Prowlarr)'
+2020:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'From Java 21 to Java 25   Upgrade to Java 25 from Java 21 by Fu Cheng'
+2022:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Thorgal - Collection (70 Albums) (Rosinski-Van Hamme) [Digital] CBZ FR (TONER-PR..' from 'TorrentDownload (Prowlarr)'
+2023:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Thorgal - Collection (70 Albums) (Rosinski-Van Hamme) [Digital] CBZ FR (TONER-PR..'
+2026:2026-01-06 16:57:51.8|Debug|Parser|Quality parsed: Unknown Text v1
+2031:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Release rejected for the following reasons: [Permanent] Unknown Author
+2032:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'TINTIN [HD]' from 'TorrentDownload (Prowlarr)'
+2033:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'TINTIN [HD]'
+2035:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Wakfu   La Grande Vague T01 &amp; T02 [CBZ] FR   NoTag' from 'TorrentDownload (Prowlarr)'
+2036:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Wakfu   La Grande Vague T01 &amp; T02 [CBZ] FR   NoTag'
+2038:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'Trolls de Troy [HD]' from 'TorrentDownload (Prowlarr)'
+2039:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'Trolls de Troy [HD]'
+2041:2026-01-06 16:57:51.8|Debug|DownloadDecisionMaker|Processing release 'The New York Times Best Sellers   October 26, 2025 exe' from 'TorrentDownload (Prowlarr)'
+2042:2026-01-06 16:57:51.8|Debug|Parser|Parsing string 'The New York Times Best Sellers   October 26, 2025 exe'
+2080:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2083:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2085:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2088:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2090:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2093:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2095:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2098:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2100:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2103:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2105:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2108:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2110:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2113:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2115:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2119:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2121:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2124:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2126:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2129:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2131:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2134:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2136:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2139:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2141:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2144:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2146:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2149:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2151:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2154:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2156:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2159:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2161:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2164:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2166:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2169:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2171:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2174:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2176:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2179:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2181:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2184:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2186:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2189:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2191:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2194:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2196:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2199:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2201:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2204:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2206:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2209:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2211:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2214:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2216:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2219:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2221:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2224:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2226:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2229:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2231:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2234:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2236:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2239:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2241:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2244:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2246:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2249:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2251:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2254:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2256:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2259:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2261:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2264:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2266:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2269:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2271:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2274:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2276:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2279:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2281:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2284:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2286:2026-01-06 17:00:15.7|Debug|Parser|Parsing string '[Английский] Cline Ernest / Клайн Эрнест - Ready Player One / Первому игроку приготовиться [Wil Wheaton, 2011 г., MP3, 192 kbps]'
+2289:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: MP3 v1
+2291:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ready Player One  Ernest Cline'
+2293:2026-01-06 17:00:15.7|Debug|Parser|Parsing string '[bitsearch.to] Cline, Ernest - Ready Player One [627] (r2.6)'
+2296:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2298:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2301:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: Unknown Text v1
+2303:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Cline, Ernest - Ready Player One [627] (r2.6).epub'
+2306:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: EPUB v1
+2308:2026-01-06 17:00:15.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One.Two.(2021).[azw3.epub.mobi.pdf]'
+2311:2026-01-06 17:00:15.7|Debug|Parser|Quality parsed: AZW3 v1
+2335:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2338:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2340:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2343:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2345:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2348:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2350:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2353:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2355:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2358:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2360:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2363:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2365:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2368:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2370:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2373:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2375:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2378:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2380:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2383:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2385:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2388:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2390:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2393:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2395:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2398:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2400:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2403:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2405:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2408:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2410:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2413:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2415:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2418:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2420:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2423:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2425:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2428:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2430:2026-01-06 17:01:46.7|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2433:2026-01-06 17:01:46.7|Debug|Parser|Quality parsed: Unknown Text v1
+2439:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2442:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2444:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2447:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2449:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2452:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2454:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2457:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2459:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2462:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2464:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2467:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2469:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2472:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2474:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2477:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2479:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2482:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2484:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2487:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2489:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2492:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2494:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2497:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2499:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2502:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2504:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2507:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2509:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2512:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2514:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2517:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2519:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2522:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2524:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2527:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2529:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2532:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2534:2026-01-06 17:01:52.8|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2537:2026-01-06 17:01:52.8|Debug|Parser|Quality parsed: Unknown Text v1
+2547:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2550:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2553:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2556:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2558:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2561:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2563:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2566:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2568:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2571:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2573:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2576:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2578:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2581:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2583:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2586:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2588:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2591:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2593:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2596:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2598:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2601:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2603:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2607:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2609:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2612:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2614:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2617:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2619:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2622:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2624:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2627:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2629:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2632:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2634:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2637:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2639:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2642:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2644:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2647:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2649:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2652:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2654:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2657:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2659:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2662:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2664:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2667:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2669:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2672:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2674:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2677:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2679:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2682:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2684:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2687:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2689:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2692:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2694:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2697:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2699:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2702:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2704:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2707:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2709:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2712:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2714:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2717:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2719:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2722:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2724:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2727:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2729:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2732:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2734:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2737:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2739:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2742:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2744:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2747:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2749:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2752:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2754:2026-01-06 17:02:04.0|Debug|Parser|Parsing string '[Английский] Cline Ernest / Клайн Эрнест - Ready Player One / Первому игроку приготовиться [Wil Wheaton, 2011 г., MP3, 192 kbps]'
+2757:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: MP3 v1
+2759:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ready Player One  Ernest Cline'
+2761:2026-01-06 17:02:04.0|Debug|Parser|Parsing string '[bitsearch.to] Cline, Ernest - Ready Player One [627] (r2.6)'
+2764:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2766:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One (Wil Wheaton) - 2011 (80kbps)'
+2769:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: Unknown Text v1
+2771:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Cline, Ernest - Ready Player One [627] (r2.6).epub'
+2774:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: EPUB v1
+2776:2026-01-06 17:02:04.0|Debug|Parser|Parsing string 'Ernest Cline - Ready Player One.Two.(2021).[azw3.epub.mobi.pdf]'
+2779:2026-01-06 17:02:04.0|Debug|Parser|Quality parsed: AZW3 v1
+2789:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2793:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2797:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2801:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2805:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2809:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2813:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2817:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2821:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2825:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2829:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2833:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2837:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2841:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2845:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2849:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2853:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2857:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2861:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2865:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2869:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2873:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2877:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2881:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2885:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2889:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2893:2026-01-06 17:02:26.2|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2897:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2901:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2905:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2909:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2913:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2917:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2921:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2925:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2929:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2933:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2937:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2941:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2945:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
+2949:2026-01-06 17:02:26.3|Debug|AudioTag|Quality parsed: MP3 v1, Source: TagLib
