@@ -79,12 +79,12 @@ namespace NzbDrone.Core.MediaFiles
                 return BookFileMediaType.Unknown;
             }
 
-            if (quality == Quality.MP3 || quality == Quality.M4B || quality == Quality.FLAC || quality == Quality.UnknownAudio)
+            if (quality == Quality.MP3 || quality == Quality.M4B || quality == Quality.FLAC || quality == Quality.UnknownAudio || quality == Quality.LikelyAudiobook)
             {
                 return BookFileMediaType.Audiobook;
             }
 
-            if (quality == Quality.PDF || quality == Quality.MOBI || quality == Quality.EPUB || quality == Quality.AZW3 || quality == Quality.Unknown)
+            if (quality == Quality.PDF || quality == Quality.MOBI || quality == Quality.EPUB || quality == Quality.AZW3 || quality == Quality.Unknown || quality == Quality.LikelyEbook)
             {
                 return BookFileMediaType.Ebook;
             }

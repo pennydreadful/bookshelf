@@ -280,13 +280,14 @@ namespace NzbDrone.Core.DecisionEngine
 
             if (size <= hint.TextMaxSize)
             {
+                qualityModel.Quality = Quality.LikelyEbook;
                 qualityModel.QualityDetectionSource = QualityDetectionSource.Heuristic;
                 return;
             }
 
             if (size >= hint.AudioMinSize)
             {
-                qualityModel.Quality = Quality.UnknownAudio;
+                qualityModel.Quality = Quality.LikelyAudiobook;
                 qualityModel.QualityDetectionSource = QualityDetectionSource.Heuristic;
             }
         }

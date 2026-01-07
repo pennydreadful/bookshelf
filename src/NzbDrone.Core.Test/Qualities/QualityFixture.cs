@@ -18,8 +18,12 @@ namespace NzbDrone.Core.Test.Qualities
                         new object[] { 2, Quality.MOBI },
                         new object[] { 3, Quality.EPUB },
                         new object[] { 4, Quality.AZW3 },
+                        new object[] { 5, Quality.LikelyEbook },
                         new object[] { 10, Quality.MP3 },
                         new object[] { 11, Quality.FLAC },
+                        new object[] { 12, Quality.M4B },
+                        new object[] { 13, Quality.UnknownAudio },
+                        new object[] { 14, Quality.LikelyAudiobook },
                 };
 
         public static object[] ToIntCases =
@@ -29,8 +33,12 @@ namespace NzbDrone.Core.Test.Qualities
                         new object[] { Quality.MOBI, 2 },
                         new object[] { Quality.EPUB, 3 },
                         new object[] { Quality.AZW3, 4 },
+                        new object[] { Quality.LikelyEbook, 5 },
                         new object[] { Quality.MP3, 10 },
                         new object[] { Quality.FLAC, 11 },
+                        new object[] { Quality.M4B, 12 },
+                        new object[] { Quality.UnknownAudio, 13 },
+                        new object[] { Quality.LikelyAudiobook, 14 },
                 };
 
         [Test]
@@ -54,10 +62,14 @@ namespace NzbDrone.Core.Test.Qualities
             var qualities = new List<Quality>
             {
                 Quality.Unknown,
+                Quality.LikelyEbook,
                 Quality.MOBI,
                 Quality.EPUB,
                 Quality.AZW3,
+                Quality.UnknownAudio,
+                Quality.LikelyAudiobook,
                 Quality.MP3,
+                Quality.M4B,
                 Quality.FLAC
             };
 

@@ -107,6 +107,7 @@ namespace NzbDrone.Core.Profiles.Qualities
             AddDefaultProfile("Spoken",
                               Quality.MP3,
                               Quality.UnknownAudio,
+                              Quality.LikelyAudiobook,
                               Quality.MP3,
                               Quality.M4B,
                               Quality.FLAC);

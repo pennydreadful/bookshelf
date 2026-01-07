@@ -55,6 +55,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 qualityOrGroup = FindQualityItem(profile, Quality.MP3);
             }
 
+            if (qualityOrGroup == null && quality == Quality.LikelyAudiobook)
+            {
+                qualityOrGroup = FindQualityItem(profile, Quality.UnknownAudio) ??
+                    FindQualityItem(profile, Quality.MP3);
+            }
+
+            if (qualityOrGroup == null && quality == Quality.LikelyEbook)
+            {
+                qualityOrGroup = FindQualityItem(profile, Quality.Unknown);
+            }
+
             if (qualityOrGroup == null || !qualityOrGroup.Allowed)
             {
                 _logger.Debug("Quality {0} rejected by Author's quality profile", subject.ParsedBookInfo.Quality);
