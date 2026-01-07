@@ -22,6 +22,7 @@ Use this file to onboard a new Codex chat.
 - Push to GitHub after every update.
 - Provide update commands in fenced code blocks.
 - Increment the build version in `src/Directory.Build.props` (AssemblyVersion) after each change.
+- Run a StyleCop check (full build) before pushing to catch SA/IDE warnings early.
 
 ## Build/Style Notes
 - StyleCop is strict. In `BookInfoProxy.cs`, keep:
