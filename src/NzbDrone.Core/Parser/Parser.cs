@@ -130,6 +130,11 @@ namespace NzbDrone.Core.Parser
             // Hypen with no or more spaces between author/book/year
             new Regex(@"^(?:(?<author>.+?)(?:-))(?<releaseyear>\d{4})(?:-)(?<book>[^-]+)",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Book  Author
+            // Double-space delimiter used by some indexers
+            new Regex(@"^(?<book>.+?)\s{2,}(?<author>(?=.*\p{L}).+)$",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]

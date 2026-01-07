@@ -182,6 +182,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "Discography", true)]
         [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "Discography", true)]
         [TestCase("Gorillaz - The now now - 2018 [FLAC]", "Gorillaz", "The now now")]
+        [TestCase("Ready Player One  Ernest Cline", "Ernest Cline", "Ready Player One")]
 
         //Regex Works on below, but ParseBookMatchCollection cleans the "..." and converts it to spaces
         // [TestCase("Metallica - ...And Justice for All (1988) [FLAC Lossless]", "Metallica", "...And Justice for All")]
