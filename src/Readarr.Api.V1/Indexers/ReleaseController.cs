@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -156,6 +157,7 @@ namespace Readarr.Api.V1.Indexers
             try
             {
                 var decisions = await _releaseSearchService.BookSearch(bookId, true, true, true);
+                decisions = FilterZeroSeederTorrents(decisions);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
@@ -172,6 +174,7 @@ namespace Readarr.Api.V1.Indexers
             try
             {
                 var decisions = await _releaseSearchService.AuthorSearch(authorId, false, true, true);
+                decisions = FilterZeroSeederTorrents(decisions);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
@@ -203,6 +206,23 @@ namespace Readarr.Api.V1.Indexers
         private string GetCacheKey(ReleaseResource resource)
         {
             return string.Concat(resource.IndexerId, "_", resource.Guid);
+        }
+
+        private static List<DownloadDecision> FilterZeroSeederTorrents(IEnumerable<DownloadDecision> decisions)
+        {
+            return decisions.Where(decision => !IsZeroSeederTorrent(decision)).ToList();
+        }
+
+        private static bool IsZeroSeederTorrent(DownloadDecision decision)
+        {
+            var release = decision?.RemoteBook?.Release;
+            if (release == null || release.DownloadProtocol != DownloadProtocol.Torrent)
+            {
+                return false;
+            }
+
+            var seeders = TorrentInfo.GetSeeders(release);
+            return seeders.HasValue && seeders.Value <= 0;
         }
     }
 }

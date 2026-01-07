@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.DecisionEngine
         {
             var comparers = new List<CompareDelegate>
             {
+                CompareMissingMediaType,
                 CompareQuality,
                 CompareCustomFormatScore,
                 CompareProtocol,
@@ -74,6 +76,47 @@ namespace NzbDrone.Core.DecisionEngine
 
             return CompareAll(CompareBy(x.RemoteBook, y.RemoteBook, remoteBook => remoteBook.Author.QualityProfile.Value.GetIndex(remoteBook.ParsedBookInfo.Quality.Quality)),
                            CompareBy(x.RemoteBook, y.RemoteBook, remoteBook => remoteBook.ParsedBookInfo.Quality.Revision));
+        }
+
+        private int CompareMissingMediaType(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareByReverse(x.RemoteBook, y.RemoteBook, MissingMediaTypeScore);
+        }
+
+        private int MissingMediaTypeScore(RemoteBook remoteBook)
+        {
+            var mediaType = MediaFileExtensions.GetMediaTypeForQuality(remoteBook?.ParsedBookInfo?.Quality?.Quality);
+            if (mediaType == BookFileMediaType.Unknown)
+            {
+                return 0;
+            }
+
+            var books = remoteBook?.Books;
+            if (books == null || books.Count == 0)
+            {
+                return 1;
+            }
+
+            var hasMediaType = books
+                .SelectMany(book => book.BookFiles?.Value ?? Enumerable.Empty<BookFile>())
+                .Any(file => GetMediaType(file) == mediaType);
+
+            return hasMediaType ? 0 : 1;
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile file)
+        {
+            if (file == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (file.MediaType != BookFileMediaType.Unknown)
+            {
+                return file.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(file.Path);
         }
 
         private int CompareCustomFormatScore(DownloadDecision x, DownloadDecision y)
