@@ -29,7 +29,6 @@ import InteractiveImportModal from '../../InteractiveImport/InteractiveImportMod
 import AuthorDetailsHeaderConnector from './AuthorDetailsHeaderConnector';
 import AuthorDetailsAvailableBooksConnector from './AuthorDetailsAvailableBooksConnector';
 import AuthorDetailsSeasonConnector from './AuthorDetailsSeasonConnector';
-import AuthorDetailsSeriesConnector from './AuthorDetailsSeriesConnector';
 import styles from './AuthorDetails.css';
 
 function getExpandedState(newState) {
@@ -221,8 +220,6 @@ class AuthorDetails extends Component {
       bookFilesError,
       hasBooks,
       hasMonitoredBooks,
-      hasSeries,
-      series,
       hasBookFiles,
       previousAuthor,
       nextAuthor,
@@ -465,13 +462,6 @@ class AuthorDetails extends Component {
                       {translate('Search')}
                     </Tab>
 
-                    <Tab
-                      className={styles.tab}
-                      selectedClassName={styles.selectedTab}
-                    >
-                      {translate('SeriesTotal', [series.length])}
-                    </Tab>
-
                     {
                       selectedTabIndex === 2 &&
                         <div className={styles.filterIcon}>
@@ -511,26 +501,6 @@ class AuthorDetails extends Component {
                     />
                   </TabPanel>
 
-                  <TabPanel>
-                    {
-                      isPopulated && hasSeries &&
-                        <div>
-                          {
-                            series.map((item) => {
-                              return (
-                                <AuthorDetailsSeriesConnector
-                                  key={item.id}
-                                  seriesId={item.id}
-                                  authorId={id}
-                                  isExpanded={expandedState[item.id]}
-                                  onExpandPress={this.onExpandPress}
-                                />
-                              );
-                            })
-                          }
-                        </div>
-                    }
-                  </TabPanel>
                 </Tabs>
             }
           </div>
@@ -620,8 +590,6 @@ AuthorDetails.propTypes = {
   bookFilesError: PropTypes.object,
   hasBooks: PropTypes.bool.isRequired,
   hasMonitoredBooks: PropTypes.bool.isRequired,
-  hasSeries: PropTypes.bool.isRequired,
-  series: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasBookFiles: PropTypes.bool.isRequired,
   previousAuthor: PropTypes.object.isRequired,
   nextAuthor: PropTypes.object.isRequired,
