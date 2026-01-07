@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -40,6 +43,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3, new Revision(version: 2)) },
+                Books = new List<Book>
+                {
+                    BuildBookWithFiles(
+                        CreateBookFile("book.epub", Quality.EPUB),
+                        CreateBookFile("book.mp3", Quality.MP3))
+                }
             };
         }
 
@@ -64,6 +73,32 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        public void should_allow_if_media_type_is_missing_from_existing_files()
+        {
+            _remoteBook.ParsedBookInfo.Quality.Quality = Quality.MP3;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.EPUB);
+            _remoteBook.Books = new List<Book>
+            {
+                BuildBookWithFiles(CreateBookFile("book.epub", Quality.EPUB))
+            };
+
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_not_allow_if_media_type_exists_for_non_allowed_quality()
+        {
+            _remoteBook.ParsedBookInfo.Quality.Quality = Quality.MP3;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.EPUB);
+            _remoteBook.Books = new List<Book>
+            {
+                BuildBookWithFiles(CreateBookFile("book.mp3", Quality.MP3))
+            };
+
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
         public void should_allow_unknown_audio_when_missing_from_profile_but_mp3_allowed()
         {
             _remoteBook.ParsedBookInfo.Quality.Quality = Quality.UnknownAudio;
@@ -79,6 +114,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.EPUB);
 
             Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
+        }
+
+        private static Book BuildBookWithFiles(params BookFile[] files)
+        {
+            return new Book
+            {
+                BookFiles = files.ToList()
+            };
+        }
+
+        private static BookFile CreateBookFile(string path, Quality quality)
+        {
+            return new BookFile
+            {
+                Path = path,
+                Quality = new QualityModel(quality, new Revision(version: 1))
+            };
         }
     }
 }

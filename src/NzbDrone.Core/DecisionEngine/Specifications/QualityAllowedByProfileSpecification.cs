@@ -1,6 +1,7 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -68,11 +69,57 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (qualityOrGroup == null || !qualityOrGroup.Allowed)
             {
+                if (AllowsMissingMediaType(subject, quality))
+                {
+                    _logger.Debug("Quality {0} allowed because no existing {1} files are present", quality, GetMediaType(quality));
+                    return Decision.Accept();
+                }
+
                 _logger.Debug("Quality {0} rejected by Author's quality profile", subject.ParsedBookInfo.Quality);
                 return Decision.Reject("{0} is not wanted in profile", subject.ParsedBookInfo.Quality.Quality);
             }
 
             return Decision.Accept();
+        }
+
+        private static bool AllowsMissingMediaType(RemoteBook subject, Quality quality)
+        {
+            var targetMediaType = GetMediaType(quality);
+            if (targetMediaType == BookFileMediaType.Unknown)
+            {
+                return false;
+            }
+
+            if (subject?.Books == null || subject.Books.Count == 0)
+            {
+                return true;
+            }
+
+            var hasTargetMediaType = subject.Books
+                .SelectMany(book => book.BookFiles?.Value ?? Enumerable.Empty<BookFile>())
+                .Any(file => GetMediaType(file) == targetMediaType);
+
+            return !hasTargetMediaType;
+        }
+
+        private static BookFileMediaType GetMediaType(Quality quality)
+        {
+            return MediaFileExtensions.GetMediaTypeForQuality(quality);
+        }
+
+        private static BookFileMediaType GetMediaType(BookFile file)
+        {
+            if (file == null)
+            {
+                return BookFileMediaType.Unknown;
+            }
+
+            if (file.MediaType != BookFileMediaType.Unknown)
+            {
+                return file.MediaType;
+            }
+
+            return MediaFileExtensions.GetMediaTypeForPath(file.Path);
         }
     }
 }
