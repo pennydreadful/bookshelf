@@ -1996,16 +1996,14 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         private AuthorExtraMetadata LookupAuthorExtraMetadata(string authorName)
         {
+            var combined = new AuthorExtraMetadata
+            {
+                Links = new List<Links>()
+            };
+
             try
             {
-                var wikidataResult = TryGetWikidataAuthorExtras(authorName);
-                if (wikidataResult != null &&
-                    (wikidataResult.ImageUrl.IsNotNullOrWhiteSpace() ||
-                     wikidataResult.Overview.IsNotNullOrWhiteSpace() ||
-                     (wikidataResult.Links != null && wikidataResult.Links.Any())))
-                {
-                    return wikidataResult;
-                }
+                MergeAuthorExtras(combined, TryGetWikidataAuthorExtras(authorName));
             }
             catch (Exception ex)
             {
@@ -2014,12 +2012,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             try
             {
-                var openLibraryResult = TryGetOpenLibraryAuthorExtras(authorName);
-                if (openLibraryResult?.ImageUrl.IsNotNullOrWhiteSpace() == true ||
-                    openLibraryResult?.Overview.IsNotNullOrWhiteSpace() == true)
-                {
-                    return openLibraryResult;
-                }
+                MergeAuthorExtras(combined, TryGetOpenLibraryAuthorExtras(authorName));
             }
             catch (Exception ex)
             {
@@ -2028,19 +2021,56 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             try
             {
-                var wikipediaResult = TryGetWikipediaAuthorExtrasByName(authorName);
-                if (wikipediaResult?.ImageUrl.IsNotNullOrWhiteSpace() == true ||
-                    wikipediaResult?.Overview.IsNotNullOrWhiteSpace() == true)
-                {
-                    return wikipediaResult;
-                }
+                MergeAuthorExtras(combined, TryGetWikipediaAuthorExtrasByName(authorName));
             }
             catch (Exception ex)
             {
                 _logger.Debug(ex, "Wikipedia author lookup failed for {0}", authorName);
             }
 
-            return new AuthorExtraMetadata();
+            var hasImage = combined.ImageUrl.IsNotNullOrWhiteSpace();
+            var hasOverview = combined.Overview.IsNotNullOrWhiteSpace();
+            var hasLinks = combined.Links != null && combined.Links.Any();
+
+            return (hasImage || hasOverview || hasLinks) ? combined : new AuthorExtraMetadata();
+        }
+
+        private static void MergeAuthorExtras(AuthorExtraMetadata target, AuthorExtraMetadata source)
+        {
+            if (target == null || source == null)
+            {
+                return;
+            }
+
+            if (target.ImageUrl.IsNullOrWhiteSpace() && source.ImageUrl.IsNotNullOrWhiteSpace())
+            {
+                target.ImageUrl = source.ImageUrl;
+            }
+
+            if (target.Overview.IsNullOrWhiteSpace() && source.Overview.IsNotNullOrWhiteSpace())
+            {
+                target.Overview = source.Overview;
+            }
+
+            if (source.Links != null && source.Links.Any())
+            {
+                target.Links ??= new List<Links>();
+
+                foreach (var link in source.Links)
+                {
+                    if (link?.Url.IsNullOrWhiteSpace() ?? true)
+                    {
+                        continue;
+                    }
+
+                    if (target.Links.Any(x => x.Url.Equals(link.Url, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    target.Links.Add(link);
+                }
+            }
         }
 
         private AuthorExtraMetadata TryGetWikidataAuthorExtras(string authorName)
