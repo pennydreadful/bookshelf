@@ -59,11 +59,26 @@ function revisionLabel(className, quality, showRevision) {
   }
 }
 
+function getQualityLabel(quality, isLikely) {
+  if (!isLikely) {
+    return quality.quality.name;
+  }
+
+  const qualityName = quality.quality.name.toLowerCase();
+
+  if (qualityName.includes('audio')) {
+    return translate('LikelyAudiobook');
+  }
+
+  return translate('LikelyEbook');
+}
+
 function BookQuality(props) {
   const {
     className,
     title,
     quality,
+    isLikely,
     size,
     isMonitored,
     isCutoffNotMet,
@@ -88,7 +103,7 @@ function BookQuality(props) {
         kind={kind}
         title={getTooltip(title, quality, size, isMonitored, isCutoffNotMet)}
       >
-        {quality.quality.name}
+        {getQualityLabel(quality, isLikely)}
       </Label>{revisionLabel(className, quality, showRevision)}
     </span>
   );
@@ -98,6 +113,7 @@ BookQuality.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   quality: PropTypes.object.isRequired,
+  isLikely: PropTypes.bool,
   size: PropTypes.number,
   isMonitored: PropTypes.bool,
   isCutoffNotMet: PropTypes.bool,
@@ -106,6 +122,7 @@ BookQuality.propTypes = {
 
 BookQuality.defaultProps = {
   title: '',
+  isLikely: false,
   isMonitored: true,
   showRevision: false
 };

@@ -788,6 +788,8 @@
   "ReadarrSupportsMultipleListsForImportingBooksAndAuthorsIntoTheDatabase": "Readarr supports multiple lists for importing Books and Authors into the database.",
   "ReadarrTags": "Readarr Tags",
   "ReadEbook": "Read ebook",
+  "LikelyAudiobook": "Likely audiobook",
+  "LikelyEbook": "Likely ebook",
   "PlayAudio": "Play audio",
   "AudiobookPlayer": "Audiobook Player",
   "PreviousPage": "Previous page",

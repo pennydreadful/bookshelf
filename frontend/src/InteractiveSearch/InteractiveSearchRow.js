@@ -128,6 +128,7 @@ class InteractiveSearchRow extends Component {
       seeders,
       leechers,
       quality,
+      qualityIsHeuristic,
       customFormatScore,
       customFormats,
       indexerFlags = 0,
@@ -182,7 +183,11 @@ class InteractiveSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.quality}>
-          <BookQuality quality={quality} showRevision={true} />
+          <BookQuality
+            quality={quality}
+            isLikely={qualityIsHeuristic}
+            showRevision={true}
+          />
         </TableRowCell>
 
         <TableRowCell className={styles.customFormatScore}>
@@ -276,6 +281,7 @@ InteractiveSearchRow.propTypes = {
   seeders: PropTypes.number,
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
+  qualityIsHeuristic: PropTypes.bool,
   customFormats: PropTypes.arrayOf(PropTypes.object),
   customFormatScore: PropTypes.number.isRequired,
   indexerFlags: PropTypes.number.isRequired,

@@ -278,9 +278,16 @@ namespace NzbDrone.Core.DecisionEngine
                 return;
             }
 
+            if (size <= hint.TextMaxSize)
+            {
+                qualityModel.QualityDetectionSource = QualityDetectionSource.Heuristic;
+                return;
+            }
+
             if (size >= hint.AudioMinSize)
             {
                 qualityModel.Quality = Quality.UnknownAudio;
+                qualityModel.QualityDetectionSource = QualityDetectionSource.Heuristic;
             }
         }
 

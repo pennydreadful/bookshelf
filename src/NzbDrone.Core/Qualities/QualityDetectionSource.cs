@@ -5,6 +5,7 @@ namespace NzbDrone.Core.Qualities
         Name,
         Extension,
         TagLib,
-        Category
+        Category,
+        Heuristic
     }
 }

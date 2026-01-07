@@ -43,6 +43,7 @@ namespace Readarr.Api.V1.Indexers
         public int ReleaseWeight { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
+        public bool QualityIsHeuristic { get; set; }
 
         public string MagnetUrl { get; set; }
         public string InfoHash { get; set; }
@@ -80,6 +81,7 @@ namespace Readarr.Api.V1.Indexers
             {
                 Guid = releaseInfo.Guid,
                 Quality = parsedBookInfo.Quality,
+                QualityIsHeuristic = parsedBookInfo?.Quality?.QualityDetectionSource == QualityDetectionSource.Heuristic,
 
                 //QualityWeight
                 Age = releaseInfo.Age,

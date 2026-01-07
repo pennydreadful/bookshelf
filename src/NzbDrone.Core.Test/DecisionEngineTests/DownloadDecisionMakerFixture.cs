@@ -386,11 +386,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var qualityBySize = decisions.ToDictionary(d => d.RemoteBook.Release.Size,
                 d => d.RemoteBook.ParsedBookInfo.Quality.Quality);
+            var sourceBySize = decisions.ToDictionary(d => d.RemoteBook.Release.Size,
+                d => d.RemoteBook.ParsedBookInfo.Quality.QualityDetectionSource);
 
             qualityBySize[5.Megabytes()].Should().Be(Quality.Unknown);
             qualityBySize[6.Megabytes()].Should().Be(Quality.Unknown);
             qualityBySize[500.Megabytes()].Should().Be(Quality.UnknownAudio);
             qualityBySize[700.Megabytes()].Should().Be(Quality.UnknownAudio);
+
+            sourceBySize[5.Megabytes()].Should().Be(QualityDetectionSource.Heuristic);
+            sourceBySize[6.Megabytes()].Should().Be(QualityDetectionSource.Heuristic);
+            sourceBySize[500.Megabytes()].Should().Be(QualityDetectionSource.Heuristic);
+            sourceBySize[700.Megabytes()].Should().Be(QualityDetectionSource.Heuristic);
         }
     }
 }
