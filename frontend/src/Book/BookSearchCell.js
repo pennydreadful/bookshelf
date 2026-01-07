@@ -39,6 +39,7 @@ class BookSearchCell extends Component {
       bookId,
       bookTitle,
       authorName,
+      children,
       isSearching,
       onSearchPress,
       ...otherProps
@@ -56,6 +57,8 @@ class BookSearchCell extends Component {
           name={icons.INTERACTIVE}
           onPress={this.onManualSearchPress}
         />
+
+        {children}
 
         <BookInteractiveSearchModalConnector
           isOpen={this.state.isDetailsModalOpen}
@@ -76,6 +79,7 @@ BookSearchCell.propTypes = {
   authorId: PropTypes.number.isRequired,
   bookTitle: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
+  children: PropTypes.node,
   isSearching: PropTypes.bool.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };

@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import DeleteBookModal from 'Book/Delete/DeleteBookModal';
 import BookSearchCellConnector from 'Book/BookSearchCellConnector';
 import BookTitleLink from 'Book/BookTitleLink';
 import IndexerFlags from 'Book/IndexerFlags';
 import Icon from 'Components/Icon';
+import IconButton from 'Components/Link/IconButton';
 import StarRating from 'Components/StarRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
@@ -25,7 +27,8 @@ class BookRow extends Component {
 
     this.state = {
       isDetailsModalOpen: false,
-      isEditBookModalOpen: false
+      isEditBookModalOpen: false,
+      isDeleteBookModalOpen: false
     };
   }
 
@@ -48,6 +51,14 @@ class BookRow extends Component {
     this.setState({ isEditBookModalOpen: false });
   };
 
+  onDeleteBookPress = () => {
+    this.setState({ isDeleteBookModalOpen: true });
+  };
+
+  onDeleteBookModalClose = () => {
+    this.setState({ isDeleteBookModalOpen: false });
+  };
+
   //
   // Render
 
@@ -60,6 +71,7 @@ class BookRow extends Component {
       title,
       seriesTitle,
       authorName,
+      authorSlug,
       position,
       pageCount,
       ratings,
@@ -214,7 +226,20 @@ class BookRow extends Component {
                   authorId={authorId}
                   bookTitle={title}
                   authorName={authorName}
-                />
+                >
+                  <IconButton
+                    name={icons.REMOVE}
+                    title={translate('Delete')}
+                    onPress={this.onDeleteBookPress}
+                  />
+
+                  <DeleteBookModal
+                    isOpen={this.state.isDeleteBookModalOpen}
+                    bookId={id}
+                    authorSlug={authorSlug}
+                    onModalClose={this.onDeleteBookModalClose}
+                  />
+                </BookSearchCellConnector>
               );
             }
             return null;
@@ -233,6 +258,7 @@ BookRow.propTypes = {
   title: PropTypes.string.isRequired,
   seriesTitle: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
+  authorSlug: PropTypes.string.isRequired,
   position: PropTypes.string,
   pageCount: PropTypes.number,
   ratings: PropTypes.object.isRequired,

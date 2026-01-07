@@ -33,6 +33,7 @@ function createMapStateToProps() {
 
       return {
         authorName: author.authorName,
+        authorSlug: author.titleSlug,
         bookFiles: files,
         indexerFlags: bookFile ? bookFile.indexerFlags : 0
       };
