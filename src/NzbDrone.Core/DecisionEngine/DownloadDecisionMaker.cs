@@ -336,8 +336,11 @@ namespace NzbDrone.Core.DecisionEngine
             }
 
             var hint = new SizeBasedQualityHint(sizes[best.index], sizes[best.index + 1]);
-            _logger.Debug("Size-based quality hint: text <= {0} bytes, audio >= {1} bytes (gap ratio {2:0.00})",
-                hint.TextMaxSize, hint.AudioMinSize, best.ratio);
+            _logger.Debug(
+                "Size-based quality hint: text <= {0} bytes, audio >= {1} bytes (gap ratio {2:0.00})",
+                hint.TextMaxSize,
+                hint.AudioMinSize,
+                best.ratio);
             return hint;
         }
 
