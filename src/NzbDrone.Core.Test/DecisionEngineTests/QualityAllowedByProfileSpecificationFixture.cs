@@ -62,5 +62,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_allow_unknown_audio_when_missing_from_profile_but_mp3_allowed()
+        {
+            _remoteBook.ParsedBookInfo.Quality.Quality = Quality.UnknownAudio;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3, Quality.MP3, Quality.MP3);
+
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_not_allow_unknown_audio_when_missing_from_profile_and_mp3_not_allowed()
+        {
+            _remoteBook.ParsedBookInfo.Quality.Quality = Quality.UnknownAudio;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.EPUB);
+
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
+        }
     }
 }
