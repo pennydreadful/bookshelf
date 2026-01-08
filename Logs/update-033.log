@@ -1,0 +1,92 @@
+[2026-01-08 05:43:46 UTC] Stopping Bookdarr
+[2026-01-08 05:43:46 UTC] Updating repo
+From https://github.com/thashiznit2003/Bookdarr
+   6059b540e..b3d361264  develop    -> origin/develop
+Already on 'develop'
+Your branch is behind 'origin/develop' by 2 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+HEAD is now at b3d361264 Fix update build errors after linux-only changes
+[2026-01-08 05:43:47 UTC] Building
+yarn install v1.22.19
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.28s.
+yarn run v1.22.19
+$ yarn clean
+$ rimraf ./_output/UI && rimraf --glob "**/*.js.map"
+$ webpack --config ./frontend/build/webpack.config.js
+Source Folder: /opt/bookdarr-dev/frontend/src
+Output Folder: /opt/bookdarr-dev/_output/UI
+Cache Directory: /opt/bookdarr-dev/_cache/webpack
+isProduction: false
+isProfiling: false
+<i> [FileManagerPlugin] copied "frontend/src/Content/robots.txt" to "/opt/bookdarr-dev/_output/UI/Content/robots.txt
+<i> [FileManagerPlugin] copied "frontend/src/*.html" to "/opt/bookdarr-dev/_output/UI
+<i> [FileManagerPlugin] copied "frontend/src/Content/Fonts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Fonts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images
+<i> [FileManagerPlugin] copied "frontend/src/Content/Scripts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Scripts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/Icons/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images/Icons
+assets by status 29.9 MiB [big]
+  asset vendors-node_modules_fortawesome_react-fontawesome_index_es_js-node_modules_microsoft_signalr-2ca2aa.js 15.6 MiB [emitted] [big] (id hint: vendors)
+  asset frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.js 13.8 MiB [emitted] [big]
+  asset Content/frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.css 494 KiB [emitted] [big]
+assets by chunk 122 KiB (name: index)
+  asset index.js 122 KiB [emitted] (name: index)
+  asset Content/styles.css 913 bytes [emitted] (name: index)
+asset index.html 2.32 KiB [emitted]
+Entrypoint index 122 KiB = Content/styles.css 913 bytes index.js 122 KiB
+cached modules 9.05 MiB (javascript) 199 KiB (css/mini-extract) 11.2 KiB (runtime) [cached] 2557 modules
+./frontend/src/Components/Page/Header/fuse.worker.js 118 KiB [not cacheable] [built]
+webpack 5.95.0 compiled successfully in 5421 ms
+Done in 7.15s.
+MSBuild version 17.3.4+a400405ba for .NET
+  Determining projects to restore...
+  The project /opt/bookdarr-dev/src/NzbDrone.Host.Test/Readarr.Host.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Host/Readarr.Host.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Integration.Test/Readarr.Integration.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  The project /opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj (in 972 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Core.Test/Readarr.Core.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Host/Readarr.Host.csproj (in 989 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Console/Readarr.Console.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Host.Test/Readarr.Host.Test.csproj (in 989 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Common/Readarr.Common.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Integration.Test/Readarr.Integration.Test.csproj (in 994 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Common.Test/Readarr.Common.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Common/Readarr.Common.csproj (in 101 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Automation.Test/Readarr.Automation.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Core.Test/Readarr.Core.Test.csproj (in 228 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Api.Test/Readarr.Api.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Console/Readarr.Console.csproj (in 219 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Test.Common/Readarr.Test.Common.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Common.Test/Readarr.Common.Test.csproj (in 217 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.SignalR/Readarr.SignalR.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Automation.Test/Readarr.Automation.Test.csproj (in 211 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Mono/Readarr.Mono.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.SignalR/Readarr.SignalR.csproj (in 145 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Mono.Test/Readarr.Mono.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Mono/Readarr.Mono.csproj (in 48 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Libraries.Test/Readarr.Libraries.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Test.Common/Readarr.Test.Common.csproj (in 224 ms).
+  The project /opt/bookdarr-dev/src/Readarr.Http/Readarr.Http.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Api.Test/Readarr.Api.Test.csproj (in 255 ms).
+  The project /opt/bookdarr-dev/src/Readarr.Api.V1/Readarr.Api.V1.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Mono.Test/Readarr.Mono.Test.csproj (in 218 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Libraries.Test/Readarr.Libraries.Test.csproj (in 210 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Update.Test/Readarr.Update.Test.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/Readarr.Http/Readarr.Http.csproj (in 170 ms).
+  The project /opt/bookdarr-dev/src/NzbDrone.Test.Dummy/Readarr.Test.Dummy.csproj is using CentralPackageVersionManagement, a NuGet preview feature.
+  Restored /opt/bookdarr-dev/src/NzbDrone.Test.Dummy/Readarr.Test.Dummy.csproj (in 24 ms).
+  Restored /opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj (in 57 ms).
+  Restored /opt/bookdarr-dev/src/Readarr.Api.V1/Readarr.Api.V1.csproj (in 197 ms).
+  Restored /opt/bookdarr-dev/src/NzbDrone.Update.Test/Readarr.Update.Test.csproj (in 130 ms).
+  Readarr.Common -> /opt/bookdarr-dev/_output/net6.0/linux-x64/Readarr.Common.dll
+  Readarr.Common -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
+/opt/bookdarr-dev/src/NzbDrone.Update/UpdateApp.cs(33,42): error CS0246: The type or namespace name 'StartupContext' could not be found (are you missing a using directive or an assembly reference?) [/opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj]
+/opt/bookdarr-dev/src/NzbDrone.Update/UpdateEngine/StartNzbDrone.cs(1,1): error IDE0005: Using directive is unnecessary. [/opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj]
+  Readarr.Test.Dummy -> /opt/bookdarr-dev/_tests/net6.0/linux-x64/Readarr.Test.Dummy.dll
+  Readarr.Test.Dummy -> /opt/bookdarr-dev/_tests/net6.0/linux-x64/publish/
+  Readarr.Mono -> /opt/bookdarr-dev/_output/net6.0/linux-x64/Readarr.Mono.dll
+/opt/bookdarr-dev/src/NzbDrone.Core/Datastore/PostgresOptions.cs(22,51): error CS1061: 'IConfigurationSection' does not contain a definition for 'Bind' and no accessible extension method 'Bind' accepting a first argument of type 'IConfigurationSection' could be found (are you missing a using directive or an assembly reference?) [/opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj]
+  Readarr.Mono -> /opt/bookdarr-dev/_output/net6.0/linux-x64/publish/
