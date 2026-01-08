@@ -48,3 +48,16 @@
 .status {
   float: right;
 }
+
+.cutoffTitle {
+  display: block;
+}
+
+.cutoffTitleFirst {
+  display: block;
+}
+
+.cutoffTitleSecond {
+  display: block;
+  text-align: center;
+}

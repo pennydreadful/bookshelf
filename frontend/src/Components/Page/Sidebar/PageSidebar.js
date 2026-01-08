@@ -81,6 +81,7 @@ const links = [
         to: '/wanted/missing'
       },
       {
+        titleKey: 'CutoffUnmet',
         title: () => translate('CutoffUnmet'),
         to: '/wanted/cutoffunmet'
       }
@@ -487,6 +488,7 @@ class PageSidebar extends Component {
                     key={link.to}
                     iconName={link.iconName}
                     title={link.title}
+                    titleKey={link.titleKey}
                     to={link.to}
                     statusComponent={isActiveParent || !childStatusComponent ? link.statusComponent : childStatusComponent}
                     isActive={pathname === link.to && !hasActiveChild}
@@ -501,6 +503,7 @@ class PageSidebar extends Component {
                             <PageSidebarItem
                               key={child.to}
                               title={child.title}
+                              titleKey={child.titleKey}
                               to={child.to}
                               isActive={pathname.startsWith(child.to)}
                               isParentItem={false}
