@@ -1,5 +1,7 @@
 .info {
-  background-color: #fafbfc;
+  background-color: transparent;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   text-align: center;
   font-size: $smallFontSize;
 }
