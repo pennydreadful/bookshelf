@@ -3,3 +3,10 @@
   display: flex;
   justify-content: center;
 }
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}

@@ -84,7 +84,6 @@ class BookRow extends Component {
       columns
     } = this.props;
 
-    const bookFile = bookFiles[0];
     const isAvailable = Date.parse(releaseDate) < new Date();
 
     return (
@@ -212,7 +211,7 @@ class BookRow extends Component {
                   <BookStatus
                     isAvailable={isAvailable}
                     monitored={monitored}
-                    bookFile={bookFile}
+                    bookFiles={bookFiles}
                   />
                 </TableRowCell>
               );
