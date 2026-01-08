@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                                  .Accept(HttpAccept.Json)
                                  .AddQueryParam("X-Plex-Client-Identifier", _configService.PlexClientIdentifier)
                                  .AddQueryParam("X-Plex-Product", BuildInfo.AppName)
-                                 .AddQueryParam("X-Plex-Platform", "Windows")
+                                 .AddQueryParam("X-Plex-Platform", "Linux")
                                  .AddQueryParam("X-Plex-Platform-Version", "7")
                                  .AddQueryParam("X-Plex-Device-Name", BuildInfo.AppName)
                                  .AddQueryParam("X-Plex-Version", BuildInfo.Version.ToString());

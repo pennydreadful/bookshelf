@@ -72,8 +72,6 @@ namespace Readarr.Api.V1.System
                 OsVersion = _osInfo.Version,
                 IsNetCore = true,
                 IsLinux = OsInfo.IsLinux,
-                IsOsx = OsInfo.IsOsx,
-                IsWindows = OsInfo.IsWindows,
                 IsDocker = _osInfo.IsDocker,
                 Mode = _runtimeInfo.Mode,
                 Branch = _configFileProvider.Branch,

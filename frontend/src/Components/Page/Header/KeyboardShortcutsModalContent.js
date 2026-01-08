@@ -18,7 +18,7 @@ function getShortcuts() {
   return allShortcuts;
 }
 
-function getShortcutKey(combo, isOsx) {
+function getShortcutKey(combo) {
   const comboMatch = combo.match(/(.+?)\+(.)/);
 
   if (!comboMatch) {
@@ -27,18 +27,13 @@ function getShortcutKey(combo, isOsx) {
 
   const modifier = comboMatch[1];
   const key = comboMatch[2];
-  let osModifier = modifier;
-
-  if (modifier === 'mod') {
-    osModifier = isOsx ? 'cmd' : 'ctrl';
-  }
+  const osModifier = modifier === 'mod' ? 'ctrl' : modifier;
 
   return `${osModifier} + ${key}`;
 }
 
 function KeyboardShortcutsModalContent(props) {
   const {
-    isOsx,
     onModalClose
   } = props;
 
@@ -59,7 +54,7 @@ function KeyboardShortcutsModalContent(props) {
                 className={styles.shortcut}
               >
                 <div className={styles.key}>
-                  {getShortcutKey(shortcut.key, isOsx)}
+                  {getShortcutKey(shortcut.key)}
                 </div>
 
                 <div>
@@ -83,7 +78,6 @@ function KeyboardShortcutsModalContent(props) {
 }
 
 KeyboardShortcutsModalContent.propTypes = {
-  isOsx: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

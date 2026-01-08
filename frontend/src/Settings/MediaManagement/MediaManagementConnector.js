@@ -6,7 +6,6 @@ import { createSelector } from 'reselect';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
 import { fetchMediaManagementSettings, saveMediaManagementSettings, saveNamingSettings, setMediaManagementSettingsValue } from 'Store/Actions/settingsActions';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import MediaManagement from './MediaManagement';
 
 const SECTION = 'mediaManagement';
@@ -16,13 +15,11 @@ function createMapStateToProps() {
     (state) => state.settings.advancedSettings,
     (state) => state.settings.naming,
     createSettingsSectionSelector(SECTION),
-    createSystemStatusSelector(),
-    (advancedSettings, namingSettings, sectionSettings, systemStatus) => {
+    (advancedSettings, namingSettings, sectionSettings) => {
       return {
         advancedSettings,
         ...sectionSettings,
-        hasPendingChanges: !_.isEmpty(namingSettings.pendingChanges) || sectionSettings.hasPendingChanges,
-        isWindows: systemStatus.isWindows
+        hasPendingChanges: !_.isEmpty(namingSettings.pendingChanges) || sectionSettings.hasPendingChanges
       };
     }
   );

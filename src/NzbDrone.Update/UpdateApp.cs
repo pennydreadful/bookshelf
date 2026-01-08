@@ -5,7 +5,6 @@ using System.Linq;
 using DryIoc;
 using NLog;
 using NzbDrone.Common.Composition.Extensions;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -72,27 +71,24 @@ namespace NzbDrone.Update
                 ProcessId = ParseProcessId(args[0])
             };
 
-            if (OsInfo.IsNotWindows)
+            switch (args.Count())
             {
-                switch (args.Count())
-                {
-                    case 1:
-                        return startupContext;
-                    default:
+                case 1:
+                    return startupContext;
+                default:
+                    {
+                        Logger.Debug("Arguments:");
+
+                        foreach (var arg in args)
                         {
-                            Logger.Debug("Arguments:");
-
-                            foreach (var arg in args)
-                            {
-                                Logger.Debug("  {0}", arg);
-                            }
-
-                            startupContext.UpdateLocation = args[1];
-                            startupContext.ExecutingApplication = args[2];
-
-                            break;
+                            Logger.Debug("  {0}", arg);
                         }
-                }
+
+                        startupContext.UpdateLocation = args[1];
+                        startupContext.ExecutingApplication = args[2];
+
+                        break;
+                    }
             }
 
             return startupContext;

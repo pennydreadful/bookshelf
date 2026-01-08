@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 using NLog;
-using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
-using IServiceProvider = NzbDrone.Common.IServiceProvider;
 
 namespace NzbDrone.Update.UpdateEngine
 {
@@ -16,14 +14,12 @@ namespace NzbDrone.Update.UpdateEngine
 
     public class StartNzbDrone : IStartNzbDrone
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly IProcessProvider _processProvider;
         private readonly IStartupContext _startupContext;
         private readonly Logger _logger;
 
-        public StartNzbDrone(IServiceProvider serviceProvider, IProcessProvider processProvider, IStartupContext startupContext, Logger logger)
+        public StartNzbDrone(IProcessProvider processProvider, IStartupContext startupContext, Logger logger)
         {
-            _serviceProvider = serviceProvider;
             _processProvider = processProvider;
             _startupContext = startupContext;
             _logger = logger;
@@ -32,42 +28,11 @@ namespace NzbDrone.Update.UpdateEngine
         public void Start(AppType appType, string installationFolder)
         {
             _logger.Info("Starting Readarr");
-            if (appType == AppType.Service)
-            {
-                try
-                {
-                    StartService();
-                }
-                catch (InvalidOperationException e)
-                {
-                    _logger.Warn(e, "Couldn't start Readarr Service (Most likely due to permission issues). Falling back to console.");
-                    StartConsole(installationFolder);
-                }
-            }
-            else if (appType == AppType.Console)
-            {
-                StartConsole(installationFolder);
-            }
-            else
-            {
-                StartWinform(installationFolder);
-            }
-        }
+            var fileName = appType == AppType.Console
+                ? ProcessProvider.READARR_CONSOLE_PROCESS_NAME.ProcessNameToExe()
+                : ProcessProvider.READARR_PROCESS_NAME.ProcessNameToExe();
 
-        private void StartService()
-        {
-            _logger.Info("Starting Readarr service");
-            _serviceProvider.Start(ServiceProvider.SERVICE_NAME);
-        }
-
-        private void StartWinform(string installationFolder)
-        {
-            Start(installationFolder, "Readarr".ProcessNameToExe());
-        }
-
-        private void StartConsole(string installationFolder)
-        {
-            Start(installationFolder, "Readarr.Console".ProcessNameToExe());
+            Start(installationFolder, fileName);
         }
 
         private void Start(string installationFolder, string fileName)

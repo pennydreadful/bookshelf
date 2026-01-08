@@ -128,7 +128,6 @@ function UpdateSettings(props) {
 UpdateSettings.propTypes = {
   advancedSettings: PropTypes.bool.isRequired,
   settings: PropTypes.object.isRequired,
-  isWindows: PropTypes.bool.isRequired,
   packageUpdateMechanism: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired
 };

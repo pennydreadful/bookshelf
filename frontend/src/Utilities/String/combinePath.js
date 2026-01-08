@@ -1,5 +1,5 @@
-export default function combinePath(isWindows, basePath, paths = []) {
-  const slash = isWindows ? '\\' : '/';
+export default function combinePath(basePath, paths = []) {
+  const slash = '/';
 
   return `${basePath}${slash}${paths.join(slash)}`;
 }

@@ -23,7 +23,6 @@ UpdateVersionNumber()
         echo "Updating Version Info"
         sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$READARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
         sed -i'' -e "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" src/Directory.Build.props
-        sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$READARRVERSION<\/string>/g" distribution/osx/Readarr.app/Contents/Info.plist
     fi
 }
 
@@ -35,7 +34,7 @@ EnableExtraPlatformsInSDK()
         echo "Extra platforms already enabled"
     else
         echo "Enabling extra platform support"
-        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+        sed -i.ORI 's/linux-x64/linux-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
     fi
 }
 
@@ -53,11 +52,7 @@ LintUI()
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'
-    if [ "$os" = "windows" ]; then
-        yarn stylelint-windows
-    else
-        yarn stylelint-linux
-    fi
+    yarn stylelint-linux
     ProgressEnd 'Stylelint'
 }
 
@@ -70,11 +65,7 @@ Build()
 
     slnFile=src/Readarr.sln
 
-    if [ $os = "windows" ]; then
-        platform=Windows
-    else
-        platform=Posix
-    fi
+    platform=Posix
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
@@ -127,93 +118,12 @@ PackageLinux()
 
     PackageFiles "$folder" "$framework" "$runtime"
 
-    echo "Removing Service helpers"
-    rm -f $folder/ServiceUninstall.*
-    rm -f $folder/ServiceInstall.*
-
-    echo "Removing Readarr.Windows"
-    rm $folder/Readarr.Windows.*
-
     echo "Adding Readarr.Mono to UpdatePackage"
     cp $folder/Readarr.Mono.* $folder/Readarr.Update
     if [ "$framework" = "net6.0" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
     fi
-
-    ProgressEnd "Creating $runtime Package for $framework"
-}
-
-PackageMacOS()
-{
-    local framework="$1"
-    local runtime="$2"
-
-    ProgressStart "Creating MacOS Package for $framework $runtime"
-
-    local folder=$artifactsFolder/$runtime/$framework/Readarr
-
-    PackageFiles "$folder" "$framework" "$runtime"
-
-    echo "Removing Service helpers"
-    rm -f $folder/ServiceUninstall.*
-    rm -f $folder/ServiceInstall.*
-
-    echo "Removing Readarr.Windows"
-    rm $folder/Readarr.Windows.*
-
-    echo "Adding Readarr.Mono to UpdatePackage"
-    cp $folder/Readarr.Mono.* $folder/Readarr.Update
-    if [ "$framework" = "net6.0" ]; then
-        cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
-        cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
-    fi
-
-    ProgressEnd 'Creating MacOS Package'
-}
-
-PackageMacOSApp()
-{
-    local framework="$1"
-    local runtime="$2"
-
-    ProgressStart "Creating macOS App Package for $framework $runtime"
-
-    local folder="$artifactsFolder/$runtime-app/$framework"
-
-    rm -rf $folder
-    mkdir -p $folder
-    cp -r distribution/osx/Readarr.app $folder
-    mkdir -p $folder/Readarr.app/Contents/MacOS
-
-    echo "Copying Binaries"
-    cp -r $artifactsFolder/$runtime/$framework/Readarr/* $folder/Readarr.app/Contents/MacOS
-
-    echo "Removing Update Folder"
-    rm -r $folder/Readarr.app/Contents/MacOS/Readarr.Update
-
-    ProgressEnd 'Creating macOS App Package'
-}
-
-PackageWindows()
-{
-    local framework="$1"
-    local runtime="$2"
-
-    ProgressStart "Creating $runtime Package for $framework"
-
-    local folder=$artifactsFolder/$runtime/$framework/Readarr
-
-    PackageFiles "$folder" "$framework" "$runtime"
-    cp -r $outputFolder/$framework-windows/$runtime/publish/* $folder
-
-    echo "Removing Readarr.Mono"
-    rm -f $folder/Readarr.Mono.*
-    rm -f $folder/Mono.Posix.NETStandard.*
-    rm -f $folder/libMonoPosixHelper.*
-
-    echo "Adding Readarr.Windows to UpdatePackage"
-    cp $folder/Readarr.Windows.* $folder/Readarr.Update
 
     ProgressEnd "Creating $runtime Package for $framework"
 }
@@ -227,43 +137,14 @@ Package()
     IFS='-' read -ra SPLIT <<< "$runtime"
 
     case "${SPLIT[0]}" in
-        linux|freebsd*)
+        linux*)
             PackageLinux "$framework" "$runtime"
             ;;
-        win)
-            PackageWindows "$framework" "$runtime"
-            ;;
-        osx)
-            PackageMacOS "$framework" "$runtime"
-            PackageMacOSApp "$framework" "$runtime"
+        *)
+            echo "Unsupported runtime: $runtime"
+            exit 1
             ;;
     esac
-}
-
-BuildInstaller()
-{
-    local framework="$1"
-    local runtime="$2"
-
-    ./_inno/ISCC.exe distribution/windows/setup/readarr.iss "//DFramework=$framework" "//DRuntime=$runtime"
-}
-
-InstallInno()
-{
-    ProgressStart "Installing portable Inno Setup"
-
-    rm -rf _inno
-    curl -s --output innosetup.exe "https://files.jrsoftware.org/is/6/innosetup-${INNOVERSION:-6.2.0}.exe"
-    mkdir _inno
-    ./innosetup.exe //portable=1 //silent //currentuser //dir=.\\_inno
-    rm innosetup.exe
-
-    ProgressEnd "Installed portable Inno Setup"
-}
-
-RemoveInno()
-{
-    rm -rf _inno
 }
 
 PackageTests()
@@ -278,17 +159,7 @@ PackageTests()
     ProgressEnd 'Creating Test Package'
 }
 
-# Use mono or .net depending on OS
-case "$(uname -s)" in
-    CYGWIN*|MINGW32*|MINGW64*|MSYS*)
-        # on windows, use dotnet
-        os="windows"
-        ;;
-    *)
-        # otherwise use mono
-        os="posix"
-        ;;
-esac
+os="linux"
 
 POSITIONAL=()
 
@@ -336,10 +207,6 @@ case $key in
         ;;
     --packages)
         PACKAGES=YES
-        shift # past argument
-        ;;
-    --installer)
-        INSTALLER=YES
         shift # past argument
         ;;
     --lint)
@@ -417,12 +284,4 @@ then
     else
         Package "$FRAMEWORK" "$RID"
     fi
-fi
-
-if [ "$INSTALLER" = "YES" ];
-then
-    InstallInno
-    BuildInstaller "net6.0" "win-x64"
-    BuildInstaller "net6.0" "win-x86"
-    RemoveInno
 fi

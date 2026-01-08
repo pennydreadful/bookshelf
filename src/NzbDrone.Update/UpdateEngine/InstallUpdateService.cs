@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 
@@ -90,7 +89,7 @@ namespace NzbDrone.Update.UpdateEngine
 
             Verify(installationFolder, processId);
 
-            if (installationFolder.EndsWith(@"\bin\Readarr") || installationFolder.EndsWith(@"/bin/Readarr"))
+            if (installationFolder.EndsWith(@"/bin/Readarr"))
             {
                 installationFolder = installationFolder.GetParentPath();
                 _logger.Info("Fixed Installation Folder: {0}", installationFolder);
@@ -101,23 +100,17 @@ namespace NzbDrone.Update.UpdateEngine
             _processProvider.FindProcessByName(ProcessProvider.READARR_CONSOLE_PROCESS_NAME);
             _processProvider.FindProcessByName(ProcessProvider.READARR_PROCESS_NAME);
 
-            if (OsInfo.IsWindows)
-            {
-                _terminateNzbDrone.Terminate(processId);
-            }
+            _terminateNzbDrone.Terminate(processId);
 
             try
             {
                 _backupAndRestore.Backup(installationFolder);
                 _backupAppData.Backup();
 
-                if (OsInfo.IsWindows)
+                if (_processProvider.Exists(ProcessProvider.READARR_CONSOLE_PROCESS_NAME) || _processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
                 {
-                    if (_processProvider.Exists(ProcessProvider.READARR_CONSOLE_PROCESS_NAME) || _processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
-                    {
-                        _logger.Error("Readarr was restarted prematurely by external process.");
-                        return;
-                    }
+                    _logger.Error("Readarr was restarted prematurely by external process.");
+                    return;
                 }
 
                 try
@@ -126,7 +119,7 @@ namespace NzbDrone.Update.UpdateEngine
                     _diskTransferService.MirrorFolder(_appFolderInfo.GetUpdatePackageFolder(), installationFolder);
 
                     // Set executable flag on app
-                    if (OsInfo.IsOsx || OsInfo.IsLinux)
+                    if (OsInfo.IsLinux)
                     {
                         _diskProvider.SetFilePermissions(Path.Combine(installationFolder, "Readarr"), "755", null);
                     }
@@ -140,30 +133,23 @@ namespace NzbDrone.Update.UpdateEngine
             }
             finally
             {
-                if (OsInfo.IsWindows)
+                _terminateNzbDrone.Terminate(processId);
+
+                _logger.Info("Waiting for external auto-restart.");
+                for (var i = 0; i < 10; i++)
+                {
+                    System.Threading.Thread.Sleep(1000);
+
+                    if (_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
+                    {
+                        _logger.Info("Readarr was restarted by external process.");
+                        break;
+                    }
+                }
+
+                if (!_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
                 {
                     _startNzbDrone.Start(appType, installationFolder);
-                }
-                else
-                {
-                    _terminateNzbDrone.Terminate(processId);
-
-                    _logger.Info("Waiting for external auto-restart.");
-                    for (var i = 0; i < 10; i++)
-                    {
-                        System.Threading.Thread.Sleep(1000);
-
-                        if (_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
-                        {
-                            _logger.Info("Readarr was restarted by external process.");
-                            break;
-                        }
-                    }
-
-                    if (!_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
-                    {
-                        _startNzbDrone.Start(appType, installationFolder);
-                    }
                 }
             }
         }

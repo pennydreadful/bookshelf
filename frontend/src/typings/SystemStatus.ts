@@ -10,10 +10,8 @@ interface SystemStatus {
   isDocker: boolean;
   isLinux: boolean;
   isNetCore: boolean;
-  isOsx: boolean;
   isProduction: boolean;
   isUserInteractive: boolean;
-  isWindows: boolean;
   migrationVersion: number;
   mode: string;
   osName: string;

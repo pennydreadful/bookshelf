@@ -7,7 +7,6 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Host;
-using NzbDrone.Host.AccessControl;
 
 namespace NzbDrone.Console
 {
@@ -69,13 +68,6 @@ namespace NzbDrone.Console
                 {
                     throw;
                 }
-            }
-            catch (RemoteAccessException ex)
-            {
-                System.Console.WriteLine("");
-                System.Console.WriteLine("");
-                Logger.Fatal(ex, "EPIC FAIL!");
-                Exit(ExitCodes.Normal, startupArgs);
             }
             catch (Exception ex)
             {

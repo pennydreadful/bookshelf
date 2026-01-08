@@ -24,8 +24,6 @@ function createMapStateToProps() {
       return {
         advancedSettings,
         isResettingApiKey,
-        isWindows: systemStatus.isWindows,
-        isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service',
         mode: systemStatus.mode,
         packageUpdateMechanism: systemStatus.packageUpdateMechanism,
         ...sectionSettings

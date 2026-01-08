@@ -1,10 +1,10 @@
 #! /bin/bash
-PLATFORM=$1
+PLATFORM=${1:-Linux}
 TYPE=$2
 COVERAGE=$3
 WHERE="Category!=ManualTest"
 TEST_PATTERN="*Test.dll"
-FILES=( "Readarr.Api.Test.dll" "Readarr.Automation.Test.dll" "Readarr.Common.Test.dll" "Readarr.Core.Test.dll" "Readarr.Host.Test.dll" "Readarr.Integration.Test.dll" "Readarr.Libraries.Test.dll" "Readarr.Mono.Test.dll" "Readarr.Update.Test.dll" "Readarr.Windows.Test.dll" )
+FILES=( "Readarr.Api.Test.dll" "Readarr.Automation.Test.dll" "Readarr.Common.Test.dll" "Readarr.Core.Test.dll" "Readarr.Host.Test.dll" "Readarr.Integration.Test.dll" "Readarr.Libraries.Test.dll" "Readarr.Mono.Test.dll" "Readarr.Update.Test.dll" )
 ASSMEBLIES=""
 TEST_LOG_FILE="TestLog.txt"
 
@@ -24,24 +24,11 @@ export READARR_TESTS_LOG_OUTPUT="File"
 
 VSTEST_PARAMS="--logger:nunit;LogFilePath=TestResult.xml"
 
-if [ "$PLATFORM" = "Mac" ]; then
-
-  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:$MONOPREFIX/lib:/usr/local/lib:/lib:/usr/lib"
-  echo $DYLD_FALLBACK_LIBRARY_PATH
-  mono --version
-
-  # To debug which libraries are being loaded:
-  # export DYLD_PRINT_LIBRARIES=YES
-fi
-
-if [ "$PLATFORM" = "Windows" ]; then
-  mkdir -p "$ProgramData/Readarr"
-  WHERE="$WHERE&Category!=LINUX"
-elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
+if [ "$PLATFORM" = "Linux" ]; then
   mkdir -p ~/.config/Readarr
   WHERE="$WHERE&Category!=WINDOWS"
 else
-  echo "Platform must be provided as first arguement: Windows, Linux or Mac"
+  echo "Platform must be Linux"
   exit 1
 fi
 

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { addBook, setBookAddDefault } from 'Store/Actions/searchActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import selectSettings from 'Store/Selectors/selectSettings';
 import AddNewBookModalContent from './AddNewBookModalContent';
 
@@ -14,8 +13,7 @@ function createMapStateToProps() {
     (state) => state.search,
     (state) => state.settings.metadataProfiles,
     createDimensionsSelector(),
-    createSystemStatusSelector(),
-    (isExistingAuthor, searchState, metadataProfiles, dimensions, systemStatus) => {
+    (isExistingAuthor, searchState, metadataProfiles, dimensions) => {
       const {
         isAdding,
         addError,
@@ -35,7 +33,6 @@ function createMapStateToProps() {
         isSmallScreen: dimensions.isSmallScreen,
         validationErrors,
         validationWarnings,
-        isWindows: systemStatus.isWindows,
         ...settings
       };
     }

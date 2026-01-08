@@ -9,7 +9,6 @@ using DryIoc;
 using Moq;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Test.Common.AutoMoq
 {
@@ -166,12 +165,7 @@ namespace NzbDrone.Test.Common.AutoMoq
 
         private void LoadPlatformLibrary()
         {
-            var assemblyName = "Readarr.Windows";
-
-            if (OsInfo.IsNotWindows)
-            {
-                assemblyName = "Readarr.Mono";
-            }
+            var assemblyName = "Readarr.Mono";
 
             var types = Assembly.Load(assemblyName).GetTypes();
             var diskProvider = types.SingleOrDefault(x => x.Name == "DiskProvider");

@@ -21,7 +21,6 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Host.AccessControl;
 using NzbDrone.Http.Authentication;
 using NzbDrone.SignalR;
 using Readarr.Api.V1.System;
@@ -207,8 +206,6 @@ namespace NzbDrone.Host
                               IAppFolderFactory appFolderFactory,
                               IProvidePidFile pidFileProvider,
                               IConfigFileProvider configFileProvider,
-                              IRuntimeInfo runtimeInfo,
-                              IFirewallAdapter firewallAdapter,
                               IEventAggregator eventAggregator,
                               ReadarrErrorPipeline errorHandler)
         {
@@ -237,10 +234,6 @@ namespace NzbDrone.Host
 
             eventAggregator.PublishEvent(new ApplicationStartingEvent());
 
-            if (OsInfo.IsWindows && runtimeInfo.IsAdmin)
-            {
-                firewallAdapter.MakeAccessible();
-            }
 
             app.UseForwardedHeaders();
             app.UseMiddleware<LoggingMiddleware>();

@@ -13363,12 +13363,6 @@
           "isLinux": {
             "type": "boolean"
           },
-          "isOsx": {
-            "type": "boolean"
-          },
-          "isWindows": {
-            "type": "boolean"
-          },
           "isDocker": {
             "type": "boolean"
           },

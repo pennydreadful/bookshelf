@@ -41,7 +41,6 @@ class AddAuthorOptionsForm extends Component {
       showMetadataProfile,
       folder,
       tags,
-      isWindows,
       onInputChange,
       ...otherProps
     } = this.props;
@@ -57,12 +56,10 @@ class AddAuthorOptionsForm extends Component {
             type={inputTypes.ROOT_FOLDER_SELECT}
             name="rootFolderPath"
             valueOptions={{
-              authorFolder: folder,
-              isWindows
+              authorFolder: folder
             }}
             selectedValueOptions={{
-              authorFolder: folder,
-              isWindows
+              authorFolder: folder
             }}
             helpText={translate('AddNewAuthorRootFolderHelpText', { folder })}
             onChange={onInputChange}
@@ -192,7 +189,6 @@ AddAuthorOptionsForm.propTypes = {
   includeSpecificBookMonitor: PropTypes.bool.isRequired,
   folder: PropTypes.string.isRequired,
   tags: PropTypes.object.isRequired,
-  isWindows: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 

@@ -11,11 +11,10 @@ function RootFolderSelectInputSelectedValue(props) {
     freeSpace,
     authorFolder,
     includeFreeSpace,
-    isWindows,
     ...otherProps
   } = props;
 
-  const slashCharacter = isWindows ? '\\' : '/';
+  const slashCharacter = '/';
 
   const text = name === '' ? value : `[${name}] ${value}`;
 
@@ -54,7 +53,6 @@ RootFolderSelectInputSelectedValue.propTypes = {
   value: PropTypes.string,
   freeSpace: PropTypes.number,
   authorFolder: PropTypes.string,
-  isWindows: PropTypes.bool,
   includeFreeSpace: PropTypes.bool.isRequired
 };
 

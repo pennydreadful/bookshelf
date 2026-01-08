@@ -22,8 +22,6 @@ namespace Readarr.Api.V1.System
         public string OsVersion { get; set; }
         public bool IsNetCore { get; set; }
         public bool IsLinux { get; set; }
-        public bool IsOsx { get; set; }
-        public bool IsWindows { get; set; }
         public bool IsDocker { get; set; }
         public RuntimeMode Mode { get; set; }
         public string Branch { get; set; }

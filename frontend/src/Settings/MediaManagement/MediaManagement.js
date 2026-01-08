@@ -63,7 +63,6 @@ class MediaManagement extends Component {
       error,
       settings,
       hasSettings,
-      isWindows,
       onInputChange,
       onSavePress,
       ...otherProps
@@ -150,26 +149,23 @@ class MediaManagement extends Component {
                     <FieldSet
                       legend={translate('Importing')}
                     >
-                      {
-                        !isWindows &&
-                          <FormGroup
-                            advancedSettings={advancedSettings}
-                            isAdvanced={true}
-                            size={sizes.MEDIUM}
-                          >
-                            <FormLabel>
-                              {translate('SkipFreeSpaceCheck')}
-                            </FormLabel>
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>
+                          {translate('SkipFreeSpaceCheck')}
+                        </FormLabel>
 
-                            <FormInputGroup
-                              type={inputTypes.CHECK}
-                              name="skipFreeSpaceCheckWhenImporting"
-                              helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
-                              onChange={onInputChange}
-                              {...settings.skipFreeSpaceCheckWhenImporting}
-                            />
-                          </FormGroup>
-                      }
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="skipFreeSpaceCheckWhenImporting"
+                          helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
+                          onChange={onInputChange}
+                          {...settings.skipFreeSpaceCheckWhenImporting}
+                        />
+                      </FormGroup>
 
                       <FormGroup
                         advancedSettings={advancedSettings}
@@ -453,7 +449,7 @@ class MediaManagement extends Component {
                 </FieldSet>
 
                 {
-                  advancedSettings && !isWindows &&
+                  advancedSettings &&
                     <FieldSet
                       legend={translate('Permissions')}
                     >
@@ -529,7 +525,6 @@ MediaManagement.propTypes = {
   error: PropTypes.object,
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  isWindows: PropTypes.bool.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired
 };

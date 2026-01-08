@@ -4,7 +4,6 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" />
     <PackageReference Include="DryIoc.dll" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
     <PackageReference Include="DryIoc.Microsoft.DependencyInjection" />
@@ -16,11 +15,5 @@
     <ProjectReference Include="..\NzbDrone.Core\Readarr.Core.csproj" />
     <ProjectReference Include="..\NzbDrone.SignalR\Readarr.SignalR.csproj" />
     <ProjectReference Include="..\Readarr.Http\Readarr.Http.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Interop.NetFwTypeLib">
-      <HintPath>..\Libraries\Interop.NetFwTypeLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
   </ItemGroup>
 </Project>

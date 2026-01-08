@@ -11,7 +11,6 @@ function HostSettings(props) {
   const {
     advancedSettings,
     settings,
-    isWindows,
     mode,
     onInputChange
   } = props;
@@ -198,7 +197,7 @@ function HostSettings(props) {
       }
 
       {
-        isWindows && mode !== 'service' &&
+        mode !== 'service' &&
           <FormGroup size={sizes.MEDIUM}>
             <FormLabel>
               {translate('OpenBrowserOnStart')}
@@ -221,7 +220,6 @@ function HostSettings(props) {
 HostSettings.propTypes = {
   advancedSettings: PropTypes.bool.isRequired,
   settings: PropTypes.object.isRequired,
-  isWindows: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired
 };

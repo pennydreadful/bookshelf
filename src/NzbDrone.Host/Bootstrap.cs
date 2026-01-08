@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.WindowsServices;
 using NLog;
 using Npgsql;
 using NzbDrone.Common.Composition.Extensions;
@@ -62,14 +61,6 @@ namespace NzbDrone.Host
 
                 switch (appMode)
                 {
-                    case ApplicationModes.Service:
-                    {
-                        Logger.Debug("Service selected");
-
-                        CreateConsoleHostBuilder(args, startupContext).UseWindowsService().Build().Run();
-                        break;
-                    }
-
                     case ApplicationModes.Interactive:
                     {
                         Logger.Debug(trayCallback != null ? "Tray selected" : "Console selected");
@@ -199,39 +190,6 @@ namespace NzbDrone.Host
             if (startupContext.Help)
             {
                 return ApplicationModes.Help;
-            }
-
-            if (OsInfo.IsWindows && startupContext.RegisterUrl)
-            {
-                return ApplicationModes.RegisterUrl;
-            }
-
-            if (OsInfo.IsWindows && startupContext.InstallService)
-            {
-                return ApplicationModes.InstallService;
-            }
-
-            if (OsInfo.IsWindows && startupContext.UninstallService)
-            {
-                return ApplicationModes.UninstallService;
-            }
-
-            Logger.Debug("Getting windows service status");
-
-            // IsWindowsService can throw sometimes, so wrap it
-            var isWindowsService = false;
-            try
-            {
-                isWindowsService = WindowsServiceHelpers.IsWindowsService();
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "Failed to get service status");
-            }
-
-            if (OsInfo.IsWindows && isWindowsService)
-            {
-                return ApplicationModes.Service;
             }
 
             return ApplicationModes.Interactive;

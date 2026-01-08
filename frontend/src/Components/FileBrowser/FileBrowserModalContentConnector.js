@@ -5,14 +5,12 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { clearPaths, fetchPaths } from 'Store/Actions/pathActions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
-import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import FileBrowserModalContent from './FileBrowserModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.paths,
-    createSystemStatusSelector(),
-    (paths, systemStatus) => {
+    (paths) => {
       const {
         isFetching,
         isPopulated,
@@ -35,9 +33,7 @@ function createMapStateToProps() {
         currentPath,
         directories,
         files,
-        paths: filteredPaths,
-        isWindows: systemStatus.isWindows,
-        isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service'
+        paths: filteredPaths
       };
     }
   );
@@ -133,7 +129,6 @@ class FileBrowserModalContentConnector extends Component {
 
 FileBrowserModalContentConnector.propTypes = {
   value: PropTypes.string,
-  isWindows: PropTypes.bool.isRequired,
   includeFiles: PropTypes.bool.isRequired,
   dispatchFetchPaths: PropTypes.func.isRequired,
   dispatchClearPaths: PropTypes.func.isRequired,

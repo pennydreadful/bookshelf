@@ -100,8 +100,6 @@ class GeneralSettings extends Component {
       settings,
       hasSettings,
       isResettingApiKey,
-      isWindows,
-      isWindowsService,
       mode,
       packageUpdateMechanism,
       onInputChange,
@@ -137,7 +135,6 @@ class GeneralSettings extends Component {
                 <HostSettings
                   advancedSettings={advancedSettings}
                   settings={settings}
-                  isWindows={isWindows}
                   mode={mode}
                   onInputChange={onInputChange}
                 />
@@ -162,7 +159,6 @@ class GeneralSettings extends Component {
                 <UpdateSettings
                   advancedSettings={advancedSettings}
                   settings={settings}
-                  isWindows={isWindows}
                   packageUpdateMechanism={packageUpdateMechanism}
                   onInputChange={onInputChange}
                 />
@@ -180,9 +176,7 @@ class GeneralSettings extends Component {
           isOpen={this.state.isRestartRequiredModalOpen}
           kind={kinds.DANGER}
           title={translate('RestartReadarr')}
-          message={
-            `Readarr requires a restart to apply changes, do you want to restart now? ${isWindowsService ? 'Depending which user is running the Readarr service you may need to restart Readarr as admin once before the service will start automatically.' : ''}`
-          }
+          message="Readarr requires a restart to apply changes, do you want to restart now?"
           cancelLabel={translate('IllRestartLater')}
           confirmLabel={translate('RestartNow')}
           onConfirm={this.onConfirmRestart}
@@ -204,8 +198,6 @@ GeneralSettings.propTypes = {
   settings: PropTypes.object.isRequired,
   isResettingApiKey: PropTypes.bool.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  isWindows: PropTypes.bool.isRequired,
-  isWindowsService: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   packageUpdateMechanism: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,

@@ -1,11 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.WindowsServices;
 using NLog;
-using NzbDrone.Common.Processes;
 
 namespace NzbDrone.Common.EnvironmentInfo
 {
@@ -18,7 +15,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             _logger = logger;
 
-            IsWindowsService = hostLifetime is WindowsServiceLifetime;
+            IsWindowsService = false;
             IsStarting = true;
 
             //Guarded to avoid issues when running in a non-managed process
@@ -27,7 +24,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             if (entry != null)
             {
                 ExecutingApplication = entry.FileName;
-                IsWindowsTray = OsInfo.IsWindows && entry.ModuleName == $"{ProcessProvider.READARR_PROCESS_NAME}.exe";
+                IsWindowsTray = false;
             }
         }
 
@@ -61,21 +58,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             get
             {
-                if (OsInfo.IsNotWindows)
-                {
-                    return false;
-                }
-
-                try
-                {
-                    var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Error checking if the current user is an administrator.");
-                    return false;
-                }
+                return false;
             }
         }
 
@@ -88,11 +71,6 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             get
             {
-                if (OsInfo.IsWindows)
-                {
-                    return IsUserInteractive && Process.GetCurrentProcess().ProcessName.Equals(ProcessProvider.READARR_PROCESS_NAME, StringComparison.InvariantCultureIgnoreCase);
-                }
-
                 return false;
             }
         }

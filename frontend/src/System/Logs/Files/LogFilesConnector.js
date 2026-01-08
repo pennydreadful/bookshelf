@@ -21,8 +21,7 @@ function createMapStateToProps() {
       } = logFiles;
 
       const {
-        appData,
-        isWindows
+        appData
       } = status;
 
       return {
@@ -30,7 +29,7 @@ function createMapStateToProps() {
         items,
         deleteFilesExecuting,
         currentLogView: 'Log Files',
-        location: combinePath(isWindows, appData, ['logs'])
+        location: combinePath(appData, ['logs'])
       };
     }
   );

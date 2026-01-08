@@ -15,17 +15,12 @@
     <!-- Specifies the type of output -->
     <ReadarrOutputType>Library</ReadarrOutputType>
     <ReadarrOutputType Condition="$(MSBuildProjectName.Contains('.Test'))">Test</ReadarrOutputType>
-    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceInstall'">Exe</ReadarrOutputType>
-    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</ReadarrOutputType>
-    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr'">Exe</ReadarrOutputType>
     <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Console'">Exe</ReadarrOutputType>
     <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Update'">Update</ReadarrOutputType>
 
     <!-- Specifies whether it's one of our own libraries -->
     <ReadarrProject>false</ReadarrProject>
     <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('Readarr'))">true</ReadarrProject>
-    <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</ReadarrProject>
-    <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</ReadarrProject>
 
     <!-- A test project gets the test sdk packages automatically added -->
     <TestProject>false</TestProject>
@@ -74,7 +69,7 @@
     <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) Bookdarr (GNU General Public v3)</Copyright>
 
     <!-- Should be replaced by CI -->
-    <AssemblyVersion>1.2.147.*</AssemblyVersion>
+    <AssemblyVersion>1.2.148.*</AssemblyVersion>
     <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
     <NeutralLanguage>en</NeutralLanguage>
 
@@ -139,23 +134,9 @@
   <!--
        Set runtime identifier to local system type if not specified
   -->
-  <Choose>
-    <When Condition="'$(OS)' == 'Windows_NT'">
-      <PropertyGroup>
-        <IsWindows>true</IsWindows>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
-      <PropertyGroup>
-        <IsOSX>true</IsOSX>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <IsLinux>true</IsLinux>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
+  <PropertyGroup>
+    <IsLinux>true</IsLinux>
+  </PropertyGroup>
 
   <!--
        Set architecture to RuntimeInformation.ProcessArchitecture if not specified -->
@@ -187,21 +168,9 @@
     </Otherwise>
   </Choose>
 
-  <PropertyGroup Condition="'$(IsWindows)' == 'true' and
-                            '$(RuntimeIdentifier)' == ''">
-    <_UsingDefaultRuntimeIdentifier>true</_UsingDefaultRuntimeIdentifier>
-    <RuntimeIdentifier>win-$(Architecture)</RuntimeIdentifier>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(IsLinux)' == 'true' and
                             '$(RuntimeIdentifier)' == ''">
     <_UsingDefaultRuntimeIdentifier>true</_UsingDefaultRuntimeIdentifier>
     <RuntimeIdentifier>linux-$(Architecture)</RuntimeIdentifier>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsOSX)' == 'true' and
-                            '$(RuntimeIdentifier)' == ''">
-    <_UsingDefaultRuntimeIdentifier>true</_UsingDefaultRuntimeIdentifier>
-    <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
   </PropertyGroup>
 </Project>

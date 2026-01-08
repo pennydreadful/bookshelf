@@ -4,7 +4,6 @@ import Alert from 'Components/Alert';
 import PathInput from 'Components/Form/PathInput';
 import TextInput from 'Components/Form/TextInput';
 import Button from 'Components/Link/Button';
-import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -91,7 +90,6 @@ class FileBrowserModalContent extends Component {
 
   onCreateFolderPress = () => {
     const {
-      isWindows,
       onCreateFolder
     } = this.props;
 
@@ -112,7 +110,7 @@ class FileBrowserModalContent extends Component {
     }
 
     const basePath = currentPath.replace(/[\\/]+$/, '');
-    const separator = isWindows ? '\\' : '/';
+    const separator = '/';
     const fullPath = `${basePath}${separator}${trimmedName}`;
 
     this.setState({ isCreatingFolder: true, createFolderError: null });
@@ -147,8 +145,6 @@ class FileBrowserModalContent extends Component {
       parent,
       directories,
       files,
-      isWindows,
-      isWindowsService,
       onCreateFolder,
       onModalClose,
       ...otherProps
@@ -169,16 +165,6 @@ class FileBrowserModalContent extends Component {
           className={styles.modalBody}
           scrollDirection={scrollDirections.NONE}
         >
-          {
-            isWindowsService &&
-              <Alert
-                className={styles.mappedDrivesWarning}
-                kind={kinds.WARNING}
-              >
-                Mapped network drives are not available when running as a Windows Service, see the <Link className={styles.faqLink} to="https://wiki.servarr.com/readarr/faq">FAQ</Link> for more information.
-              </Alert>
-          }
-
           <PathInput
             className={styles.pathInput}
             placeholder={translate('StartTypingOrSelectAPathBelow')}
@@ -323,8 +309,6 @@ FileBrowserModalContent.propTypes = {
   currentPath: PropTypes.string.isRequired,
   directories: PropTypes.arrayOf(PropTypes.object).isRequired,
   files: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isWindows: PropTypes.bool.isRequired,
-  isWindowsService: PropTypes.bool.isRequired,
   onFetchPaths: PropTypes.func.isRequired,
   onClearPaths: PropTypes.func.isRequired,
   onCreateFolder: PropTypes.func.isRequired,

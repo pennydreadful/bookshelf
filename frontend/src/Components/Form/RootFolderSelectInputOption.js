@@ -14,11 +14,10 @@ function RootFolderSelectInputOption(props) {
     authorFolder,
     isMissing,
     isMobile,
-    isWindows,
     ...otherProps
   } = props;
 
-  const slashCharacter = isWindows ? '\\' : '/';
+  const slashCharacter = '/';
 
   const text = name === '' ? value : `[${name}] ${value}`;
 
@@ -73,8 +72,7 @@ RootFolderSelectInputOption.propTypes = {
   freeSpace: PropTypes.number,
   authorFolder: PropTypes.string,
   isMissing: PropTypes.bool,
-  isMobile: PropTypes.bool.isRequired,
-  isWindows: PropTypes.bool
+  isMobile: PropTypes.bool.isRequired
 };
 
 RootFolderSelectInputOption.defaultProps = {
