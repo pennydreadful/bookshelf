@@ -422,6 +422,104 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
+        public static ParsedBookInfo ParseBookTitleWithBookOnlySearchCriteria(string title, Author author, List<Book> books)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title))
+                {
+                    return null;
+                }
+
+                if (author == null || books == null || books.Empty())
+                {
+                    return null;
+                }
+
+                var authorName = author.Name == "Various Authors" ? "VA" : author.Name.RemoveAccent();
+
+                Logger.Debug("Parsing string '{0}' using book-only search criteria author: '{1}' books: '{2}'",
+                             title,
+                             authorName.RemoveAccent(),
+                             string.Join(", ", books.Select(a => a.Title.RemoveAccent())));
+
+                var releaseTitle = RemoveFileExtension(title);
+
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
+
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle);
+                simpleTitle = WebsitePostfixRegex.Replace(simpleTitle);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
+
+                var bestBookMatch = books
+                    .Select(book => new
+                    {
+                        Book = book,
+                        Title = GetBookSearchTitle(book)
+                    })
+                    .Where(match => !match.Title.IsNullOrWhiteSpace())
+                    .OrderByDescending(match => simpleTitle.FuzzyMatch(match.Title, wordDelimiters: WordDelimiters).Item3)
+                    .FirstOrDefault();
+
+                if (bestBookMatch == null)
+                {
+                    return null;
+                }
+
+                var foundBook = GetTitleFuzzy(simpleTitle, bestBookMatch.Title, out _);
+
+                if (foundBook == null)
+                {
+                    foundBook = GetTitleFuzzy(simpleTitle, bestBookMatch.Title.SplitBookTitle(authorName).Item1, out _);
+                }
+
+                if (foundBook == null)
+                {
+                    return null;
+                }
+
+                var result = new ParsedBookInfo
+                {
+                    AuthorName = author.Name,
+                    AuthorTitleInfo = GetAuthorTitleInfo(author.Name),
+                    BookTitle = foundBook
+                };
+
+                result.Quality = QualityParser.ParseQuality(title);
+                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                {
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                }
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
+        }
+
+        private static string GetBookSearchTitle(Book book)
+        {
+            if (book?.Editions?.Value != null)
+            {
+                var monitoredEdition = book.Editions.Value.SingleOrDefault(x => x.Monitored);
+                if (monitoredEdition != null && monitoredEdition.Title.IsNotNullOrWhiteSpace())
+                {
+                    return monitoredEdition.Title;
+                }
+            }
+
+            return book?.Title;
+        }
+
         public static string GetTitleFuzzy(string report, string name, out string remainder)
         {
             remainder = report;

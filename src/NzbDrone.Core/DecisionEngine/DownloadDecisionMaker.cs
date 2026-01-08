@@ -83,6 +83,13 @@ namespace NzbDrone.Core.DecisionEngine
                             parsedBookInfo = Parser.Parser.ParseBookTitleWithSearchCriteria(report.Title,
                                                                                               searchCriteria.Author,
                                                                                               searchCriteria.Books);
+
+                            if (parsedBookInfo == null && searchCriteria is BookSearchCriteria)
+                            {
+                                parsedBookInfo = Parser.Parser.ParseBookTitleWithBookOnlySearchCriteria(report.Title,
+                                    searchCriteria.Author,
+                                    searchCriteria.Books);
+                            }
                         }
                         else
                         {

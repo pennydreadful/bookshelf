@@ -208,6 +208,16 @@ namespace NzbDrone.Core.Test.ParserTests
             parseResult.BookTitle.ToLowerInvariant().Should().Be("black sabbath");
         }
 
+        [TestCase("Harry Potter and the Order of the Phoenix [2003] mp3")]
+        public void should_parse_book_title_without_author_using_book_only_search_criteria(string releaseTitle)
+        {
+            GivenSearchCriteria("J. K. Rowling", "Harry Potter and the Order of the Phoenix");
+            var parseResult = Parser.Parser.ParseBookTitleWithBookOnlySearchCriteria(releaseTitle, _author, _books);
+
+            parseResult.AuthorName.Should().Be("J. K. Rowling");
+            parseResult.BookTitle.Should().Be("Harry Potter and the Order of the Phoenix");
+        }
+
         [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", 1998, 2001)]
         [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015]", 1985, 2015)]
         [TestCase("Led Zeppelin - Studio Discography 1969-1982 (10 books)(flac)", 1969, 1982)]
