@@ -80,7 +80,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareMissingMediaType(DownloadDecision x, DownloadDecision y)
         {
-            return CompareByReverse(x.RemoteBook, y.RemoteBook, MissingMediaTypeScore);
+            return CompareBy(x.RemoteBook, y.RemoteBook, MissingMediaTypeScore);
         }
 
         private int MissingMediaTypeScore(RemoteBook remoteBook)
