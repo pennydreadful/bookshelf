@@ -31,6 +31,7 @@ namespace Readarr.Api.V1.BookFiles
         private readonly IMetadataTagService _metadataTagService;
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
+        private readonly IEditionService _editionService;
         private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly IDiskProvider _diskProvider;
         private readonly FileExtensionContentTypeProvider _contentTypeProvider;
@@ -41,6 +42,7 @@ namespace Readarr.Api.V1.BookFiles
                                IMetadataTagService metadataTagService,
                                IAuthorService authorService,
                                IBookService bookService,
+                               IEditionService editionService,
                                IUpgradableSpecification upgradableSpecification,
                                IDiskProvider diskProvider)
             : base(signalRBroadcaster)
@@ -50,6 +52,7 @@ namespace Readarr.Api.V1.BookFiles
             _metadataTagService = metadataTagService;
             _authorService = authorService;
             _bookService = bookService;
+            _editionService = editionService;
             _upgradableSpecification = upgradableSpecification;
             _diskProvider = diskProvider;
             _contentTypeProvider = new FileExtensionContentTypeProvider();
@@ -57,14 +60,35 @@ namespace Readarr.Api.V1.BookFiles
 
         private BookFileResource MapToResource(BookFile bookFile)
         {
+            BookFileResource resource;
+
             if (bookFile.EditionId > 0 && bookFile.Author != null && bookFile.Author.Value != null)
             {
-                return bookFile.ToResource(bookFile.Author.Value, _upgradableSpecification);
+                resource = bookFile.ToResource(bookFile.Author.Value, _upgradableSpecification);
             }
             else
             {
-                return bookFile.ToResource();
+                resource = bookFile.ToResource();
             }
+
+            return EnsureBookId(resource, bookFile);
+        }
+
+        private BookFileResource EnsureBookId(BookFileResource resource, BookFile bookFile)
+        {
+            if (resource.BookId != 0 || bookFile.EditionId <= 0)
+            {
+                return resource;
+            }
+
+            var edition = bookFile.Edition?.Value ?? _editionService.GetEdition(bookFile.EditionId);
+            if (edition == null)
+            {
+                return resource;
+            }
+
+            resource.BookId = edition.BookId;
+            return resource;
         }
 
         protected override BookFileResource GetResourceById(int id)
