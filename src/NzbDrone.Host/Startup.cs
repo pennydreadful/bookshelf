@@ -234,7 +234,6 @@ namespace NzbDrone.Host
 
             eventAggregator.PublishEvent(new ApplicationStartingEvent());
 
-
             app.UseForwardedHeaders();
             app.UseMiddleware<LoggingMiddleware>();
             app.UsePathBase(new PathString(configFileProvider.UrlBase));
