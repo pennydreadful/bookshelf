@@ -5,6 +5,7 @@ using System.Linq;
 using DryIoc;
 using NLog;
 using NzbDrone.Common.Composition.Extensions;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Instrumentation.Extensions;
