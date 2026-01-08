@@ -27,7 +27,6 @@ namespace NzbDrone.Core.Lifecycle
         {
             _logger.Info("Shutdown requested.");
             _eventAggregator.PublishEvent(new ApplicationShutdownRequested());
-
         }
 
         public void Restart()
@@ -35,7 +34,6 @@ namespace NzbDrone.Core.Lifecycle
             _logger.Info("Restart requested.");
 
             _eventAggregator.PublishEvent(new ApplicationShutdownRequested(true));
-
         }
 
         public void Execute(ShutdownCommand message)

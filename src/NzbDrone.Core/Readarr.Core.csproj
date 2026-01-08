@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
     <PackageReference Include="Servarr.FluentMigrator.Runner" />
     <PackageReference Include="Servarr.FluentMigrator.Runner.SQLite" />
     <PackageReference Include="Servarr.FluentMigrator.Runner.Postgres" />
