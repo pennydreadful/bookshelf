@@ -2,12 +2,9 @@
 
 - [ ] Add diagnostics flow: create `bookdarr-diagnostics` repo and add a UI button to collect logs/config and push a sanitized bundle.
 - [ ] Publish Docker images to Docker Hub (`thashiznit2003/bookdarr`) with release tagging and compose instructions.
-- [ ] Implement Hardcover fallback provider and add provider selection/priority settings.
 - [ ] Add an export indexers flow (API/UI or script) for easy migration.
-- [ ] Support dual-format storage (ebook + audiobook) without deleting the other file.
 - [ ] Build a request UI (Overseerr-like) on top of Bookdarr search.
 - [ ] Document metadata provider pros/cons in README and settings UI help.
-- [ ] Add migration guidance and warnings before any change that could lose data.
 - [ ] Remove Mac OS version adapters and fixtures now that Bookdarr is Linux-only (e.g., `NzbDrone.Mono/EnvironmentInfo/VersionAdapters/MacOsVersionAdapter.cs` and related tests/assets).
 - [ ] Remove Windows-only path handling and Windows-only test cases (e.g., `OsPath`, `PathExtensions`, `EnsureStringExtensions`, and `WindowsOnly` fixtures).
 - [ ] Remove Windows service/mapped-drive guardrails and related warnings that no longer apply on Linux-only installs.
