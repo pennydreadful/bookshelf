@@ -299,6 +299,5 @@ namespace NzbDrone.Common.Test.DiskTests
         {
             DoHardLinkRename(FileShare.Delete);
         }
-
     }
 }

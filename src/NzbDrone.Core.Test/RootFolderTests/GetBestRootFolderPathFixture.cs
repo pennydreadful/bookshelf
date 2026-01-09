@@ -39,6 +39,5 @@ namespace NzbDrone.Core.Test.RootFolderTests
             GivenRootFolders(@"C:\Test\Books".AsOsAgnostic(), @"D:\Test\Books".AsOsAgnostic());
             Subject.GetBestRootFolderPath(artistPath).Should().Be(@"T:\Test\Books".AsOsAgnostic());
         }
-
     }
 }

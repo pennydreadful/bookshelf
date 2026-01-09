@@ -289,6 +289,5 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
 
             Subject.Test().IsValid.Should().BeFalse();
         }
-
     }
 }
