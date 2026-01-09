@@ -75,18 +75,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        public void should_return_error_if_series_path_is_for_posix_os()
-        {
-            WindowsOnly();
-            GivenMissingRootFolder("/mnt/books");
-
-            Subject.Check().ShouldBeError();
-        }
-
-        [Test]
         public void should_return_error_if_series_path_is_for_windows()
         {
-            PosixOnly();
             GivenMissingRootFolder(@"C:\Books");
 
             Subject.Check().ShouldBeError();

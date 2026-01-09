@@ -98,38 +98,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
 
         [TestCase(FilterFilesType.Known)]
         [TestCase(FilterFilesType.Matched)]
-        public void filter_should_return_none_existing_files_ignoring_case(FilterFilesType filter)
-        {
-            WindowsOnly();
-
-            var files = GivenFiles(new[]
-                {
-                    "C:\\file1.avi".AsOsAgnostic(),
-                    "C:\\FILE2.avi".AsOsAgnostic(),
-                    "C:\\file3.avi".AsOsAgnostic()
-                });
-
-            Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFileWithPath(It.IsAny<List<string>>()))
-                .Returns(new List<BookFile>
-                {
-                    new BookFile
-                    {
-                        Path = "C:\\file2.avi".AsOsAgnostic(),
-                        Modified = _lastWrite
-                    }
-                });
-
-            Subject.FilterUnchangedFiles(files, filter).Should().HaveCount(2);
-            Subject.FilterUnchangedFiles(files, filter).Select(x => x.FullName).Should().NotContain("C:\\file2.avi".AsOsAgnostic());
-        }
-
-        [TestCase(FilterFilesType.Known)]
-        [TestCase(FilterFilesType.Matched)]
         public void filter_should_return_none_existing_files_not_ignoring_case(FilterFilesType filter)
         {
-            PosixOnly();
-
             var files = GivenFiles(new[]
                 {
                     "C:\\file1.avi".AsOsAgnostic(),

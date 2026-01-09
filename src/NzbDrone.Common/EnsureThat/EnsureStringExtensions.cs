@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat.Resources;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.EnsureThat
@@ -98,14 +97,9 @@ namespace NzbDrone.Common.EnsureThat
                 throw ExceptionFactory.CreateForParamValidation(param.Name, ExceptionMessages.EnsureExtensions_IsNotNullOrWhiteSpace);
             }
 
-            if (!param.Value.EndsWith("\\"))
+            if (param.Value.StartsWith("/"))
             {
-                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid relative path. relative paths must end with \\", param.Value));
-            }
-
-            if (param.Value.Length > 1 && param.Value.StartsWith("\\"))
-            {
-                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid relative path. relative paths can not start with \\", param.Value));
+                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid relative path. relative paths must not start with /", param.Value));
             }
 
             return param;
@@ -124,12 +118,7 @@ namespace NzbDrone.Common.EnsureThat
                 return param;
             }
 
-            if (OsInfo.IsWindows)
-            {
-                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid Windows path. paths must be a full path eg. C:\\Windows", param.Value));
-            }
-
-            throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid *nix path. paths must start with /", param.Value));
+            throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid path. paths must start with /", param.Value));
         }
     }
 }

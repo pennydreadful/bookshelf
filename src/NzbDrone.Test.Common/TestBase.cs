@@ -150,14 +150,6 @@ namespace NzbDrone.Test.Common
 
         protected IAppFolderInfo TestFolderInfo { get; private set; }
 
-        protected void WindowsOnly()
-        {
-            if (OsInfo.IsNotWindows)
-            {
-                throw new IgnoreException("windows specific test");
-            }
-        }
-
         protected void PosixOnly()
         {
             if (OsInfo.IsWindows)

@@ -63,7 +63,6 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         [Test]
         public void should_call_fileSetLastWriteTime_for_each_file()
         {
-            WindowsOnly();
             WithRecycleBin();
             var path = @"C:\Test\TV\30 Rock".AsOsAgnostic();
 

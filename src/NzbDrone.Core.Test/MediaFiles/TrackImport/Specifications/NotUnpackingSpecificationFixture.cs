@@ -52,17 +52,6 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         }
 
         [Test]
-        public void should_return_true_when_in_old_working_folder()
-        {
-            WindowsOnly();
-
-            GivenInWorkingFolder();
-            GivenLastWriteTimeUtc(DateTime.UtcNow.AddHours(-1));
-
-            Subject.IsSatisfiedBy(_localTrack, null).Accepted.Should().BeTrue();
-        }
-
-        [Test]
         public void should_return_false_if_in_working_folder_and_last_write_time_was_recent()
         {
             GivenInWorkingFolder();
@@ -74,8 +63,6 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         [Test]
         public void should_return_false_if_unopacking_on_linux()
         {
-            PosixOnly();
-
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow.AddDays(-5));
 

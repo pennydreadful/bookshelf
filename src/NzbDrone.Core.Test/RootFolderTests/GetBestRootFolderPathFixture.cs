@@ -40,26 +40,5 @@ namespace NzbDrone.Core.Test.RootFolderTests
             Subject.GetBestRootFolderPath(artistPath).Should().Be(@"T:\Test\Books".AsOsAgnostic());
         }
 
-        [Test]
-        public void should_get_parent_path_from_os_path_if_matching_root_folder_is_not_found_for_posix_path()
-        {
-            WindowsOnly();
-
-            var artistPath = "/mnt/books/Author Title";
-
-            GivenRootFolders(@"C:\Test\Books".AsOsAgnostic(), @"D:\Test\Books".AsOsAgnostic());
-            Subject.GetBestRootFolderPath(artistPath).Should().Be(@"/mnt/books");
-        }
-
-        [Test]
-        public void should_get_parent_path_from_os_path_if_matching_root_folder_is_not_found_for_windows_path()
-        {
-            PosixOnly();
-
-            var artistPath = @"T:\Test\Books\Author Title";
-
-            GivenRootFolders(@"C:\Test\Books".AsOsAgnostic(), @"D:\Test\Books".AsOsAgnostic());
-            Subject.GetBestRootFolderPath(artistPath).Should().Be(@"T:\Test\Books");
-        }
     }
 }

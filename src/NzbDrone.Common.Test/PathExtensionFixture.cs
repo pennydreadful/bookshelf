@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Test.Common;
-using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Common.Test
 {
@@ -26,24 +25,6 @@ namespace NzbDrone.Common.Test
             return fakeEnvironment.Object;
         }
 
-        [TestCase(@"c:\test\", @"c:\test")]
-        [TestCase(@"c:\\test\\", @"c:\test")]
-        [TestCase(@"C:\\Test\\", @"C:\Test")]
-        [TestCase(@"C:\\Test\\Test\", @"C:\Test\Test")]
-        [TestCase(@"\\Testserver\Test\", @"\\Testserver\Test")]
-        [TestCase(@"\\Testserver\\Test\", @"\\Testserver\Test")]
-        [TestCase(@"\\Testserver\Test\file.ext", @"\\Testserver\Test\file.ext")]
-        [TestCase(@"\\Testserver\Test\file.ext\\", @"\\Testserver\Test\file.ext")]
-        [TestCase(@"\\Testserver\Test\file.ext   \\", @"\\Testserver\Test\file.ext")]
-        [TestCase(@"//CAPITAL//lower// ", @"\\CAPITAL\lower")]
-        public void Clean_Path_Windows(string dirty, string clean)
-        {
-            WindowsOnly();
-
-            var result = dirty.CleanFilePath();
-            result.Should().Be(clean);
-        }
-
         [TestCase(@"/", @"/")]
         [TestCase(@"/test/", @"/test")]
         [TestCase(@"//test/", @"/test")]
@@ -54,8 +35,6 @@ namespace NzbDrone.Common.Test
         [TestCase(@"//CAPITAL//lower// ", @"/CAPITAL/lower")]
         public void Clean_Path_Linux(string dirty, string clean)
         {
-            PosixOnly();
-
             var result = dirty.CleanFilePath();
             result.Should().Be(clean);
         }
@@ -73,13 +52,6 @@ namespace NzbDrone.Common.Test
         public void paths_should_be_equal(string first, string second)
         {
             first.AsOsAgnostic().PathEquals(second.AsOsAgnostic()).Should().BeTrue();
-        }
-
-        [TestCase(@"c:\", @"C:\")]
-        public void should_be_equal_windows_only(string first, string second)
-        {
-            WindowsOnly();
-            first.PathEquals(second.AsOsAgnostic()).Should().BeTrue();
         }
 
         [TestCase(@"C:\Test", @"C:\Test2\")]
@@ -131,39 +103,16 @@ namespace NzbDrone.Common.Test
             parentPath.AsOsAgnostic().IsParentPath(childPath.AsOsAgnostic()).Should().BeFalse();
         }
 
-        [TestCase(@"C:\test\", @"C:\Test\mydir")]
-        [TestCase(@"C:\test", @"C:\Test\mydir\")]
-        public void path_should_be_parent_on_windows_only(string parentPath, string childPath)
-        {
-            var expectedResult = OsInfo.IsWindows;
-
-            parentPath.IsParentPath(childPath).Should().Be(expectedResult);
-        }
-
-        [TestCase(@"C:\Test\mydir", @"C:\Test")]
-        [TestCase(@"C:\Test\", @"C:\")]
-        [TestCase(@"C:\", null)]
-        [TestCase(@"\\server\share", null)]
-        [TestCase(@"\\server\share\test", @"\\server\share")]
-        public void path_should_return_parent_windows(string path, string parentPath)
-        {
-            WindowsOnly();
-            path.GetParentPath().Should().Be(parentPath);
-        }
-
         [TestCase(@"/", null)]
         [TestCase(@"/test", "/")]
         public void path_should_return_parent_mono(string path, string parentPath)
         {
-            PosixOnly();
             path.GetParentPath().Should().Be(parentPath);
         }
 
         [Test]
         public void path_should_return_parent_for_oversized_path()
         {
-            PosixOnly();
-
             // This test will fail on Windows if long path support is not enabled: https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/
             // It will also fail if the app isn't configured to use long path (such as resharper): https://blogs.msdn.microsoft.com/jeremykuhne/2016/07/30/net-4-6-2-and-long-paths-on-windows-10/
             var path = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\readarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories".AsOsAgnostic();
@@ -197,53 +146,10 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        public void get_actual_casing_for_none_existing_file_return_partially_fixed_result()
-        {
-            WindowsOnly();
-            "C:\\WINDOWS\\invalidfile.exe".GetActualCasing().Should().Be("C:\\Windows\\invalidfile.exe");
-        }
-
-        [Test]
-        public void get_actual_casing_for_none_existing_folder_return_partially_fixed_result()
-        {
-            WindowsOnly();
-            "C:\\WINDOWS\\SYSTEM32\\FAKEFOLDER\\invalidfile.exe".GetActualCasing().Should().Be("C:\\Windows\\System32\\FAKEFOLDER\\invalidfile.exe");
-        }
-
-        [Test]
-        public void get_actual_casing_should_return_actual_casing_for_local_file_in_windows()
-        {
-            WindowsOnly();
-            var path = Directory.GetDirectories("C:\\")[3];
-            path.ToUpper().GetActualCasing().Should().Be(path);
-            path.ToLower().GetActualCasing().Should().Be(path);
-        }
-
-        [Test]
-        public void get_actual_casing_should_return_actual_casing_for_local_dir_in_windows()
-        {
-            WindowsOnly();
-            var path = Directory.GetCurrentDirectory().Replace("c:\\", "C:\\").Replace("d:\\", "D:\\").Replace("system32", "System32");
-
-            path.ToUpper().GetActualCasing().Should().Be(path);
-            path.ToLower().GetActualCasing().Should().Be(path);
-        }
-
-        [Test]
         public void get_actual_casing_should_return_original_value_in_linux()
         {
-            PosixOnly();
             var path = Directory.GetCurrentDirectory();
             path.GetActualCasing().Should().Be(path);
-            path.GetActualCasing().Should().Be(path);
-        }
-
-        [Test]
-        [Explicit]
-        [ManualTest]
-        public void get_actual_casing_should_return_original_casing_for_shares()
-        {
-            var path = @"\\server\Pool\Apps";
             path.GetActualCasing().Should().Be(path);
         }
 
@@ -290,23 +196,8 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        public void GetAncestorFolders_should_return_all_ancestors_in_path_Windows()
-        {
-            WindowsOnly();
-            var path = @"C:\Test\Music\Author Title";
-            var result = path.GetAncestorFolders();
-
-            result.Count.Should().Be(4);
-            result[0].Should().Be(@"C:\");
-            result[1].Should().Be(@"Test");
-            result[2].Should().Be(@"Music");
-            result[3].Should().Be(@"Author Title");
-        }
-
-        [Test]
         public void GetAncestorFolders_should_return_all_ancestors_in_path_Linux()
         {
-            PosixOnly();
             var path = @"/Test/Music/Author Title";
             var result = path.GetAncestorFolders();
 

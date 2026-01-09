@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
@@ -200,8 +199,7 @@ namespace NzbDrone.Core.Download
                 return false;
             }
 
-            if ((OsInfo.IsWindows && !downloadItemOutputPath.IsWindowsPath) ||
-                (OsInfo.IsNotWindows && !downloadItemOutputPath.IsUnixPath))
+            if (!downloadItemOutputPath.IsValid)
             {
                 trackedDownload.Warn("[{0}] is not a valid local path. You may need a Remote Path Mapping.", downloadItemOutputPath);
                 return false;

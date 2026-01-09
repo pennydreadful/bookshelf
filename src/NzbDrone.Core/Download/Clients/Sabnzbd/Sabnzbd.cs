@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -551,8 +550,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return false;
             }
 
-            if ((OsInfo.IsWindows && !downloadItemOutputPath.IsWindowsPath) ||
-                (OsInfo.IsNotWindows && !downloadItemOutputPath.IsUnixPath))
+            if (!downloadItemOutputPath.IsValid)
             {
                 return false;
             }

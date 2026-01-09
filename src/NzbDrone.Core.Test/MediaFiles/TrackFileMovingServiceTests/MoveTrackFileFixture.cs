@@ -65,8 +65,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
         [Test]
         public void should_catch_UnauthorizedAccessException_during_folder_inheritance()
         {
-            WindowsOnly();
-
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.InheritFolderPermissions(It.IsAny<string>()))
                   .Throws<UnauthorizedAccessException>();
@@ -77,8 +75,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
         [Test]
         public void should_catch_InvalidOperationException_during_folder_inheritance()
         {
-            WindowsOnly();
-
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.InheritFolderPermissions(It.IsAny<string>()))
                   .Throws<InvalidOperationException>();

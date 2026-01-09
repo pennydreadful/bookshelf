@@ -255,24 +255,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             items.First().Status.Should().Be(DownloadItemStatus.Downloading);
         }
 
-        [Test]
-        public void should_fix_forward_slashes()
-        {
-            WindowsOnly();
-
-            _downloading.DownloadDir = @"C:/Downloads/Finished/transmission/" + _title;
-
-            GivenTorrents(new List<TransmissionTorrent>
-                {
-                    _downloading
-                });
-
-            var items = Subject.GetItems().ToList();
-
-            items.Should().HaveCount(1);
-            items.First().OutputPath.Should().Be(@"C:\Downloads\Finished\transmission\" + _title);
-        }
-
         [TestCase(-1)] // Infinite/Unknown
         [TestCase(-2)] // Magnet Downloading
         public void should_ignore_negative_eta(long eta)
@@ -308,42 +290,5 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             Subject.Test().IsValid.Should().BeFalse();
         }
 
-        [Test]
-        public void should_have_correct_output_directory_for_multifile_torrents()
-        {
-            WindowsOnly();
-
-            _downloading.DownloadDir = @"C:/Downloads/" + _title;
-
-            GivenTorrents(new List<TransmissionTorrent>
-                {
-                    _downloading
-                });
-
-            var items = Subject.GetItems().ToList();
-
-            items.Should().HaveCount(1);
-            items.First().OutputPath.Should().Be(@"C:\Downloads\" + _title);
-        }
-
-        [Test]
-        public void should_have_correct_output_directory_for_singlefile_torrents()
-        {
-            WindowsOnly();
-
-            var fileName = _title + ".mkv";
-            _downloading.Name = fileName;
-            _downloading.DownloadDir = @"C:/Downloads";
-
-            GivenTorrents(new List<TransmissionTorrent>
-                {
-                    _downloading
-                });
-
-            var items = Subject.GetItems().ToList();
-
-            items.Should().HaveCount(1);
-            items.First().OutputPath.Should().Be(@"C:\Downloads\" + fileName);
-        }
     }
 }

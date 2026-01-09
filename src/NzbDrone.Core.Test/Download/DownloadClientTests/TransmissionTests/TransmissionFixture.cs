@@ -247,24 +247,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             items.First().Status.Should().Be(DownloadItemStatus.Downloading);
         }
 
-        [Test]
-        public void should_fix_forward_slashes()
-        {
-            WindowsOnly();
-
-            _downloading.DownloadDir = @"C:/Downloads/Finished/transmission";
-
-            GivenTorrents(new List<TransmissionTorrent>
-                {
-                    _downloading
-                });
-
-            var items = Subject.GetItems().ToList();
-
-            items.Should().HaveCount(1);
-            items.First().OutputPath.Should().Be(@"C:\Downloads\Finished\transmission\" + _title);
-        }
-
         [TestCase("2.84 ()")]
         [TestCase("2.84+ ()")]
         [TestCase("2.84 (other info)")]

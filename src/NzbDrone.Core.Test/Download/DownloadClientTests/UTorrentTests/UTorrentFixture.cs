@@ -337,20 +337,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         }
 
         [Test]
-        public void should_combine_drive_letter()
-        {
-            WindowsOnly();
-
-            _completed.RootDownloadPath = "D:";
-
-            PrepareClientToReturnCompletedItem();
-
-            var item = Subject.GetItems().Single();
-
-            item.OutputPath.Should().Be(@"D:\" + _title);
-        }
-
-        [Test]
         public async Task Download_should_handle_http_redirect_to_magnet()
         {
             GivenRedirectToMagnet();

@@ -34,14 +34,6 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
-        public void directory_exist_should_be_able_to_find_existing_unc_share()
-        {
-            WindowsOnly();
-
-            Subject.FolderExists(@"\\localhost\c$").Should().BeTrue();
-        }
-
-        [Test]
         public void directory_exist_should_not_be_able_to_find_none_existing_folder()
         {
             Subject.FolderExists(@"C:\ThisBetterNotExist\".AsOsAgnostic()).Should().BeFalse();
@@ -308,22 +300,5 @@ namespace NzbDrone.Common.Test.DiskTests
             DoHardLinkRename(FileShare.Delete);
         }
 
-        [Test]
-        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
-        public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_none()
-        {
-            WindowsOnly();
-
-            Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.None));
-        }
-
-        [Test]
-        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
-        public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_write()
-        {
-            WindowsOnly();
-
-            Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.Read));
-        }
     }
 }

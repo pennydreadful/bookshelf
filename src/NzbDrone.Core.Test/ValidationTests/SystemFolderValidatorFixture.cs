@@ -25,34 +25,8 @@ namespace NzbDrone.Core.Test.ValidationTests
         }
 
         [Test]
-        public void should_not_be_valid_if_set_to_windows_folder()
-        {
-            WindowsOnly();
-
-            var author = Builder<Author>.CreateNew()
-                                        .With(s => s.Path = Environment.GetFolderPath(Environment.SpecialFolder.Windows))
-                                        .Build();
-
-            _validator.Validate(author).IsValid.Should().BeFalse();
-        }
-
-        [Test]
-        public void should_not_be_valid_if_child_of_windows_folder()
-        {
-            WindowsOnly();
-
-            var author = Builder<Author>.CreateNew()
-                                        .With(s => s.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Test"))
-                                        .Build();
-
-            _validator.Validate(author).IsValid.Should().BeFalse();
-        }
-
-        [Test]
         public void should_not_be_valid_if_set_to_bin_folder()
         {
-            PosixOnly();
-
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
             var author = Builder<Author>.CreateNew()
                                         .With(s => s.Path = bin)
@@ -64,8 +38,6 @@ namespace NzbDrone.Core.Test.ValidationTests
         [Test]
         public void should_not_be_valid_if_child_of_bin_folder()
         {
-            PosixOnly();
-
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
             var author = Builder<Author>.CreateNew()
                 .With(s => s.Path = Path.Combine(bin, "test"))
