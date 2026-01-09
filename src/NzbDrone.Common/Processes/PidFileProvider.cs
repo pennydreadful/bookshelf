@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 
 namespace NzbDrone.Common.Processes
@@ -24,11 +23,6 @@ namespace NzbDrone.Common.Processes
 
         public void Write()
         {
-            if (OsInfo.IsWindows)
-            {
-                return;
-            }
-
             var filename = Path.Combine(_appFolderInfo.AppDataFolder, "readarr.pid");
             try
             {

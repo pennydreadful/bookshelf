@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Model;
 using NzbDrone.Common.Processes;
 using NzbDrone.Test.Common;
@@ -85,7 +84,6 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        [Platform(Exclude = "MacOsX")]
         [Retry(3)]
         public void exists_should_find_running_process()
         {
@@ -103,7 +101,6 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        [Platform(Exclude = "MacOsX")]
         [Retry(3)]
         public void kill_all_should_kill_all_process_with_name()
         {
@@ -121,18 +118,7 @@ namespace NzbDrone.Common.Test
         private Process StartDummyProcess()
         {
             var processStarted = new ManualResetEventSlim();
-
-            string suffix;
-            if (OsInfo.IsWindows)
-            {
-                suffix = ".exe";
-            }
-            else
-            {
-                suffix = "";
-            }
-
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + suffix);
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME);
             var process = Subject.Start(path, onOutputDataReceived: (string data) =>
             {
                 if (data.StartsWith("Dummy process. ID:"))

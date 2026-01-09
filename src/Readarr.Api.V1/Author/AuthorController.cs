@@ -61,7 +61,6 @@ namespace Readarr.Api.V1.Author
                             IRootFolderService rootFolderService,
                             RecycleBinValidator recycleBinValidator,
                             RootFolderValidator rootFolderValidator,
-                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                             AuthorPathValidator authorPathValidator,
                             AuthorExistsValidator authorExistsValidator,
                             AuthorAncestorValidator authorAncestorValidator,
@@ -90,7 +89,6 @@ namespace Readarr.Api.V1.Author
                            .Cascade(CascadeMode.Stop)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
-                           .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(authorPathValidator)
                            .SetValidator(authorAncestorValidator)
                            .SetValidator(recycleBinValidator)

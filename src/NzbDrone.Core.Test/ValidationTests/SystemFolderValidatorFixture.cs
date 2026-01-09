@@ -2,7 +2,6 @@ using System.IO;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Validation.Paths;
@@ -26,7 +25,7 @@ namespace NzbDrone.Core.Test.ValidationTests
         [Test]
         public void should_not_be_valid_if_set_to_bin_folder()
         {
-            var bin = OsInfo.IsOsx ? "/System" : "/bin";
+            var bin = "/bin";
             var author = Builder<Author>.CreateNew()
                                         .With(s => s.Path = bin)
                                         .Build();
@@ -37,7 +36,7 @@ namespace NzbDrone.Core.Test.ValidationTests
         [Test]
         public void should_not_be_valid_if_child_of_bin_folder()
         {
-            var bin = OsInfo.IsOsx ? "/System" : "/bin";
+            var bin = "/bin";
             var author = Builder<Author>.CreateNew()
                 .With(s => s.Path = Path.Combine(bin, "test"))
                 .Build();

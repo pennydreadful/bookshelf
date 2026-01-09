@@ -152,10 +152,7 @@ namespace NzbDrone.Test.Common
 
         protected void PosixOnly()
         {
-            if (OsInfo.IsWindows)
-            {
-                throw new IgnoreException("non windows specific test");
-            }
+            return;
         }
 
         protected void NotBsd()

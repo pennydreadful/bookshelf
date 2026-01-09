@@ -28,7 +28,6 @@ namespace Readarr.Api.V1.RootFolders
                                 RecycleBinValidator recycleBinValidator,
                                 RootFolderValidator rootFolderValidator,
                                 PathExistsValidator pathExistsValidator,
-                                MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
                                 FolderWritableValidator folderWritableValidator,
@@ -42,7 +41,6 @@ namespace Readarr.Api.V1.RootFolders
             SharedValidator.RuleFor(c => c.Path)
                 .Cascade(CascadeMode.Stop)
                 .IsValidPath()
-                .SetValidator(mappedNetworkDriveValidator)
                 .SetValidator(startupFolderValidator)
                 .SetValidator(recycleBinValidator)
                 .SetValidator(pathExistsValidator)

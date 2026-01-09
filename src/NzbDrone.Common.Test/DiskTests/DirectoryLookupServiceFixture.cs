@@ -13,63 +13,57 @@ namespace NzbDrone.Common.Test.DiskTests
     [TestFixture]
     public class DirectoryLookupServiceFixture : TestBase<FileSystemLookupService>
     {
-        private const string RECYCLING_BIN = "$Recycle.Bin";
-        private const string SYSTEM_VOLUME_INFORMATION = "System Volume Information";
-        private const string WINDOWS = "Windows";
+        private const string LOST_FOUND = "lost+found";
+        private const string QNAP_THUMB = ".@__thumb";
+        private const string SYNOLOGY_RECYCLE = "#recycle";
         private List<IDirectoryInfo> _folders;
 
         private void SetupFolders(string root)
         {
             var folders = new List<string>
             {
-                RECYCLING_BIN,
-                "Chocolatey",
-                "Documents and Settings",
-                "Dropbox",
-                "Intel",
-                "PerfLogs",
-                "Program Files",
-                "Program Files (x86)",
-                "ProgramData",
-                SYSTEM_VOLUME_INFORMATION,
-                "Test",
-                "Users",
-                WINDOWS
+                LOST_FOUND,
+                QNAP_THUMB,
+                SYNOLOGY_RECYCLE,
+                "books",
+                "downloads",
+                "media",
+                "test"
             };
 
             _folders = folders.Select(f => (DirectoryInfoBase)new DirectoryInfo(Path.Combine(root, f))).ToList<IDirectoryInfo>();
         }
 
         [Test]
-        public void should_not_contain_recycling_bin_for_root_of_drive()
+        public void should_not_contain_lost_found_for_root()
         {
-            var root = @"C:\".AsOsAgnostic();
+            var root = "/".AsOsAgnostic();
             SetupFolders(root);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, RECYCLING_BIN));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, LOST_FOUND));
         }
 
         [Test]
-        public void should_not_contain_system_volume_information()
+        public void should_not_contain_qnap_thumb()
         {
-            var root = @"C:\".AsOsAgnostic();
+            var root = "/".AsOsAgnostic();
             SetupFolders(root);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, SYSTEM_VOLUME_INFORMATION));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, QNAP_THUMB));
         }
 
         [Test]
-        public void should_not_contain_recycling_bin_or_system_volume_information_for_root_of_drive()
+        public void should_not_contain_hidden_system_folders_for_root()
         {
-            var root = @"C:\".AsOsAgnostic();
+            var root = "/".AsOsAgnostic();
             SetupFolders(root);
 
             Mocker.GetMock<IDiskProvider>()
@@ -80,9 +74,9 @@ namespace NzbDrone.Common.Test.DiskTests
 
             result.Directories.Should().HaveCount(_folders.Count - 3);
 
-            result.Directories.Should().NotContain(f => f.Name == RECYCLING_BIN);
-            result.Directories.Should().NotContain(f => f.Name == SYSTEM_VOLUME_INFORMATION);
-            result.Directories.Should().NotContain(f => f.Name == WINDOWS);
+            result.Directories.Should().NotContain(f => f.Name == LOST_FOUND);
+            result.Directories.Should().NotContain(f => f.Name == QNAP_THUMB);
+            result.Directories.Should().NotContain(f => f.Name == SYNOLOGY_RECYCLE);
         }
     }
 }

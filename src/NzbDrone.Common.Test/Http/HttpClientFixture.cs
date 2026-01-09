@@ -217,7 +217,6 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
-        [Platform(Exclude = "MacOsX", Reason = "Azure agent update prevents brotli on OSX")]
         public async Task should_execute_get_using_brotli()
         {
             var request = new HttpRequest($"https://{_httpBinHost}/brotli");

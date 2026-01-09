@@ -11,7 +11,6 @@ namespace NzbDrone.Common.EnvironmentInfo
     public interface IAppFolderFactory
     {
         void Register();
-        void SetPermissions();
     }
 
     public class AppFolderFactory : IAppFolderFactory
@@ -41,11 +40,6 @@ namespace NzbDrone.Common.EnvironmentInfo
                 throw new ReadarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
             }
 
-            if (OsInfo.IsWindows)
-            {
-                SetPermissions();
-            }
-
             if (!_diskProvider.FolderWritable(_appFolderInfo.AppDataFolder))
             {
                 throw new ReadarrStartupException("AppFolder {0} is not writable", _appFolderInfo.AppDataFolder);
@@ -54,25 +48,8 @@ namespace NzbDrone.Common.EnvironmentInfo
             InitializeMonoApplicationData();
         }
 
-        public void SetPermissions()
-        {
-            try
-            {
-                _diskProvider.SetEveryonePermissions(_appFolderInfo.AppDataFolder);
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, "Coudn't set app folder permission");
-            }
-        }
-
         private void InitializeMonoApplicationData()
         {
-            if (OsInfo.IsWindows)
-            {
-                return;
-            }
-
             try
             {
                 // It seems that DoNotVerify is the mono behaviour even though .net docs specify a blank string

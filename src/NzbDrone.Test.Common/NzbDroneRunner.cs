@@ -7,7 +7,6 @@ using System.Threading;
 using System.Xml.Linq;
 using NLog;
 using NUnit.Framework;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Common.Serializer;
@@ -45,15 +44,7 @@ namespace NzbDrone.Test.Common
 
             GenerateConfigFile(enableAuth);
 
-            string readarrConsoleExe;
-            if (OsInfo.IsWindows)
-            {
-                readarrConsoleExe = "Readarr.Console.exe";
-            }
-            else
-            {
-                readarrConsoleExe = "Readarr";
-            }
+            var readarrConsoleExe = "Readarr";
 
             _startupLog = new List<string>();
             if (BuildInfo.IsDebug)

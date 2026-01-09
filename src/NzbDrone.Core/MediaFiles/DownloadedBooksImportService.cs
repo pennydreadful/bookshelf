@@ -5,7 +5,6 @@ using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
@@ -33,7 +32,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedBooks _importApprovedTracks;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IRuntimeInfo _runtimeInfo;
         private readonly Logger _logger;
 
         public DownloadedBooksImportService(IDiskProvider diskProvider,
@@ -43,7 +41,6 @@ namespace NzbDrone.Core.MediaFiles
                                              IMakeImportDecision importDecisionMaker,
                                              IImportApprovedBooks importApprovedTracks,
                                              IEventAggregator eventAggregator,
-                                             IRuntimeInfo runtimeInfo,
                                              Logger logger)
         {
             _diskProvider = diskProvider;
@@ -53,7 +50,6 @@ namespace NzbDrone.Core.MediaFiles
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
             _eventAggregator = eventAggregator;
-            _runtimeInfo = runtimeInfo;
             _logger = logger;
         }
 
@@ -337,33 +333,6 @@ namespace NzbDrone.Core.MediaFiles
 
         private void LogInaccessiblePathError(string path)
         {
-            if (_runtimeInfo.IsWindowsService)
-            {
-                var mounts = _diskProvider.GetMounts();
-                var mount = mounts.FirstOrDefault(m => m.RootDirectory == Path.GetPathRoot(path));
-
-                if (mount == null)
-                {
-                    _logger.Error("Import failed, path does not exist or is not accessible by Readarr: {0}. Unable to find a volume mounted for the path. If you're using a mapped network drive see the FAQ for more info", path);
-                    return;
-                }
-
-                if (mount.DriveType == DriveType.Network)
-                {
-                    _logger.Error("Import failed, path does not exist or is not accessible by Readarr: {0}. It's recommended to avoid mapped network drives when running as a Windows service. See the FAQ for more info", path);
-                    return;
-                }
-            }
-
-            if (OsInfo.IsWindows)
-            {
-                if (path.StartsWith(@"\\"))
-                {
-                    _logger.Error("Import failed, path does not exist or is not accessible by Readarr: {0}. Ensure the user running Readarr has access to the network share", path);
-                    return;
-                }
-            }
-
             _logger.Error("Import failed, path does not exist or is not accessible by Readarr: {0}. Ensure the path exists and the user running Readarr has the correct permissions to access this file/folder", path);
         }
     }

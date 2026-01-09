@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using NLog;
 using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 
@@ -26,11 +25,6 @@ namespace NzbDrone.Common.Disk
         {
             get
             {
-                if (OsInfo.IsWindows)
-                {
-                    return StringComparison.OrdinalIgnoreCase;
-                }
-
                 return StringComparison.Ordinal;
             }
         }

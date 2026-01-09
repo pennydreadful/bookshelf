@@ -15,7 +15,6 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             _logger = logger;
 
-            IsWindowsService = false;
             IsStarting = true;
 
             //Guarded to avoid issues when running in a non-managed process
@@ -24,7 +23,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             if (entry != null)
             {
                 ExecutingApplication = entry.FileName;
-                IsWindowsTray = false;
             }
         }
 
@@ -62,8 +60,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
-        public bool IsWindowsService { get; private set; }
-
         public bool IsStarting { get; set; }
         public bool IsExiting { get; set; }
 
@@ -79,11 +75,6 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             get
             {
-                if (IsWindowsService)
-                {
-                    return RuntimeMode.Service;
-                }
-
                 if (IsTray)
                 {
                     return RuntimeMode.Tray;
@@ -191,7 +182,5 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             return true;
         }
-
-        public bool IsWindowsTray { get; private set; }
     }
 }

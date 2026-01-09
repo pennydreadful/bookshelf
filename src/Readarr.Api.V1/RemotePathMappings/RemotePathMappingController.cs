@@ -15,8 +15,7 @@ namespace Readarr.Api.V1.RemotePathMappings
         private readonly IRemotePathMappingService _remotePathMappingService;
 
         public RemotePathMappingController(IRemotePathMappingService remotePathMappingService,
-                                       PathExistsValidator pathExistsValidator,
-                                       MappedNetworkDriveValidator mappedNetworkDriveValidator)
+                                       PathExistsValidator pathExistsValidator)
         {
             _remotePathMappingService = remotePathMappingService;
 
@@ -30,7 +29,6 @@ namespace Readarr.Api.V1.RemotePathMappings
             SharedValidator.RuleFor(c => c.LocalPath)
                 .Cascade(CascadeMode.Stop)
                 .IsValidPath()
-                .SetValidator(mappedNetworkDriveValidator)
                 .SetValidator(pathExistsValidator)
                 .SetValidator(new SystemFolderValidator())
                 .NotEqual("/")

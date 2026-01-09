@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Disk
@@ -15,30 +14,9 @@ namespace NzbDrone.Common.Disk
     public class FileSystemLookupService : IFileSystemLookupService
     {
         private readonly IDiskProvider _diskProvider;
-        private readonly IRuntimeInfo _runtimeInfo;
-
         private readonly HashSet<string> _setToRemove = new HashSet<string>
                                                         {
-                                                            // Windows
-                                                            "boot",
-                                                            "bootmgr",
-                                                            "cache",
-                                                            "msocache",
-                                                            "recovery",
-                                                            "$recycle.bin",
-                                                            "recycler",
-                                                            "system volume information",
-                                                            "temporary internet files",
-                                                            "windows",
-
-                                                            // OS X
-                                                            ".fseventd",
-                                                            ".spotlight",
-                                                            ".trashes",
-                                                            ".vol",
-                                                            "cachedmessages",
-                                                            "caches",
-                                                            "trash",
+                                                            "lost+found",
 
                                                             // QNAP
                                                             ".@__thumb",
@@ -48,24 +26,15 @@ namespace NzbDrone.Common.Disk
                                                             "#recycle"
                                                         };
 
-        public FileSystemLookupService(IDiskProvider diskProvider, IRuntimeInfo runtimeInfo)
+        public FileSystemLookupService(IDiskProvider diskProvider)
         {
             _diskProvider = diskProvider;
-            _runtimeInfo = runtimeInfo;
         }
 
         public FileSystemResult LookupContents(string query, bool includeFiles, bool allowFoldersWithoutTrailingSlashes)
         {
             if (query.IsNullOrWhiteSpace())
             {
-                if (OsInfo.IsWindows)
-                {
-                    var result = new FileSystemResult();
-                    result.Directories = GetDrives();
-
-                    return result;
-                }
-
                 query = "/";
             }
 
@@ -86,29 +55,6 @@ namespace NzbDrone.Common.Disk
             }
 
             return new FileSystemResult();
-        }
-
-        private List<FileSystemModel> GetDrives()
-        {
-            return _diskProvider.GetMounts()
-                                .Where(d =>
-                                {
-                                    // Fow Windows Services, exclude mapped network drives.
-                                    if (_runtimeInfo.IsWindowsService)
-                                    {
-                                        return d.DriveType != DriveType.Network;
-                                    }
-
-                                    return true;
-                                })
-                                .Select(d => new FileSystemModel
-                                {
-                                    Type = FileSystemEntityType.Drive,
-                                    Name = d.VolumeName,
-                                    Path = d.RootDirectory,
-                                    LastModified = null
-                                })
-                                .ToList();
         }
 
         private FileSystemResult GetResult(string path, bool includeFiles)

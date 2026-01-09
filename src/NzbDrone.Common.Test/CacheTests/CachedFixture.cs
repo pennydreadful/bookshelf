@@ -80,7 +80,6 @@ namespace NzbDrone.Common.Test.CacheTests
         }
 
         [Test]
-        [Platform(Exclude = "MacOsX")]
         public void should_honor_ttl()
         {
             var hitCount = 0;
@@ -104,7 +103,6 @@ namespace NzbDrone.Common.Test.CacheTests
 
         [Test]
         [Retry(10)]
-        [Platform(Exclude = "MacOsX")]
         public void should_clear_expired_when_they_expire()
         {
             var hitCount = 0;

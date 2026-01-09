@@ -70,7 +70,7 @@ namespace NzbDrone.Host
 
         private void OnAppStopped()
         {
-            if (_runtimeInfo.RestartPending && !_runtimeInfo.IsWindowsService)
+            if (_runtimeInfo.RestartPending)
             {
                 var restartArgs = GetRestartArgs();
 
@@ -104,16 +104,13 @@ namespace NzbDrone.Host
         [EventHandleOrder(EventHandleOrder.Last)]
         public void Handle(ApplicationShutdownRequested message)
         {
-            if (!_runtimeInfo.IsWindowsService)
+            if (message.Restarting)
             {
-                if (message.Restarting)
-                {
-                    _runtimeInfo.RestartPending = true;
-                }
-
-                LogManager.Configuration = null;
-                Shutdown();
+                _runtimeInfo.RestartPending = true;
             }
+
+            LogManager.Configuration = null;
+            Shutdown();
         }
     }
 }
