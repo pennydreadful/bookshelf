@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Common.Extensions
 {
