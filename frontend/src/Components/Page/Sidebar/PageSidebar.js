@@ -81,7 +81,6 @@ const links = [
         to: '/wanted/missing'
       },
       {
-        titleKey: 'CutoffUnmet',
         title: () => translate('CutoffUnmet'),
         to: '/wanted/cutoffunmet'
       }

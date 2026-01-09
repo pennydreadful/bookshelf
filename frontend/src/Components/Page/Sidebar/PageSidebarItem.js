@@ -30,7 +30,6 @@ class PageSidebarItem extends Component {
     const {
       iconName,
       title,
-      titleKey,
       to,
       isActive,
       isActiveParent,
@@ -39,10 +38,7 @@ class PageSidebarItem extends Component {
       children
     } = this.props;
 
-    const titleValue = typeof title === 'function' ? title() : title;
-    const titleContent = titleKey === 'CutoffUnmet' && typeof titleValue === 'string' ?
-      this.renderCenteredLastWord(titleValue) :
-      titleValue;
+    const titleContent = typeof title === 'function' ? title() : title;
 
     return (
       <div
@@ -91,30 +87,11 @@ class PageSidebarItem extends Component {
     );
   }
 
-  renderCenteredLastWord(value) {
-    const trimmed = value.trim();
-    const lastSpaceIndex = trimmed.lastIndexOf(' ');
-
-    if (lastSpaceIndex === -1) {
-      return value;
-    }
-
-    const firstLine = trimmed.slice(0, lastSpaceIndex);
-    const lastWord = trimmed.slice(lastSpaceIndex + 1);
-
-    return (
-      <span className={styles.cutoffTitle}>
-        <span className={styles.cutoffTitleFirst}>{firstLine}</span>
-        <span className={styles.cutoffTitleSecond}>{lastWord}</span>
-      </span>
-    );
-  }
 }
 
 PageSidebarItem.propTypes = {
   iconName: PropTypes.object,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-  titleKey: PropTypes.string,
   to: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
   isActiveParent: PropTypes.bool,
