@@ -8,3 +8,16 @@
 - [ ] Build a request UI (Overseerr-like) on top of Bookdarr search.
 - [ ] Document metadata provider pros/cons in README and settings UI help.
 - [ ] Add migration guidance and warnings before any change that could lose data.
+- [ ] Remove Mac OS version adapters and fixtures now that Bookdarr is Linux-only (e.g., `NzbDrone.Mono/EnvironmentInfo/VersionAdapters/MacOsVersionAdapter.cs` and related tests/assets).
+- [ ] Remove Windows-only path handling and Windows-only test cases (e.g., `OsPath`, `PathExtensions`, `EnsureStringExtensions`, and `WindowsOnly` fixtures).
+- [ ] Remove Windows service/mapped-drive guardrails and related warnings that no longer apply on Linux-only installs.
+- [ ] Remove Windows-specific process handling (`.bat`, `.ps1`, `.py`) and Windows PID/file handling paths.
+- [ ] Simplify OS-specific folders to Linux-only behavior (`SystemFolders`, `AppFolderFactory`).
+- [ ] Remove remaining Windows/Mac references in tests (e.g., `[Platform(Exclude = "MacOsX")]`, `WindowsOnly()`).
+- [ ] Add .NET upgrade plan: move to `net8.0` LTS now and `net10.0` when available; update Docker/base images, CI, and VM scripts accordingly.
+- [ ] Add `global.json` to pin the .NET SDK version used in dev/CI.
+- [ ] Refresh dependency versions for net8+ compatibility (NuGet + Node/Yarn toolchain).
+- [ ] Add dependency security automation (Dependabot/Renovate) and code scanning (CodeQL or equivalent).
+- [ ] Add Linux CI job that runs the same build scripts as the VM (`scripts/dev-build.sh`) to catch update failures early.
+- [ ] Add systemd unit file and install/uninstall docs for Linux-only deployments.
+- [ ] Add log retention/rotation guidance for `/opt/bookdarr-dev/Logs`.
