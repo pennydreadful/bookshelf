@@ -5,8 +5,6 @@
 - [ ] Add an export indexers flow (API/UI or script) for easy migration.
 - [ ] Build a request UI (Overseerr-like) on top of Bookdarr search.
 - [ ] Document metadata provider pros/cons in README and settings UI help.
-- [ ] Remove Mac OS version adapters and fixtures now that Bookdarr is Linux-only (e.g., `NzbDrone.Mono/EnvironmentInfo/VersionAdapters/MacOsVersionAdapter.cs` and related tests/assets).
-- [ ] Remove Windows-only path handling and Windows-only test cases (e.g., `OsPath`, `PathExtensions`, `EnsureStringExtensions`, and `WindowsOnly` fixtures).
 - [ ] Remove Windows service/mapped-drive guardrails and related warnings that no longer apply on Linux-only installs.
 - [ ] Remove Windows-specific process handling (`.bat`, `.ps1`, `.py`) and Windows PID/file handling paths.
 - [ ] Simplify OS-specific folders to Linux-only behavior (`SystemFolders`, `AppFolderFactory`).
