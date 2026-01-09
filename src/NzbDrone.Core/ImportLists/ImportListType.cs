@@ -4,6 +4,7 @@ namespace NzbDrone.Core.ImportLists
     {
         Program,
         Goodreads,
+        Hardcover,
         Other
     }
 }

@@ -22,6 +22,7 @@ import Popover from 'Components/Tooltip/Popover';
 import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import AdvancedSettingsButton from 'Settings/AdvancedSettingsButton';
 import formatShortTimeSpan from 'Utilities/Date/formatShortTimeSpan';
+import requestAction from 'Utilities/requestAction';
 import translate from 'Utilities/String/translate';
 import styles from './EditImportListModalContent.css';
 
@@ -89,6 +90,58 @@ function EditImportListModalContent(props) {
     fields,
     message
   } = item;
+
+  const [authState, setAuthState] = React.useState({
+    isAuthenticating: false,
+    authError: null,
+    listOptions: null,
+    authedOnce: false
+  });
+
+  const isHardcover = item?.implementation === 'HardcoverImport';
+
+  const onAuthenticatePress = () => {
+    if (authState.isAuthenticating) {
+      return;
+    }
+
+    setAuthState((prev) => ({
+      ...prev,
+      isAuthenticating: true,
+      authError: null
+    }));
+
+    requestAction({
+      provider: 'importlist',
+      action: 'auth',
+      providerData: item
+    }).then((response) => {
+      const { success, options, error: responseError } = response;
+
+      if (success) {
+        setAuthState({
+          isAuthenticating: false,
+          authError: null,
+          listOptions: options,
+          authedOnce: true
+        });
+      } else {
+        setAuthState({
+          isAuthenticating: false,
+          authError: responseError || translate('UnableToAuthenticate'),
+          listOptions: null,
+          authedOnce: false
+        });
+      }
+    }).catch((err) => {
+      setAuthState({
+        isAuthenticating: false,
+        authError: err?.message || translate('UnableToAuthenticate'),
+        listOptions: null,
+        authedOnce: false
+      });
+    });
+  };
 
   return (
     <ModalContent onModalClose={onModalClose}>
@@ -224,6 +277,7 @@ function EditImportListModalContent(props) {
                     name="rootFolderPath"
                     helpText={translate('RootFolderPathHelpText')}
                     {...rootFolderPath}
+                    value={rootFolderPath?.value ?? ''}
                     includeMissingValue={true}
                     onChange={onInputChange}
                   />
@@ -302,15 +356,46 @@ function EditImportListModalContent(props) {
                 !!fields && !!fields.length &&
                   <FieldSet legend={translate('ImportListSpecificSettings')} >
                     {
+                      isHardcover &&
+                        <div className={styles.hardcoverAuthRow}>
+                          <FormGroup>
+                            <FormLabel>{translate('APIKey')}</FormLabel>
+                            <div className={styles.hardcoverAuthButtons}>
+                              <SpinnerErrorButton
+                                isSpinning={authState.isAuthenticating}
+                                error={authState.authError ? { message: authState.authError } : null}
+                                kind={kinds.DEFAULT}
+                                onPress={onAuthenticatePress}
+                              >
+                                Authenticate
+                              </SpinnerErrorButton>
+                              {
+                                authState.authedOnce && !authState.authError &&
+                                  <span className={styles.authSuccess}>Authenticated</span>
+                              }
+                            </div>
+                          </FormGroup>
+                        </div>
+                    }
+                    {
                       fields.map((field) => {
+                        const isListField = field.name === 'listIds';
+                      const safeField = {
+                        ...field,
+                        value: field.value ?? ''
+                      };
+
                         return (
                           <ProviderFieldFormGroup
-                            key={field.name}
+                          key={safeField.name}
                             advancedSettings={advancedSettings}
                             provider="importList"
                             providerData={item}
                             section="settings.importLists"
-                            {...field}
+                          selectOptions={isListField && authState.listOptions ? authState.listOptions : safeField.selectOptions}
+                          pending={isListField ? (authState.isAuthenticating || safeField.pending) : safeField.pending}
+                            disabled={isListField && !authState.authedOnce}
+                          {...safeField}
                             onChange={onFieldChange}
                           />
                         );
@@ -385,3 +470,5 @@ EditImportListModalContent.propTypes = {
 };
 
 export default EditImportListModalContent;
+
+
