@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.203
+- Summary: always bind RestResource parameters from the request body on POST/PUT/PATCH.
+- Why: config saves still defaulted to empty objects when MVC assigned another binding source.
+- Impact: Media Management and Naming saves should now use the JSON payload reliably.
+- Files: src/Readarr.Http/REST/RestResourceBodyBindingConvention.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and retry the Colon Replacement save.
+
 ## 1.2.202
 - Summary: force RestResource parameters to bind from JSON even when MVC defaulted to model binding.
 - Why: config saves were still binding empty resources, causing validation errors in Media Management.

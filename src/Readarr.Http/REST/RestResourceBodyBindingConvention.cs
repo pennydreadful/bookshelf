@@ -31,10 +31,7 @@ namespace Readarr.Http.REST
 
                 parameter.BindingInfo ??= new BindingInfo();
 
-                if (parameter.BindingInfo.BindingSource == null || parameter.BindingInfo.BindingSource == BindingSource.ModelBinding)
-                {
-                    parameter.BindingInfo.BindingSource = BindingSource.Body;
-                }
+                parameter.BindingInfo.BindingSource = BindingSource.Body;
             }
         }
     }
