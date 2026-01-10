@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.210
+- Summary: always push update diagnostics before update-dev.sh exits, with immediate push on failures.
+- Why: update failures must still send logs, and successful updates should capture diagnostics consistently.
+- Impact: update-dev.sh now pushes a diagnostics bundle on every exit and marks the reason in diagnostics.json.
+- Files: scripts/update-dev.sh, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm a diagnostics zip is pushed on both success and failure.
+
 ## 1.2.209
 - Summary: fix changelog-based updates parsing in net10 builds.
 - Why: the update list build failed because IDiskProvider lacks ReadAllLines.

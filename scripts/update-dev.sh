@@ -178,8 +178,9 @@ write_diagnostics_metadata() {
   local branch="$5"
   local instance="$6"
   local exit_code="$7"
+  local reason="$8"
 
-  run_as_user python3 - <<'PY' "${destination_root}" "${repo}" "${remote_url}" "${timestamp}" "${branch}" "${instance}" "${exit_code}" "${CONFIG_DIR}"
+  run_as_user python3 - <<'PY' "${destination_root}" "${repo}" "${remote_url}" "${timestamp}" "${branch}" "${instance}" "${exit_code}" "${reason}" "${CONFIG_DIR}"
 import json
 import os
 import sys
@@ -191,7 +192,8 @@ timestamp = sys.argv[4]
 branch = sys.argv[5]
 instance = sys.argv[6]
 exit_code = sys.argv[7]
-config_dir = sys.argv[8]
+reason = sys.argv[8]
+config_dir = sys.argv[9]
 
 metadata = {
     "timestamp": timestamp,
@@ -201,7 +203,7 @@ metadata = {
     "remoteUrl": remote_url,
     "configDir": config_dir,
     "exitCode": exit_code,
-    "reason": "update-dev.sh failure"
+    "reason": reason
 }
 
 path = os.path.join(destination_root, "diagnostics.json")
@@ -303,8 +305,15 @@ PY
   fi
 
   local sanitized_remote="${base_url}"
+  local reason
 
-  log "Update failed. Pushing diagnostics bundle before exit."
+  if [ "${exit_code}" -eq 0 ]; then
+    reason="update-dev.sh completed"
+  else
+    reason="update-dev.sh failure"
+  fi
+
+  log "Pushing diagnostics bundle before exit."
 
   if [ ! -d "${repo_path}/.git" ]; then
     run_as_user mkdir -p "${repo_path}"
@@ -341,7 +350,7 @@ PY
   copy_update_log_file "${bundle_root}/update-log"
 
   write_sanitized_config "${bundle_root}/config.xml"
-  write_diagnostics_metadata "${bundle_root}" "${DIAG_REPO}" "${sanitized_remote}" "${timestamp}" "${DIAG_BRANCH}" "${DIAG_INSTANCE}" "${exit_code}"
+  write_diagnostics_metadata "${bundle_root}" "${DIAG_REPO}" "${sanitized_remote}" "${timestamp}" "${DIAG_BRANCH}" "${DIAG_INSTANCE}" "${exit_code}" "${reason}"
 
   zip_diagnostics_bundle "${bundle_root}" "${zip_path}"
   run_as_user rm -rf "${bundle_root}"
@@ -451,9 +460,7 @@ trap on_error ERR
 on_exit() {
   local exit_code=$?
 
-  if [ "${exit_code}" -ne 0 ]; then
-    push_diagnostics_on_error "${exit_code}"
-  fi
+  push_diagnostics_on_error "${exit_code}"
 }
 
 trap on_exit EXIT
