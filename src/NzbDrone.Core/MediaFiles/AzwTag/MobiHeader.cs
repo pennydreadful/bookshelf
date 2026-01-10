@@ -29,7 +29,7 @@ namespace NzbDrone.Core.MediaFiles.Azw
             }
             else
             {
-                throw new AzwTagException("No EXTH header. Readarr cannot process this file.");
+                throw new AzwTagException("No EXTH header. Bookdarr cannot process this file.");
             }
         }
 

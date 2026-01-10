@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Download
 
                 if (grabbedItems.Empty())
                 {
-                    trackedDownload.Warn("Download wasn't grabbed by Readarr, skipping");
+                    trackedDownload.Warn("Download wasn't grabbed by Bookdarr, skipping");
                     return;
                 }
 

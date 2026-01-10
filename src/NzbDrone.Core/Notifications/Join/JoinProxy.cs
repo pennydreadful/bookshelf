@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Notifications.Join
         public ValidationFailure Test(JoinSettings settings)
         {
             const string title = "Test Notification";
-            const string body = "This is a test message from Readarr.";
+            const string body = "This is a test message from Bookdarr.";
 
             try
             {

@@ -275,7 +275,7 @@ class Missing extends Component {
                         Are you sure you want to search for all {totalRecords} missing books?
                       </div>
                       <div>
-                        This cannot be cancelled once started without restarting Readarr.
+                        This cannot be cancelled once started without restarting Bookdarr.
                       </div>
                     </div>
                   }

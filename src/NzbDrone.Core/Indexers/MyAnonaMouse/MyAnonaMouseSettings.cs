@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Indexers.MyAnonaMouse
         [FieldDefinition(1, Type = FieldType.Textbox, Label = "Mam Id", HelpText = "Mam Session Id (Created Under Preferences -> Security)")]
         public string MamId { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Readarr will download from this indexer, empty is no limit", Advanced = true)]
+        [FieldDefinition(2, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Bookdarr will download from this indexer, empty is no limit", Advanced = true)]
         public int? EarlyReleaseLimit { get; set; }
 
         [FieldDefinition(3, Type = FieldType.Select, Label = "Search Type", SelectOptions = typeof(MyAnonaMouseSearchType), HelpText = "Specify the desired search type")]

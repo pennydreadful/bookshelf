@@ -49,10 +49,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(5, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated non-Readarr downloads. Using a category is optional, but strongly recommended.")]
+        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Bookdarr avoids conflicts with unrelated non-Bookdarr downloads. Using a category is optional, but strongly recommended.")]
         public string MusicCategory { get; set; }
 
-        [FieldDefinition(7, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Readarr to set after it has imported the download. Readarr will not remove torrents in that category even if seeding finished. Leave blank to keep same category.")]
+        [FieldDefinition(7, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Bookdarr to set after it has imported the download. Bookdarr will not remove torrents in that category even if seeding finished. Leave blank to keep same category.")]
         public string MusicImportedCategory { get; set; }
 
         [FieldDefinition(8, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]

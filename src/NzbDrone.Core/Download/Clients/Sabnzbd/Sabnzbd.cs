@@ -366,7 +366,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("Version", "Sabnzbd develop version, assuming version 3.0.0 or higher.")
                     {
                         IsWarning = true,
-                        DetailedDescription = "Readarr may not be able to support new features added to SABnzbd when running develop versions."
+                        DetailedDescription = "Bookdarr may not be able to support new features added to SABnzbd when running develop versions."
                     };
                 }
 
@@ -424,7 +424,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("", "Disable 'Check before download' option in Sabnbzd")
                 {
                     InfoLink = _proxy.GetBaseUrl(Settings, "config/switches/"),
-                    DetailedDescription = "Using Check before download affects Readarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
+                    DetailedDescription = "Using Check before download affects Bookdarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
 
@@ -443,7 +443,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("MusicCategory", "Enable Job folders")
                     {
                         InfoLink = _proxy.GetBaseUrl(Settings, "config/categories/"),
-                        DetailedDescription = "Readarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
+                        DetailedDescription = "Bookdarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -464,7 +464,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MusicCategory", "Disable TV Sorting")
                 {
                     InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
-                    DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Readarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Bookdarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
 
@@ -473,7 +473,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MusicCategory", "Disable Movie Sorting")
                 {
                     InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
-                    DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Readarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Bookdarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
 
@@ -482,7 +482,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MusicCategory", "Disable Date Sorting")
                 {
                     InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
-                    DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Readarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Bookdarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
 

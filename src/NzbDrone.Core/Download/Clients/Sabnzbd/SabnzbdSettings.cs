@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         {
             Host = "localhost";
             Port = 8080;
-            MusicCategory = "Readarr";
+            MusicCategory = "Bookdarr";
             RecentTvPriority = (int)SabnzbdPriority.Default;
             OlderTvPriority = (int)SabnzbdPriority.Default;
         }
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         [FieldDefinition(6, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(7, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated non-Readarr downloads. Using a category is optional, but strongly recommended.")]
+        [FieldDefinition(7, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Bookdarr avoids conflicts with unrelated non-Bookdarr downloads. Using a category is optional, but strongly recommended.")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(8, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(SabnzbdPriority), HelpText = "Priority to use when grabbing books released within the last 14 days")]

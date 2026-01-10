@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Notifications
 
         private string GetBookIncompleteImportMessage(string source)
         {
-            return string.Format("Readarr failed to Import all files for {0}",
+            return string.Format("Bookdarr failed to Import all files for {0}",
                 source);
         }
 
@@ -423,7 +423,7 @@ namespace NzbDrone.Core.Notifications
         public void Handle(UpdateInstalledEvent message)
         {
             var updateMessage = new ApplicationUpdateMessage();
-            updateMessage.Message = $"Readarr updated from {message.PreviousVerison.ToString()} to {message.NewVersion.ToString()}";
+            updateMessage.Message = $"Bookdarr updated from {message.PreviousVerison.ToString()} to {message.NewVersion.ToString()}";
             updateMessage.PreviousVersion = message.PreviousVerison;
             updateMessage.NewVersion = message.NewVersion;
 

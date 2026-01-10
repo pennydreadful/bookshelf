@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 existingItem.CanBeRemoved != downloadItem.CanBeRemoved ||
                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
-                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} ReadarrStage={4} Book='{5}' OutputPath={6}.",
+                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} BookdarrStage={4} Book='{5}' OutputPath={6}.",
                     downloadItem.DownloadClientInfo.Name,
                     downloadItem.Title,
                     downloadItem.Status,

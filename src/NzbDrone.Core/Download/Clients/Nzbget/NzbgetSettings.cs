@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             Host = "localhost";
             Port = 6789;
-            MusicCategory = "Readarr";
+            MusicCategory = "Bookdarr";
             Username = "nzbget";
             Password = "tegbzn6789";
             RecentTvPriority = (int)NzbgetPriority.Normal;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         [FieldDefinition(5, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated non-Readarr downloads. Using a category is optional, but strongly recommended.")]
+        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Bookdarr avoids conflicts with unrelated non-Bookdarr downloads. Using a category is optional, but strongly recommended.")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing books released within the last 14 days")]

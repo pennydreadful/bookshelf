@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         {
             Host = "localhost";
             Port = 4321;
-            MusicCategory = "Readarr";
+            MusicCategory = "Bookdarr";
             RecentTvPriority = (int)NzbVortexPriority.Normal;
             OlderTvPriority = (int)NzbVortexPriority.Normal;
         }
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         [FieldDefinition(3, Label = "API Key", Type = FieldType.Textbox, Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated non-Readarr downloads. Using a category is optional, but strongly recommended.")]
+        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Bookdarr avoids conflicts with unrelated non-Bookdarr downloads. Using a category is optional, but strongly recommended.")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing books released within the last 14 days")]

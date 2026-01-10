@@ -65,12 +65,12 @@ function AppUpdatedModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {translate('AppUpdated', { appName: 'Readarr' })}
+        {translate('AppUpdated', { appName: 'Bookdarr' })}
       </ModalHeader>
 
       <ModalBody>
         <div>
-          <InlineMarkdown data={translate('AppUpdatedVersion', { appName: 'Readarr', version })} blockClassName={styles.version} />
+          <InlineMarkdown data={translate('AppUpdatedVersion', { appName: 'Bookdarr', version })} blockClassName={styles.version} />
         </div>
 
         {

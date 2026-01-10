@@ -71,8 +71,8 @@ namespace NzbDrone.Core.ImportLists.Readarr
 
                 if (ex.Response.HasHttpRedirect)
                 {
-                    _logger.Error(ex, "Readarr returned redirect and is invalid");
-                    return new ValidationFailure("BaseUrl", "Readarr URL is invalid, are you missing a URL base?");
+                    _logger.Error(ex, "Bookdarr returned redirect and is invalid");
+                    return new ValidationFailure("BaseUrl", "Bookdarr URL is invalid, are you missing a URL base?");
                 }
 
                 _logger.Error(ex, "Unable to connect to import list.");

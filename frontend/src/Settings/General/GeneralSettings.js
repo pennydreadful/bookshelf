@@ -176,7 +176,7 @@ class GeneralSettings extends Component {
           isOpen={this.state.isRestartRequiredModalOpen}
           kind={kinds.DANGER}
           title={translate('RestartReadarr')}
-          message="Readarr requires a restart to apply changes, do you want to restart now?"
+          message="Bookdarr requires a restart to apply changes, do you want to restart now?"
           cancelLabel={translate('IllRestartLater')}
           confirmLabel={translate('RestartNow')}
           onConfirm={this.onConfirmRestart}

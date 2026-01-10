@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.206
+- Summary: replace Readarr branding in user-visible UI strings with Bookdarr.
+- Why: the UI should consistently reflect the Bookdarr name for users.
+- Impact: UI copy, help text, notification templates, and calendar feed labels now show Bookdarr and the calendar feed is exposed as Bookdarr.ics.
+- Files: frontend/src, src/NzbDrone.Core/Localization/Core/*.json, src/NzbDrone.Core/Download, src/NzbDrone.Core/Indexers, src/NzbDrone.Core/Notifications, src/Readarr.Api.V1/Calendar/CalendarFeedController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the UI no longer displays Readarr text.
+
 ## 1.2.205
 - Summary: push diagnostics bundles when update-dev.sh fails before startup.
 - Why: update errors can prevent Bookdarr from starting, so we still need logs pushed.

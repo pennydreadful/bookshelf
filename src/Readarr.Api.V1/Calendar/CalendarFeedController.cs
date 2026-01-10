@@ -28,6 +28,7 @@ namespace Readarr.Api.V1.Calendar
         }
 
         [HttpGet("Readarr.ics")]
+        [HttpGet("Bookdarr.ics")]
         public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tagList = "", bool unmonitored = false)
         {
             var start = DateTime.Today.AddDays(-pastDays);
@@ -42,10 +43,10 @@ namespace Readarr.Api.V1.Calendar
             var books = _bookService.BooksBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
-                ProductId = "-//readarr.com//Readarr//EN"
+                ProductId = "-//bookdarr.com//Bookdarr//EN"
             };
 
-            var calendarName = "Readarr Book Schedule";
+            var calendarName = "Bookdarr Book Schedule";
             calendar.AddProperty(new CalendarProperty("NAME", calendarName));
             calendar.AddProperty(new CalendarProperty("X-WR-CALNAME", calendarName));
 
@@ -59,7 +60,7 @@ namespace Readarr.Api.V1.Calendar
                 }
 
                 var occurrence = calendar.Create<CalendarEvent>();
-                occurrence.Uid = "Readarr_book_" + book.Id;
+                occurrence.Uid = "Bookdarr_book_" + book.Id;
 
                 //occurrence.Status = book.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
                 occurrence.Description = book.Editions.Value.Single(x => x.Monitored).Overview;

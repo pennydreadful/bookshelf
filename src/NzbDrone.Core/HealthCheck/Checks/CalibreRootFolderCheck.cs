@@ -89,7 +89,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             }
                             else
                             {
-                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Calibre server for root folder {folder.Name} places downloads in {libraryFolder} but Readarr cannot see this directory.  You may need to adjust the folder's permissions or add a remote path mapping if calibre is running in docker", "#permissions-error");
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Calibre server for root folder {folder.Name} places downloads in {libraryFolder} but Bookdarr cannot see this directory.  You may need to adjust the folder's permissions or add a remote path mapping if calibre is running in docker", "#permissions-error");
                             }
                         }
 
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             }
                             else
                             {
-                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Calibre server for root folder {folder.Name} listed file {file} but Readarr cannot see this file.  Review permissions for {libraryFolder}", "#permissions-error");
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Calibre server for root folder {folder.Name} listed file {file} but Bookdarr cannot see this file.  Review permissions for {libraryFolder}", "#permissions-error");
                             }
                         }
 

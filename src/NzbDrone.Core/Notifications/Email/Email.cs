@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Notifications.Email
 
             try
             {
-                SendEmail(settings, "Readarr - Test Notification", body);
+                SendEmail(settings, "Bookdarr - Test Notification", body);
             }
             catch (Exception ex)
             {

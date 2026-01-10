@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.Signal
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Readarr";
+                const string body = "This is a test message from Bookdarr";
 
                 SendNotification(title, body, settings);
             }

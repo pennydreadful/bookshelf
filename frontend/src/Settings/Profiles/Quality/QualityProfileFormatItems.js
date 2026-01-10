@@ -81,7 +81,7 @@ class QualityProfileFormatItems extends Component {
 
         <div>
           <FormInputHelpText
-            text="Readarr scores each release using the sum of scores for matching custom formats. If a new release would improve the score, at the same or better quality, then Readarr will grab it."
+            text="Bookdarr scores each release using the sum of scores for matching custom formats. If a new release would improve the score, at the same or better quality, then Bookdarr will grab it."
           />
 
           {

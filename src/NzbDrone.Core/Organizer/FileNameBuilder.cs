@@ -317,7 +317,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(bookFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(bookFile);
-            tokenHandlers["{Release Group}"] = m => bookFile.ReleaseGroup ?? m.DefaultValue("Readarr");
+            tokenHandlers["{Release Group}"] = m => bookFile.ReleaseGroup ?? m.DefaultValue("Bookdarr");
 
             if (bookFile.PartCount > 1)
             {

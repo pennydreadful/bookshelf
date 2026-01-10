@@ -28,10 +28,10 @@ namespace NzbDrone.Core.ImportLists.Readarr
             RootFolderPaths = Array.Empty<string>();
         }
 
-        [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Readarr instance to import from")]
+        [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Bookdarr instance to import from")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Readarr instance to import from")]
+        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Bookdarr instance to import from")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]

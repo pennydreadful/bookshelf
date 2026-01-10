@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.Readarr
     public class ReadarrImport : ImportListBase<ReadarrSettings>
     {
         private readonly IReadarrV1Proxy _readarrV1Proxy;
-        public override string Name => "Readarr";
+        public override string Name => "Bookdarr";
 
         public override ImportListType ListType => ImportListType.Program;
         public override TimeSpan MinRefreshInterval => TimeSpan.FromMinutes(15);

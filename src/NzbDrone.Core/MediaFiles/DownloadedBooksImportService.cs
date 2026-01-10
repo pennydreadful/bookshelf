@@ -333,7 +333,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private void LogInaccessiblePathError(string path)
         {
-            _logger.Error("Import failed, path does not exist or is not accessible by Readarr: {0}. Ensure the path exists and the user running Readarr has the correct permissions to access this file/folder", path);
+            _logger.Error("Import failed, path does not exist or is not accessible by Bookdarr: {0}. Ensure the path exists and the user running Bookdarr has the correct permissions to access this file/folder", path);
         }
     }
 }
