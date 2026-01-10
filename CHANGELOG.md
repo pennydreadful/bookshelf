@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.183
+- Summary: fix remaining StyleCop SA1508 warnings in exception types.
+- Why: analyzer warnings are treated as errors in the .NET 10 build.
+- Impact: extra blank lines removed in three exception classes.
+- Files: src/NzbDrone.Core/MediaFiles/AzwTag/AzwTagException.cs, src/NzbDrone.Core/MediaFiles/BookImport/RecycleBinException.cs, src/NzbDrone.Core/MediaFiles/BookImport/RootFolderNotFoundException.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.182
 - Summary: fix .NET 10 analyzers for CA2022 and SYSLIB0051.
 - Why: analyzer warnings are treated as errors in the .NET 10 build.

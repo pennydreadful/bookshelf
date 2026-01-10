@@ -18,6 +18,5 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             : base(message, innerException)
         {
         }
-
     }
 }

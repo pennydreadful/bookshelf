@@ -9,6 +9,5 @@ namespace NzbDrone.Core.MediaFiles.Azw
             : base(message)
         {
         }
-
     }
 }
