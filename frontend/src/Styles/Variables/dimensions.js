@@ -7,7 +7,7 @@ module.exports = {
   headerHeight: '60px',
 
   // Sidebar
-  sidebarWidth: '320px',
+  sidebarWidth: '210px',
 
   // Toolbar
   toolbarHeight: '60px',

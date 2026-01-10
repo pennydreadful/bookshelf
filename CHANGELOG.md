@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.174
+- Summary: update README/handoff guidance and restore the sidebar width.
+- Why: documentation needed to reflect current behavior and the sidebar should match the original layout.
+- Impact: README clarifies dual-format support and metadata defaults; handoff adds push/version/logging reminders; the sidebar width returns to 210px.
+- Files: README.md, docs/HANDOFF.md, frontend/src/Styles/Variables/dimensions.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh, confirm the sidebar width looks right, and verify the UI shows v1.2.174.
+
 ## 1.2.116
 - Summary: add a rescan action for book files after edition changes.
 - Why: files can become unlinked when switching editions and need a manual recovery path.

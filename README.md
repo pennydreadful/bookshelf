@@ -6,9 +6,8 @@ stable, self-hosted book manager with improved metadata options.
 
 Bookdarr is an ebook and audiobook collection manager for Usenet and BitTorrent
 users. It can monitor multiple RSS feeds for new books from your favorite
-authors and will grab, sort, and rename them. Note that only one type of a
-given book is supported. If you want both an audiobook and ebook of a given
-book you will need multiple instances.
+authors and will grab, sort, and rename them. Bookdarr can keep both ebook and
+audiobook files for the same book in a single instance.
 
 ## Getting Started
 
@@ -21,9 +20,9 @@ For download client integration, mount your host download folder to
 
 ### Metadata
 
-Bookdarr defaults to Google Books search. You can supply an optional API key
-via `GOOGLE_BOOKS_API_KEY` to increase quota. To switch back to the default
-metadata source, set `METADATA_PROVIDER=bookinfo`.
+Bookdarr defaults to Google Books search (shared quota, no key required). You
+can supply an optional API key via `GOOGLE_BOOKS_API_KEY` to increase quota.
+To use the BookInfo provider instead, set `METADATA_PROVIDER=bookinfo`.
 
 ### Install Script (Source Build)
 
@@ -76,7 +75,7 @@ Help is very welcome. Priority is on fixing quality of life issues
 
 - [ ] Monitor series.
 - [ ] Hardcover bookshelf import.
-- [ ] Support ebook and audio files in the same root.
+- [x] Support ebook and audio files in the same root.
 
 ### License
 

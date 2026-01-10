@@ -15,6 +15,9 @@ Use this file to onboard a new Codex chat.
 - Keep changes small and methodical; avoid assumptions.
 - Responses should be concise.
 - Create an annotated git tag snapshot before pushing to GitHub; no local tar backups.
+- Push updates to GitHub after every change.
+- Update CHANGELOG.md and bump the version after every change.
+- When the version changes, update the top-left app version by bumping `src/Directory.Build.props`.
 - When giving install commands, use sudo and chain with `&&`.
 - Always put commands or code the user should run in fenced code blocks.
 - Update commands should `tee` to `/opt/bookdarr-dev/Logs/update-0XX.log` and increment the number each time.
@@ -105,6 +108,10 @@ Use this file to onboard a new Codex chat.
 ## New Machine Bootstrap (Dev)
 - Target path: `/opt/bookdarr-dev` with config at `/opt/bookdarr-dev/config`.
 - Recommended one-shot setup (Ubuntu): download and run `scripts/dev-ubuntu.sh` from `develop`, which installs Node 20 + Yarn 1.22.19 + .NET 6 SDK and builds/starts the app.
-- Update flow on the VM: `sudo /opt/bookdarr-dev/scripts/update-dev.sh` (stop → pull → build → start).
+- Update flow on the VM (logs for diagnostics):
+
+```
+sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-dev/Logs/update-0XX.log
+```
 - Manual dev run: `sudo -u joe /opt/bookdarr-dev/scripts/dev-run.sh` (foreground) or `sudo -u joe nohup /opt/bookdarr-dev/scripts/dev-run.sh >/opt/bookdarr-dev/run.log 2>&1 &` (background).
 - Dev instance serves at `http://<vm-ip>:8787` and reports status at `/api/v1/system/status`.
