@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.187
+- Summary: redirect unauthenticated UI requests to the login page.
+- Why: Forms auth returns a 401 for UI endpoints, so the browser never reaches the login page.
+- Impact: root UI routes now redirect to `/login` when auth is required and the user is not authenticated.
+- Files: src/Readarr.Http/Frontend/StaticResourceController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the login redirect works.
+
 ## 1.2.186
 - Summary: fix .NET 10 deprecations for forwarded headers and cert loading.
 - Why: ASPDEPR005 and SYSLIB0057 are treated as errors in the .NET 10 build.
