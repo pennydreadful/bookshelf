@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.201
+- Summary: package diagnostics as timestamped zip bundles.
+- Why: zipped bundles keep each diagnostics push in a single dated artifact.
+- Impact: diagnostics pushes now commit `diagnostics-YYYYMMDD-HHMMSS.zip` files instead of raw folders.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm new diagnostics zip bundles appear in the repo.
+
 ## 1.2.200
 - Summary: set a local git identity before committing diagnostics bundles.
 - Why: git commit failed when user.name/email were missing in the diagnostics repo.

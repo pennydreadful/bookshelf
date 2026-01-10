@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -138,13 +139,20 @@ namespace NzbDrone.Core.Diagnostics
                     RunGit(repoPath, $"pull --rebase origin {branch}");
                 }
 
-                var folderName = $"diagnostics/{timestamp}";
-                var destinationRoot = Path.Combine(repoPath, "diagnostics", timestamp);
+                var diagnosticsRoot = Path.Combine(repoPath, "diagnostics");
+                var folderName = $"diagnostics/diagnostics-{timestamp}.zip";
+                var destinationRoot = Path.Combine(diagnosticsRoot, timestamp);
+                var zipPath = Path.Combine(diagnosticsRoot, $"diagnostics-{timestamp}.zip");
+
+                _diskProvider.EnsureFolder(diagnosticsRoot);
                 _diskProvider.EnsureFolder(destinationRoot);
 
                 CopyLogSources(destinationRoot);
                 WriteSanitizedConfig(destinationRoot);
                 WriteMetadata(destinationRoot, repo, sanitizedRemoteUrl, timestamp);
+
+                CreateZipBundle(destinationRoot, zipPath);
+                _diskProvider.DeleteFolder(destinationRoot, true);
 
                 RunGit(repoPath, "add .");
 
@@ -291,6 +299,16 @@ namespace NzbDrone.Core.Diagnostics
 
             var json = JsonSerializer.Serialize(metadata, new JsonSerializerOptions { WriteIndented = true });
             _diskProvider.WriteAllText(Path.Combine(destinationRoot, "diagnostics.json"), json);
+        }
+
+        private void CreateZipBundle(string sourceFolder, string zipPath)
+        {
+            if (_diskProvider.FileExists(zipPath))
+            {
+                _diskProvider.DeleteFile(zipPath);
+            }
+
+            ZipFile.CreateFromDirectory(sourceFolder, zipPath, CompressionLevel.Optimal, true);
         }
 
         private string BuildRemoteUrl(string repo, string token)
