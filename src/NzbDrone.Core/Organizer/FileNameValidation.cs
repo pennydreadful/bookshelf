@@ -11,6 +11,8 @@ namespace NzbDrone.Core.Organizer
     {
         internal static readonly Regex OriginalTokenRegex = new Regex(@"(\{original[- ._](?:title|filename)\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        internal static readonly Regex PartTokenRegex = new Regex(@"\{[^}]*Part(?:Number|Count)(?::[^}]*)?\}",
+                                                                  RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static IRuleBuilderOptions<T, string> ValidBookFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
@@ -40,7 +42,10 @@ namespace NzbDrone.Core.Organizer
                 return false;
             }
 
-            return (FileNameBuilder.BookTitleRegex.IsMatch(value) && FileNameBuilder.PartRegex.IsMatch(value)) ||
+            var hasBookTitle = FileNameBuilder.BookTitleRegex.IsMatch(value);
+            var hasPartToken = FileNameBuilder.PartRegex.IsMatch(value) || FileNameValidation.PartTokenRegex.IsMatch(value);
+
+            return (hasBookTitle && hasPartToken) ||
                    FileNameValidation.OriginalTokenRegex.IsMatch(value);
         }
     }

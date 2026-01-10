@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.189
+- Summary: make Standard Book Format validation tolerant of PartNumber token variants.
+- Why: valid formats with part tokens were being rejected, preventing saves.
+- Impact: format validation now recognizes PartNumber/PartCount tokens in common patterns.
+- Files: src/NzbDrone.Core/Organizer/FileNameValidation.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm settings save clears pending changes.
+
 ## 1.2.188
 - Summary: fix missing HttpContext import in the UI auth redirect.
 - Why: build failed with CS0246 after adding the login redirect.
