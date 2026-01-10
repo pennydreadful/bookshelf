@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.184
+- Summary: address .NET 10 ASP.NET analyzer errors in authentication and middleware.
+- Why: ISystemClock is obsolete and header additions now trigger ASP0019.
+- Impact: authentication handlers use the new base ctor and headers are set safely.
+- Files: src/Readarr.Http/Authentication/ApiKeyAuthenticationHandler.cs, src/Readarr.Http/Authentication/BasicAuthenticationHandler.cs, src/Readarr.Http/Authentication/NoAuthenticationHandler.cs, src/Readarr.Http/Middleware/VersionMiddleware.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.183
 - Summary: fix remaining StyleCop SA1508 warnings in exception types.
 - Why: analyzer warnings are treated as errors in the .NET 10 build.
