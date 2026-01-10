@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.202
+- Summary: force RestResource parameters to bind from JSON even when MVC defaulted to model binding.
+- Why: config saves were still binding empty resources, causing validation errors in Media Management.
+- Impact: PUT/POST config endpoints now read JSON bodies correctly, so colon replacement and naming saves should work.
+- Files: src/Readarr.Http/REST/RestResourceBodyBindingConvention.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and retry the Media Management save.
+
 ## 1.2.201
 - Summary: package diagnostics as timestamped zip bundles.
 - Why: zipped bundles keep each diagnostics push in a single dated artifact.
