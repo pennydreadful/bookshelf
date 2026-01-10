@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.205
+- Summary: push diagnostics bundles when update-dev.sh fails before startup.
+- Why: update errors can prevent Bookdarr from starting, so we still need logs pushed.
+- Impact: update-dev.sh traps failures, packages logs/config, and pushes a diagnostics zip before exiting on develop.
+- Files: scripts/update-dev.sh, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm a failed update pushes diagnostics before exit.
+
 ## 1.2.204
 - Summary: push diagnostics bundles automatically after update-dev.sh runs.
 - Why: updates should capture a diagnostics snapshot in the same flow.
