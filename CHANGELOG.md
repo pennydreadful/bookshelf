@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.180
+- Summary: remove obsolete .NET APIs flagged as errors under .NET 10.
+- Why: SYSLIB0051 and SYSLIB0014 warnings are treated as errors in the .NET 10 build.
+- Impact: custom exception no longer uses formatter-based serialization and HttpClient avoids ServicePointManager.
+- Files: src/NzbDrone.Common/Disk/DestinationAlreadyExistsException.cs, src/NzbDrone.Common/Http/HttpClient.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.179
 - Summary: pin System.Drawing.Common to a .NET 10 package to resolve NU1904.
 - Why: restore failed due to the vulnerable 4.7.0 transitive version being treated as an error.

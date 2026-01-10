@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace NzbDrone.Common.Disk
 {
@@ -25,9 +24,5 @@ namespace NzbDrone.Common.Disk
         {
         }
 
-        protected DestinationAlreadyExistsException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
     }
 }
