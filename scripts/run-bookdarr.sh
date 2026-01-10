@@ -17,7 +17,7 @@ if [ -z "${BOOKDARR_DATA_DIR}" ]; then
 fi
 
 if [ -z "${BOOKDARR_BIN}" ] && [ -n "${BOOKDARR_HOME}" ]; then
-  candidate="${BOOKDARR_HOME}/_output/net6.0/${RID}/Readarr"
+  candidate="${BOOKDARR_HOME}/_output/net10.0/${RID}/Readarr"
   if [ -x "${candidate}" ]; then
     BOOKDARR_BIN="${candidate}"
   fi
@@ -27,8 +27,8 @@ if [ -z "${BOOKDARR_BIN}" ] && [ -x "/app/readarr/bin/Readarr" ]; then
   BOOKDARR_BIN="/app/readarr/bin/Readarr"
 fi
 
-if [ -z "${BOOKDARR_BIN}" ] && [ -x "/opt/bookdarr-dev/_output/net6.0/${RID}/Readarr" ]; then
-  BOOKDARR_BIN="/opt/bookdarr-dev/_output/net6.0/${RID}/Readarr"
+if [ -z "${BOOKDARR_BIN}" ] && [ -x "/opt/bookdarr-dev/_output/net10.0/${RID}/Readarr" ]; then
+  BOOKDARR_BIN="/opt/bookdarr-dev/_output/net10.0/${RID}/Readarr"
 fi
 
 if [ -z "${BOOKDARR_BIN}" ] || [ ! -x "${BOOKDARR_BIN}" ]; then

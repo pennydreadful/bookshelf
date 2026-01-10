@@ -24,8 +24,8 @@ run_as_user() {
 }
 
 log "Stopping Bookdarr"
-if pgrep -f "${REPO_DIR}/_output/net6.0" >/dev/null 2>&1; then
-  ${SUDO} pkill -f "${REPO_DIR}/_output/net6.0"
+if pgrep -f "${REPO_DIR}/_output/net10.0" >/dev/null 2>&1; then
+  ${SUDO} pkill -f "${REPO_DIR}/_output/net10.0"
 fi
 
 log "Updating repo"

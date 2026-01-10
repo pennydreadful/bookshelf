@@ -45,25 +45,26 @@ fi
 log "Installing Yarn 1.22.19"
 ${SUDO} npm install -g yarn@1.22.19
 
+DOTNET_VERSION="10.0.1"
 need_dotnet=true
 if command -v dotnet >/dev/null 2>&1; then
-  if dotnet --list-sdks | grep -q '^6\.'; then
+  if dotnet --list-sdks | grep -q '^10\.0\.'; then
     need_dotnet=false
   fi
 fi
 
 if [ "${need_dotnet}" = "true" ]; then
-  log "Installing .NET SDK 6.0"
+  log "Installing .NET SDK ${DOTNET_VERSION}"
   ubuntu_version="$(lsb_release -rs)"
   ${SUDO} curl -fsSL "https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb" -o /tmp/packages-microsoft-prod.deb
   ${SUDO} dpkg -i /tmp/packages-microsoft-prod.deb
   ${SUDO} rm -f /tmp/packages-microsoft-prod.deb
   ${SUDO} apt-get update
-  if ! ${SUDO} apt-get install -y dotnet-sdk-6.0; then
-    log "dotnet-sdk-6.0 not available via apt, using dotnet-install.sh fallback"
+  if ! ${SUDO} apt-get install -y dotnet-sdk-10.0; then
+    log "dotnet-sdk-10.0 not available via apt, using dotnet-install.sh fallback"
     ${SUDO} curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
     ${SUDO} chmod +x /tmp/dotnet-install.sh
-    ${SUDO} /tmp/dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet
+    ${SUDO} /tmp/dotnet-install.sh --version "${DOTNET_VERSION}" --install-dir /usr/share/dotnet
     ${SUDO} rm -f /tmp/dotnet-install.sh
     if [ ! -x /usr/bin/dotnet ]; then
       ${SUDO} ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
@@ -86,11 +87,11 @@ ${SUDO} chown -R "${USER_NAME}:${USER_NAME}" "${REPO_DIR}" "${APPDATA_DIR}"
 ${SUDO} chmod -R 755 "${REPO_DIR}/scripts"
 
 log "Building Bookdarr"
-run_as_user bash -lc "cd \"${REPO_DIR}\" && yarn install --frozen-lockfile --network-timeout 120000 && yarn build && dotnet msbuild -restore src/Readarr.sln -p:Configuration=Release -p:Platform=Posix -p:RuntimeIdentifiers=${RID} -t:PublishAllRids && if [ -d \"${REPO_DIR}/_output/UI\" ]; then rm -rf \"${REPO_DIR}/_output/net6.0/${RID}/UI\" && mkdir -p \"${REPO_DIR}/_output/net6.0/${RID}/UI\" && cp -a \"${REPO_DIR}/_output/UI/.\" \"${REPO_DIR}/_output/net6.0/${RID}/UI/\"; fi"
+run_as_user bash -lc "cd \"${REPO_DIR}\" && yarn install --frozen-lockfile --network-timeout 120000 && yarn build && dotnet msbuild -restore src/Readarr.sln -p:Configuration=Release -p:Platform=Posix -p:RuntimeIdentifiers=${RID} -t:PublishAllRids && if [ -d \"${REPO_DIR}/_output/UI\" ]; then rm -rf \"${REPO_DIR}/_output/net10.0/${RID}/UI\" && mkdir -p \"${REPO_DIR}/_output/net10.0/${RID}/UI\" && cp -a \"${REPO_DIR}/_output/UI/.\" \"${REPO_DIR}/_output/net10.0/${RID}/UI/\"; fi"
 
 if [ "${RUN_APP}" = "true" ]; then
   log "Starting Bookdarr (foreground)"
-  run_as_user bash -lc "cd \"${REPO_DIR}\" && ./_output/net6.0/${RID}/Readarr \"/data=${APPDATA_DIR}\" /nobrowser"
+  run_as_user bash -lc "cd \"${REPO_DIR}\" && ./_output/net10.0/${RID}/Readarr \"/data=${APPDATA_DIR}\" /nobrowser"
 else
   log "Build complete. Run /opt/bookdarr-dev/scripts/dev-run.sh to start."
 fi

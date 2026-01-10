@@ -46,25 +46,26 @@ fi
 log "Installing Yarn 1.22.19"
 ${SUDO} npm install -g yarn@1.22.19
 
+DOTNET_VERSION="10.0.1"
 need_dotnet=true
 if command -v dotnet >/dev/null 2>&1; then
-  if dotnet --list-sdks | grep -q '^6\.'; then
+  if dotnet --list-sdks | grep -q '^10\.0\.'; then
     need_dotnet=false
   fi
 fi
 
 if [ "${need_dotnet}" = "true" ]; then
-  log "Installing .NET SDK 6.0"
+  log "Installing .NET SDK ${DOTNET_VERSION}"
   ubuntu_version="$(lsb_release -rs)"
   ${SUDO} curl -fsSL "https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb" -o /tmp/packages-microsoft-prod.deb
   ${SUDO} dpkg -i /tmp/packages-microsoft-prod.deb
   ${SUDO} rm -f /tmp/packages-microsoft-prod.deb
   ${SUDO} apt-get update
-  if ! ${SUDO} apt-get install -y dotnet-sdk-6.0; then
-    log "dotnet-sdk-6.0 not available via apt, using dotnet-install.sh fallback"
+  if ! ${SUDO} apt-get install -y dotnet-sdk-10.0; then
+    log "dotnet-sdk-10.0 not available via apt, using dotnet-install.sh fallback"
     ${SUDO} curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
     ${SUDO} chmod +x /tmp/dotnet-install.sh
-    ${SUDO} /tmp/dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet
+    ${SUDO} /tmp/dotnet-install.sh --version "${DOTNET_VERSION}" --install-dir /usr/share/dotnet
     ${SUDO} rm -f /tmp/dotnet-install.sh
     if [ ! -x /usr/bin/dotnet ]; then
       ${SUDO} ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet

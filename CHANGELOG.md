@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.175
+- Summary: upgrade Bookdarr to target .NET 10 and pin the SDK.
+- Why: align the build/runtime with the .NET 10.0.1 release and keep output paths consistent.
+- Impact: projects now compile for net10.0, scripts/CI build with the 10.0.1 SDK, and dev/test paths use net10.0 output folders.
+- Files: src/**/*.csproj, global.json, scripts/dev-ubuntu.sh, scripts/dev-setup-ubuntu.sh, scripts/dev-build.sh, scripts/update-dev.sh, scripts/run-bookdarr.sh, build.sh, docs.sh, azure-pipelines.yml, mise.toml, src/NzbDrone.Test.Common/NzbDroneRunner.cs, docs/NET10_UPGRADE.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging, confirm the app starts, and verify the UI shows v1.2.175.
+
 ## 1.2.174
 - Summary: update README/handoff guidance and restore the sidebar width.
 - Why: documentation needed to reflect current behavior and the sidebar should match the original layout.

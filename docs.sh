@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-FRAMEWORK="net6.0"
+FRAMEWORK="net10.0"
 RUNTIME="linux-x64"
 
 outputFolder='_output'

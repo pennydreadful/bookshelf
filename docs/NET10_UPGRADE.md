@@ -14,7 +14,7 @@ This plan targets the Linux/Ubuntu VM install (no Docker yet) and focuses on red
 
 Example update command (always capture logs):
 ```
-sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | tee /opt/bookdarr-dev/Logs/update-0XX.log
+sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-dev/Logs/update-0XX.log
 ```
 
 ## Plan (high level)
