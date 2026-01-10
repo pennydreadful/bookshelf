@@ -11,6 +11,7 @@ namespace Readarr.Api.V1.Logs
     public abstract class LogFileControllerBase : Controller
     {
         protected const string LOGFILE_ROUTE = @"/(?<filename>[-.a-zA-Z0-9]+?\.txt)";
+        private const int MaxLogFiles = 10;
         protected string _resource;
 
         private readonly IDiskProvider _diskProvider;
@@ -31,17 +32,37 @@ namespace Readarr.Api.V1.Logs
             var result = new List<LogFileResource>();
 
             var files = GetLogFiles().ToList();
+            var orderedFiles = files.Select(file => new
+                {
+                    File = file,
+                    LastWriteTime = _diskProvider.FileGetLastWrite(file)
+                })
+                .OrderByDescending(item => item.LastWriteTime)
+                .ToList();
 
-            for (var i = 0; i < files.Count; i++)
+            foreach (var staleFile in orderedFiles.Skip(MaxLogFiles))
             {
-                var file = files[i];
+                try
+                {
+                    _diskProvider.DeleteFile(staleFile.File);
+                }
+                catch
+                {
+                }
+            }
+
+            var keptFiles = orderedFiles.Take(MaxLogFiles).ToList();
+
+            for (var i = 0; i < keptFiles.Count; i++)
+            {
+                var file = keptFiles[i].File;
                 var filename = Path.GetFileName(file);
 
                 result.Add(new LogFileResource
                 {
                     Id = i + 1,
                     Filename = filename,
-                    LastWriteTime = _diskProvider.FileGetLastWrite(file),
+                    LastWriteTime = keptFiles[i].LastWriteTime,
                     ContentsUrl = string.Format("{0}/api/v1/{1}/{2}", _configFileProvider.UrlBase, _resource, filename),
                     DownloadUrl = string.Format("{0}/{1}/{2}", _configFileProvider.UrlBase, DownloadUrlRoot, filename)
                 });

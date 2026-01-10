@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.211
+- Summary: keep only the newest 10 log files in System -> Log Files and Update Log Files.
+- Why: older logs clutter the UI and consume space on disk.
+- Impact: log listings are capped at 10 entries and older log files are deleted on fetch.
+- Files: src/Readarr.Api.V1/Logs/LogFileModuleBase.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: open System -> Log Files and confirm only the latest 10 logs are listed.
+
 ## 1.2.210
 - Summary: always push update diagnostics before update-dev.sh exits, with immediate push on failures.
 - Why: update failures must still send logs, and successful updates should capture diagnostics consistently.
