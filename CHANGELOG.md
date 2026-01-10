@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.188
+- Summary: fix missing HttpContext import in the UI auth redirect.
+- Why: build failed with CS0246 after adding the login redirect.
+- Impact: StaticResourceController compiles with the new redirect logic.
+- Files: src/Readarr.Http/Frontend/StaticResourceController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the login redirect works.
+
 ## 1.2.187
 - Summary: redirect unauthenticated UI requests to the login page.
 - Why: Forms auth returns a 401 for UI endpoints, so the browser never reaches the login page.
