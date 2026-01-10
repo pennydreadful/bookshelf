@@ -17,6 +17,7 @@ Use this file to onboard a new Codex chat.
 - Create an annotated git tag snapshot before pushing to GitHub; no local tar backups.
 - When giving install commands, use sudo and chain with `&&`.
 - Always put commands or code the user should run in fenced code blocks.
+- Update commands should `tee` to `/opt/bookdarr-dev/Logs/update-0XX.log` and increment the number each time.
 - Avoid adding repeated `apt-get update` steps in install/build flows.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
 - Push to GitHub after every update.
@@ -94,6 +95,9 @@ Use this file to onboard a new Codex chat.
 - Combine Audiobook now defaults to keeping original filenames (rename is opt-in), and the book-file stream endpoint allows HEAD requests.
 - Play actions now show for audiobook rows using media type/quality detection in addition to file extension.
 - Play detection now handles media type/quality/extension variants more defensively, and the EPUB reader now loads the stream into a blob URL before rendering to avoid blank modals.
+- Removed Windows/macOS-specific guardrails, process handling, path checks, and related test skips; system folders and runtime behavior are now Linux-only.
+- Dropped the mapped network drive validator and Windows-service warnings in import/logging.
+- Added a .NET 10 upgrade plan doc at `docs/NET10_UPGRADE.md`.
 
 ## Git Snapshot Convention
 - Create an annotated tag in the format `snapshot-YYYYMMDD-HHMM` before each push and push the tag to GitHub.
