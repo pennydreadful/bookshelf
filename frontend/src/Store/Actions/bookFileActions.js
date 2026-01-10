@@ -45,7 +45,7 @@ export const defaultState = {
       name: 'select',
       columnLabel: 'Select',
       isSortable: false,
-      isVisible: true,
+      isVisible: false,
       isModifiable: false,
       isHidden: true
     },
