@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.209
+- Summary: fix changelog-based updates parsing in net10 builds.
+- Why: the update list build failed because IDiskProvider lacks ReadAllLines.
+- Impact: updates now parse the changelog using ReadAllText and line splitting.
+- Files: src/NzbDrone.Core/Update/RecentUpdateProvider.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the build succeeds and Updates shows the latest five entries.
+
 ## 1.2.208
 - Summary: push the current update log with diagnostics before update-dev.sh exits on errors.
 - Why: update failures should capture the update log alongside other diagnostics.

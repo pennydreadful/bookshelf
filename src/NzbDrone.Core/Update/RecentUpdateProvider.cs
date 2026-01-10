@@ -89,7 +89,8 @@ namespace NzbDrone.Core.Update
                 return new List<ChangelogEntry>();
             }
 
-            var lines = _diskProvider.ReadAllLines(changelogPath);
+            var contents = _diskProvider.ReadAllText(changelogPath);
+            var lines = contents.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             var entries = new List<ChangelogEntry>();
             ChangelogEntry current = null;
 
