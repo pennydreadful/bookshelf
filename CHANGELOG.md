@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.179
+- Summary: pin System.Drawing.Common to a .NET 10 package to resolve NU1904.
+- Why: restore failed due to the vulnerable 4.7.0 transitive version being treated as an error.
+- Impact: System.Drawing.Common resolves to 10.0.1 across projects with central package pinning.
+- Files: src/Directory.Packages.props, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.178
 - Summary: align platform packages with .NET 10 and pin transitive versions.
 - Why: .NET 10 builds still resolved 6.x platform packages and flagged vulnerable IdentityModel dependencies.
