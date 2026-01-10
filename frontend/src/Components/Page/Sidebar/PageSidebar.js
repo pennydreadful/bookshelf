@@ -174,6 +174,12 @@ const links = [
         to: '/system/logs/files'
       }
     ]
+  },
+  {
+    iconName: icons.BUG,
+    title: () => translate('Diagnostics'),
+    to: '/system/diagnostics',
+    developOnly: true
   }
 ];
 
@@ -470,7 +476,9 @@ class PageSidebar extends Component {
         >
           <div>
             {
-              links.map((link) => {
+              links.filter((link) => {
+                return !link.developOnly || window.Readarr.branch === 'develop';
+              }).map((link) => {
                 const childWithStatusComponent = _.find(link.children, (child) => {
                   return !!child.statusComponent;
                 });

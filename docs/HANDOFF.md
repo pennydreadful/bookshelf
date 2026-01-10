@@ -28,6 +28,7 @@ Use this file to onboard a new Codex chat.
 - Increment the build version in `src/Directory.Build.props` (AssemblyVersion) after each change.
 - Run a StyleCop check (full build) before pushing to catch SA/IDE warnings early.
 - When a GitHub link is posted, refresh the repo and read the linked file immediately to act on diagnostics.
+- Diagnostics push button (develop-only) requires config.xml entries: `DiagnosticsRepo` and `DiagnosticsToken`.
 
 ## Build/Style Notes
 - StyleCop is strict. In `BookInfoProxy.cs`, keep:

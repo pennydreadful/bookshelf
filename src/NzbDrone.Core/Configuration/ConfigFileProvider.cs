@@ -60,6 +60,8 @@ namespace NzbDrone.Core.Configuration
         string PostgresLogDb { get; }
         string PostgresCacheDb { get; }
         bool TrustCgnatIpAddresses { get; }
+        string DiagnosticsRepo { get; }
+        string DiagnosticsToken { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -279,6 +281,10 @@ namespace NzbDrone.Core.Configuration
         public int SyslogPort => _logOptions.SyslogPort ?? GetValueInt("SyslogPort", 514, persist: false);
 
         public string SyslogLevel => _logOptions.SyslogLevel ?? GetValue("SyslogLevel", LogLevel, persist: false).ToLowerInvariant();
+
+        public string DiagnosticsRepo => GetValue("DiagnosticsRepo", string.Empty, persist: false);
+
+        public string DiagnosticsToken => GetValue("DiagnosticsToken", string.Empty, persist: false);
 
         public int GetValueInt(string key, int defaultValue, bool persist = true)
         {

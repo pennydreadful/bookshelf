@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.195
+- Summary: add a develop-only diagnostics push flow with UI event capture and GitHub export.
+- Why: we need a one-click way to bundle logs and UI interactions for debugging recurring issues.
+- Impact: a sidebar Diagnostics page pushes log bundles to a dedicated repo and records UI clicks/requests/messages.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/NzbDrone.Core/Configuration/ConfigFileProvider.cs, src/Readarr.Api.V1/Diagnostics/DiagnosticsController.cs, src/Readarr.Api.V1/Diagnostics/DiagnosticsStatusResource.cs, src/Readarr.Api.V1/Diagnostics/DiagnosticsPushResultResource.cs, frontend/src/Diagnostics/diagnosticsEvents.js, frontend/src/Utilities/createAjaxRequest.js, frontend/src/System/Diagnostics/Diagnostics.js, frontend/src/App/AppRoutes.js, frontend/src/Components/Page/Sidebar/PageSidebar.js, frontend/src/bootstrap.tsx, src/NzbDrone.Core/Localization/Core/en.json, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: set DiagnosticsRepo/DiagnosticsToken in config.xml and test a diagnostics push end-to-end.
+
 ## 1.2.194
 - Summary: force RestResource payloads to bind from the request body on POST/PUT/PATCH.
 - Why: .NET 10 stopped inferring body binding for these resources, leaving defaults and breaking settings saves.

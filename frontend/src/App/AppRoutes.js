@@ -27,6 +27,7 @@ import Settings from 'Settings/Settings';
 import TagSettings from 'Settings/Tags/TagSettings';
 import UISettingsConnector from 'Settings/UI/UISettingsConnector';
 import BackupsConnector from 'System/Backup/BackupsConnector';
+import Diagnostics from 'System/Diagnostics/Diagnostics';
 import LogsTableConnector from 'System/Events/LogsTableConnector';
 import Logs from 'System/Logs/Logs';
 import Status from 'System/Status/Status';
@@ -251,6 +252,11 @@ function AppRoutes(props) {
       <Route
         path="/system/logs/files"
         component={Logs}
+      />
+
+      <Route
+        path="/system/diagnostics"
+        component={Diagnostics}
       />
 
       {/*

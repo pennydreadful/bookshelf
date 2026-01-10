@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { recordApiResult } from 'Diagnostics/diagnosticsEvents';
 
 const absUrlRegex = /^(https?:)?\/\//i;
 const apiRoot = window.Readarr.apiRoot;
@@ -29,6 +30,7 @@ export default function createAjaxRequest(originalAjaxOptions) {
   const requestXHR = new window.XMLHttpRequest();
   let aborted = false;
   let complete = false;
+  const startTime = Date.now();
 
   function abortRequest() {
     if (!complete) {
@@ -45,9 +47,33 @@ export default function createAjaxRequest(originalAjaxOptions) {
     addContentType(ajaxOptions);
   }
 
+  const method = (ajaxOptions.method || ajaxOptions.type || 'GET').toUpperCase();
+  const shouldRecord = !ajaxOptions.skipDiagnostics;
+  const urlForLog = ajaxOptions.url;
+
   const request = $.ajax({
     xhr: () => requestXHR,
     ...ajaxOptions
+  }).done((data, textStatus, xhr) => {
+    if (shouldRecord) {
+      recordApiResult({
+        method,
+        url: urlForLog,
+        status: xhr.status,
+        ok: true,
+        durationMs: Date.now() - startTime
+      });
+    }
+  }).fail((xhr) => {
+    if (shouldRecord) {
+      recordApiResult({
+        method,
+        url: urlForLog,
+        status: xhr.status,
+        ok: false,
+        durationMs: Date.now() - startTime
+      });
+    }
   }).then(null, (xhr, textStatus, errorThrown) => {
     xhr.aborted = aborted;
 

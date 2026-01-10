@@ -5,10 +5,13 @@ import createAppStore from 'Store/createAppStore';
 import App from './App/App';
 
 import 'Diag/ConsoleApi';
+import { initDiagnostics } from 'Diagnostics/diagnosticsEvents';
 
 export async function bootstrap() {
   const history = createBrowserHistory();
   const store = createAppStore(history);
+
+  initDiagnostics(store, history);
 
   render(
     <App store={store} history={history} />,
