@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.207
+- Summary: show Bookdarr update history from the local changelog and limit Updates to the latest five entries.
+- Why: the Updates page should reflect Bookdarr releases instead of Readarr history.
+- Impact: Update history now pulls the most recent Bookdarr changelog entries and hides legacy Readarr update entries.
+- Files: src/NzbDrone.Core/Update/RecentUpdateProvider.cs, frontend/src/System/Updates/UpdateChanges.tsx, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm System -> Updates shows the latest 5 Bookdarr entries.
+
 ## 1.2.206
 - Summary: replace Readarr branding in user-visible UI strings with Bookdarr.
 - Why: the UI should consistently reflect the Bookdarr name for users.
