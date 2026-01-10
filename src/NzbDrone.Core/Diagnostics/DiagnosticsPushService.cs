@@ -171,11 +171,19 @@ namespace NzbDrone.Core.Diagnostics
             }
             catch (Exception ex)
             {
+                var safeDetails = RedactToken(ex.Message ?? string.Empty);
+                if (safeDetails.Length > 500)
+                {
+                    safeDetails = safeDetails.Substring(0, 500);
+                }
+
                 _logger.Error(ex, "Diagnostics push failed.");
                 return new DiagnosticsPushResult
                 {
                     Success = false,
-                    Message = "Diagnostics push failed. Check server logs for details."
+                    Message = safeDetails.IsNullOrWhiteSpace()
+                        ? "Diagnostics push failed. Check server logs for details."
+                        : $"Diagnostics push failed: {safeDetails}"
                 };
             }
         }

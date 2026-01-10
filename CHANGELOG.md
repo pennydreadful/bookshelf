@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.197
+- Summary: surface diagnostics push failures in the UI response.
+- Why: the diagnostics button needs actionable error feedback when GitHub push fails.
+- Impact: diagnostics push returns a sanitized error message instead of a generic failure.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the Diagnostics page shows detailed failures.
+
 ## 1.2.196
 - Summary: fix IDE0005 in diagnostics push service.
 - Why: the .NET 10 build fails on unused using directives.
