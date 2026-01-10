@@ -20,7 +20,7 @@ Use this file to onboard a new Codex chat.
 - When the version changes, update the top-left app version by bumping `src/Directory.Build.props`.
 - When giving install commands, use sudo and chain with `&&`.
 - Always put commands or code the user should run in fenced code blocks.
-- Update commands should `tee` to `/opt/bookdarr-dev/Logs/update-0XX.log` and increment the number each time.
+- Update commands should `tee` to `/opt/bookdarr-dev/Logs/update-0XX.log`, starting at `update-01.log` now that logs were cleared.
 - Avoid adding repeated `apt-get update` steps in install/build flows.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
 - Push to GitHub after every update.
@@ -111,7 +111,7 @@ Use this file to onboard a new Codex chat.
 - Update flow on the VM (logs for diagnostics):
 
 ```
-sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-dev/Logs/update-0XX.log
+sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-dev/Logs/update-01.log
 ```
 - Manual dev run: `sudo -u joe /opt/bookdarr-dev/scripts/dev-run.sh` (foreground) or `sudo -u joe nohup /opt/bookdarr-dev/scripts/dev-run.sh >/opt/bookdarr-dev/run.log 2>&1 &` (background).
 - Dev instance serves at `http://<vm-ip>:8787` and reports status at `/api/v1/system/status`.

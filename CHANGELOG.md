@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.191
+- Summary: clear repo log files and reset the update log numbering.
+- Why: log artifacts are no longer needed in version control and we want to restart log sequencing at 01.
+- Impact: `Logs/` is cleaned out and the handoff now starts update logs at `update-01.log`.
+- Files: Logs/*.log, Logs/*.txt, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm future logs start at update-01.log.
+
 ## 1.2.190
 - Summary: ensure API controllers bind JSON bodies correctly after the .NET 10 upgrade.
 - Why: PUT requests were validating default values because the body was not bound to resources.
