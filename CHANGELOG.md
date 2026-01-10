@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.193
+- Summary: capture the GitHub-link refresh/read rule in the handoff doc.
+- Why: new chats need to auto-refresh and read linked diagnostics without re-explaining the rule.
+- Impact: handoff now instructs to pull and read GitHub-linked files immediately.
+- Files: docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm update logs still increment from update-01.log.
+
 ## 1.2.192
 - Summary: remove unused using that tripped IDE0005 in the .NET 10 build.
 - Why: the style analyzer fails the build when unused usings remain.
