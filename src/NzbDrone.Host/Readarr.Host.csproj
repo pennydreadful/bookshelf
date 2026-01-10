@@ -7,7 +7,6 @@
     <PackageReference Include="DryIoc.dll" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
     <PackageReference Include="DryIoc.Microsoft.DependencyInjection" />
-    <PackageReference Include="System.Text.Encoding.CodePages" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Readarr.Api.V1\Readarr.Api.V1.csproj" />

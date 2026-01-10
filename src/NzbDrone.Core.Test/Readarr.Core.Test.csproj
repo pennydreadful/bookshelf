@@ -3,7 +3,6 @@
     <TargetFrameworks>net10.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Buffers" />
     <PackageReference Include="NBuilder" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" />
     <PackageReference Include="AutoFixture" />

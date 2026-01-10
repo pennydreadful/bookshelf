@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.177
+- Summary: fix .NET 10 restore failures by pinning IdentityModel packages and removing redundant framework references.
+- Why: NU1902 vulnerability warnings and NU1510 pruning warnings were treated as errors on the net10 restore.
+- Impact: restore succeeds with IdentityModel 6.36.0 pinned, and framework packages are no longer explicitly referenced in net10 projects.
+- Files: src/Directory.Packages.props, src/NzbDrone.Common/Readarr.Common.csproj, src/NzbDrone.Core/Readarr.Core.csproj, src/NzbDrone.Host/Readarr.Host.csproj, src/NzbDrone.Core.Test/Readarr.Core.Test.csproj, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the build completes on the VM.
+
 ## 1.2.176
 - Summary: align .NET 10 SDK pinning with the 10.0.1 runtime.
 - Why: SDKs use 10.0.101 for the 10.0.1 runtime, and the VM couldn’t find 10.0.1 on the SDK feeds.
