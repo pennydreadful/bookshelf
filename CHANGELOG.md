@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.190
+- Summary: ensure API controllers bind JSON bodies correctly after the .NET 10 upgrade.
+- Why: PUT requests were validating default values because the body was not bound to resources.
+- Impact: Media Management naming saves now receive the full payload and pass validation.
+- Files: src/Readarr.Http/VersionedApiControllerAttribute.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the Media Management settings save clears pending changes.
+
 ## 1.2.189
 - Summary: make Standard Book Format validation tolerant of PartNumber token variants.
 - Why: valid formats with part tokens were being rejected, preventing saves.

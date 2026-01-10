@@ -1,11 +1,11 @@
 using System;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Readarr.Http
 {
-    public class VersionedApiControllerAttribute : Attribute, IRouteTemplateProvider, IEnableCorsAttribute, IApiBehaviorMetadata
+    public class VersionedApiControllerAttribute : ApiControllerAttribute, IRouteTemplateProvider, IEnableCorsAttribute
     {
         public const string API_CORS_POLICY = "ApiCorsPolicy";
         public const string CONTROLLER_RESOURCE = "[controller]";
