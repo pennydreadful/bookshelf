@@ -301,14 +301,17 @@ namespace NzbDrone.Core.Diagnostics
                 return baseUrl;
             }
 
+            var safeToken = Uri.EscapeDataString(token);
+            const string tokenUser = "x-access-token";
+
             if (baseUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
-                return $"https://{token}@{baseUrl.Substring("https://".Length)}";
+                return $"https://{tokenUser}:{safeToken}@{baseUrl.Substring("https://".Length)}";
             }
 
             if (baseUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
             {
-                return $"http://{token}@{baseUrl.Substring("http://".Length)}";
+                return $"http://{tokenUser}:{safeToken}@{baseUrl.Substring("http://".Length)}";
             }
 
             return baseUrl;

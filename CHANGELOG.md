@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.198
+- Summary: use token-based HTTPS auth for diagnostics repo pushes.
+- Why: GitHub was prompting for a username when no credentials were embedded in the remote.
+- Impact: diagnostics pushes authenticate with `x-access-token` and no interactive prompt.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm Diagnostics push succeeds.
+
 ## 1.2.197
 - Summary: surface diagnostics push failures in the UI response.
 - Why: the diagnostics button needs actionable error feedback when GitHub push fails.
