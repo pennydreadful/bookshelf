@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.208
+- Summary: push the current update log with diagnostics before update-dev.sh exits on errors.
+- Why: update failures should capture the update log alongside other diagnostics.
+- Impact: update-dev.sh now traps all failures, grabs the latest update log, and pushes it in the diagnostics bundle before exit.
+- Files: scripts/update-dev.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the diagnostics zip includes the latest update-0XX.log.
+
 ## 1.2.207
 - Summary: show Bookdarr update history from the local changelog and limit Updates to the latest five entries.
 - Why: the Updates page should reflect Bookdarr releases instead of Readarr history.

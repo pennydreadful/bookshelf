@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
 REPO_DIR="${REPO_DIR:-/opt/bookdarr-dev}"
 USER_NAME="${USER_NAME:-joe}"
@@ -7,8 +7,11 @@ RUN_APP="${RUN_APP:-true}"
 LOG_FILE="${LOG_FILE:-/opt/bookdarr-dev/run.log}"
 CONFIG_FILE="${CONFIG_FILE:-/opt/bookdarr-dev/config/config.xml}"
 CONFIG_DIR="${CONFIG_DIR:-$(dirname "${CONFIG_FILE}")}"
+UPDATE_LOG_DIR="${UPDATE_LOG_DIR:-${REPO_DIR}/Logs}"
+UPDATE_LOG_FILE="${UPDATE_LOG_FILE:-}"
 DIAGNOSTICS_PUSH="${DIAGNOSTICS_PUSH:-true}"
 DIAGNOSTICS_WAIT_SECONDS="${DIAGNOSTICS_WAIT_SECONDS:-60}"
+DIAGNOSTICS_PUSHED="false"
 
 SUDO=""
 if command -v sudo >/dev/null 2>&1; then
@@ -129,6 +132,44 @@ for root, _, files in os.walk(source):
 PY
 }
 
+get_latest_update_log() {
+  run_as_user python3 - <<'PY' "${UPDATE_LOG_DIR}"
+import glob
+import os
+import sys
+
+update_dir = sys.argv[1]
+
+if not os.path.isdir(update_dir):
+    sys.exit(0)
+
+candidates = glob.glob(os.path.join(update_dir, "update-*.log"))
+if not candidates:
+    sys.exit(0)
+
+latest = max(candidates, key=os.path.getmtime)
+print(latest)
+PY
+}
+
+copy_update_log_file() {
+  local destination_folder="$1"
+  local update_log_path=""
+
+  if [ -n "${UPDATE_LOG_FILE}" ] && [ -f "${UPDATE_LOG_FILE}" ]; then
+    update_log_path="${UPDATE_LOG_FILE}"
+  else
+    update_log_path="$(get_latest_update_log)"
+  fi
+
+  if [ -z "${update_log_path}" ] || [ ! -f "${update_log_path}" ]; then
+    return
+  fi
+
+  run_as_user mkdir -p "${destination_folder}"
+  run_as_user cp "${update_log_path}" "${destination_folder}/"
+}
+
 write_diagnostics_metadata() {
   local destination_root="$1"
   local repo="$2"
@@ -195,6 +236,12 @@ PY
 
 push_diagnostics_on_error() {
   local exit_code="${1:-1}"
+
+  if [ "${DIAGNOSTICS_PUSHED}" = "true" ]; then
+    return
+  fi
+
+  DIAGNOSTICS_PUSHED="true"
 
   if [ "${DIAGNOSTICS_PUSH}" != "true" ]; then
     log "Diagnostics push disabled."
@@ -291,6 +338,7 @@ PY
   copy_log_files "${CONFIG_DIR}/logs" "${bundle_root}/app-logs"
   copy_log_files "${REPO_DIR}/Logs" "${bundle_root}/update-logs"
   copy_log_files "${CONFIG_DIR}/Logs" "${bundle_root}/legacy-logs"
+  copy_update_log_file "${bundle_root}/update-log"
 
   write_sanitized_config "${bundle_root}/config.xml"
   write_diagnostics_metadata "${bundle_root}" "${DIAG_REPO}" "${sanitized_remote}" "${timestamp}" "${DIAG_BRANCH}" "${DIAG_INSTANCE}" "${exit_code}"
@@ -399,6 +447,16 @@ on_error() {
 }
 
 trap on_error ERR
+
+on_exit() {
+  local exit_code=$?
+
+  if [ "${exit_code}" -ne 0 ]; then
+    push_diagnostics_on_error "${exit_code}"
+  fi
+}
+
+trap on_exit EXIT
 
 log "Stopping Bookdarr"
 if pgrep -f "${REPO_DIR}/_output/net10.0" >/dev/null 2>&1; then
