@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.178
+- Summary: align platform packages with .NET 10 and pin transitive versions.
+- Why: .NET 10 builds still resolved 6.x platform packages and flagged vulnerable IdentityModel dependencies.
+- Impact: Microsoft.Extensions/System packages now target 10.0.1, and transitive pins apply across projects.
+- Files: src/Directory.Packages.props, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.177
 - Summary: fix .NET 10 restore failures by pinning IdentityModel packages and removing redundant framework references.
 - Why: NU1902 vulnerability warnings and NU1510 pruning warnings were treated as errors on the net10 restore.
