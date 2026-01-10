@@ -158,6 +158,7 @@ namespace NzbDrone.Core.Diagnostics
                     };
                 }
 
+                EnsureGitIdentity(repoPath);
                 RunGit(repoPath, $"commit -m \"Diagnostics {timestamp}\"");
                 RunGit(repoPath, $"push -u origin {branch}");
                 RunGit(repoPath, $"remote set-url origin {sanitizedRemoteUrl}");
@@ -374,6 +375,47 @@ namespace NzbDrone.Core.Diagnostics
         {
             var output = RunGit(repoPath, $"ls-remote --heads origin {branch}");
             return output.Standard.Any(line => !line.Content.IsNullOrWhiteSpace());
+        }
+
+        private void EnsureGitIdentity(string repoPath)
+        {
+            var name = GetGitConfigValue(repoPath, "user.name");
+            var email = GetGitConfigValue(repoPath, "user.email");
+
+            if (name.IsNullOrWhiteSpace())
+            {
+                name = _configFileProvider.DiagnosticsGitUserName;
+                if (name.IsNullOrWhiteSpace())
+                {
+                    name = "Bookdarr Diagnostics";
+                }
+
+                RunGit(repoPath, $"config user.name \"{name}\"");
+            }
+
+            if (email.IsNullOrWhiteSpace())
+            {
+                email = _configFileProvider.DiagnosticsGitUserEmail;
+                if (email.IsNullOrWhiteSpace())
+                {
+                    email = "diagnostics@bookdarr.local";
+                }
+
+                RunGit(repoPath, $"config user.email \"{email}\"");
+            }
+        }
+
+        private string GetGitConfigValue(string repoPath, string key)
+        {
+            try
+            {
+                var output = RunGit(repoPath, $"config --get {key}");
+                return output.Standard.FirstOrDefault()?.Content?.Trim();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private string GetCurrentCommit(string repoPath)

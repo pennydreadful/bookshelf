@@ -62,6 +62,8 @@ namespace NzbDrone.Core.Configuration
         bool TrustCgnatIpAddresses { get; }
         string DiagnosticsRepo { get; }
         string DiagnosticsToken { get; }
+        string DiagnosticsGitUserName { get; }
+        string DiagnosticsGitUserEmail { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -285,6 +287,10 @@ namespace NzbDrone.Core.Configuration
         public string DiagnosticsRepo => GetValue("DiagnosticsRepo", string.Empty, persist: false);
 
         public string DiagnosticsToken => GetValue("DiagnosticsToken", string.Empty, persist: false);
+
+        public string DiagnosticsGitUserName => GetValue("DiagnosticsGitUserName", string.Empty, persist: false);
+
+        public string DiagnosticsGitUserEmail => GetValue("DiagnosticsGitUserEmail", string.Empty, persist: false);
 
         public int GetValueInt(string key, int defaultValue, bool persist = true)
         {

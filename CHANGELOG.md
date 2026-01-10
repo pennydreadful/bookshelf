@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.200
+- Summary: set a local git identity before committing diagnostics bundles.
+- Why: git commit failed when user.name/email were missing in the diagnostics repo.
+- Impact: diagnostics push auto-configures a local identity or uses DiagnosticsGitUserName/Email.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/NzbDrone.Core/Configuration/ConfigFileProvider.cs, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and retry Diagnostics push.
+
 ## 1.2.199
 - Summary: handle diagnostics pushes for empty repos and unknown default branches.
 - Why: the new diagnostics repo had no default branch yet, so checkout failed with `(unknown)`.
