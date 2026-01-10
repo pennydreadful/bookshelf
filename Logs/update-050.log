@@ -1,0 +1,101 @@
+sudo: ./scripts/update-dev.sh: command not found
+[2026-01-10 15:28:49 UTC] Stopping Bookdarr
+[2026-01-10 15:28:49 UTC] Updating repo
+From https://github.com/thashiznit2003/Bookdarr
+   77091abd7..f1954a4f8  develop                -> origin/develop
+ * [new tag]             snapshot-20260110-0924 -> snapshot-20260110-0924
+Already on 'develop'
+M	src/NzbDrone.Api.Test/packages.lock.json
+M	src/NzbDrone.Automation.Test/packages.lock.json
+M	src/NzbDrone.Common.Test/packages.lock.json
+M	src/NzbDrone.Common/packages.lock.json
+M	src/NzbDrone.Console/packages.lock.json
+M	src/NzbDrone.Core.Test/packages.lock.json
+M	src/NzbDrone.Core/packages.lock.json
+M	src/NzbDrone.Host.Test/packages.lock.json
+M	src/NzbDrone.Host/packages.lock.json
+M	src/NzbDrone.Integration.Test/packages.lock.json
+M	src/NzbDrone.Libraries.Test/packages.lock.json
+M	src/NzbDrone.Mono.Test/packages.lock.json
+M	src/NzbDrone.Mono/packages.lock.json
+M	src/NzbDrone.SignalR/packages.lock.json
+M	src/NzbDrone.Test.Common/packages.lock.json
+M	src/NzbDrone.Test.Dummy/packages.lock.json
+M	src/NzbDrone.Update.Test/packages.lock.json
+M	src/NzbDrone.Update/packages.lock.json
+M	src/Readarr.Api.V1/packages.lock.json
+M	src/Readarr.Http/packages.lock.json
+Your branch is behind 'origin/develop' by 2 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+HEAD is now at f1954a4f8 Align .NET 10 platform packages
+[2026-01-10 15:28:50 UTC] Building
+yarn install v1.22.19
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.28s.
+yarn run v1.22.19
+$ yarn clean
+$ rimraf ./_output/UI && rimraf --glob "**/*.js.map"
+$ webpack --config ./frontend/build/webpack.config.js
+Source Folder: /opt/bookdarr-dev/frontend/src
+Output Folder: /opt/bookdarr-dev/_output/UI
+Cache Directory: /opt/bookdarr-dev/_cache/webpack
+isProduction: false
+isProfiling: false
+<i> [FileManagerPlugin] copied "frontend/src/Content/robots.txt" to "/opt/bookdarr-dev/_output/UI/Content/robots.txt
+<i> [FileManagerPlugin] copied "frontend/src/*.html" to "/opt/bookdarr-dev/_output/UI
+<i> [FileManagerPlugin] copied "frontend/src/Content/Scripts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Scripts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Fonts/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Fonts
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images
+<i> [FileManagerPlugin] copied "frontend/src/Content/Images/Icons/*.*" to "/opt/bookdarr-dev/_output/UI/Content/Images/Icons
+assets by status 29.9 MiB [big]
+  asset vendors-node_modules_fortawesome_react-fontawesome_index_es_js-node_modules_microsoft_signalr-2ca2aa.js 15.6 MiB [emitted] [big] (id hint: vendors)
+  asset frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.js 13.8 MiB [emitted] [big]
+  asset Content/frontend_src_bootstrap_tsx-node_modules_moment_locale_sync_recursive_.css 495 KiB [emitted] [big]
+assets by chunk 122 KiB (name: index)
+  asset index.js 122 KiB [emitted] (name: index)
+  asset Content/styles.css 913 bytes [emitted] (name: index)
+asset index.html 2.32 KiB [emitted]
+Entrypoint index 122 KiB = Content/styles.css 913 bytes index.js 122 KiB
+cached modules 9.05 MiB (javascript) 199 KiB (css/mini-extract) 11.2 KiB (runtime) [cached] 2557 modules
+./frontend/src/Components/Page/Header/fuse.worker.js 118 KiB [not cacheable] [built]
+webpack 5.95.0 compiled successfully in 5366 ms
+Done in 7.04s.
+MSBuild version 18.0.6+fad253f51 for .NET
+  Determining projects to restore...
+/opt/bookdarr-dev/src/NzbDrone.Core.Test/Readarr.Core.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.SignalR/Readarr.SignalR.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Api.Test/Readarr.Api.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Test.Common/Readarr.Test.Common.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.SignalR/Readarr.SignalR.csproj (in 1.72 sec).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Core.Test/Readarr.Core.Test.csproj (in 1.72 sec).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Test.Common/Readarr.Test.Common.csproj (in 1.72 sec).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Api.Test/Readarr.Api.Test.csproj (in 1.72 sec).
+/opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Host/Readarr.Host.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Host.Test/Readarr.Host.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Core/Readarr.Core.csproj (in 75 ms).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Host/Readarr.Host.csproj (in 78 ms).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Host.Test/Readarr.Host.Test.csproj (in 89 ms).
+/opt/bookdarr-dev/src/NzbDrone.Console/Readarr.Console.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Restored /opt/bookdarr-dev/src/NzbDrone.Common/Readarr.Common.csproj (in 20 ms).
+/opt/bookdarr-dev/src/NzbDrone.Common.Test/Readarr.Common.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Automation.Test/Readarr.Automation.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Console/Readarr.Console.csproj (in 69 ms).
+/opt/bookdarr-dev/src/Readarr.Http/Readarr.Http.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Automation.Test/Readarr.Automation.Test.csproj (in 77 ms).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Common.Test/Readarr.Common.Test.csproj (in 84 ms).
+/opt/bookdarr-dev/src/Readarr.Api.V1/Readarr.Api.V1.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Restored /opt/bookdarr-dev/src/NzbDrone.Update/Readarr.Update.csproj (in 19 ms).
+  Failed to restore /opt/bookdarr-dev/src/Readarr.Http/Readarr.Http.csproj (in 62 ms).
+/opt/bookdarr-dev/src/NzbDrone.Update.Test/Readarr.Update.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Restored /opt/bookdarr-dev/src/NzbDrone.Test.Dummy/Readarr.Test.Dummy.csproj (in 4 ms).
+  Failed to restore /opt/bookdarr-dev/src/Readarr.Api.V1/Readarr.Api.V1.csproj (in 61 ms).
+  Restored /opt/bookdarr-dev/src/NzbDrone.Mono/Readarr.Mono.csproj (in 21 ms).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Update.Test/Readarr.Update.Test.csproj (in 71 ms).
+/opt/bookdarr-dev/src/NzbDrone.Libraries.Test/Readarr.Libraries.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+/opt/bookdarr-dev/src/NzbDrone.Mono.Test/Readarr.Mono.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Libraries.Test/Readarr.Libraries.Test.csproj (in 65 ms).
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Mono.Test/Readarr.Mono.Test.csproj (in 77 ms).
+/opt/bookdarr-dev/src/NzbDrone.Integration.Test/Readarr.Integration.Test.csproj : error NU1904: Warning As Error: Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj [/opt/bookdarr-dev/src/Readarr.sln]
+  Failed to restore /opt/bookdarr-dev/src/NzbDrone.Integration.Test/Readarr.Integration.Test.csproj (in 726 ms).
