@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.181
+- Summary: fix StyleCop warning introduced by the .NET 10 exception cleanup.
+- Why: SA1508 reports a blank line before a closing brace.
+- Impact: DestinationAlreadyExistsException formatting now passes analyzers.
+- Files: src/NzbDrone.Common/Disk/DestinationAlreadyExistsException.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.180
 - Summary: remove obsolete .NET APIs flagged as errors under .NET 10.
 - Why: SYSLIB0051 and SYSLIB0014 warnings are treated as errors in the .NET 10 build.

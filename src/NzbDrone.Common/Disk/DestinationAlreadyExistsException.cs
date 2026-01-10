@@ -23,6 +23,5 @@ namespace NzbDrone.Common.Disk
             : base(message, innerException)
         {
         }
-
     }
 }
