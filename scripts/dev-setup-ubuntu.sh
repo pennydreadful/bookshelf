@@ -46,7 +46,7 @@ fi
 log "Installing Yarn 1.22.19"
 ${SUDO} npm install -g yarn@1.22.19
 
-DOTNET_VERSION="10.0.1"
+DOTNET_VERSION="10.0.101"
 need_dotnet=true
 if command -v dotnet >/dev/null 2>&1; then
   if dotnet --list-sdks | grep -q '^10\.0\.'; then

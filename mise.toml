@@ -1,5 +1,5 @@
 [tools]
-dotnet = "10.0.1"
+dotnet = "10.0.101"
 node = "20.19.4"
 
 [env]

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.176
+- Summary: align .NET 10 SDK pinning with the 10.0.1 runtime.
+- Why: SDKs use 10.0.101 for the 10.0.1 runtime, and the VM couldn’t find 10.0.1 on the SDK feeds.
+- Impact: global.json, scripts, and CI now target SDK 10.0.101 so installs resolve cleanly.
+- Files: global.json, scripts/dev-ubuntu.sh, scripts/dev-setup-ubuntu.sh, azure-pipelines.yml, mise.toml, docs/NET10_UPGRADE.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: install the 10.0.101 SDK, run update-dev.sh with logging, and verify the UI shows v1.2.176.
+
 ## 1.2.175
 - Summary: upgrade Bookdarr to target .NET 10 and pin the SDK.
 - Why: align the build/runtime with the .NET 10.0.1 release and keep output paths consistent.

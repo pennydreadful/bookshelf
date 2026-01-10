@@ -20,7 +20,7 @@ sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-de
 ## Plan (high level)
 1. Update targets to .NET 10 across the codebase.
 2. Pin the SDK via `global.json`.
-3. Update install/build/update scripts to install .NET 10.0.1.
+3. Update install/build/update scripts to install the .NET 10.0.101 SDK.
 4. Update CI configuration to use .NET 10.
 5. Run the full build and update the VM with logging.
 6. Validate the app starts and status is healthy.
@@ -36,13 +36,13 @@ sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-de
    - If `RuntimeIdentifiers` or publish settings are tied to `net6.0`, update them to `net10.0`.
 
 3. Add/Update `global.json`:
-   - Pin SDK version to `10.0.1`.
+   - Pin SDK version to `10.0.101` (SDK for .NET 10.0.1 runtime).
    - Use `rollForward` set to `latestPatch` (or `latestFeature` if you want automatic minor roll-forward).
    - Example:
      ```
      {
        "sdk": {
-         "version": "10.0.1",
+       "version": "10.0.101",
          "rollForward": "latestPatch"
        }
      }
@@ -53,12 +53,12 @@ sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-de
    - `scripts/dev-setup-ubuntu.sh`
    - `scripts/dev-build.sh`
    - `scripts/update-dev.sh`
-   - Replace any .NET 6 installs with .NET 10.0.1.
+   - Replace any .NET 6 installs with .NET 10.0.101.
    - Ensure `/usr/share/dotnet` is on PATH (if the script sets PATH explicitly).
 
 5. Update CI configs:
    - `azure-pipelines.yml`: ensure the .NET 10 SDK is installed and used.
-   - Any GitHub Actions workflows (if present): update `setup-dotnet` to `10.0.1`.
+   - Any GitHub Actions workflows (if present): update `setup-dotnet` to `10.0.101`.
 
 6. Update Docker files (for later use):
    - `docker/*` and `docker-compose.yml` should reference .NET 10 base images when Docker migration happens.
@@ -75,7 +75,7 @@ sudo /opt/bookdarr-dev/scripts/update-dev.sh 2>&1 | sudo tee -a /opt/bookdarr-de
 
 ## Update-time failure points and fixes
 - "SDK not found" or "No .NET SDKs were found":
-  - Install .NET 10.0.1 SDK on the VM.
+  - Install the .NET 10.0.101 SDK on the VM.
   - Verify with `dotnet --list-sdks`.
 
 - "The framework 'Microsoft.NETCore.App', version '10.0.0' was not found":
