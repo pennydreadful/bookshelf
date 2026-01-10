@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.204
+- Summary: push diagnostics bundles automatically after update-dev.sh runs.
+- Why: updates should capture a diagnostics snapshot in the same flow.
+- Impact: update-dev.sh waits for the API and posts to `/api/v1/diagnostics/push` after startup (toggle via DIAGNOSTICS_PUSH).
+- Files: scripts/update-dev.sh, docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm a new diagnostics zip appears after update.
+
 ## 1.2.203
 - Summary: always bind RestResource parameters from the request body on POST/PUT/PATCH.
 - Why: config saves still defaulted to empty objects when MVC assigned another binding source.

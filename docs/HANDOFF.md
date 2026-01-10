@@ -21,6 +21,7 @@ Use this file to onboard a new Codex chat.
 - When giving install commands, use sudo and chain with `&&`.
 - Always put commands or code the user should run in fenced code blocks.
 - Update commands should `tee` to `/opt/bookdarr-dev/Logs/update-0XX.log`, starting at `update-01.log` now that logs were cleared.
+- Update script now pushes a diagnostics bundle after startup (toggle with `DIAGNOSTICS_PUSH=false`).
 - Avoid adding repeated `apt-get update` steps in install/build flows.
 - Changelog entries must be handoff-friendly (Summary/Why/Impact/Files/Next).
 - Push to GitHub after every update.
