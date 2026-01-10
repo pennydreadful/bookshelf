@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace NzbDrone.Core.MediaFiles.BookImport
 {
@@ -20,9 +19,5 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         {
         }
 
-        protected RootFolderNotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
     }
 }

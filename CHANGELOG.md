@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.182
+- Summary: fix .NET 10 analyzers for CA2022 and SYSLIB0051.
+- Why: analyzer warnings are treated as errors in the .NET 10 build.
+- Impact: file reads use ReadExactly and exception types no longer use formatter serialization.
+- Files: src/NzbDrone.Mono/Disk/DiskProvider.cs, src/NzbDrone.Core/Housekeeping/Housekeepers/DeleteBadMediaCovers.cs, src/NzbDrone.Core/MediaFiles/BookImport/RootFolderNotFoundException.cs, src/NzbDrone.Core/MediaFiles/BookImport/RecycleBinException.cs, src/NzbDrone.Core/MediaFiles/AzwTag/AzwTagException.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.181
 - Summary: fix StyleCop warning introduced by the .NET 10 exception cleanup.
 - Why: SA1508 reports a blank line before a closing brace.
