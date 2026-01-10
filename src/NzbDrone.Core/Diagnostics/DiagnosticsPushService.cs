@@ -132,8 +132,11 @@ namespace NzbDrone.Core.Diagnostics
                 EnsureRepo(repoPath, remoteUrl, sanitizedRemoteUrl);
                 var branch = GetDefaultBranch(repoPath);
 
-                RunGit(repoPath, $"checkout {branch}");
-                RunGit(repoPath, $"pull --rebase origin {branch}");
+                RunGit(repoPath, $"checkout -B {branch}");
+                if (HasRemoteBranch(repoPath, branch))
+                {
+                    RunGit(repoPath, $"pull --rebase origin {branch}");
+                }
 
                 var folderName = $"diagnostics/{timestamp}";
                 var destinationRoot = Path.Combine(repoPath, "diagnostics", timestamp);
@@ -156,7 +159,7 @@ namespace NzbDrone.Core.Diagnostics
                 }
 
                 RunGit(repoPath, $"commit -m \"Diagnostics {timestamp}\"");
-                RunGit(repoPath, $"push origin {branch}");
+                RunGit(repoPath, $"push -u origin {branch}");
                 RunGit(repoPath, $"remote set-url origin {sanitizedRemoteUrl}");
 
                 var commitHash = GetCurrentCommit(repoPath);
@@ -319,16 +322,43 @@ namespace NzbDrone.Core.Diagnostics
 
         private string GetDefaultBranch(string repoPath)
         {
-            var output = RunGit(repoPath, "remote show origin");
-            var line = output.Standard.FirstOrDefault(l => l.Content.Contains("HEAD branch:", StringComparison.OrdinalIgnoreCase));
-
-            if (line != null)
+            try
             {
-                var parts = line.Content.Split(':');
-                if (parts.Length > 1)
+                var output = RunGit(repoPath, "symbolic-ref refs/remotes/origin/HEAD");
+                var reference = output.Standard.FirstOrDefault()?.Content?.Trim();
+                if (reference.IsNotNullOrWhiteSpace())
                 {
-                    return parts[1].Trim();
+                    var parts = reference.Split('/');
+                    if (parts.Length > 0)
+                    {
+                        return parts[^1];
+                    }
                 }
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                var output = RunGit(repoPath, "remote show origin");
+                var line = output.Standard.FirstOrDefault(l => l.Content.Contains("HEAD branch:", StringComparison.OrdinalIgnoreCase));
+
+                if (line != null)
+                {
+                    var parts = line.Content.Split(':');
+                    if (parts.Length > 1)
+                    {
+                        var candidate = parts[1].Trim();
+                        if (!candidate.Equals("(unknown)", StringComparison.OrdinalIgnoreCase) && candidate.IsNotNullOrWhiteSpace())
+                        {
+                            return candidate;
+                        }
+                    }
+                }
+            }
+            catch
+            {
             }
 
             return "main";
@@ -337,6 +367,12 @@ namespace NzbDrone.Core.Diagnostics
         private bool HasPendingChanges(string repoPath)
         {
             var output = RunGit(repoPath, "status --porcelain");
+            return output.Standard.Any(line => !line.Content.IsNullOrWhiteSpace());
+        }
+
+        private bool HasRemoteBranch(string repoPath, string branch)
+        {
+            var output = RunGit(repoPath, $"ls-remote --heads origin {branch}");
             return output.Standard.Any(line => !line.Content.IsNullOrWhiteSpace());
         }
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.199
+- Summary: handle diagnostics pushes for empty repos and unknown default branches.
+- Why: the new diagnostics repo had no default branch yet, so checkout failed with `(unknown)`.
+- Impact: diagnostics push now bootstraps a main branch and skips pulls when no remote branch exists.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and retry Diagnostics push.
+
 ## 1.2.198
 - Summary: use token-based HTTPS auth for diagnostics repo pushes.
 - Why: GitHub was prompting for a username when no credentials were embedded in the remote.
