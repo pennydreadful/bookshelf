@@ -70,17 +70,15 @@ namespace Readarr.Api.V1.Config
 
         private bool IsValidSslCertificate(HostConfigResource resource)
         {
-            X509Certificate2 cert;
             try
             {
-                cert = new X509Certificate2(resource.SslCertPath, resource.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
+                using var cert = X509CertificateLoader.LoadPkcs12FromFile(resource.SslCertPath, resource.SslCertPassword);
+                return cert != null;
             }
             catch
             {
                 return false;
             }
-
-            return cert != null;
         }
 
         private bool IsMatchingPassword(HostConfigResource resource)

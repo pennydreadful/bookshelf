@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.185
+- Summary: replace obsolete X509Certificate2 loading API for .NET 10.
+- Why: SYSLIB0057 blocks builds when loading certificates via deprecated constructors.
+- Impact: SSL certificate validation now uses X509CertificateLoader.
+- Files: src/Readarr.Api.V1/Config/HostConfigController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.184
 - Summary: address .NET 10 ASP.NET analyzer errors in authentication and middleware.
 - Why: ISystemClock is obsolete and header additions now trigger ASP0019.
