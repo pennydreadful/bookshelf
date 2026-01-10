@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.192
+- Summary: remove unused using that tripped IDE0005 in the .NET 10 build.
+- Why: the style analyzer fails the build when unused usings remain.
+- Impact: VersionedApiControllerAttribute builds cleanly in net10.0.
+- Files: src/Readarr.Http/VersionedApiControllerAttribute.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm the build clears IDE0005.
+
 ## 1.2.191
 - Summary: clear repo log files and reset the update log numbering.
 - Why: log artifacts are no longer needed in version control and we want to restart log sequencing at 01.
