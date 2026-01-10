@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.194
+- Summary: force RestResource payloads to bind from the request body on POST/PUT/PATCH.
+- Why: .NET 10 stopped inferring body binding for these resources, leaving defaults and breaking settings saves.
+- Impact: config save endpoints (including Media Management naming) receive the JSON payload and validate correctly.
+- Files: src/Readarr.Http/REST/RestResourceBodyBindingConvention.cs, src/NzbDrone.Host/Startup.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm Media Management saves without validation errors.
+
 ## 1.2.193
 - Summary: capture the GitHub-link refresh/read rule in the handoff doc.
 - Why: new chats need to auto-refresh and read linked diagnostics without re-explaining the rule.

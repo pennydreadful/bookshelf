@@ -30,6 +30,7 @@ using Readarr.Http.ClientSchema;
 using Readarr.Http.ErrorManagement;
 using Readarr.Http.Frontend;
 using Readarr.Http.Middleware;
+using Readarr.Http.REST;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace NzbDrone.Host
@@ -85,6 +86,7 @@ namespace NzbDrone.Host
             .AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
+                options.Conventions.Add(new RestResourceBodyBindingConvention());
             })
             .AddApplicationPart(typeof(SystemController).Assembly)
             .AddApplicationPart(typeof(StaticResourceController).Assembly)
