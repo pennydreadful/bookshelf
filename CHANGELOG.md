@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.196
+- Summary: fix IDE0005 in diagnostics push service.
+- Why: the .NET 10 build fails on unused using directives.
+- Impact: diagnostics push service builds cleanly in net10.0.
+- Files: src/NzbDrone.Core/Diagnostics/DiagnosticsPushService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm diagnostics build completes.
+
 ## 1.2.195
 - Summary: add a develop-only diagnostics push flow with UI event capture and GitHub export.
 - Why: we need a one-click way to bundle logs and UI interactions for debugging recurring issues.

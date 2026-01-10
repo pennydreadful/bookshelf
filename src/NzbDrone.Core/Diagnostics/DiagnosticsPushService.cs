@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using NLog;
-using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
