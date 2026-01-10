@@ -223,11 +223,9 @@ namespace NzbDrone.Host
 
         private static X509Certificate2 ValidateSslCertificate(string cert, string password)
         {
-            X509Certificate2 certificate;
-
             try
             {
-                certificate = new X509Certificate2(cert, password, X509KeyStorageFlags.DefaultKeySet);
+                return X509CertificateLoader.LoadPkcs12FromFile(cert, password);
             }
             catch (CryptographicException ex)
             {
@@ -239,8 +237,6 @@ namespace NzbDrone.Host
 
                 throw new ReadarrStartupException(ex);
             }
-
-            return certificate;
         }
     }
 }

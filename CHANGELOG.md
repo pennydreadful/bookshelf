@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.186
+- Summary: fix .NET 10 deprecations for forwarded headers and cert loading.
+- Why: ASPDEPR005 and SYSLIB0057 are treated as errors in the .NET 10 build.
+- Impact: forwarded header configuration uses KnownIPNetworks and SSL loading uses X509CertificateLoader.
+- Files: src/NzbDrone.Host/Startup.cs, src/NzbDrone.Host/Bootstrap.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm restore/build succeeds on the VM.
+
 ## 1.2.185
 - Summary: replace obsolete X509Certificate2 loading API for .NET 10.
 - Why: SYSLIB0057 blocks builds when loading certificates via deprecated constructors.
