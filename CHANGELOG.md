@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.237
+- Summary: update FluentValidation to 12.1.1.
+- Why: apply the remaining Dependabot upgrade (PR #10) after it was closed.
+- Impact: validators now use FluentValidation 12.x across API and test projects, aligning with .NET 8+ support.
+- Files: src/Directory.Packages.props, src/NzbDrone.Api.Test/packages.lock.json, src/NzbDrone.Automation.Test/packages.lock.json, src/NzbDrone.Common.Test/packages.lock.json, src/NzbDrone.Console/packages.lock.json, src/NzbDrone.Core.Test/packages.lock.json, src/NzbDrone.Core/packages.lock.json, src/NzbDrone.Host.Test/packages.lock.json, src/NzbDrone.Host/packages.lock.json, src/NzbDrone.Integration.Test/packages.lock.json, src/NzbDrone.Libraries.Test/packages.lock.json, src/NzbDrone.Mono.Test/packages.lock.json, src/NzbDrone.SignalR/packages.lock.json, src/NzbDrone.Test.Common/packages.lock.json, src/NzbDrone.Update.Test/packages.lock.json, src/Readarr.Api.V1/packages.lock.json, src/Readarr.Http/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run the update build to catch any FluentValidation API changes at compile time.
+
 ## 1.2.236
 - Summary: update Swagger security requirement registration for Swashbuckle v10.
 - Why: AddSecurityRequirement now expects a factory delegate instead of a direct requirement instance.

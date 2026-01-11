@@ -22,9 +22,9 @@
       },
       "FluentValidation": {
         "type": "Direct",
-        "requested": "[9.5.4, )",
-        "resolved": "9.5.4",
-        "contentHash": "dnAz4PUtSSa+8EGWDUmEZujOa9rvzxln4BgokZZfO2Gbcj0612TMISU4vkvL60qIy5DI/sDF9Oy1iMXr7sJW3A=="
+        "requested": "[12.1.1, )",
+        "resolved": "12.1.1",
+        "contentHash": "5Y2Ck1Clwnlz5gLNHtQr7FaHr+bvTDvj+J6HJ+RDyjYhgmOCMCSKm2aNY3ysMSym+Adk2yeTW/p7qKyN8e2BPQ=="
       },
       "LazyCache": {
         "type": "Direct",
