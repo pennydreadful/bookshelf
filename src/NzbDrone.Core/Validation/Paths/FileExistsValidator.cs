@@ -1,10 +1,11 @@
 using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class FileExistsValidator : PropertyValidator<object, string>
+    public class FileExistsValidator : BookdarrPropertyValidator<object, string>
     {
         private readonly IDiskProvider _diskProvider;
 
@@ -15,7 +16,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "File '{file}' does not exist";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

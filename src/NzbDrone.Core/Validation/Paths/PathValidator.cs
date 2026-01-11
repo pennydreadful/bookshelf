@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
@@ -13,11 +14,11 @@ namespace NzbDrone.Core.Validation.Paths
         }
     }
 
-    public class PathValidator : PropertyValidator<object, string>
+    public class PathValidator : BookdarrPropertyValidator<object, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Path: '{path}'";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

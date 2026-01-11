@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -31,11 +32,11 @@ namespace NzbDrone.Core.Organizer
         }
     }
 
-    public class ValidStandardTrackFormatValidator : PropertyValidator<object, string>
+    public class ValidStandardTrackFormatValidator : BookdarrPropertyValidator<object, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain Book Title AND PartNumber, OR Original Title";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {
@@ -50,13 +51,13 @@ namespace NzbDrone.Core.Organizer
         }
     }
 
-    public class IllegalCharactersValidator : PropertyValidator<object, string>
+    public class IllegalCharactersValidator : BookdarrPropertyValidator<object, string>
     {
         private readonly char[] _invalidPathChars = Path.GetInvalidPathChars();
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Contains illegal characters: {InvalidCharacters}";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value.IsNullOrWhiteSpace())
             {

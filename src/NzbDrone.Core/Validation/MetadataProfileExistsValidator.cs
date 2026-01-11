@@ -4,7 +4,7 @@ using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.Validation
 {
-    public class MetadataProfileExistsValidator : PropertyValidator<object, int>
+    public class MetadataProfileExistsValidator : BookdarrPropertyValidator<object, int>
     {
         private readonly IMetadataProfileService _profileService;
 
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Validation
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Metadata profile does not exist";
 
-        protected override bool IsValid(ValidationContext<object> context, int value)
+        public override bool IsValid(ValidationContext<object> context, int value)
         {
             if (value == 0)
             {

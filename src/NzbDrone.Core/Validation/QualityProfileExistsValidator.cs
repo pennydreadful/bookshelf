@@ -4,7 +4,7 @@ using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Validation
 {
-    public class QualityProfileExistsValidator : PropertyValidator<object, int>
+    public class QualityProfileExistsValidator : BookdarrPropertyValidator<object, int>
     {
         private readonly IQualityProfileService _qualityProfileService;
 
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Validation
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Quality Profile does not exist";
 
-        protected override bool IsValid(ValidationContext<object> context, int value)
+        public override bool IsValid(ValidationContext<object> context, int value)
         {
             if (value == 0)
             {

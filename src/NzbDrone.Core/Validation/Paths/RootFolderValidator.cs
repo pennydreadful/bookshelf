@@ -2,10 +2,11 @@
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class RootFolderValidator : PropertyValidator<object, string>
+    public class RootFolderValidator : BookdarrPropertyValidator<object, string>
     {
         private readonly IRootFolderService _rootFolderService;
 
@@ -16,7 +17,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Path '{path}' is already configured as a root folder";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

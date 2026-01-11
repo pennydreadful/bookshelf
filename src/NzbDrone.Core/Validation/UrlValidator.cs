@@ -12,11 +12,11 @@ namespace NzbDrone.Core.Validation
         }
     }
 
-    public class UrlValidator : PropertyValidator<object, string>
+    public class UrlValidator : BookdarrPropertyValidator<object, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Url: '{url}'";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

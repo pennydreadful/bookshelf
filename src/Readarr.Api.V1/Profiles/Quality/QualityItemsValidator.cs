@@ -3,6 +3,7 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Validation;
 
 namespace Readarr.Api.V1.Profiles.Quality
 {
@@ -23,21 +24,21 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class AllowedValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class AllowedValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain at least one allowed quality";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             return value != null && value.Any(c => c.Allowed);
         }
     }
 
-    public class GroupItemValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class GroupItemValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Groups must contain multiple qualities";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -48,11 +49,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class QualityNameValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class QualityNameValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Individual qualities should not be named";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -63,11 +64,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class ItemGroupNameValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class ItemGroupNameValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Groups must have a name";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -78,11 +79,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class ItemGroupIdValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class ItemGroupIdValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Groups must have an ID";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -93,11 +94,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class UniqueIdValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class UniqueIdValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Groups must have a unique ID";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -111,11 +112,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class UniqueQualityIdValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class UniqueQualityIdValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Qualities can only be used once";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {
@@ -153,11 +154,11 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class AllQualitiesValidator<T> : PropertyValidator<T, IList<QualityProfileQualityItemResource>>
+    public class AllQualitiesValidator<T> : BookdarrPropertyValidator<T, IList<QualityProfileQualityItemResource>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain all qualities";
 
-        protected override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
+        public override bool IsValid(ValidationContext<T> context, IList<QualityProfileQualityItemResource> value)
         {
             if (value == null)
             {

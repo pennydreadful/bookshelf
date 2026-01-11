@@ -2,14 +2,15 @@
 using FluentValidation.Validators;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Validation;
 
 namespace Readarr.Http.Validation
 {
-    public class EmptyCollectionValidator<T> : PropertyValidator<object, IEnumerable<T>>
+    public class EmptyCollectionValidator<T> : BookdarrPropertyValidator<object, IEnumerable<T>>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Collection Must Be Empty";
 
-        protected override bool IsValid(ValidationContext<object> context, IEnumerable<T> value)
+        public override bool IsValid(ValidationContext<object> context, IEnumerable<T> value)
         {
             if (value == null)
             {

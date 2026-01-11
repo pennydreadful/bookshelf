@@ -4,7 +4,7 @@ using NzbDrone.Common.Disk;
 
 namespace NzbDrone.Core.Validation
 {
-    public class FolderChmodValidator : PropertyValidator<object, string>
+    public class FolderChmodValidator : BookdarrPropertyValidator<object, string>
     {
         private readonly IDiskProvider _diskProvider;
 
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Validation
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain a valid Unix permissions octal";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

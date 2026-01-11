@@ -5,11 +5,11 @@ using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Validation
 {
-    public class FolderValidator : PropertyValidator<object, string>
+    public class FolderValidator : BookdarrPropertyValidator<object, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Path: '{path}'";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

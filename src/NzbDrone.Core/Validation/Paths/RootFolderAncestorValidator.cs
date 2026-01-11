@@ -3,10 +3,11 @@ using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class RootFolderAncestorValidator : PropertyValidator<object, string>
+    public class RootFolderAncestorValidator : BookdarrPropertyValidator<object, string>
     {
         private readonly IRootFolderService _rootFolderService;
 
@@ -17,7 +18,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Path '{path}' is an ancestor of an existing root folder";
 
-        protected override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<object> context, string value)
         {
             if (value == null)
             {

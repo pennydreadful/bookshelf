@@ -4,7 +4,7 @@ using NzbDrone.Core.Download;
 
 namespace NzbDrone.Core.Validation
 {
-    public class DownloadClientExistsValidator : PropertyValidator<object, int>
+    public class DownloadClientExistsValidator : BookdarrPropertyValidator<object, int>
     {
         private readonly IDownloadClientFactory _downloadClientFactory;
 
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Validation
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Download Client does not exist";
 
-        protected override bool IsValid(ValidationContext<object> context, int value)
+        public override bool IsValid(ValidationContext<object> context, int value)
         {
             if (value == 0)
             {
