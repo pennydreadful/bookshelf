@@ -96,6 +96,10 @@ Help is very welcome. Priority is on fixing quality of life issues
 - [ ] Hardcover bookshelf import.
 - [x] Support ebook and audio files in the same root.
 
+## Roadmap
+
+See `docs/ROADMAP.md` for major upcoming milestones.
+
 ### License
 
 This is a derivative work of the [Readarr](https://github.com/Readarr/Readarr)

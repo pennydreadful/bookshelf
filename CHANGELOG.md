@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.221
+- Summary: expand the checklist with Calibre-competitor goals and add a roadmap document.
+- Why: the project needs a clear set of long-term milestones separate from the task checklist.
+- Impact: the checklist now tracks mobile, multi-user, auth, playback, conversion, and device-send work, and a new roadmap lists the top milestones.
+- Files: checklist.md, docs/ROADMAP.md, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: prioritize the roadmap items and decide which checklist item to start next.
+
 ## 1.2.220
 - Summary: add a multi-user support exploration item to the checklist.
 - Why: track a future investigation into per-user permissions and views.
