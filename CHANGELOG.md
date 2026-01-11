@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.223
+- Summary: bump Dependabot PR limits to trigger a fresh update run.
+- Why: nudging the Dependabot config prompts GitHub to re-check for updates immediately.
+- Impact: Dependabot should open the available PRs sooner.
+- Files: .github/dependabot.yml, src/Directory.Build.props, CHANGELOG.md.
+- Next: review the new Dependabot PRs and merge the high-severity ones first.
+
 ## 1.2.222
 - Summary: enable Dependabot updates for NuGet/npm and add a CodeQL workflow.
 - Why: dependency and code scanning should run in GitHub without local tooling.
