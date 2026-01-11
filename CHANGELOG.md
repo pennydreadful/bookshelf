@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.242
+- Summary: replace ResourceValidator's internal FluentValidation rule creation with expression-based rules.
+- Why: FluentValidation 12 removed the non-generic PropertyRule API and AbstractValidator.AddRule hook.
+- Impact: dynamic field validation now uses RuleFor with an expression that maps Field values, preserving field names for UI errors.
+- Files: src/Readarr.Http/REST/ResourceValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm FluentValidation 12 compiles cleanly after the ResourceValidator change.
+
 ## 1.2.241
 - Summary: remove redundant validation namespace usings to satisfy IDE0005.
 - Why: the update build treats unnecessary using directives as errors.
