@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.228
+- Summary: merge Dependabot update for babel-loader.
+- Why: keep the frontend build tooling current after PR #5.
+- Impact: babel-loader is updated to 10.0.0.
+- Files: package.json, yarn.lock, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide on the remaining major NuGet PRs.
+
 ## 1.2.227
 - Summary: merge Dependabot update for PdfSharpCore.
 - Why: keep the PDF library current with a low-risk patch bump.
