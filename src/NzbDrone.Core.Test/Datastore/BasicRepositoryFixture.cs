@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Jobs;
@@ -18,12 +19,6 @@ namespace NzbDrone.Core.Test.Datastore
         [SetUp]
         public void Setup()
         {
-            AssertionOptions.AssertEquivalencyUsing(options =>
-            {
-                options.Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation.ToUniversalTime())).WhenTypeIs<DateTime>();
-                return options;
-            });
-
             _basicList = Builder<ScheduledTask>
                 .CreateListOfSize(5)
                 .All()
@@ -65,7 +60,7 @@ namespace NzbDrone.Core.Test.Datastore
             Subject.InsertMany(_basicList);
             var storeObject = Subject.Get(_basicList[1].Id);
 
-            storeObject.Should().BeEquivalentTo(_basicList[1], o => o.IncludingAllRuntimeProperties());
+            storeObject.Should().BeEquivalentTo(_basicList[1], options => TaskComparerOptions(options).IncludingAllRuntimeProperties());
         }
 
         [Test]
@@ -78,7 +73,7 @@ namespace NzbDrone.Core.Test.Datastore
 
             Subject.Update(item);
 
-            Subject.All().Should().BeEquivalentTo(_basicList);
+            Subject.All().Should().BeEquivalentTo(_basicList, TaskComparerOptions);
         }
 
         [Test]
@@ -98,7 +93,7 @@ namespace NzbDrone.Core.Test.Datastore
 
             Subject.Upsert(item);
 
-            Subject.All().Should().BeEquivalentTo(_basicList);
+            Subject.All().Should().BeEquivalentTo(_basicList, TaskComparerOptions);
         }
 
         [Test]
@@ -114,7 +109,7 @@ namespace NzbDrone.Core.Test.Datastore
             Subject.SetFields(item, x => x.Interval);
 
             item.LastExecution = executionBackup;
-            Subject.All().Should().BeEquivalentTo(_basicList);
+            Subject.All().Should().BeEquivalentTo(_basicList, TaskComparerOptions);
         }
 
         [Test]
@@ -150,7 +145,7 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void get_many_should_return_empty_list_if_no_ids()
         {
-            Subject.Get(new List<int>()).Should().BeEquivalentTo(new List<ScheduledTask>());
+            Subject.Get(new List<int>()).Should().BeEquivalentTo(new List<ScheduledTask>(), TaskComparerOptions);
         }
 
         [Test]
@@ -175,7 +170,7 @@ namespace NzbDrone.Core.Test.Datastore
             _basicList.ForEach(x => x.Interval = 999);
 
             Subject.UpdateMany(_basicList);
-            Subject.All().Should().BeEquivalentTo(_basicList);
+            Subject.All().Should().BeEquivalentTo(_basicList, TaskComparerOptions);
         }
 
         [Test]
@@ -202,7 +197,7 @@ namespace NzbDrone.Core.Test.Datastore
                 _basicList[i].LastExecution = executionBackup[i];
             }
 
-            Subject.All().Should().BeEquivalentTo(_basicList);
+            Subject.All().Should().BeEquivalentTo(_basicList, TaskComparerOptions);
         }
 
         [Test]
@@ -270,7 +265,7 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_be_able_to_get_single()
         {
             Subject.Insert(_basicList[0]);
-            Subject.Single().Should().BeEquivalentTo(_basicList[0]);
+            Subject.Single().Should().BeEquivalentTo(_basicList[0], TaskComparerOptions);
         }
 
         [Test]
@@ -308,7 +303,7 @@ namespace NzbDrone.Core.Test.Datastore
             data.Page.Should().Be(page);
             data.PageSize.Should().Be(2);
             data.TotalRecords.Should().Be(_basicList.Count);
-            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.LastExecution).Skip((page - 1) * 2).Take(2));
+            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.LastExecution).Skip((page - 1) * 2).Take(2), TaskComparerOptions);
         }
 
         [TestCase(1, 2)]
@@ -322,7 +317,13 @@ namespace NzbDrone.Core.Test.Datastore
             data.Page.Should().Be(page);
             data.PageSize.Should().Be(2);
             data.TotalRecords.Should().Be(_basicList.Count);
-            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.Id).Skip((page - 1) * 2).Take(2));
+            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.Id).Skip((page - 1) * 2).Take(2), TaskComparerOptions);
+        }
+
+        private static EquivalencyOptions<ScheduledTask> TaskComparerOptions(EquivalencyOptions<ScheduledTask> options)
+        {
+            return options.Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation.ToUniversalTime(), TimeSpan.FromMilliseconds(50)))
+                .WhenTypeIs<DateTime>();
         }
     }
 }

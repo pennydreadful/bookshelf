@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Test
 
             //Resolve
             var result = new UTF8Encoding().GetBytes(resultString);
-            result.Length.Should().BeLessOrEqualTo(1000);
+            result.Length.Should().BeLessThanOrEqualTo(1000);
         }
 
         [Test]

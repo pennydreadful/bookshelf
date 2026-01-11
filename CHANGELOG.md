@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.231
+- Summary: finish FluentAssertions 8 API updates in core tests.
+- Why: FluentAssertions removed AssertionOptions and renamed assertion helpers, breaking test builds.
+- Impact: equivalency options are now per-assertion, new member predicate APIs are used, and TimeSpan precision is explicit.
+- Files: src/NzbDrone.Core.Test/Datastore/BasicRepositoryFixture.cs, src/NzbDrone.Core.Test/MusicTests/AlbumRepositoryTests/AlbumRepositoryFixture.cs, src/NzbDrone.Core.Test/MediaFiles/AudioTagServiceFixture.cs, src/NzbDrone.Core.Test/FluentTest.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm FluentAssertions test compile errors are resolved.
+
 ## 1.2.230
 - Summary: update tests for FluentAssertions 8 API changes.
 - Why: the FluentAssertions major bump removed EquivalencyAssertionOptions and renamed assertion helpers.
