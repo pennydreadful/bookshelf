@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Parser
             var bookTitle = parsedBookInfo.BookTitle;
             var result = new List<Book>();
 
-            if (parsedBookInfo.BookTitle == null)
+            if (parsedBookInfo.BookTitle == null) // lgtm [cs/user-controlled-bypass] input validation to short-circuit parsing, not auth.
             {
                 return new List<Book>();
             }

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.251
+- Summary: annotate user-controlled bypass alerts that are not security boundaries.
+- Why: CodeQL flags conditional logic driven by user settings or parsed input that is not auth-related.
+- Impact: Code scanning noise is reduced for merge/delete/naming/search guard clauses that are already authenticated or non-security logic.
+- Files: src/Readarr.Api.V1/Author/AuthorController.cs, src/NzbDrone.Core/Parser/ParsingService.cs, src/NzbDrone.Core/Organizer/FileNameBuilder.cs, src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/NzbDrone.Core/MediaFiles/MediaFileDeletionService.cs, src/NzbDrone.Core/Books/Services/AuthorMergeService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun code scanning to confirm the user-controlled bypass alerts are cleared.
+
 ## 1.2.250
 - Summary: harden redirect and attribution URL handling to satisfy code scanning.
 - Why: CodeQL flagged unvalidated redirects and substring URL checks.

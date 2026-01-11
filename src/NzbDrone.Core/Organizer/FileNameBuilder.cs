@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Organizer
                 namingConfig = _namingConfigService.GetConfig();
             }
 
-            if (!namingConfig.RenameBooks)
+            if (!namingConfig.RenameBooks) // lgtm [cs/user-controlled-bypass] user setting controls naming, not authentication.
             {
                 return GetOriginalFileName(bookFile);
             }
