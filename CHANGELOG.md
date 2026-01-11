@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.248
+- Summary: add GitHub CodeQL code scanning workflow.
+- Why: enable automated code scanning on develop and PRs for C# and JavaScript.
+- Impact: GitHub will run CodeQL analysis weekly and on develop changes using .NET 10 for the C# build.
+- Files: .github/workflows/codeql.yml, src/Directory.Build.props, CHANGELOG.md.
+- Next: confirm CodeQL runs successfully on the next push or scheduled run.
+
 ## 1.2.247
 - Summary: fix remaining FluentValidation 12 compile errors in host config and field validator helper.
 - Why: HostConfigController still referenced a non-generic FileExistsValidator, and ResourceValidator needed to drop name overrides on the initial rule builder.

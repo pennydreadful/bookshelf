@@ -2,40 +2,49 @@ name: CodeQL
 
 on:
   push:
-    branches: [develop]
+    branches:
+      - develop
   pull_request:
-    branches: [develop]
+    branches:
+      - develop
   schedule:
-    - cron: "0 3 * * 1"
+    - cron: '0 6 * * 1'
 
 permissions:
   contents: read
+  security-events: write
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - csharp
+          - javascript
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup .NET
+        if: matrix.language == 'csharp'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.101"
+          dotnet-version: '10.0.x'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: csharp, javascript
-          build-mode: manual
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.language == 'csharp' && 'manual' || 'none' }}
 
       - name: Build
-        run: dotnet build src/Readarr.sln -c Release
+        if: matrix.language == 'csharp'
+        run: dotnet build src/Readarr.sln -p:Configuration=Release -p:Platform=Posix
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
