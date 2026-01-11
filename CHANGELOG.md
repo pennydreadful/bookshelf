@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.233
+- Summary: merge Dependabot update for Swashbuckle.AspNetCore.SwaggerGen.
+- Why: take the major SwaggerGen upgrade after PR #13.
+- Impact: SwaggerGen and related lock files are updated for the v10 series.
+- Files: src/Directory.Packages.props, src/NzbDrone.Host/packages.lock.json, src/Readarr.Api.V1/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: validate API swagger generation still works with the v10 changes.
+
 ## 1.2.232
 - Summary: update NunitXml.TestLogger to 8.0.0.
 - Why: take the Dependabot test logger upgrade after PR #11 was closed.
