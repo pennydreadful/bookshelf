@@ -57,8 +57,8 @@ namespace Readarr.Api.V1.Books
                           IMapCoversToLocal coverMapper,
                           IUpgradableSpecification upgradableSpecification,
                           IBroadcastSignalRMessage signalRBroadcaster,
-                          QualityProfileExistsValidator qualityProfileExistsValidator,
-                          MetadataProfileExistsValidator metadataProfileExistsValidator)
+                          QualityProfileExistsValidator<BookResource> qualityProfileExistsValidator,
+                          MetadataProfileExistsValidator<BookResource> metadataProfileExistsValidator)
 
         : base(bookService, seriesBookLinkService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
         {

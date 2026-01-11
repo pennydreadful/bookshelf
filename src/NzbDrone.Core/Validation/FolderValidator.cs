@@ -1,15 +1,14 @@
 using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Validation
 {
-    public class FolderValidator : BookdarrPropertyValidator<object, string>
+    public class FolderValidator<T> : BookdarrPropertyValidator<T, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Path: '{path}'";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

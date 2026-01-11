@@ -15,7 +15,7 @@ namespace Readarr.Api.V1.RemotePathMappings
         private readonly IRemotePathMappingService _remotePathMappingService;
 
         public RemotePathMappingController(IRemotePathMappingService remotePathMappingService,
-                                       PathExistsValidator pathExistsValidator)
+                                       PathExistsValidator<RemotePathMappingResource> pathExistsValidator)
         {
             _remotePathMappingService = remotePathMappingService;
 
@@ -30,7 +30,7 @@ namespace Readarr.Api.V1.RemotePathMappings
                 .Cascade(CascadeMode.Stop)
                 .IsValidPath()
                 .SetValidator(pathExistsValidator)
-                .SetValidator(new SystemFolderValidator())
+                .SetValidator(new SystemFolderValidator<RemotePathMappingResource>())
                 .NotEqual("/")
                 .WithMessage("Cannot be set to '/'");
         }

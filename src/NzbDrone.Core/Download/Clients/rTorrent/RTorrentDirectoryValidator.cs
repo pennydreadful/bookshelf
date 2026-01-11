@@ -13,8 +13,8 @@ namespace NzbDrone.Core.Download.Clients.rTorrent
 
     public class RTorrentDirectoryValidator : AbstractValidator<RTorrentSettings>, IRTorrentDirectoryValidator
     {
-        public RTorrentDirectoryValidator(RootFolderValidator rootFolderValidator,
-                                          PathExistsValidator pathExistsValidator)
+        public RTorrentDirectoryValidator(RootFolderValidator<RTorrentSettings> rootFolderValidator,
+                                          PathExistsValidator<RTorrentSettings> pathExistsValidator)
         {
             RuleFor(c => c.MusicDirectory).Cascade(CascadeMode.Stop)
                                        .IsValidPath()

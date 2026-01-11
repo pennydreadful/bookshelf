@@ -59,15 +59,15 @@ namespace Readarr.Api.V1.Author
                             IMapCoversToLocal coverMapper,
                             IManageCommandQueue commandQueueManager,
                             IRootFolderService rootFolderService,
-                            RecycleBinValidator recycleBinValidator,
-                            RootFolderValidator rootFolderValidator,
-                            AuthorPathValidator authorPathValidator,
-                            AuthorExistsValidator authorExistsValidator,
-                            AuthorAncestorValidator authorAncestorValidator,
-                            SystemFolderValidator systemFolderValidator,
-                            QualityProfileExistsValidator qualityProfileExistsValidator,
-                            MetadataProfileExistsValidator metadataProfileExistsValidator,
-                            AuthorFolderAsRootFolderValidator authorFolderAsRootFolderValidator)
+                            RecycleBinValidator<AuthorResource> recycleBinValidator,
+                            RootFolderValidator<AuthorResource> rootFolderValidator,
+                            AuthorPathValidator<AuthorResource> authorPathValidator,
+                            AuthorExistsValidator<AuthorResource> authorExistsValidator,
+                            AuthorAncestorValidator<AuthorResource> authorAncestorValidator,
+                            SystemFolderValidator<AuthorResource> systemFolderValidator,
+                            QualityProfileExistsValidator<AuthorResource> qualityProfileExistsValidator,
+                            MetadataProfileExistsValidator<AuthorResource> metadataProfileExistsValidator,
+                            AuthorFolderAsRootFolderValidator<AuthorResource> authorFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _authorService = authorService;

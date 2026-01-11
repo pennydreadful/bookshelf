@@ -11,7 +11,7 @@ namespace Readarr.Api.V1.Indexers
         public static readonly IndexerResourceMapper ResourceMapper = new ();
         public static readonly IndexerBulkResourceMapper BulkResourceMapper = new ();
 
-        public IndexerController(IndexerFactory indexerFactory, DownloadClientExistsValidator downloadClientExistsValidator)
+        public IndexerController(IndexerFactory indexerFactory, DownloadClientExistsValidator<IndexerResource> downloadClientExistsValidator)
             : base(indexerFactory, "indexer", ResourceMapper, BulkResourceMapper)
         {
             SharedValidator.RuleFor(c => c.Priority).InclusiveBetween(1, 50);

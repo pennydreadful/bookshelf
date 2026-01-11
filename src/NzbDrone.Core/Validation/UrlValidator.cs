@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Validation
@@ -8,15 +7,15 @@ namespace NzbDrone.Core.Validation
     {
         public static IRuleBuilderOptions<T, string> IsValidUrl<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new UrlValidator());
+            return ruleBuilder.SetValidator(new UrlValidator<T>());
         }
     }
 
-    public class UrlValidator : BookdarrPropertyValidator<object, string>
+    public class UrlValidator<T> : BookdarrPropertyValidator<T, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Url: '{url}'";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

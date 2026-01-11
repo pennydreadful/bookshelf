@@ -15,8 +15,8 @@ namespace Readarr.Api.V1.ImportLists
         private readonly IImportListExclusionService _importListExclusionService;
 
         public ImportListExclusionController(IImportListExclusionService importListExclusionService,
-                                         ImportListExclusionExistsValidator importListExclusionExistsValidator,
-                                         GuidValidator guidValidator)
+                                         ImportListExclusionExistsValidator<ImportListExclusionResource> importListExclusionExistsValidator,
+                                         GuidValidator<ImportListExclusionResource> guidValidator)
         {
             _importListExclusionService = importListExclusionService;
 

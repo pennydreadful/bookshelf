@@ -8,7 +8,7 @@ using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ValidationTests
 {
-    public class GuidValidationFixture : CoreTest<GuidValidator>
+    public class GuidValidationFixture : CoreTest<GuidValidator<ImportListExclusion>>
     {
         private TestValidator<ImportListExclusion> _validator;
 

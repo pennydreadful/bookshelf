@@ -12,12 +12,12 @@ namespace NzbDrone.Core.Books
 
     public class AddAuthorValidator : AbstractValidator<Author>, IAddAuthorValidator
     {
-        public AddAuthorValidator(RootFolderValidator rootFolderValidator,
-                                  RecycleBinValidator recycleBinValidator,
-                                  AuthorPathValidator authorPathValidator,
-                                  AuthorAncestorValidator authorAncestorValidator,
-                                  QualityProfileExistsValidator qualityProfileExistsValidator,
-                                  MetadataProfileExistsValidator metadataProfileExistsValidator)
+        public AddAuthorValidator(RootFolderValidator<Author> rootFolderValidator,
+                                  RecycleBinValidator<Author> recycleBinValidator,
+                                  AuthorPathValidator<Author> authorPathValidator,
+                                  AuthorAncestorValidator<Author> authorAncestorValidator,
+                                  QualityProfileExistsValidator<Author> qualityProfileExistsValidator,
+                                  MetadataProfileExistsValidator<Author> metadataProfileExistsValidator)
         {
             RuleFor(c => c.Path).Cascade(CascadeMode.Stop)
                                 .IsValidPath()

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FluentValidation;
-
-
 namespace Readarr.Http.Validation
 {
     public static class RuleBuilderExtensions
@@ -29,12 +27,12 @@ namespace Readarr.Http.Validation
 
         public static IRuleBuilderOptions<T, IEnumerable<TProp>> EmptyCollection<T, TProp>(this IRuleBuilder<T, IEnumerable<TProp>> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new EmptyCollectionValidator<TProp>());
+            return ruleBuilder.SetValidator(new EmptyCollectionValidator<T, TProp>());
         }
 
         public static IRuleBuilderOptions<T, int> IsValidRssSyncInterval<T>(this IRuleBuilder<T, int> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new RssSyncIntervalValidator());
+            return ruleBuilder.SetValidator(new RssSyncIntervalValidator<T>());
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Profiles.Delay
 {
-    public class DelayProfileTagInUseValidator : BookdarrPropertyValidator<object, HashSet<int>>
+    public class DelayProfileTagInUseValidator<T> : BookdarrPropertyValidator<T, HashSet<int>>
     {
         private readonly IDelayProfileService _delayProfileService;
 
@@ -18,7 +17,7 @@ namespace NzbDrone.Core.Profiles.Delay
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "One or more tags is used in another profile";
 
-        public override bool IsValid(ValidationContext<object> context, HashSet<int> value)
+        public override bool IsValid(ValidationContext<T> context, HashSet<int> value)
         {
             if (value == null || value.Empty())
             {

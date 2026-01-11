@@ -1,12 +1,11 @@
 ﻿using System;
-using FluentValidation.Validators;
 using FluentValidation;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class FolderWritableValidator : BookdarrPropertyValidator<object, string>
+    public class FolderWritableValidator<T> : BookdarrPropertyValidator<T, string>
     {
         private readonly IDiskProvider _diskProvider;
 
@@ -17,7 +16,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Folder '{path}' is not writable by user '{user}'";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

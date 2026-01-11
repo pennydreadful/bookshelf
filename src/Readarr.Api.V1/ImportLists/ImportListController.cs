@@ -12,8 +12,8 @@ namespace Readarr.Api.V1.ImportLists
         public static readonly ImportListBulkResourceMapper BulkResourceMapper = new ();
 
         public ImportListController(IImportListFactory importListFactory,
-                                    QualityProfileExistsValidator qualityProfileExistsValidator,
-                                    MetadataProfileExistsValidator metadataProfileExistsValidator)
+                                    QualityProfileExistsValidator<ImportListResource> qualityProfileExistsValidator,
+                                    MetadataProfileExistsValidator<ImportListResource> metadataProfileExistsValidator)
             : base(importListFactory, "importlist", ResourceMapper, BulkResourceMapper)
         {
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));

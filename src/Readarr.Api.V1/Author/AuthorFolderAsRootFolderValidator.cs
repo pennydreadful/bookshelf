@@ -1,14 +1,13 @@
 using System;
 using System.IO;
 using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Validation;
 
 namespace Readarr.Api.V1.Author
 {
-    public class AuthorFolderAsRootFolderValidator : BookdarrPropertyValidator<object, string>
+    public class AuthorFolderAsRootFolderValidator<T> : BookdarrPropertyValidator<T, string>
     {
         private readonly IBuildFileNames _fileNameBuilder;
 
@@ -19,7 +18,7 @@ namespace Readarr.Api.V1.Author
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Root folder path '{rootFolderPath}' contains author folder '{authorFolder}'";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

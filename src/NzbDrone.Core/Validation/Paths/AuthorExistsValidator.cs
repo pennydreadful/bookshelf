@@ -1,11 +1,10 @@
-﻿using FluentValidation.Validators;
 using FluentValidation;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class AuthorExistsValidator : BookdarrPropertyValidator<object, string>
+    public class AuthorExistsValidator<T> : BookdarrPropertyValidator<T, string>
     {
         private readonly IAuthorService _authorService;
 
@@ -16,7 +15,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "This author has already been added";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

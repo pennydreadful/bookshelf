@@ -11,14 +11,14 @@ namespace Readarr.Api.V1.Config
     public class MediaManagementConfigController : ConfigController<MediaManagementConfigResource>
     {
         public MediaManagementConfigController(IConfigService configService,
-                                           PathExistsValidator pathExistsValidator,
-                                           FolderChmodValidator folderChmodValidator,
-                                           FolderWritableValidator folderWritableValidator,
-                                           AuthorPathValidator authorPathValidator,
-                                           StartupFolderValidator startupFolderValidator,
-                                           SystemFolderValidator systemFolderValidator,
-                                           RootFolderAncestorValidator rootFolderAncestorValidator,
-                                           RootFolderValidator rootFolderValidator)
+                                           PathExistsValidator<MediaManagementConfigResource> pathExistsValidator,
+                                           FolderChmodValidator<MediaManagementConfigResource> folderChmodValidator,
+                                           FolderWritableValidator<MediaManagementConfigResource> folderWritableValidator,
+                                           AuthorPathValidator<MediaManagementConfigResource> authorPathValidator,
+                                           StartupFolderValidator<MediaManagementConfigResource> startupFolderValidator,
+                                           SystemFolderValidator<MediaManagementConfigResource> systemFolderValidator,
+                                           RootFolderAncestorValidator<MediaManagementConfigResource> rootFolderAncestorValidator,
+                                           RootFolderValidator<MediaManagementConfigResource> rootFolderValidator)
             : base(configService)
         {
             SharedValidator.RuleFor(c => c.RecycleBin).IsValidPath()

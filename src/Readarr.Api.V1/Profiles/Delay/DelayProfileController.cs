@@ -14,7 +14,7 @@ namespace Readarr.Api.V1.Profiles.Delay
     {
         private readonly IDelayProfileService _delayProfileService;
 
-        public DelayProfileController(IDelayProfileService delayProfileService, DelayProfileTagInUseValidator tagInUseValidator)
+        public DelayProfileController(IDelayProfileService delayProfileService, DelayProfileTagInUseValidator<DelayProfileResource> tagInUseValidator)
         {
             _delayProfileService = delayProfileService;
 

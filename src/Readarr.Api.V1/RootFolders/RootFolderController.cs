@@ -25,14 +25,14 @@ namespace Readarr.Api.V1.RootFolders
         public RootFolderController(IRootFolderService rootFolderService,
                                 ICalibreProxy calibreProxy,
                                 IBroadcastSignalRMessage signalRBroadcaster,
-                                RecycleBinValidator recycleBinValidator,
-                                RootFolderValidator rootFolderValidator,
-                                PathExistsValidator pathExistsValidator,
-                                StartupFolderValidator startupFolderValidator,
-                                SystemFolderValidator systemFolderValidator,
-                                FolderWritableValidator folderWritableValidator,
-                                QualityProfileExistsValidator qualityProfileExistsValidator,
-                                MetadataProfileExistsValidator metadataProfileExistsValidator)
+                                RecycleBinValidator<RootFolderResource> recycleBinValidator,
+                                RootFolderValidator<RootFolderResource> rootFolderValidator,
+                                PathExistsValidator<RootFolderResource> pathExistsValidator,
+                                StartupFolderValidator<RootFolderResource> startupFolderValidator,
+                                SystemFolderValidator<RootFolderResource> systemFolderValidator,
+                                FolderWritableValidator<RootFolderResource> folderWritableValidator,
+                                QualityProfileExistsValidator<RootFolderResource> qualityProfileExistsValidator,
+                                MetadataProfileExistsValidator<RootFolderResource> metadataProfileExistsValidator)
             : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;

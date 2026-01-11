@@ -2,7 +2,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Validation;
 
@@ -18,25 +17,25 @@ namespace NzbDrone.Core.Organizer
         public static IRuleBuilderOptions<T, string> ValidBookFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.NotEmpty();
-            ruleBuilder.SetValidator(new IllegalCharactersValidator());
+            ruleBuilder.SetValidator(new IllegalCharactersValidator<T>());
 
-            return ruleBuilder.SetValidator(new ValidStandardTrackFormatValidator());
+            return ruleBuilder.SetValidator(new ValidStandardTrackFormatValidator<T>());
         }
 
         public static IRuleBuilderOptions<T, string> ValidAuthorFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.NotEmpty();
-            ruleBuilder.SetValidator(new IllegalCharactersValidator());
+            ruleBuilder.SetValidator(new IllegalCharactersValidator<T>());
 
             return ruleBuilder.Matches(FileNameBuilder.AuthorNameRegex).WithMessage("Must contain Author name");
         }
     }
 
-    public class ValidStandardTrackFormatValidator : BookdarrPropertyValidator<object, string>
+    public class ValidStandardTrackFormatValidator<T> : BookdarrPropertyValidator<T, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain Book Title AND PartNumber, OR Original Title";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {
@@ -51,13 +50,13 @@ namespace NzbDrone.Core.Organizer
         }
     }
 
-    public class IllegalCharactersValidator : BookdarrPropertyValidator<object, string>
+    public class IllegalCharactersValidator<T> : BookdarrPropertyValidator<T, string>
     {
         private readonly char[] _invalidPathChars = Path.GetInvalidPathChars();
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Contains illegal characters: {InvalidCharacters}";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value.IsNullOrWhiteSpace())
             {

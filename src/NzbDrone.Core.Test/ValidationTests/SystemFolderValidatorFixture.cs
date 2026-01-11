@@ -9,7 +9,7 @@ using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ValidationTests
 {
-    public class SystemFolderValidatorFixture : CoreTest<SystemFolderValidator>
+    public class SystemFolderValidatorFixture : CoreTest<SystemFolderValidator<Author>>
     {
         private TestValidator<Author> _validator;
 

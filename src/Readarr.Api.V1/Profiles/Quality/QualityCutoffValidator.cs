@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
-using FluentValidation.Validators;
 using NzbDrone.Core.Validation;
 
 namespace Readarr.Api.V1.Profiles.Quality

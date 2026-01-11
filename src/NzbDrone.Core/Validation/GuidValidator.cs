@@ -1,14 +1,13 @@
 using System;
 using FluentValidation;
-using FluentValidation.Validators;
 
 namespace NzbDrone.Core.Validation
 {
-    public class GuidValidator : BookdarrPropertyValidator<object, string>
+    public class GuidValidator<T> : BookdarrPropertyValidator<T, string>
     {
         protected override string GetDefaultMessageTemplate(string errorCode) => "String is not a valid Guid";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {

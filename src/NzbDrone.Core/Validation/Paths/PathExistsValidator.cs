@@ -1,11 +1,10 @@
-﻿using FluentValidation.Validators;
 using FluentValidation;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class PathExistsValidator : BookdarrPropertyValidator<object, string>
+    public class PathExistsValidator<T> : BookdarrPropertyValidator<T, string>
     {
         private readonly IDiskProvider _diskProvider;
 
@@ -16,7 +15,7 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override string GetDefaultMessageTemplate(string errorCode) => "Path '{path}' does not exist";
 
-        public override bool IsValid(ValidationContext<object> context, string value)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
             if (value == null)
             {
