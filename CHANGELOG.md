@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.229
+- Summary: merge Dependabot update for FluentAssertions.
+- Why: keep test dependencies current after PR #9.
+- Impact: FluentAssertions is updated to 8.8.0 for test projects.
+- Files: src/Directory.Packages.props, src/NzbDrone.Test.Common/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide on the remaining major NuGet PRs.
+
 ## 1.2.228
 - Summary: merge Dependabot update for babel-loader.
 - Why: keep the frontend build tooling current after PR #5.
