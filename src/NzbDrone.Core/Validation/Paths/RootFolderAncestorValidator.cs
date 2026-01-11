@@ -2,7 +2,6 @@ using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {

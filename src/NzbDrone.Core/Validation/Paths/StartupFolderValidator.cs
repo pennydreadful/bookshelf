@@ -1,7 +1,6 @@
 using FluentValidation;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {

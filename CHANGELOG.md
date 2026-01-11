@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.241
+- Summary: remove redundant validation namespace usings to satisfy IDE0005.
+- Why: the update build treats unnecessary using directives as errors.
+- Impact: validation path validators rely on global usings without tripping StyleCop/IDE warnings.
+- Files: src/NzbDrone.Core/Validation/Paths/AuthorAncestorValidator.cs, src/NzbDrone.Core/Validation/Paths/AuthorExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/AuthorPathValidator.cs, src/NzbDrone.Core/Validation/Paths/FileExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/FolderWritableValidator.cs, src/NzbDrone.Core/Validation/Paths/PathExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/PathValidator.cs, src/NzbDrone.Core/Validation/Paths/RecycleBinValidator.cs, src/NzbDrone.Core/Validation/Paths/RootFolderAncestorValidator.cs, src/NzbDrone.Core/Validation/Paths/RootFolderValidator.cs, src/NzbDrone.Core/Validation/Paths/StartupFolderValidator.cs, src/NzbDrone.Core/Validation/Paths/SystemFolderValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the IDE0005 errors are resolved.
+
 ## 1.2.240
 - Summary: finish FluentValidation 12 generic validator migration and update call sites.
 - Why: SetValidator now requires matching generic validators; previous object-based validators caused compile-time type mismatches.

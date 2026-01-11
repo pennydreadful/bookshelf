@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Books;
-using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Validation.Paths
 {
