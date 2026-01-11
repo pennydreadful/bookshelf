@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.252
+- Summary: fix StyleCop SA1108 by moving CodeQL suppression comments above guard clauses.
+- Why: StyleCop forbids inline comments in block statements.
+- Impact: CodeQL suppressions remain while StyleCop passes in builds.
+- Files: src/Readarr.Api.V1/Author/AuthorController.cs, src/NzbDrone.Core/Parser/ParsingService.cs, src/NzbDrone.Core/Organizer/FileNameBuilder.cs, src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/NzbDrone.Core/MediaFiles/MediaFileDeletionService.cs, src/NzbDrone.Core/Books/Services/AuthorMergeService.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to ensure the StyleCop errors are resolved.
+
 ## 1.2.251
 - Summary: annotate user-controlled bypass alerts that are not security boundaries.
 - Why: CodeQL flags conditional logic driven by user settings or parsed input that is not auth-related.

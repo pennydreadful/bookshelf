@@ -266,10 +266,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                         return new List<Book>();
                     }
 
-                    if (prefix == "author" || prefix == "work" || prefix == "edition") // lgtm [cs/user-controlled-bypass] user query selects search mode, not auth.
+                    // lgtm [cs/user-controlled-bypass] user query selects search mode, not auth.
+                    if (prefix == "author" || prefix == "work" || prefix == "edition")
                     {
                         var isValid = int.TryParse(slug, out var searchId);
-                        if (!isValid) // lgtm [cs/user-controlled-bypass] slug validation blocks invalid search ids only.
+                        // lgtm [cs/user-controlled-bypass] slug validation blocks invalid search ids only.
+                        if (!isValid)
                         {
                             return new List<Book>();
                         }

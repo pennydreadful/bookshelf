@@ -60,7 +60,8 @@ namespace NzbDrone.Core.Books
 
             _logger.Info("Merging author {0} into {1}", loser, winner);
 
-            if (moveFiles) // lgtm [cs/user-controlled-bypass] merge move is a user-requested action, not auth bypass.
+            // lgtm [cs/user-controlled-bypass] merge move is a user-requested action, not auth bypass.
+            if (moveFiles)
             {
                 MoveAuthorFiles(loser, winner);
             }

@@ -129,7 +129,8 @@ namespace NzbDrone.Core.MediaFiles
         [EventHandleOrder(EventHandleOrder.First)]
         public void Handle(AuthorDeletedEvent message)
         {
-            if (message.DeleteFiles) // lgtm [cs/user-controlled-bypass] delete flag is an explicit user action, not an auth gate.
+            // lgtm [cs/user-controlled-bypass] delete flag is an explicit user action, not an auth gate.
+            if (message.DeleteFiles)
             {
                 var author = message.Author;
 

@@ -254,7 +254,8 @@ namespace Readarr.Api.V1.Author
         [HttpPost("merge")]
         public ActionResult<AuthorResource> MergeAuthors([FromBody] MergeAuthorsResource resource)
         {
-            if (resource == null) // lgtm [cs/user-controlled-bypass] API controller enforces auth; null guard isn't an auth bypass.
+            // lgtm [cs/user-controlled-bypass] API controller enforces auth; null guard isn't an auth bypass.
+            if (resource == null)
             {
                 return BadRequest();
             }
