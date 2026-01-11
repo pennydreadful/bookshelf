@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.246
+- Summary: move ResourceValidator field naming onto an always-true Must rule for FluentValidation 12.
+- Why: OverridePropertyName/WithName are available on rule options, not the initial builder.
+- Impact: field-level validation keeps stable property names without compiler errors.
+- Files: src/Readarr.Http/REST/ResourceValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm ResourceValidator compiles cleanly.
+
 ## 1.2.245
 - Summary: attach ResourceValidator field naming to a no-op rule to access FluentValidation 12 options.
 - Why: WithName/OverridePropertyName are only exposed after a rule options stage in FluentValidation 12.

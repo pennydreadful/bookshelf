@@ -40,7 +40,7 @@ namespace Readarr.Http.REST
             var expression = Expression.Lambda<Func<TResource, TProperty>>(body, parameter);
 
             return RuleFor(expression)
-                .Custom((_, _) => { })
+                .Must(_ => true)
                 .OverridePropertyName(fieldName)
                 .WithName(fieldName);
         }
