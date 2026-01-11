@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.253
+- Summary: fix StyleCop SA1515 spacing for CodeQL suppression comment in BookInfoProxy.
+- Why: StyleCop requires a blank line before single-line comments.
+- Impact: build no longer fails on comment spacing in BookInfoProxy.
+- Files: src/NzbDrone.Core/MetadataSource/BookInfo/BookInfoProxy.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the StyleCop error is resolved.
+
 ## 1.2.252
 - Summary: fix StyleCop SA1108 by moving CodeQL suppression comments above guard clauses.
 - Why: StyleCop forbids inline comments in block statements.

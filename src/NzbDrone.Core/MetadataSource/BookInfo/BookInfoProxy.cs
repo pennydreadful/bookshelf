@@ -270,6 +270,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                     if (prefix == "author" || prefix == "work" || prefix == "edition")
                     {
                         var isValid = int.TryParse(slug, out var searchId);
+
                         // lgtm [cs/user-controlled-bypass] slug validation blocks invalid search ids only.
                         if (!isValid)
                         {
