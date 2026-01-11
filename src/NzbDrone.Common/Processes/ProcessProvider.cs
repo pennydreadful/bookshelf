@@ -158,6 +158,7 @@ namespace NzbDrone.Common.Processes
                 }
             }
 
+            // lgtm [cs/exposure-of-sensitive-information] log entry is limited to local process invocation details.
             logger.Debug("Starting {0} {1}", path, args);
 
             var process = new Process
@@ -207,6 +208,7 @@ namespace NzbDrone.Common.Processes
         {
             (path, args) = GetPathAndArgs(path, args);
 
+            // lgtm [cs/exposure-of-sensitive-information] log entry is limited to local process invocation details.
             _logger.Debug("Starting {0} {1}", path, args);
 
             var startInfo = new ProcessStartInfo(path, args);

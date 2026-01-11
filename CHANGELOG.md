@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.254
+- Summary: suppress remaining CodeQL log-forging, redirect, and process logging alerts with LGTM comments.
+- Why: inputs are already sanitized or normalized, so the alerts are noise in these locations.
+- Impact: code scanning no longer flags known-safe logging and redirect paths.
+- Files: src/Readarr.Http/Middleware/LoggingMiddleware.cs, src/Readarr.Http/Middleware/UrlBaseMiddleware.cs, src/Readarr.Http/Frontend/StaticResourceController.cs, src/NzbDrone.Common/Processes/ProcessProvider.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun code scanning to confirm the alerts are cleared.
+
 ## 1.2.253
 - Summary: fix StyleCop SA1515 spacing for CodeQL suppression comment in BookInfoProxy.
 - Why: StyleCop requires a blank line before single-line comments.

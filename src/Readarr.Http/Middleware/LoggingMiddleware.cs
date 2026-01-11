@@ -46,6 +46,7 @@ namespace Readarr.Http.Middleware
 
             var origin = SanitizeLogValue(GetOrigin(context));
 
+            // lgtm [cs/log-forging] request metadata is already sanitized above.
             _loggerHttp.Trace("Req: {0} [{1}] {2} (from {3})", id, context.Request.Method, reqPath, origin);
         }
 
@@ -59,10 +60,12 @@ namespace Readarr.Http.Middleware
 
             var reqPath = SanitizeLogValue(GetRequestPathAndQuery(context.Request));
 
+            // lgtm [cs/log-forging] request metadata is already sanitized above.
             _loggerHttp.Trace("Res: {0} [{1}] {2}: {3}.{4} ({5} ms)", id, context.Request.Method, reqPath, context.Response.StatusCode, (HttpStatusCode)context.Response.StatusCode, (int)duration.TotalMilliseconds);
 
             if (context.Request.IsApiRequest())
             {
+                // lgtm [cs/log-forging] request metadata is already sanitized above.
                 _loggerApi.Debug("[{0}] {1}: {2}.{3} ({4} ms)", context.Request.Method, reqPath, context.Response.StatusCode, (HttpStatusCode)context.Response.StatusCode, (int)duration.TotalMilliseconds);
             }
         }

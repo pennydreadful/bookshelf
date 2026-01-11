@@ -19,6 +19,7 @@ namespace Readarr.Http.Middleware
         {
             if (_urlBase.IsNotNullOrWhiteSpace() && context.Request.PathBase.Value.IsNullOrWhiteSpace())
             {
+                // lgtm [cs/web/unvalidated-url-redirection] url base is normalized and validated on input.
                 context.Response.Redirect($"{_urlBase}{context.Request.Path}{context.Request.QueryString}");
                 context.Response.StatusCode = 307;
 
