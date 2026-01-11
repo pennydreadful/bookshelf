@@ -326,9 +326,10 @@ PY
   fi
 
   local branch
-  branch="$(run_as_user bash -lc "git -C \"${repo_path}\" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | awk -F/ '{print \\$NF}'" || true)"
+  branch="$(run_as_user git -C "${repo_path}" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true)"
+  branch="${branch##*/}"
   if [ -z "${branch}" ] || [ "${branch}" = "(unknown)" ]; then
-    branch="$(run_as_user bash -lc "git -C \"${repo_path}\" remote show origin 2>/dev/null | awk -F': ' '/HEAD branch/ {print \\$2}'" || true)"
+    branch="$(run_as_user bash -lc "git -C \"${repo_path}\" remote show origin 2>/dev/null | sed -n 's/.*HEAD branch: //p' | head -n 1" || true)"
   fi
   if [ -z "${branch}" ] || [ "${branch}" = "(unknown)" ]; then
     branch="main"

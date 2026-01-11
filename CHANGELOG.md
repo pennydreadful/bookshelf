@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.213
+- Summary: fix diagnostics push branch detection and silence Browserslist outdated warning during builds.
+- Why: update diagnostics failed with a shell variable error, and the warning clutters update logs.
+- Impact: update-dev.sh no longer trips on `$NF`, and dev-build suppresses the Browserslist warning.
+- Files: scripts/update-dev.sh, scripts/dev-build.sh, src/Directory.Build.props, CHANGELOG.md.
+- Next: run update-dev.sh with logging and confirm diagnostics push succeeds and the Browserslist warning is gone.
+
 ## 1.2.212
 - Summary: show the active log level in System -> Log Files instead of a static Info default.
 - Why: the log level notice should match the current General Settings selection.

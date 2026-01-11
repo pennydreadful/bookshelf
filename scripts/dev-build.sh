@@ -16,6 +16,8 @@ if ! command -v yarn >/dev/null 2>&1; then
   exit 1
 fi
 
+export BROWSERSLIST_IGNORE_OLD_DATA=1
+
 yarn install --frozen-lockfile --network-timeout 120000
 yarn build
 
