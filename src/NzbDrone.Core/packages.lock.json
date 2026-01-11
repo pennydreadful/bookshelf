@@ -4,9 +4,9 @@
     "net10.0": {
       "Dapper": {
         "type": "Direct",
-        "requested": "[2.0.151, )",
-        "resolved": "2.0.151",
-        "contentHash": "mMcZgx1lim0/i1Ozu+lgnBM4GwNIHpCuxV6BV2ovsEfZAXRAq4jb6RIhxGDcVjtmXMLPpdp85jHPdDjBMMwejw=="
+        "requested": "[2.1.66, )",
+        "resolved": "2.1.66",
+        "contentHash": "/q77jUgDOS+bzkmk3Vy9SiWMaetTw+NOoPAV0xPBsGVAyljd5S6P+4RUW7R3ZUGGr9lDRyPKgAMj2UAOwvqZYw=="
       },
       "Diacritical.Net": {
         "type": "Direct",

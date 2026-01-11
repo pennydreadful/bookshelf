@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.225
+- Summary: merge Dependabot updates for AutoFixture, Diacritical.Net, and Dapper.
+- Why: keep NuGet dependencies current while clearing pending PRs #6, #8, and #7.
+- Impact: Dapper is updated to 2.1.66 and supporting lock files reflect the new versions.
+- Files: src/Directory.Packages.props, src/NzbDrone.Core/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide whether to take the major NuGet and eslint/babel updates after reviewing build impact.
+
 ## 1.2.224
 - Summary: merge Dependabot security updates for webpack and npm/yarn packages.
 - Why: address dependency security alerts for qs, js-yaml, @babel/runtime, and webpack.
