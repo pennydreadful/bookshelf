@@ -134,7 +134,7 @@
     "ts-loader": "9.5.1",
     "typescript-plugin-css-modules": "5.0.1",
     "url-loader": "4.1.1",
-    "webpack": "5.95.0",
+    "webpack": "5.104.1",
     "webpack-cli": "5.1.4",
     "webpack-livereload-plugin": "3.0.2",
     "worker-loader": "3.0.8"
