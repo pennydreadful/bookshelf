@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.226
+- Summary: merge ESLint tooling updates for eslint-config-prettier and @typescript-eslint/parser.
+- Why: keep linting dependencies current after Dependabot PRs #2 and #3.
+- Impact: package.json and yarn.lock now reflect updated ESLint tooling versions.
+- Files: package.json, yarn.lock, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide whether to take the babel-loader and major FluentValidation/FluentAssertions updates.
+
 ## 1.2.225
 - Summary: merge Dependabot updates for AutoFixture, Diacritical.Net, and Dapper.
 - Why: keep NuGet dependencies current while clearing pending PRs #6, #8, and #7.
