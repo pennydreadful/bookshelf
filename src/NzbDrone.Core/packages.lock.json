@@ -175,9 +175,9 @@
       },
       "PdfSharpCore": {
         "type": "Direct",
-        "requested": "[1.3.65, )",
-        "resolved": "1.3.65",
-        "contentHash": "mkN1EZ1VtH4+x97DEvmno5goRU3j4myuWD7IxO9MuxRcc1iOcUfhq75RmxZSAH9dQCZhpGpLUJSkwlRRnzElAg==",
+        "requested": "[1.3.67, )",
+        "resolved": "1.3.67",
+        "contentHash": "6Cvj9nX6RwIJFIQC8eJFCYYUu9Qa2t9LWh4i0SXFi3hqkX/ssUGKfzp+9JZZXbkp0lHeeH/9UYFHelLqIusPrQ==",
         "dependencies": {
           "SharpZipLib": "1.4.2",
           "SixLabors.Fonts": "1.0.0-beta17",

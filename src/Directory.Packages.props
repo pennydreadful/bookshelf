@@ -44,7 +44,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="NunitXml.TestLogger" Version="3.0.117" />
-    <PackageVersion Include="PdfSharpCore" Version="1.3.65" />
+    <PackageVersion Include="PdfSharpCore" Version="1.3.67" />
     <PackageVersion Include="RestSharp.Serializers.SystemTextJson" Version="106.15.0" />
     <PackageVersion Include="RestSharp" Version="106.15.0" />
     <PackageVersion Include="Selenium.Support" Version="3.141.0" />
