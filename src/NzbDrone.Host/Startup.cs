@@ -116,19 +116,14 @@ namespace NzbDrone.Host
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "apiKey",
                     Description = "Apikey passed as header",
-                    In = ParameterLocation.Header,
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "X-Api-Key"
-                    },
+                    In = ParameterLocation.Header
                 };
 
                 c.AddSecurityDefinition("X-Api-Key", apiKeyHeader);
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    { apiKeyHeader, Array.Empty<string>() }
+                    { new OpenApiSecuritySchemeReference("X-Api-Key", null, null), new List<string>() }
                 });
 
                 var apikeyQuery = new OpenApiSecurityScheme
@@ -137,12 +132,7 @@ namespace NzbDrone.Host
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "apiKey",
                     Description = "Apikey passed as query parameter",
-                    In = ParameterLocation.Query,
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "apikey"
-                    },
+                    In = ParameterLocation.Query
                 };
 
                 c.AddServer(new OpenApiServer
@@ -159,7 +149,7 @@ namespace NzbDrone.Host
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    { apikeyQuery, Array.Empty<string>() }
+                    { new OpenApiSecuritySchemeReference("apikey", null, null), new List<string>() }
                 });
 
                 c.DescribeAllParametersInCamelCase();

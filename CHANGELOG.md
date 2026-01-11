@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.235
+- Summary: update Swagger security requirements for OpenAPI.NET v2.
+- Why: OpenApiSecurityScheme no longer exposes Reference and requirements now key on OpenApiSecuritySchemeReference.
+- Impact: Swagger security requirements build without compile errors after the Swashbuckle v10 upgrade.
+- Files: src/NzbDrone.Host/Startup.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to verify the SwaggerGen compile errors are resolved.
+
 ## 1.2.234
 - Summary: fix Swashbuckle v10 OpenAPI namespace usage and align annotations package.
 - Why: OpenAPI.NET v2 removed Microsoft.OpenApi.Models, causing Startup.cs to fail after the SwaggerGen upgrade.
