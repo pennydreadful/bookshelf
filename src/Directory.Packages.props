@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <ItemGroup>
-    <PackageVersion Include="AutoFixture" Version="4.17.0" />
+    <PackageVersion Include="AutoFixture" Version="4.18.1" />
     <PackageVersion Include="coverlet.collector" Version="3.0.4-preview.27.ge7cb7c3b40" PrivateAssets="all" />
     <PackageVersion Include="Dapper" Version="2.0.151" />
     <PackageVersion Include="Diacritical.Net" Version="1.0.4" />
