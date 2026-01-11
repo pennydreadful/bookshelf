@@ -29,7 +29,7 @@ Bookdarr supports two metadata providers:
 
 Controls:
 - Set `GOOGLE_BOOKS_API_KEY` to raise Google Books quota.
-- Set `METADATA_PROVIDER=bookinfo` to switch providers.
+- Set `METADATA_PROVIDER=bookinfo` to switch providers (env var or config.xml), then restart.
 - Set `METADATA_URL` to override the BookInfo API base URL (default
   `https://api.bookinfo.pro`).
 

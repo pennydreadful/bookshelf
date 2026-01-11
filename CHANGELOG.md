@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.217
+- Summary: clarify metadata provider switching instructions and restore the Development settings link in the sidebar.
+- Why: the previous help text was unclear and the Development menu was missing from navigation.
+- Impact: users now see explicit steps to change METADATA_PROVIDER and can access Settings -> Development again.
+- Files: frontend/src/Components/Page/Sidebar/PageSidebar.js, src/NzbDrone.Core/Localization/Core/en.json, README.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: confirm the Development link appears in the sidebar and the metadata help text reads clearly.
+
 ## 1.2.216
 - Summary: document metadata provider tradeoffs, add Linux systemd/logging guidance, and mark the checklist items complete.
 - Why: we need clear provider expectations plus Linux deployment/log retention instructions, and the checklist should reflect the work.
