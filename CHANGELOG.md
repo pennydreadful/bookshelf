@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.230
+- Summary: update tests for FluentAssertions 8 API changes.
+- Why: the FluentAssertions major bump removed EquivalencyAssertionOptions and renamed assertion helpers.
+- Impact: test assertions now use EquivalencyOptions, updated comparison helpers, and explicit TimeSpan precision.
+- Files: src/NzbDrone.Core.Test/MusicTests/AlbumRepositoryTests/AlbumRepositoryFixture.cs, src/NzbDrone.Common.Test/TPLTests/RateLimitServiceFixture.cs, src/NzbDrone.Integration.Test/ApiTests/ReleaseFixture.cs, src/NzbDrone.Core.Test/IndexerTests/MyAnonaMouseTests/MyAnonaMouseFixture.cs, src/NzbDrone.Common.Test/DiskTests/DirectoryLookupServiceFixture.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build and confirm tests compile after FluentAssertions upgrade.
+
 ## 1.2.229
 - Summary: merge Dependabot update for FluentAssertions.
 - Why: keep test dependencies current after PR #9.

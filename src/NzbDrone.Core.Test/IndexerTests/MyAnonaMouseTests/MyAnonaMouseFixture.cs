@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.IndexerTests.MyAnonaMouseTests
             firstRelease.InfoUrl.Should().NotBeNullOrEmpty();
             firstRelease.Size.Should().BeGreaterThan(0);
             firstRelease.PublishDate.Should().BeAfter(DateTime.MinValue);
-            firstRelease.Seeders.Should().BeGreaterOrEqualTo(0);
+            firstRelease.Seeders.Should().BeGreaterThanOrEqualTo(0);
         }
 
         [Test]

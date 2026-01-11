@@ -44,7 +44,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, LOST_FOUND));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(x => x.Name == LOST_FOUND);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, QNAP_THUMB));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(x => x.Name == QNAP_THUMB);
         }
 
         [Test]
