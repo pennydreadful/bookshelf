@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.244
+- Summary: set RuleForField property and display names via FluentValidation rule configuration.
+- Why: FluentValidation 12 exposes OverridePropertyName/WithName only after configuring rule options.
+- Impact: dynamic field validators keep the expected field names for UI error mapping.
+- Files: src/Readarr.Http/REST/ResourceValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the ResourceValidator compile errors are resolved.
+
 ## 1.2.243
 - Summary: drop OverridePropertyName usage in ResourceValidator for FluentValidation 12.
 - Why: the FluentValidation 12 API no longer exposes OverridePropertyName on initial rule builders.
