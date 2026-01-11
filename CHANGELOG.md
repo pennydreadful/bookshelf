@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.236
+- Summary: update Swagger security requirement registration for Swashbuckle v10.
+- Why: AddSecurityRequirement now expects a factory delegate instead of a direct requirement instance.
+- Impact: Swagger security requirements are registered via lambdas for OpenAPI.NET v2 compatibility.
+- Files: src/NzbDrone.Host/Startup.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm SwaggerGen compiles after this change.
+
 ## 1.2.235
 - Summary: update Swagger security requirements for OpenAPI.NET v2.
 - Why: OpenApiSecurityScheme no longer exposes Reference and requirements now key on OpenApiSecuritySchemeReference.
