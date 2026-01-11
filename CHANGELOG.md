@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.224
+- Summary: merge Dependabot security updates for webpack and npm/yarn packages.
+- Why: address dependency security alerts for qs, js-yaml, @babel/runtime, and webpack.
+- Impact: dependency versions are updated via Dependabot PRs #4 and #1.
+- Files: package.json, yarn.lock, src/Directory.Build.props, CHANGELOG.md.
+- Next: watch for remaining Dependabot alerts (glob, postcss) and review NuGet bumps carefully.
+
 ## 1.2.223
 - Summary: bump Dependabot PR limits to trigger a fresh update run.
 - Why: nudging the Dependabot config prompts GitHub to re-check for updates immediately.
