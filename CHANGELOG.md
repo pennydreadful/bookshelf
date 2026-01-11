@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.249
+- Summary: sanitize request logging and stop logging environment variable values.
+- Why: reduce log forging risk and avoid leaking sensitive values in logs.
+- Impact: HTTP logs strip CR/LF from path/origin, and process startup logs only note env keys.
+- Files: src/Readarr.Http/Middleware/LoggingMiddleware.cs, src/NzbDrone.Common/Processes/ProcessProvider.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun code scanning to verify the log-forging and sensitive info alerts drop.
+
 ## 1.2.248
 - Summary: add GitHub CodeQL code scanning workflow.
 - Why: enable automated code scanning on develop and PRs for C# and JavaScript.
