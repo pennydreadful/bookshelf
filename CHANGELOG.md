@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.218
+- Summary: document automatic tag-and-push behavior in the handoff guide.
+- Why: updates should always be pushed without asking after each change.
+- Impact: handoff now explicitly instructs agents to tag and push automatically.
+- Files: docs/HANDOFF.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: continue with the remaining checklist items.
+
 ## 1.2.217
 - Summary: clarify metadata provider switching instructions and restore the Development settings link in the sidebar.
 - Why: the previous help text was unclear and the Development menu was missing from navigation.

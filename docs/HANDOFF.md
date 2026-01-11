@@ -16,6 +16,7 @@ Use this file to onboard a new Codex chat.
 - Responses should be concise.
 - Create an annotated git tag snapshot before pushing to GitHub; no local tar backups.
 - Push updates to GitHub after every change.
+- Automatically run the tag and push steps after each change (do not ask the user to do it).
 - Update CHANGELOG.md and bump the version after every change.
 - When the version changes, update the top-left app version by bumping `src/Directory.Build.props`.
 - When giving install commands, use sudo and chain with `&&`.
