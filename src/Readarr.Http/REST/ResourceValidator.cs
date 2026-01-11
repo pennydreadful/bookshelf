@@ -9,7 +9,7 @@ namespace Readarr.Http.REST
 {
     public class ResourceValidator<TResource> : AbstractValidator<TResource>
     {
-        public IRuleBuilderOptions<TResource, TProperty> RuleForField<TProperty>(Expression<Func<TResource, IEnumerable<Field>>> fieldListAccessor, string fieldName)
+        public IRuleBuilderInitial<TResource, TProperty> RuleForField<TProperty>(Expression<Func<TResource, IEnumerable<Field>>> fieldListAccessor, string fieldName)
         {
             var parameter = fieldListAccessor.Parameters[0];
             var fieldsExpression = Expression.Invoke(fieldListAccessor, parameter);
@@ -39,10 +39,7 @@ namespace Readarr.Http.REST
 
             var expression = Expression.Lambda<Func<TResource, TProperty>>(body, parameter);
 
-            return RuleFor(expression)
-                .Must(_ => true)
-                .OverridePropertyName(fieldName)
-                .WithName(fieldName);
+            return RuleFor(expression);
         }
     }
 }

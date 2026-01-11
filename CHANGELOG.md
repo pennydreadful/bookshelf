@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.247
+- Summary: fix remaining FluentValidation 12 compile errors in host config and field validator helper.
+- Why: HostConfigController still referenced a non-generic FileExistsValidator, and ResourceValidator needed to drop name overrides on the initial rule builder.
+- Impact: Host SSL certificate validation now uses the generic validator type and the field helper compiles against FluentValidation 12.
+- Files: src/Readarr.Api.V1/Config/HostConfigController.cs, src/Readarr.Http/REST/ResourceValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the new FluentValidation compile errors are cleared.
+
 ## 1.2.246
 - Summary: move ResourceValidator field naming onto an always-true Must rule for FluentValidation 12.
 - Why: OverridePropertyName/WithName are available on rule options, not the initial builder.
