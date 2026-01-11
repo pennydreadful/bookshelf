@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.222
+- Summary: enable Dependabot updates for NuGet/npm and add a CodeQL workflow.
+- Why: dependency and code scanning should run in GitHub without local tooling.
+- Impact: GitHub now opens dependency update PRs and performs CodeQL analysis on develop.
+- Files: .github/dependabot.yml, .github/workflows/codeql.yml, src/Directory.Build.props, CHANGELOG.md.
+- Next: watch for the first Dependabot PRs and CodeQL results in GitHub Security.
+
 ## 1.2.221
 - Summary: expand the checklist with Calibre-competitor goals and add a roadmap document.
 - Why: the project needs a clear set of long-term milestones separate from the task checklist.

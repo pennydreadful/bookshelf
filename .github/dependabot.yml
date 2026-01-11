@@ -10,3 +10,11 @@ updates:
    directory: "/"
    schedule:
      interval: weekly
+ - package-ecosystem: "nuget"
+   directory: "/src"
+   schedule:
+     interval: weekly
+ - package-ecosystem: "npm"
+   directory: "/"
+   schedule:
+     interval: weekly
