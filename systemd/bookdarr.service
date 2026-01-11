@@ -1,0 +1,21 @@
+[Unit]
+Description=Bookdarr service
+After=network.target
+
+[Service]
+Type=simple
+User=bookdarr
+Group=bookdarr
+WorkingDirectory=/opt/bookdarr-dev
+EnvironmentFile=-/etc/default/bookdarr
+Environment=BOOKDARR_HOME=/opt/bookdarr-dev
+Environment=BOOKDARR_DATA_DIR=/opt/bookdarr-dev/config
+Environment=RID=linux-x64
+ExecStart=/opt/bookdarr-dev/scripts/run-bookdarr.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

@@ -69,6 +69,7 @@ class DevelopmentSettings extends Component {
                     <FormInputGroup
                       type={inputTypes.TEXT}
                       name="metadataSource"
+                      helpText={translate('MetadataSourceHelpText')}
                       onChange={onInputChange}
                       {...settings.metadataSource}
                     />

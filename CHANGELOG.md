@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.2.216
+- Summary: document metadata provider tradeoffs, add Linux systemd/logging guidance, and mark the checklist items complete.
+- Why: we need clear provider expectations plus Linux deployment/log retention instructions, and the checklist should reflect the work.
+- Impact: README/UI now describe provider pros/cons, and new systemd/logging docs are available.
+- Files: README.md, frontend/src/Settings/Metadata/MetadataProvider/MetadataProvider.js, frontend/src/Settings/Development/DevelopmentSettings.js, src/NzbDrone.Core/Localization/Core/en.json, systemd/bookdarr.service, docs/LINUX_SYSTEMD.md, docs/LOGGING.md, checklist.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: review remaining checklist items and choose the next task to tackle.
+
+## 1.2.215
+- Summary: mark completed checklist items and keep the remaining list focused.
+- Why: the checklist should reflect the completed diagnostics flow, .NET upgrade plan, and dependency refresh work.
+- Impact: completed items are checked off so only remaining tasks need attention.
+- Files: checklist.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: review the remaining checklist items and pick the next task.
+
+## 1.2.214
+- Summary: move the Docker publish task to the end of the checklist.
+- Why: the checklist should keep Docker work last per current planning preference.
+- Impact: checklist ordering now shows non-Docker tasks ahead of Docker publishing.
+- Files: checklist.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: review the checklist and tackle the next non-Docker item.
+
 ## 1.2.213
 - Summary: fix diagnostics push branch detection and silence Browserslist outdated warning during builds.
 - Why: update diagnostics failed with a shell variable error, and the warning clutters update logs.

@@ -20,9 +20,18 @@ For download client integration, mount your host download folder to
 
 ### Metadata
 
-Bookdarr defaults to Google Books search (shared quota, no key required). You
-can supply an optional API key via `GOOGLE_BOOKS_API_KEY` to increase quota.
-To use the BookInfo provider instead, set `METADATA_PROVIDER=bookinfo`.
+Bookdarr supports two metadata providers:
+
+- Google Books (default): fast, broad coverage, no API key required; shared quota
+  without a key and fewer author/series extras.
+- BookInfo (`bookinfo.pro`): richer author/series metadata, cover fallbacks, and
+  better matching; depends on the BookInfo API and can rate-limit.
+
+Controls:
+- Set `GOOGLE_BOOKS_API_KEY` to raise Google Books quota.
+- Set `METADATA_PROVIDER=bookinfo` to switch providers.
+- Set `METADATA_URL` to override the BookInfo API base URL (default
+  `https://api.bookinfo.pro`).
 
 ### Install Script (Source Build)
 
@@ -48,8 +57,8 @@ To rebuild only when needed:
 ### Native Dev on Ubuntu (No Docker)
 
 Use this for faster local builds on a dedicated dev VM. It installs Node 20,
-Yarn 1.22.19 (via npm), and .NET SDK 6.0, clones the repo to `/opt/bookdarr-dev`, and
-creates `/opt/bookdarr-dev/config` for AppData.
+Yarn 1.22.19 (via npm), and .NET SDK 10.0.101, clones the repo to
+`/opt/bookdarr-dev`, and creates `/opt/bookdarr-dev/config` for AppData.
 
 One-step setup + build + run (foreground):
 
@@ -63,6 +72,16 @@ You can still use the individual scripts afterward:
 
     sudo -u joe /opt/bookdarr-dev/scripts/dev-build.sh
     sudo -u joe /opt/bookdarr-dev/scripts/dev-run.sh
+
+### Systemd (Linux only)
+
+Use the bundled unit file and install/uninstall steps in
+`docs/LINUX_SYSTEMD.md`.
+
+### Log Retention (Dev VM)
+
+Update logs live in `/opt/bookdarr-dev/Logs` and are not rotated automatically.
+See `docs/LOGGING.md` for a logrotate example and cleanup guidance.
 
 ## Support
 

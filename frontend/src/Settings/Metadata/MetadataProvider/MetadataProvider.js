@@ -88,6 +88,10 @@ function MetadataProvider(props) {
       {
         hasSettings && !isFetching && !error &&
           <Form>
+            <Alert kind={kinds.INFO}>
+              {translate('MetadataProviderHelpText')}
+            </Alert>
+
             <FieldSet legend={translate('SearchMetadata')}>
               <FormGroup>
                 <FormLabel>
