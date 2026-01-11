@@ -39,9 +39,9 @@
       },
       "NunitXml.TestLogger": {
         "type": "Direct",
-        "requested": "[3.0.117, )",
-        "resolved": "3.0.117",
-        "contentHash": "+AEoIB71gu6R2QXzAs68MLlceLgo0T9hcL8yWGUi+UzozsDMIjHGKhqDqgCFwtO8UcXAJBaFNkK9o0gtFaLTSw=="
+        "requested": "[8.0.0, )",
+        "resolved": "8.0.0",
+        "contentHash": "ph4f7voYkeUC8zIebPOFOQ8r90chOhE4Fv7hnFNlIeG22yiiIuQwbyJ32/VmS2QsO8SIp7NQ9tOmSU2H3ltt7g=="
       },
       "Selenium.Support": {
         "type": "Direct",

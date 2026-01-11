@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.232
+- Summary: update NunitXml.TestLogger to 8.0.0.
+- Why: take the Dependabot test logger upgrade after PR #11 was closed.
+- Impact: test logger dependencies are updated across lock files for the new major version.
+- Files: src/Directory.Packages.props, src/NzbDrone.Api.Test/packages.lock.json, src/NzbDrone.Automation.Test/packages.lock.json, src/NzbDrone.Common.Test/packages.lock.json, src/NzbDrone.Core.Test/packages.lock.json, src/NzbDrone.Host.Test/packages.lock.json, src/NzbDrone.Integration.Test/packages.lock.json, src/NzbDrone.Libraries.Test/packages.lock.json, src/NzbDrone.Mono.Test/packages.lock.json, src/NzbDrone.Update.Test/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: run the update build to confirm tests still load the logger under .NET 10.
+
 ## 1.2.231
 - Summary: finish FluentAssertions 8 API updates in core tests.
 - Why: FluentAssertions removed AssertionOptions and renamed assertion helpers, breaking test builds.
