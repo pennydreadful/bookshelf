@@ -28,6 +28,43 @@ function getFanartUrl(images) {
   return images.find((x) => x.coverType === 'fanart')?.url;
 }
 
+function normalizeExternalUrl(value) {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  if (trimmed.startsWith('//')) {
+    return `https:${trimmed}`;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  if (/^[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+
+  return null;
+}
+
+function isHostMatch(url, host) {
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase();
+    const target = host.toLowerCase();
+
+    return hostname === target || hostname.endsWith(`.${target}`);
+  } catch (error) {
+    return false;
+  }
+}
+
 class AuthorDetailsHeader extends Component {
 
   //
@@ -77,13 +114,13 @@ class AuthorDetailsHeader extends Component {
     const hasOverview = !!overview && overview.length > 0;
     const hasWikipedia = links.some((link) => {
       const name = link?.name ?? '';
-      const url = link?.url ?? '';
-      return name.toLowerCase() === 'wikipedia' || url.includes('wikipedia.org');
+      const url = normalizeExternalUrl(link?.url ?? '');
+      return name.toLowerCase() === 'wikipedia' || (url && isHostMatch(url, 'wikipedia.org'));
     });
     const hasOpenLibrary = links.some((link) => {
       const name = link?.name ?? '';
-      const url = link?.url ?? '';
-      return name.toLowerCase() === 'open library' || url.includes('openlibrary.org');
+      const url = normalizeExternalUrl(link?.url ?? '');
+      return name.toLowerCase() === 'open library' || (url && isHostMatch(url, 'openlibrary.org'));
     });
     const showAttribution = hasOverview && (hasWikipedia || hasOpenLibrary);
     let attributionLabel = '';

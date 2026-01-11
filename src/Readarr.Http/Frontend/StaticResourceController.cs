@@ -55,7 +55,8 @@ namespace Readarr.Http.Frontend
             if (!User.Identity.IsAuthenticated && !IsAuthenticationBypassAllowed(HttpContext))
             {
                 var returnUrl = $"{Request.PathBase}{Request.Path}{Request.QueryString}";
-                var loginUrl = $"{_configFileProvider.UrlBase}/login?returnUrl={Uri.EscapeDataString(returnUrl)}";
+                var urlBase = GetSafeUrlBase();
+                var loginUrl = $"{urlBase}/login?returnUrl={Uri.EscapeDataString(returnUrl)}";
                 return Redirect(loginUrl);
             }
 
@@ -80,6 +81,34 @@ namespace Readarr.Http.Frontend
             }
 
             return false;
+        }
+
+        private string GetSafeUrlBase()
+        {
+            var urlBase = _configFileProvider.UrlBase;
+            if (urlBase.IsNullOrWhiteSpace())
+            {
+                return string.Empty;
+            }
+
+            var trimmed = urlBase.Trim();
+
+            if (trimmed.Contains("://") || trimmed.StartsWith("//"))
+            {
+                return string.Empty;
+            }
+
+            if (trimmed == "/")
+            {
+                return string.Empty;
+            }
+
+            if (!trimmed.StartsWith("/"))
+            {
+                trimmed = "/" + trimmed;
+            }
+
+            return trimmed.TrimEnd('/');
         }
 
         private IActionResult MapResource(string path)

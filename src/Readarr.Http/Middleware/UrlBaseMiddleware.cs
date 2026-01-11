@@ -12,7 +12,7 @@ namespace Readarr.Http.Middleware
         public UrlBaseMiddleware(RequestDelegate next, string urlBase)
         {
             _next = next;
-            _urlBase = urlBase;
+            _urlBase = NormalizeUrlBase(urlBase);
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -26,6 +26,33 @@ namespace Readarr.Http.Middleware
             }
 
             await _next(context);
+        }
+
+        private static string NormalizeUrlBase(string urlBase)
+        {
+            if (urlBase.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            var trimmed = urlBase.Trim();
+
+            if (trimmed.Contains("://") || trimmed.StartsWith("//"))
+            {
+                return null;
+            }
+
+            if (!trimmed.StartsWith("/"))
+            {
+                trimmed = "/" + trimmed;
+            }
+
+            if (trimmed.Length > 1)
+            {
+                trimmed = trimmed.TrimEnd('/');
+            }
+
+            return trimmed;
         }
     }
 }

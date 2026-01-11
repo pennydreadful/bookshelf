@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.250
+- Summary: harden redirect and attribution URL handling to satisfy code scanning.
+- Why: CodeQL flagged unvalidated redirects and substring URL checks.
+- Impact: UrlBase and login redirects reject absolute bases, and author attribution checks validate hostnames.
+- Files: src/Readarr.Http/Middleware/UrlBaseMiddleware.cs, src/Readarr.Http/Frontend/StaticResourceController.cs, frontend/src/Author/Details/AuthorDetailsHeader.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun code scanning to confirm the redirect and URL-sanitization alerts are resolved.
+
 ## 1.2.249
 - Summary: sanitize request logging and stop logging environment variable values.
 - Why: reduce log forging risk and avoid leaking sensitive values in logs.
