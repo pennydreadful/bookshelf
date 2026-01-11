@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Profiles.Delay
 {
-    public class DelayProfileTagInUseValidator : PropertyValidator
+    public class DelayProfileTagInUseValidator : PropertyValidator<object, HashSet<int>>
     {
         private readonly IDelayProfileService _delayProfileService;
 
@@ -14,24 +15,25 @@ namespace NzbDrone.Core.Profiles.Delay
             _delayProfileService = delayProfileService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "One or more tags is used in another profile";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "One or more tags is used in another profile";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, HashSet<int> value)
         {
-            if (context.PropertyValue == null)
+            if (value == null || value.Empty())
             {
                 return true;
             }
 
-            dynamic instance = context.ParentContext.InstanceToValidate;
+            var instanceToValidate = context.InstanceToValidate;
+            if (instanceToValidate == null)
+            {
+                return true;
+            }
+
+            dynamic instance = instanceToValidate;
             var instanceId = (int)instance.Id;
 
-            if (context.PropertyValue is not HashSet<int> collection || collection.Empty())
-            {
-                return true;
-            }
-
-            return _delayProfileService.All().None(d => d.Id != instanceId && d.Tags.Intersect(collection).Any());
+            return _delayProfileService.All().None(d => d.Id != instanceId && d.Tags.Intersect(value).Any());
         }
     }
 }

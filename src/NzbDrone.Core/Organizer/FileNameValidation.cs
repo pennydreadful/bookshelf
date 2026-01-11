@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Organizer
 
         public static IRuleBuilderOptions<T, string> ValidBookFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+            ruleBuilder.NotEmpty();
             ruleBuilder.SetValidator(new IllegalCharactersValidator());
 
             return ruleBuilder.SetValidator(new ValidStandardTrackFormatValidator());
@@ -24,20 +24,20 @@ namespace NzbDrone.Core.Organizer
 
         public static IRuleBuilderOptions<T, string> ValidAuthorFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+            ruleBuilder.NotEmpty();
             ruleBuilder.SetValidator(new IllegalCharactersValidator());
 
-            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AuthorNameRegex)).WithMessage("Must contain Author name");
+            return ruleBuilder.Matches(FileNameBuilder.AuthorNameRegex).WithMessage("Must contain Author name");
         }
     }
 
-    public class ValidStandardTrackFormatValidator : PropertyValidator
+    public class ValidStandardTrackFormatValidator : PropertyValidator<object, string>
     {
-        protected override string GetDefaultMessageTemplate() => "Must contain Book Title AND PartNumber, OR Original Title";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Must contain Book Title AND PartNumber, OR Original Title";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue is not string value)
+            if (value == null)
             {
                 return false;
             }
@@ -50,16 +50,14 @@ namespace NzbDrone.Core.Organizer
         }
     }
 
-    public class IllegalCharactersValidator : PropertyValidator
+    public class IllegalCharactersValidator : PropertyValidator<object, string>
     {
         private readonly char[] _invalidPathChars = Path.GetInvalidPathChars();
 
-        protected override string GetDefaultMessageTemplate() => "Contains illegal characters: {InvalidCharacters}";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Contains illegal characters: {InvalidCharacters}";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            var value = context.PropertyValue as string;
-
             if (value.IsNullOrWhiteSpace())
             {
                 return true;

@@ -13,14 +13,14 @@ namespace Readarr.Api.V1.Profiles.Quality
         }
     }
 
-    public class ValidCutoffValidator<T> : PropertyValidator
+    public class ValidCutoffValidator<T> : PropertyValidator<T, int>
     {
-        protected override string GetDefaultMessageTemplate() => "Cutoff must be an allowed quality or group";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Cutoff must be an allowed quality or group";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<T> context, int value)
         {
-            var cutoff = (int)context.PropertyValue;
-            dynamic instance = context.ParentContext.InstanceToValidate;
+            var cutoff = value;
+            dynamic instance = context.InstanceToValidate;
             var items = instance.Items as IList<QualityProfileQualityItemResource>;
 
             var cutoffItem = items?.SingleOrDefault(i => (i.Quality == null && i.Id == cutoff) || i.Quality?.Id == cutoff);

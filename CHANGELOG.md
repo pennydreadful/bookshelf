@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.238
+- Summary: update custom validators for FluentValidation 12 API changes.
+- Why: FluentValidation removed PropertyValidatorContext and now requires generic PropertyValidator<T, TProperty> with ValidationContext.
+- Impact: custom validators and rule builder helpers compile against FluentValidation 12.x.
+- Files: src/NzbDrone.Core/Profiles/Delay/DelayProfileTagInUseValidator.cs, src/NzbDrone.Core/Organizer/FileNameValidation.cs, src/NzbDrone.Core/ImportLists/Exclusions/ImportListExclusionExistsValidator.cs, src/NzbDrone.Core/Validation/DownloadClientExistsValidator.cs, src/NzbDrone.Core/Validation/FolderChmodValidator.cs, src/NzbDrone.Core/Validation/FolderValidator.cs, src/NzbDrone.Core/Validation/GuidValidator.cs, src/NzbDrone.Core/Validation/MetadataProfileExistsValidator.cs, src/NzbDrone.Core/Validation/QualityProfileExistsValidator.cs, src/NzbDrone.Core/Validation/UrlValidator.cs, src/NzbDrone.Core/Validation/RuleBuilderExtensions.cs, src/NzbDrone.Core/Validation/Paths/AuthorAncestorValidator.cs, src/NzbDrone.Core/Validation/Paths/AuthorExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/AuthorPathValidator.cs, src/NzbDrone.Core/Validation/Paths/FileExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/FolderWritableValidator.cs, src/NzbDrone.Core/Validation/Paths/PathExistsValidator.cs, src/NzbDrone.Core/Validation/Paths/PathValidator.cs, src/NzbDrone.Core/Validation/Paths/RecycleBinValidator.cs, src/NzbDrone.Core/Validation/Paths/RootFolderAncestorValidator.cs, src/NzbDrone.Core/Validation/Paths/RootFolderValidator.cs, src/NzbDrone.Core/Validation/Paths/StartupFolderValidator.cs, src/NzbDrone.Core/Validation/Paths/SystemFolderValidator.cs, src/Readarr.Api.V1/Author/AuthorFolderAsRootFolderValidator.cs, src/Readarr.Api.V1/Profiles/Quality/QualityCutoffValidator.cs, src/Readarr.Api.V1/Profiles/Quality/QualityItemsValidator.cs, src/Readarr.Http/Validation/EmptyCollectionValidator.cs, src/Readarr.Http/Validation/RssSyncIntervalValidator.cs, src/Readarr.Http/Validation/RuleBuilderExtensions.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to ensure FluentValidation 12 compiles cleanly.
+
 ## 1.2.237
 - Summary: update FluentValidation to 12.1.1.
 - Why: apply the remaining Dependabot upgrade (PR #10) after it was closed.

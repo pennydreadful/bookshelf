@@ -1,8 +1,9 @@
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace NzbDrone.Core.ImportLists.Exclusions
 {
-    public class ImportListExclusionExistsValidator : PropertyValidator
+    public class ImportListExclusionExistsValidator : PropertyValidator<object, string>
     {
         private readonly IImportListExclusionService _importListExclusionService;
 
@@ -11,16 +12,16 @@ namespace NzbDrone.Core.ImportLists.Exclusions
             _importListExclusionService = importListExclusionService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "This exclusion has already been added.";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "This exclusion has already been added.";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue == null)
+            if (value == null)
             {
                 return true;
             }
 
-            return !_importListExclusionService.All().Exists(s => s.ForeignId == context.PropertyValue.ToString());
+            return !_importListExclusionService.All().Exists(s => s.ForeignId == value);
         }
     }
 }

@@ -1,20 +1,21 @@
 using System;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace NzbDrone.Core.Validation
 {
-    public class GuidValidator : PropertyValidator
+    public class GuidValidator : PropertyValidator<object, string>
     {
-        protected override string GetDefaultMessageTemplate() => "String is not a valid Guid";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "String is not a valid Guid";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue == null)
+            if (value == null)
             {
                 return false;
             }
 
-            return Guid.TryParse(context.PropertyValue.ToString(), out _);
+            return Guid.TryParse(value, out _);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using FluentValidation.Validators;
+using FluentValidation;
 using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class AuthorExistsValidator : PropertyValidator
+    public class AuthorExistsValidator : PropertyValidator<object, string>
     {
         private readonly IAuthorService _authorService;
 
@@ -12,18 +13,16 @@ namespace NzbDrone.Core.Validation.Paths
             _authorService = authorService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "This author has already been added";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "This author has already been added";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue == null)
+            if (value == null)
             {
                 return true;
             }
 
-            var foreignAuthorId = context.PropertyValue.ToString();
-
-            return _authorService.FindById(foreignAuthorId) == null;
+            return _authorService.FindById(value) == null;
         }
     }
 }

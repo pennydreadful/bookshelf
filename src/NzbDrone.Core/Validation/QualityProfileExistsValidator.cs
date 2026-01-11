@@ -1,9 +1,10 @@
+using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Validation
 {
-    public class QualityProfileExistsValidator : PropertyValidator
+    public class QualityProfileExistsValidator : PropertyValidator<object, int>
     {
         private readonly IQualityProfileService _qualityProfileService;
 
@@ -12,16 +13,16 @@ namespace NzbDrone.Core.Validation
             _qualityProfileService = qualityProfileService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "Quality Profile does not exist";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Quality Profile does not exist";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, int value)
         {
-            if (context?.PropertyValue == null || (int)context.PropertyValue == 0)
+            if (value == 0)
             {
                 return true;
             }
 
-            return _qualityProfileService.Exists((int)context.PropertyValue);
+            return _qualityProfileService.Exists(value);
         }
     }
 }

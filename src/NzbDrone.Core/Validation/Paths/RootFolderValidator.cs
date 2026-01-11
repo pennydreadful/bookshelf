@@ -1,10 +1,11 @@
 ﻿using FluentValidation.Validators;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class RootFolderValidator : PropertyValidator
+    public class RootFolderValidator : PropertyValidator<object, string>
     {
         private readonly IRootFolderService _rootFolderService;
 
@@ -13,18 +14,18 @@ namespace NzbDrone.Core.Validation.Paths
             _rootFolderService = rootFolderService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "Path '{path}' is already configured as a root folder";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Path '{path}' is already configured as a root folder";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue == null)
+            if (value == null)
             {
                 return true;
             }
 
-            context.MessageFormatter.AppendArgument("path", context.PropertyValue.ToString());
+            context.MessageFormatter.AppendArgument("path", value);
 
-            return !_rootFolderService.All().Exists(r => r.Path.PathEquals(context.PropertyValue.ToString()));
+            return !_rootFolderService.All().Exists(r => r.Path.PathEquals(value));
         }
     }
 }

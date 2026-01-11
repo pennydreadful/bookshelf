@@ -12,20 +12,20 @@ namespace NzbDrone.Core.Validation
         }
     }
 
-    public class UrlValidator : PropertyValidator
+    public class UrlValidator : PropertyValidator<object, string>
     {
-        protected override string GetDefaultMessageTemplate() => "Invalid Url: '{url}'";
+        protected override string GetDefaultMessageTemplate(string errorCode) => "Invalid Url: '{url}'";
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        protected override bool IsValid(ValidationContext<object> context, string value)
         {
-            if (context.PropertyValue == null)
+            if (value == null)
             {
                 return false;
             }
 
-            context.MessageFormatter.AppendArgument("url", context.PropertyValue.ToString());
+            context.MessageFormatter.AppendArgument("url", value);
 
-            return context.PropertyValue.ToString().IsValidUrl();
+            return value.IsValidUrl();
         }
     }
 }
