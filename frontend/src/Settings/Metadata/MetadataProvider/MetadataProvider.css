@@ -9,3 +9,45 @@
   color: var(--helpTextColor);
   cursor: help;
 }
+
+.sectionGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.sectionHelp {
+  border-left: 1px solid var(--borderColor);
+  padding-left: 20px;
+  color: var(--helpTextColor);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sectionHelpTitle {
+  color: var(--textColor);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.sectionHelpBody {
+  margin-bottom: 8px;
+}
+
+.sectionHelpLink {
+  color: var(--linkColor);
+}
+
+@media (max-width: 900px) {
+  .sectionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHelp {
+    border-left: 0;
+    border-top: 1px solid var(--borderColor);
+    padding-left: 0;
+    padding-top: 12px;
+  }
+}

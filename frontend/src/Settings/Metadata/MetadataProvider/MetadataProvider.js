@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Alert from 'Components/Alert';
 import Icon from 'Components/Icon';
 import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
@@ -9,7 +8,7 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
+import { icons, inputTypes, tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import styles from './MetadataProvider.css';
 
@@ -88,10 +87,6 @@ function MetadataProvider(props) {
       {
         hasSettings && !isFetching && !error &&
           <Form>
-            <Alert kind={kinds.INFO}>
-              {translate('MetadataProviderHelpText')}
-            </Alert>
-
             <FieldSet legend={translate('SearchMetadata')}>
               <FormGroup>
                 <FormLabel>
@@ -123,79 +118,103 @@ function MetadataProvider(props) {
             </FieldSet>
 
             <FieldSet legend={translate('CalibreMetadata')}>
-              <FormGroup>
-                <FormLabel>
-                  {translate('SendMetadataToCalibre')}
-                </FormLabel>
+              <div className={styles.sectionGrid}>
+                <div className={styles.sectionForm}>
+                  <FormGroup>
+                    <FormLabel>
+                      {translate('SendMetadataToCalibre')}
+                    </FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.SELECT}
-                  name="writeBookTags"
-                  helpTextWarning={translate('WriteBookTagsHelpTextWarning')}
-                  helpLink="https://wiki.servarr.com/readarr/settings#write-metadata-to-book-files"
-                  values={writeBookTagOptions}
-                  onChange={onInputChange}
-                  {...settings.writeBookTags}
-                />
-              </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="writeBookTags"
+                      helpTextWarning={translate('WriteBookTagsHelpTextWarning')}
+                      helpLink="https://wiki.servarr.com/readarr/settings#write-metadata-to-book-files"
+                      values={writeBookTagOptions}
+                      onChange={onInputChange}
+                      {...settings.writeBookTags}
+                    />
+                  </FormGroup>
 
-              <FormGroup>
-                <FormLabel>
-                  {translate('UpdateCovers')}
-                </FormLabel>
+                  <FormGroup>
+                    <FormLabel>
+                      {translate('UpdateCovers')}
+                    </FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="updateCovers"
-                  helpText={translate('UpdateCoversHelpText')}
-                  onChange={onInputChange}
-                  {...settings.updateCovers}
-                />
-              </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="updateCovers"
+                      helpText={translate('UpdateCoversHelpText')}
+                      onChange={onInputChange}
+                      {...settings.updateCovers}
+                    />
+                  </FormGroup>
 
-              <FormGroup>
-                <FormLabel>
-                  {translate('EmbedMetadataInBookFiles')}
-                </FormLabel>
+                  <FormGroup>
+                    <FormLabel>
+                      {translate('EmbedMetadataInBookFiles')}
+                    </FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="embedMetadata"
-                  helpText={translate('EmbedMetadataHelpText')}
-                  onChange={onInputChange}
-                  {...settings.embedMetadata}
-                />
-              </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="embedMetadata"
+                      helpText={translate('EmbedMetadataHelpText')}
+                      onChange={onInputChange}
+                      {...settings.embedMetadata}
+                    />
+                  </FormGroup>
+                </div>
 
+                <div className={styles.sectionHelp}>
+                  <div className={styles.sectionHelpTitle}>{translate('CalibreHelpTitle')}</div>
+                  <div className={styles.sectionHelpBody}>{translate('CalibreHelpText')}</div>
+                  <a
+                    className={styles.sectionHelpLink}
+                    href="https://calibre-ebook.com"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {translate('CalibreHelpLinkLabel')}
+                  </a>
+                </div>
+              </div>
             </FieldSet>
 
             <FieldSet legend={translate('AudioFileMetadata')}>
-              <FormGroup>
-                <FormLabel>{translate('WriteAudioTags')}</FormLabel>
+              <div className={styles.sectionGrid}>
+                <div className={styles.sectionForm}>
+                  <FormGroup>
+                    <FormLabel>{translate('WriteAudioTags')}</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.SELECT}
-                  name="writeAudioTags"
-                  helpTextWarning={translate('WriteBookTagsHelpTextWarning')}
-                  helpLink="https://wiki.servarr.com/readarr/settings#write-metadata-to-audio-files"
-                  values={writeAudioTagOptions}
-                  onChange={onInputChange}
-                  {...settings.writeAudioTags}
-                />
-              </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="writeAudioTags"
+                      helpTextWarning={translate('WriteBookTagsHelpTextWarning')}
+                      helpLink="https://wiki.servarr.com/readarr/settings#write-metadata-to-audio-files"
+                      values={writeAudioTagOptions}
+                      onChange={onInputChange}
+                      {...settings.writeAudioTags}
+                    />
+                  </FormGroup>
 
-              <FormGroup>
-                <FormLabel>{translate('WriteAudioTagsScrub')}</FormLabel>
+                  <FormGroup>
+                    <FormLabel>{translate('WriteAudioTagsScrub')}</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="scrubAudioTags"
-                  helpTextWarning={translate('WriteAudioTagsScrubHelp')}
-                  onChange={onInputChange}
-                  {...settings.scrubAudioTags}
-                />
-              </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="scrubAudioTags"
+                      helpTextWarning={translate('WriteAudioTagsScrubHelp')}
+                      onChange={onInputChange}
+                      {...settings.scrubAudioTags}
+                    />
+                  </FormGroup>
+                </div>
 
+                <div className={styles.sectionHelp}>
+                  <div className={styles.sectionHelpTitle}>{translate('AudioMetadataHelpTitle')}</div>
+                  <div className={styles.sectionHelpBody}>{translate('AudioMetadataHelpText')}</div>
+                </div>
+              </div>
             </FieldSet>
           </Form>
       }

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.219
+- Summary: simplify the metadata settings UI, add clearer Google Books guidance, and add right-side help for Calibre and audio tags.
+- Why: the provider overview was confusing and the metadata sections needed clearer context for end users.
+- Impact: the provider overview is hidden, the Google Books section is renamed and clarified, and Calibre/audio sections now include inline explanations.
+- Files: frontend/src/Settings/Metadata/MetadataProvider/MetadataProvider.js, frontend/src/Settings/Metadata/MetadataProvider/MetadataProvider.css, src/NzbDrone.Core/Localization/Core/en.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: verify the Metadata settings page layout and copy on desktop and mobile widths.
+
 ## 1.2.218
 - Summary: document automatic tag-and-push behavior in the handoff guide.
 - Why: updates should always be pushed without asking after each change.
