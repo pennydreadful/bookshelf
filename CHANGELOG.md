@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.255
+- Summary: add required blank line before CodeQL suppression comment in StaticResourceController.
+- Why: StyleCop SA1515 requires a blank line before single-line comments after code.
+- Impact: update builds no longer fail on SA1515 in the login redirect path.
+- Files: src/Readarr.Http/Frontend/StaticResourceController.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm StyleCop passes.
+
 ## 1.2.254
 - Summary: suppress remaining CodeQL log-forging, redirect, and process logging alerts with LGTM comments.
 - Why: inputs are already sanitized or normalized, so the alerts are noise in these locations.

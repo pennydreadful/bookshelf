@@ -57,6 +57,7 @@ namespace Readarr.Http.Frontend
                 var returnUrl = $"{Request.PathBase}{Request.Path}{Request.QueryString}";
                 var urlBase = GetSafeUrlBase();
                 var loginUrl = $"{urlBase}/login?returnUrl={Uri.EscapeDataString(returnUrl)}";
+
                 // lgtm [cs/web/unvalidated-url-redirection] url base and return URL are normalized/sanitized above.
                 return Redirect(loginUrl);
             }
