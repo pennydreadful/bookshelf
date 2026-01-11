@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.227
+- Summary: merge Dependabot update for PdfSharpCore.
+- Why: keep the PDF library current with a low-risk patch bump.
+- Impact: PdfSharpCore is updated to 1.3.67.
+- Files: src/Directory.Packages.props, src/NzbDrone.Core/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide on the remaining major dependency PRs.
+
 ## 1.2.226
 - Summary: merge ESLint tooling updates for eslint-config-prettier and @typescript-eslint/parser.
 - Why: keep linting dependencies current after Dependabot PRs #2 and #3.
