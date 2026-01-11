@@ -8,7 +8,7 @@
     <PackageVersion Include="DryIoc.dll" Version="5.4.3" />
     <PackageVersion Include="DryIoc.Microsoft.DependencyInjection" Version="6.2.0" />
     <PackageVersion Include="Equ" Version="2.3.0" />
-    <PackageVersion Include="FluentAssertions" Version="5.10.3" />
+    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
     <PackageVersion Include="IPAddressRange" Version="6.1.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
     <PackageVersion Include="Servarr.FluentMigrator.Runner" Version="3.3.2.9" />
