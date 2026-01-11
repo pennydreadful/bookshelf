@@ -3,6 +3,7 @@
 - [x] Add diagnostics flow: create `bookdarr-diagnostics` repo and add a UI button to collect logs/config and push a sanitized bundle.
 - [ ] Add an export indexers flow (API/UI or script) for easy migration.
 - [ ] Build a request UI (Overseerr-like) on top of Bookdarr search.
+- [ ] Explore multi-user support (auth, permissions, per-user views).
 - [x] Document metadata provider pros/cons in README and settings UI help.
 - [x] Add .NET upgrade plan: move to `net8.0` LTS now and `net10.0` when available; update Docker/base images, CI, and VM scripts accordingly.
 - [x] Add `global.json` to pin the .NET SDK version used in dev/CI.

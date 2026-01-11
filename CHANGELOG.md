@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.220
+- Summary: add a multi-user support exploration item to the checklist.
+- Why: track a future investigation into per-user permissions and views.
+- Impact: checklist now includes multi-user support as a future task.
+- Files: checklist.md, src/Directory.Build.props, CHANGELOG.md.
+- Next: decide if multi-user support should include role-based access, read-only users, or per-user libraries.
+
 ## 1.2.219
 - Summary: simplify the metadata settings UI, add clearer Google Books guidance, and add right-side help for Calibre and audio tags.
 - Why: the provider overview was confusing and the metadata sections needed clearer context for end users.
