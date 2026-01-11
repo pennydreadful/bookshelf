@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.234
+- Summary: fix Swashbuckle v10 OpenAPI namespace usage and align annotations package.
+- Why: OpenAPI.NET v2 removed Microsoft.OpenApi.Models, causing Startup.cs to fail after the SwaggerGen upgrade.
+- Impact: Startup uses the new namespace, and Swashbuckle annotations are upgraded to match SwaggerGen.
+- Files: src/NzbDrone.Host/Startup.cs, src/Directory.Packages.props, src/NzbDrone.Common.Test/packages.lock.json, src/NzbDrone.Console/packages.lock.json, src/NzbDrone.Host.Test/packages.lock.json, src/NzbDrone.Host/packages.lock.json, src/NzbDrone.Integration.Test/packages.lock.json, src/NzbDrone.Mono.Test/packages.lock.json, src/Readarr.Api.V1/packages.lock.json, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the SwaggerGen upgrade compiles.
+
 ## 1.2.233
 - Summary: merge Dependabot update for Swashbuckle.AspNetCore.SwaggerGen.
 - Why: take the major SwaggerGen upgrade after PR #13.

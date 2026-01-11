@@ -70,7 +70,7 @@
     <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) Bookdarr (GNU General Public v3)</Copyright>
 
     <!-- Should be replaced by CI -->
-    <AssemblyVersion>1.2.233.*</AssemblyVersion>
+    <AssemblyVersion>1.2.234.*</AssemblyVersion>
     <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
     <NeutralLanguage>en</NeutralLanguage>
 
