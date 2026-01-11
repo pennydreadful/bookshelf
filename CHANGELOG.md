@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.243
+- Summary: drop OverridePropertyName usage in ResourceValidator for FluentValidation 12.
+- Why: the FluentValidation 12 API no longer exposes OverridePropertyName on initial rule builders.
+- Impact: field validation rules still set display names without hitting compiler errors.
+- Files: src/Readarr.Http/REST/ResourceValidator.cs, src/Directory.Build.props, CHANGELOG.md.
+- Next: rerun the update build to confirm the ResourceValidator compile error is resolved.
+
 ## 1.2.242
 - Summary: replace ResourceValidator's internal FluentValidation rule creation with expression-based rules.
 - Why: FluentValidation 12 removed the non-generic PropertyRule API and AbstractValidator.AddRule hook.
