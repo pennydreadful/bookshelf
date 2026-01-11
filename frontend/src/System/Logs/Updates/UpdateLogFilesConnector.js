@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
+import { fetchGeneralSettings } from 'Store/Actions/settingsActions';
 import { fetchUpdateLogFiles } from 'Store/Actions/systemActions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import combinePath from 'Utilities/String/combinePath';
@@ -13,8 +14,9 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.system.updateLogFiles,
     (state) => state.system.status.item,
+    (state) => state.settings.general,
     createCommandExecutingSelector(commandNames.DELETE_UPDATE_LOG_FILES),
-    (updateLogFiles, status, deleteFilesExecuting) => {
+    (updateLogFiles, status, generalSettings, deleteFilesExecuting) => {
       const {
         isFetching,
         items
@@ -24,18 +26,23 @@ function createMapStateToProps() {
         appData
       } = status;
 
+      const logLevelValue = generalSettings?.item?.logLevel;
+      const logLevelLabel = logLevelValue ? `${logLevelValue[0].toUpperCase()}${logLevelValue.slice(1)}` : 'Info';
+
       return {
         isFetching,
         items,
         deleteFilesExecuting,
         currentLogView: 'Updater Log Files',
-        location: combinePath(appData, ['UpdateLogs'])
+        location: combinePath(appData, ['UpdateLogs']),
+        logLevelLabel
       };
     }
   );
 }
 
 const mapDispatchToProps = {
+  fetchGeneralSettings,
   fetchUpdateLogFiles,
   executeCommand
 };
@@ -47,6 +54,7 @@ class UpdateLogFilesConnector extends Component {
 
   componentDidMount() {
     this.props.fetchUpdateLogFiles();
+    this.props.fetchGeneralSettings();
   }
 
   componentDidUpdate(prevProps) {
@@ -83,6 +91,7 @@ class UpdateLogFilesConnector extends Component {
 UpdateLogFilesConnector.propTypes = {
   deleteFilesExecuting: PropTypes.bool.isRequired,
   fetchUpdateLogFiles: PropTypes.func.isRequired,
+  fetchGeneralSettings: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

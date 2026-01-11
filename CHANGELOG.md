@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.212
+- Summary: show the active log level in System -> Log Files instead of a static Info default.
+- Why: the log level notice should match the current General Settings selection.
+- Impact: the Log Files banner now reflects the configured log level.
+- Files: frontend/src/System/Logs/Files/LogFiles.js, frontend/src/System/Logs/Files/LogFilesConnector.js, frontend/src/System/Logs/Updates/UpdateLogFilesConnector.js, src/Directory.Build.props, CHANGELOG.md.
+- Next: set Log Level to Debug and confirm System -> Log Files reflects Debug.
+
 ## 1.2.211
 - Summary: keep only the newest 10 log files in System -> Log Files and Update Log Files.
 - Why: older logs clutter the UI and consume space on disk.

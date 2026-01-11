@@ -45,6 +45,7 @@ class LogFiles extends Component {
       deleteFilesExecuting,
       currentLogView,
       location,
+      logLevelLabel,
       onRefreshPress,
       onDeleteFilesPress,
       ...otherProps
@@ -83,7 +84,7 @@ class LogFiles extends Component {
             {
               currentLogView === 'Log Files' &&
                 <div>
-                  The log level defaults to 'Info' and can be changed in <Link to="/settings/general">General Settings</Link>
+                  Log level is set to '{logLevelLabel}' and can be changed in <Link to="/settings/general">General Settings</Link>
                 </div>
             }
           </Alert>
@@ -135,6 +136,7 @@ LogFiles.propTypes = {
   deleteFilesExecuting: PropTypes.bool.isRequired,
   currentLogView: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
+  logLevelLabel: PropTypes.string.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onDeleteFilesPress: PropTypes.func.isRequired
 };
