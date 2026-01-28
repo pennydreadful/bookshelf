@@ -36,13 +36,13 @@ an issue or start a discussion.
 Help is very welcome. Priority is on fixing quality of life issues
 
 - [ ] Monitor series.
-- [ ] Hardcover bookshelf import.
 - [ ] Support ebook and audio files in the same root.
 
 Already done
 
 - [x] Native support for MyAnonaMouse without Prowlarr.
-- [x] Lowered default match percentage from 80% to 50%.
+- [x] Hardcover list import.
+- [x] Improved matching.
 - [x] Metadata is no longer cached locally.
 - [x] Removed servarr analytics spyware.
 - [x] Supports selfhosted metadata (UI or `METADATA_URL` env var).
@@ -59,4 +59,4 @@ and [Prowlarr](https://github.com/Prowlarr/Prowlarr) projects which are both
 licensed [GPLv3](http://www.gnu.org/licenses/gpl.html). This project is
 therefore also licensed under the terms of GPLv3.
 
-Copyright 2025
+Copyright 2025-2026
