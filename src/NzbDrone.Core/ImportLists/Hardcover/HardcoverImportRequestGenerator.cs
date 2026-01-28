@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -25,14 +26,20 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         private IEnumerable<ImportListRequest> GetPagedRequests()
         {
             var apiKey = NormalizeApiKey(Settings.ApiKey);
-            var listSlug = Settings.ListId;
 
-            Logger.Debug("Hardcover: Fetching list books for list '{0}'", listSlug);
+            Logger.Info("Hardcover: Fetching books for lists '{0}'", Settings.ListIds);
 
-            // Query to fetch all lists with their books and author info
-            var graphQlBody = @"{
-  ""query"": ""query ListBooks { me { lists { slug name list_books { book { id title contributions { author { id name } } } } } } }""
-}";
+            // Query to fetch selected lists with their books and author info
+            var graphQlBody = JsonSerializer.Serialize(new
+            {
+                query = @"
+                    query ListBooks($slugs: [String!]!) { me { lists(where: { slug: { _in: $slugs } } ) { slug name list_books { book { id title contributions { author { id name } } } } } } }
+                ",
+                variables = new
+                {
+                    slugs = Settings.ListIds
+                }
+            });
 
             var request = new HttpRequestBuilder($"{Settings.BaseUrl.TrimEnd('/')}/v1/graphql")
                 .Post()
