@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.MetadataSource.BookInfo;
 using NzbDrone.Core.MetadataSource.Goodreads;
@@ -15,7 +16,6 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MetadataSource.Goodreads
 {
     [TestFixture]
-    [Ignore("Waiting for metadata to be back again", Until = "2026-01-15 00:00:00Z")]
     public class BookInfoProxySearchFixture : CoreTest<BookInfoProxy>
     {
         [SetUp]
@@ -39,6 +39,10 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.Get(It.IsAny<int>()))
                 .Returns(metadataProfile);
+
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.MetadataSource)
+                .Returns("https://api.bookinfo.pro");
         }
 
         [TestCase("Robert Harris", "Robert Harris")]
