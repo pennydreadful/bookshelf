@@ -60,7 +60,6 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         //[TestCase("asin:B0192CTMYG", null, "Harry Potter and the Sorcerer's Stone")] // ASIN not working
-        
         [TestCase("Harry Potter and the sorcerer's stone a summary of the novel", null, "Harry Potter and the Sorcerer's Stone (Book 1)")]
         [TestCase("edition:3", null, "Harry Potter and the Sorcerer's Stone")]
         [TestCase("edition: 3", null, "Harry Potter and the Sorcerer's Stone")]
