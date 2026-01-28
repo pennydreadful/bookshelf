@@ -5,6 +5,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource.BookInfo;
 using NzbDrone.Core.Profiles.Metadata;
@@ -13,7 +14,6 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MetadataSource.Goodreads
 {
     [TestFixture]
-    [Ignore("Waiting for metadata to be back again", Until = "2026-01-15 00:00:00Z")]
     public class BookInfoProxyFixture : CoreTest<BookInfoProxy>
     {
         private MetadataProfile _metadataProfile;
@@ -32,6 +32,10 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.Exists(It.IsAny<int>()))
                 .Returns(true);
+
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.MetadataSource)
+                .Returns("https://api.bookinfo.pro");
         }
 
         [TestCase("1654", "Terry Pratchett")]
@@ -46,7 +50,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         [TestCase("1128601", "Guards! Guards!")]
-        [TestCase("3293141", "Ἰλιάς")]
+        [TestCase("3293141", "The Iliad")]
         public void should_be_able_to_get_book_detail(string mbId, string name)
         {
             var details = Subject.GetBookInfo(mbId);
