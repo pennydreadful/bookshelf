@@ -977,6 +977,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             return edition;
         }
+
         private static int GetAuthorId(WorkResource b)
         {
             // Check if Books collection is null before attempting LINQ operations
@@ -984,7 +985,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             {
                 return 0;
             }
-            
+
             var book = b.Books.OrderByDescending(x => x.RatingCount * x.AverageRating).FirstOrDefault(x => x.Contributors != null && x.Contributors.Any());
             return book?.Contributors?.FirstOrDefault()?.ForeignId ?? 0;
         }
