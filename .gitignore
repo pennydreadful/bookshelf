@@ -134,6 +134,12 @@ project.fragment.lock.json
 artifacts/
 **/Properties/launchSettings.json
 
+# .NET Cache Files
+.dotnet/.dotnet/*Cache
+.dotnet/.dotnet/tools/*Cache
+.dotnet/.local/share/NuGet/http-cache
+.dotnet/.local/share/NuGet/*Cache
+
 #VS outout folders
 bin
 obj
