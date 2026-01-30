@@ -1,0 +1,22 @@
+# Builder image that contains everything needed to run build.sh
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+
+ARG NODE_MAJOR=20
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        nodejs \
+        python3 \
+        build-essential \
+        git \
+        jq \
+        zip \
+        ca-certificates \
+    && npm install -g yarn \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
