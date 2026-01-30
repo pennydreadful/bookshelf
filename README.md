@@ -26,6 +26,12 @@ provider. This metadata is higher quality but isn't backward-compatible; if
 you're already running Readarr you'll need to redeploy this from scratch.
 Goodreads list imports haven't been tested and likely don't work.
 
+## To Build From Source(Linux Only)
+
+Open the deploy.sh script and replace the volume mount paths with the desired volume mount path then run
+
+    deploy.sh build-run
+
 ## Support
 
 This project won't use Discord for support. If you have a problem please file
