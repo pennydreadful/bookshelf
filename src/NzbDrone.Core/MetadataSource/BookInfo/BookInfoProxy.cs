@@ -980,7 +980,16 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
         private static int GetAuthorId(WorkResource b)
         {
-            return b.Books.OrderByDescending(x => x.RatingCount * x.AverageRating).FirstOrDefault(x => x.Contributors.Any())?.Contributors.First().ForeignId ?? 0;
+            if (b?.Books == null)
+            {
+                return 0;
+            }
+
+            var primaryBook = b.Books
+                .Where(x => x?.Contributors != null && x.Contributors.Any())
+                .OrderByDescending(x => x.RatingCount * x.AverageRating)
+                .FirstOrDefault();
+            return primaryBook?.Contributors.First().ForeignId ?? 0;
         }
     }
 }
