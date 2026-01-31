@@ -146,6 +146,12 @@ namespace NzbDrone.Core.MediaCover
                     continue;
                 }
 
+                if (cover.Url.IsNullOrWhiteSpace() || !cover.Url.IsValidUrl())
+                {
+                    _logger.Debug("Skipping {0} cover for {1}: no valid URL", cover.CoverType, author);
+                    continue;
+                }
+
                 var fileName = GetCoverPath(author.Id, MediaCoverEntity.Author, cover.CoverType, cover.Extension);
                 var alreadyExists = false;
 
@@ -197,6 +203,12 @@ namespace NzbDrone.Core.MediaCover
             {
                 if (cover.CoverType == MediaCoverTypes.Unknown)
                 {
+                    continue;
+                }
+
+                if (cover.Url.IsNullOrWhiteSpace() || !cover.Url.IsValidUrl())
+                {
+                    _logger.Debug("Skipping {0} cover for {1}: no valid URL", cover.CoverType, book);
                     continue;
                 }
 
