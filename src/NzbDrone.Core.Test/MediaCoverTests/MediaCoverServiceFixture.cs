@@ -32,12 +32,12 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             _author = Builder<Author>.CreateNew()
                 .With(v => v.Id = 2)
-                .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
+                .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "http://test.org/AuthorImage.png") })
                 .Build();
 
             _edition = Builder<Edition>.CreateNew()
                 .With(v => v.Id = 8)
-                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "") })
+                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "http://test.org/BookImage.png") })
                 .With(v => v.Monitored = true)
                 .Build();
 
@@ -262,6 +262,84 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
+        }
+
+        [Test]
+        public void should_skip_author_cover_when_url_is_null_or_invalid()
+        {
+            var authorWithInvalidCover = Builder<Author>.CreateNew()
+                .With(v => v.Id = 2)
+                .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover { CoverType = MediaCoverTypes.Poster, Url = null }
+                })
+                .Build();
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(v => v.GetBooksByAuthor(It.IsAny<int>()))
+                  .Returns(new List<Book>());
+
+            Subject.HandleAsync(new AuthorRefreshCompleteEvent(authorWithInvalidCover));
+
+            Mocker.GetMock<IHttpClient>()
+                  .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Never());
+        }
+
+        [Test]
+        public void should_skip_author_cover_when_url_is_empty_or_malformed()
+        {
+            var authorWithInvalidCover = Builder<Author>.CreateNew()
+                .With(v => v.Id = 2)
+                .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover { CoverType = MediaCoverTypes.Poster, Url = "not-a-valid-uri" }
+                })
+                .Build();
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(v => v.GetBooksByAuthor(It.IsAny<int>()))
+                  .Returns(new List<Book>());
+
+            Subject.HandleAsync(new AuthorRefreshCompleteEvent(authorWithInvalidCover));
+
+            Mocker.GetMock<IHttpClient>()
+                  .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Never());
+        }
+
+        [Test]
+        public void should_skip_book_cover_when_url_is_invalid()
+        {
+            var editionWithInvalidCover = Builder<Edition>.CreateNew()
+                .With(v => v.Id = 8)
+                .With(v => v.Images = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover { CoverType = MediaCoverTypes.Cover, Url = string.Empty }
+                })
+                .With(v => v.Monitored = true)
+                .Build();
+
+            var bookWithInvalidCover = Builder<Book>.CreateNew()
+                .With(v => v.Id = 4)
+                .With(v => v.Editions = new List<Edition> { editionWithInvalidCover })
+                .Build();
+
+            Mocker.GetMock<ICoverExistsSpecification>()
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
+                  .Returns(false);
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(v => v.GetBooksByAuthor(It.IsAny<int>()))
+                  .Returns(new List<Book> { bookWithInvalidCover });
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(v => v.FileExists(It.IsAny<string>()))
+                  .Returns(true);
+
+            Subject.HandleAsync(new AuthorRefreshCompleteEvent(_author));
+
+            // Author has one valid cover, so Get is called once for author; book cover is skipped
+            Mocker.GetMock<IHttpClient>()
+                  .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Once());
         }
     }
 }
