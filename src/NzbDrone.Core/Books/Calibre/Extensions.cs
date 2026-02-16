@@ -86,27 +86,13 @@ namespace NzbDrone.Core.Books.Calibre
                 return null;
             }
 
-            if (raw.Length == 2)
+            return raw.Length switch
             {
-                if (TwoToThree.TryGetValue(raw, out var lang))
-                {
-                    return lang;
-                }
-            }
-            else if (raw.Length == 3)
-            {
-                if (ByThree.ContainsKey(raw))
-                {
-                    return raw;
-                }
-
-                if (BtoTmap.TryGetValue(raw, out var mapped))
-                {
-                    return mapped;
-                }
-            }
-
-            return NameMap.TryGetValue(raw, out var langByName) ? langByName : null;
+                2 when TwoToThree.TryGetValue(raw, out var lang) => lang,
+                3 when ByThree.ContainsKey(raw) => raw,
+                3 when BtoTmap.TryGetValue(raw, out var mapped) => mapped,
+                _ => NameMap.GetValueOrDefault(raw)
+            };
         }
     }
 }
