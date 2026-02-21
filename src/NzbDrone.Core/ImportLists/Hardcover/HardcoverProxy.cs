@@ -17,7 +17,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 
     public class HardcoverProxy : IHardcoverProxy
     {
-        private const string ListQuery = @"{""query"":""query Lists { me { lists { name slug list_books { id } } } }""}";
+        private const string ListQuery = "query UserLists($user: citext) {users(where: {username: {_eq: $user}}) {lists {name slug list_books { id  } } }}";
 
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -84,6 +84,14 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 
         private HttpRequest BuildGraphQlRequest(HardcoverImportSettings settings, string query, string apiKey)
         {
+            var graphQlBody = JsonConvert.SerializeObject(new
+            {
+                query = query,
+                variables = new
+                {
+                    user = settings.User
+                }
+            });
             var request = new HttpRequestBuilder($"{settings.BaseUrl.TrimEnd('/')}/v1/graphql")
                 .Post()
                 .Accept(HttpAccept.Json)
@@ -94,7 +102,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 .KeepAlive()
                 .Build();
 
-            request.SetContent(query);
+            request.SetContent(graphQlBody);
             return request;
         }
 
@@ -123,7 +131,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         public HardcoverGraphQlData Data { get; set; }
 
         public List<HardcoverListResource> GetLists() =>
-            Data?.Me?
+            Data?.Users?
                 .SelectMany(m => m.Lists ?? new List<HardcoverListResource>())
                 .ToList()
             ?? new List<HardcoverListResource>();
@@ -131,11 +139,11 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 
     public class HardcoverGraphQlData
     {
-        [JsonProperty("me")]
-        public List<HardcoverGraphQlMe> Me { get; set; }
+        [JsonProperty("users")]
+        public List<HardcoverGraphQlUsers> Users { get; set; }
     }
 
-    public class HardcoverGraphQlMe
+    public class HardcoverGraphQlUsers
     {
         [JsonProperty("lists")]
         public List<HardcoverListResource> Lists { get; set; }
