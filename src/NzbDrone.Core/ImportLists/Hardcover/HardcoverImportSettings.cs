@@ -12,6 +12,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         public HardcoverImportSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.User).NotEmpty();
             RuleFor(c => c.ApiKey).NotEmpty();
             RuleFor(c => c.ListIds).NotEmpty();
         }
@@ -32,8 +33,9 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 
         [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Hardcover personal API key (from Settings > API)")]
         public string ApiKey { get; set; }
-
-        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getLists", Label = "List", HelpText = "Choose a list from your Hardcover account to sync")]
+        [FieldDefinition(2, Label = "Username", Privacy = PrivacyLevel.UserName, HelpText = "Username for the Owner of the list you want to add")]
+        public string User { get; set; }
+        [FieldDefinition(3, Type = FieldType.Select, SelectOptionsProviderAction = "getLists", Label = "List", HelpText = "Choose a list from the selected Hardcover account to sync")]
         public IEnumerable<string> ListIds { get; set; }
 
         public string ListId => ListIds?.FirstOrDefault();

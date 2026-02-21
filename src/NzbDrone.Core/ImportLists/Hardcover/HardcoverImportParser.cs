@@ -58,14 +58,14 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 return Enumerable.Empty<JToken>();
             }
 
-            // GraphQL shape: data.me[].lists[].list_books[].book
-            var me = root["data"]?["me"];
-            if (me != null && me.Type == JTokenType.Array)
+            // GraphQL shape: data.users[].lists[].list_books[].book
+            var users = root["data"]?["users"];
+            if (users != null && users.Type == JTokenType.Array)
             {
                 var books = new List<JToken>();
-                foreach (var meItem in me.Children())
+                foreach (var usersItem in users.Children())
                 {
-                    var lists = meItem["lists"];
+                    var lists = usersItem["lists"];
                     if (lists != null && lists.Type == JTokenType.Array)
                     {
                         foreach (var list in lists.Children())
