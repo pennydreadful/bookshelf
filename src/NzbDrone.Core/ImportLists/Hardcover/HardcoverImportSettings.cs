@@ -33,7 +33,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Hardcover personal API key (from Settings > API)")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getLists", Label = "List", HelpText = "Choose a list from your Hardcover account to sync")]
+        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getLists", Label = "Lists", HelpText = "Choose lists or reading statuses from your Hardcover account to sync")]
         public IEnumerable<string> ListIds { get; set; }
 
         public string ListId => ListIds?.FirstOrDefault();

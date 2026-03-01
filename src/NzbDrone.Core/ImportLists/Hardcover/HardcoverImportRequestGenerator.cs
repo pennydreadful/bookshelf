@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using NLog;
 using NzbDrone.Common.Http;
@@ -7,6 +8,8 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 {
     public class HardcoverImportRequestGenerator : IImportListRequestGenerator
     {
+        private const string StatusPrefix = "status:";
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public HardcoverImportSettings Settings { get; set; }
@@ -18,18 +21,43 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         {
             var pageableRequests = new ImportListPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests());
+            var slugs = new List<string>();
+            var statusIds = new List<int>();
+
+            foreach (var id in Settings.ListIds)
+            {
+                if (id.StartsWith(StatusPrefix))
+                {
+                    if (int.TryParse(id.Substring(StatusPrefix.Length), out var statusId))
+                    {
+                        statusIds.Add(statusId);
+                    }
+                }
+                else
+                {
+                    slugs.Add(id);
+                }
+            }
+
+            if (slugs.Any())
+            {
+                pageableRequests.Add(GetSlugRequests(slugs));
+            }
+
+            if (statusIds.Any())
+            {
+                pageableRequests.Add(GetStatusRequests(statusIds));
+            }
 
             return pageableRequests;
         }
 
-        private IEnumerable<ImportListRequest> GetPagedRequests()
+        private IEnumerable<ImportListRequest> GetSlugRequests(List<string> slugs)
         {
             var apiKey = NormalizeApiKey(Settings.ApiKey);
 
-            Logger.Info("Hardcover: Fetching books for lists '{0}'", Settings.ListIds);
+            Logger.Info("Hardcover: Fetching books for lists '{0}'", string.Join(", ", slugs));
 
-            // Query to fetch selected lists with their books and author info
             var graphQlBody = JsonSerializer.Serialize(new
             {
                 query = @"
@@ -37,10 +65,35 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 ",
                 variables = new
                 {
-                    slugs = Settings.ListIds
+                    slugs
                 }
             });
 
+            yield return new ImportListRequest(BuildRequest(apiKey, graphQlBody));
+        }
+
+        private IEnumerable<ImportListRequest> GetStatusRequests(List<int> statusIds)
+        {
+            var apiKey = NormalizeApiKey(Settings.ApiKey);
+
+            Logger.Info("Hardcover: Fetching books for reading statuses '{0}'", string.Join(", ", statusIds));
+
+            var graphQlBody = JsonSerializer.Serialize(new
+            {
+                query = @"
+                    query UserBooks($statusIds: [Int!]!) { me { user_books(where: { status_id: { _in: $statusIds } }) { book { id title contributions { author { id name } } } } } }
+                ",
+                variables = new
+                {
+                    statusIds
+                }
+            });
+
+            yield return new ImportListRequest(BuildRequest(apiKey, graphQlBody));
+        }
+
+        private HttpRequest BuildRequest(string apiKey, string graphQlBody)
+        {
             var request = new HttpRequestBuilder($"{Settings.BaseUrl.TrimEnd('/')}/v1/graphql")
                 .Post()
                 .Accept(HttpAccept.Json)
@@ -52,8 +105,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 .Build();
 
             request.SetContent(graphQlBody);
-
-            yield return new ImportListRequest(request);
+            return request;
         }
 
         private string NormalizeApiKey(string apiKey)

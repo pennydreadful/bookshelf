@@ -23,7 +23,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
         public override int PageSize => 200;
 
         public override ProviderMessage Message => new ProviderMessage(
-            "Books from your Hardcover lists will be matched by title and author name against your configured metadata source.",
+            "Books from your Hardcover lists and reading statuses will be matched by title and author name against your configured metadata source.",
             ProviderMessageType.Info);
 
         public HardcoverImport(IHttpClient httpClient,
@@ -62,11 +62,11 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 }
 
                 var options = _hardcoverProxy.GetLists(Settings)
-                    .OrderBy(l => l.DisplayName, StringComparer.InvariantCultureIgnoreCase)
                     .Select(l => new
                     {
                         Value = l.Id ?? l.Slug ?? l.Name,
-                        Name = l.DisplayName
+                        Name = l.DisplayName,
+                        Hint = l.Hint
                     });
 
                 return new { options };
@@ -80,11 +80,11 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                     Settings.Validate().Filter("BaseUrl", "ApiKey").ThrowOnError();
 
                     var options = _hardcoverProxy.GetLists(Settings)
-                        .OrderBy(l => l.DisplayName, StringComparer.InvariantCultureIgnoreCase)
                         .Select(l => new
                         {
                             Value = l.Id ?? l.Slug ?? l.Name,
-                            Name = l.DisplayName
+                            Name = l.DisplayName,
+                            Hint = l.Hint
                         });
 
                     _logger.Info("Hardcover authentication succeeded for {0}", Settings.BaseUrl);
