@@ -72,7 +72,9 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                 new HardcoverListResource { Id = "status:1", Name = "Want to Read", Hint = "Reading Status" },
                 new HardcoverListResource { Id = "status:2", Name = "Currently Reading", Hint = "Reading Status" },
                 new HardcoverListResource { Id = "status:3", Name = "Read", Hint = "Reading Status" },
+                new HardcoverListResource { Id = "status:4", Name = "Paused", Hint = "Reading Status" },
                 new HardcoverListResource { Id = "status:5", Name = "Did Not Finish", Hint = "Reading Status" },
+                new HardcoverListResource { Id = "status:6", Name = "Ignored", Hint = "Reading Status" },
             };
         }
 
