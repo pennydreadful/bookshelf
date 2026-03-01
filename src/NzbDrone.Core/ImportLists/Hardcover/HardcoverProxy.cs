@@ -50,11 +50,30 @@ namespace NzbDrone.Core.ImportLists.Hardcover
             }
 
             var payload = JsonConvert.DeserializeObject<HardcoverGraphQlResponse>(response.Content);
-            var lists = payload?.GetLists() ?? new List<HardcoverListResource>();
+            var customLists = payload?.GetLists() ?? new List<HardcoverListResource>();
 
-            _logger.Debug("Hardcover: Found {0} lists", lists.Count);
+            foreach (var list in customLists)
+            {
+                list.Hint = "Custom List";
+            }
 
-            return lists;
+            _logger.Debug("Hardcover: Found {0} custom lists", customLists.Count);
+
+            var allOptions = GetReadingStatusOptions();
+            allOptions.AddRange(customLists);
+
+            return allOptions;
+        }
+
+        private static List<HardcoverListResource> GetReadingStatusOptions()
+        {
+            return new List<HardcoverListResource>
+            {
+                new HardcoverListResource { Id = "status:1", Name = "Want to Read", Hint = "Reading Status" },
+                new HardcoverListResource { Id = "status:2", Name = "Currently Reading", Hint = "Reading Status" },
+                new HardcoverListResource { Id = "status:3", Name = "Read", Hint = "Reading Status" },
+                new HardcoverListResource { Id = "status:5", Name = "Did Not Finish", Hint = "Reading Status" },
+            };
         }
 
         public ValidationFailure Test(HardcoverImportSettings settings)
@@ -151,6 +170,9 @@ namespace NzbDrone.Core.ImportLists.Hardcover
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonIgnore]
+        public string Hint { get; set; }
 
         public string DisplayName => Name ?? Slug ?? Id;
     }

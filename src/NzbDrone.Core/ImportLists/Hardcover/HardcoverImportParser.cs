@@ -59,6 +59,7 @@ namespace NzbDrone.Core.ImportLists.Hardcover
             }
 
             // GraphQL shape: data.me[].lists[].list_books[].book
+            // or:            data.me[].user_books[].book (reading statuses)
             var me = root["data"]?["me"];
             if (me != null && me.Type == JTokenType.Array)
             {
@@ -81,6 +82,19 @@ namespace NzbDrone.Core.ImportLists.Hardcover
                                         books.Add(book);
                                     }
                                 }
+                            }
+                        }
+                    }
+
+                    var userBooks = meItem["user_books"];
+                    if (userBooks != null && userBooks.Type == JTokenType.Array)
+                    {
+                        foreach (var userBook in userBooks.Children())
+                        {
+                            var book = userBook["book"];
+                            if (book != null)
+                            {
+                                books.Add(book);
                             }
                         }
                     }
