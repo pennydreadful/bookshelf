@@ -88,7 +88,8 @@ namespace NzbDrone.Core.Download
             trackedDownload.State = TrackedDownloadState.Importing;
 
             var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
-            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteBook?.Author, trackedDownload.DownloadItem);
+            var idOverrides = BuildIdentificationOverrides(trackedDownload.RemoteBook);
+            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, idOverrides, trackedDownload.DownloadItem);
 
             if (importResults.Empty())
             {
@@ -188,6 +189,28 @@ namespace NzbDrone.Core.Download
         private void SetImportItem(TrackedDownload trackedDownload)
         {
             trackedDownload.ImportItem = _provideImportItemService.ProvideImportItem(trackedDownload.DownloadItem, trackedDownload.ImportItem);
+        }
+
+        private IdentificationOverrides BuildIdentificationOverrides(Parser.Model.RemoteBook remoteBook)
+        {
+            if (remoteBook == null)
+            {
+                return null;
+            }
+
+            var overrides = new IdentificationOverrides
+            {
+                Author = remoteBook.Author
+            };
+
+            // Only set Book override when the grab targeted exactly one book,
+            // so we don't incorrectly force multi-book/omnibus downloads to a single book.
+            if (remoteBook.Books != null && remoteBook.Books.Count == 1)
+            {
+                overrides.Book = remoteBook.Books.First();
+            }
+
+            return overrides;
         }
 
         private bool ValidatePath(TrackedDownload trackedDownload)
