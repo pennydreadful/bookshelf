@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 
         public Decision IsSatisfiedBy(LocalEdition item, DownloadClientItem downloadClientItem)
         {
-            var bookThreshold = 1.0 - (_configService.BookImportMinimumMatchPercent / 100.0);
+            var bookThreshold = (100 - _configService.BookImportMinimumMatchPercent) / 100.0;
             double dist;
             string reasons;
 
