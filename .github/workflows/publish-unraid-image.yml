@@ -76,3 +76,5 @@ jobs:
             GIT_BRANCH=${{ github.ref_name }}
             COMMIT_HASH=${{ github.sha }}
             BUILD_DATE=${{ env.DATE }}
+            METADATA_URL=https://hardcover.bookinfo.pro
+            HARDCOVER=true
