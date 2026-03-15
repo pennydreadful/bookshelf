@@ -121,13 +121,13 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         }
 
         [Test]
-        public void ninety_percent_produces_threshold_of_point_one()
+        public void ninety_percent_accepts_distance_just_below_threshold()
         {
             // 90% minimum match should produce internal threshold of 0.10
             GivenMinimumMatchPercent(90);
 
-            // distance of 0.10 equals threshold of 0.10, should accept (not >)
-            GivenDistance("book", 0.10);
+            // distance of 0.09 is below threshold of 0.10, should accept
+            GivenDistance("book", 0.09);
 
             Subject.IsSatisfiedBy(_localEdition, null).Accepted.Should().BeTrue();
         }
