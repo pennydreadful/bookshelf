@@ -1,0 +1,78 @@
+# Publishes a Docker image for the import-match-threshold-setting branch
+# to GHCR for testing on Unraid. This workflow is separate from the main
+# CI pipeline and only targets this feature branch.
+
+name: Publish Unraid Image
+
+permissions:
+  contents: read
+  packages: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/import-match-threshold-setting-GefjL
+
+env:
+  DOTNET_VERSION: "6.0.428"
+  READARR_VERSION: 0.4.20
+  IMAGE_TAG: ghcr.io/edlaughton/bookshelf:import-match-threshold-ui
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: jdx/mise-action@v3
+
+      - name: Setup environment variables
+        run: |
+          echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: _cache/nuget
+          key: nuget-${{ runner.os }}-${{ hashFiles('src/Directory.Packages.props', 'src/**/*.csproj', 'global.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            _cache/node
+            node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+          restore-keys: |
+            node-${{ runner.os }}-
+
+      - name: Build backend and frontend
+        run: ./build.sh --backend --frontend
+        env:
+          READARRVERSION: ${{ env.READARR_VERSION }}.${{ github.run_number }}
+          BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.IMAGE_TAG }}
+          build-args: |
+            GIT_BRANCH=${{ github.ref_name }}
+            COMMIT_HASH=${{ github.sha }}
+            BUILD_DATE=${{ env.DATE }}
