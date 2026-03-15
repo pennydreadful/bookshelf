@@ -1,6 +1,5 @@
-# Publishes a Docker image for the import-match-threshold-setting branch
-# to GHCR for testing on Unraid. This workflow is separate from the main
-# CI pipeline and only targets this feature branch.
+# Publishes a Docker image to GHCR for testing on Unraid.
+# This workflow is separate from the main CI pipeline.
 
 name: Publish Unraid Image
 
@@ -12,7 +11,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - claude/import-match-threshold-setting-GefjL
+      - develop
 
 env:
   DOTNET_VERSION: "6.0.428"
