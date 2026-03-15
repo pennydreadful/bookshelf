@@ -221,6 +221,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ExtraFileExtensions", value); }
         }
 
+        public int BookImportMinimumMatchPercent
+        {
+            get { return GetValueInt("BookImportMinimumMatchPercent", 50); }
+
+            set { SetValue("BookImportMinimumMatchPercent", value); }
+        }
+
         public bool WatchLibraryForChanges
         {
             get { return GetValueBoolean("WatchLibraryForChanges", true); }

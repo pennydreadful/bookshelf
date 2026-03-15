@@ -10,6 +10,7 @@ using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -53,7 +54,8 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     _logger.Debug("External directory scan request for known download {0}. [{1}]", message.DownloadClientId, message.Path);
 
-                    var importResults = _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode, trackedDownload.RemoteBook.Author, trackedDownload.DownloadItem);
+                    var idOverrides = BuildIdentificationOverrides(trackedDownload.RemoteBook);
+                    var importResults = _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode, idOverrides, trackedDownload.DownloadItem);
 
                     _completedDownloadService.VerifyImport(trackedDownload, importResults);
 
@@ -64,6 +66,26 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode);
+        }
+
+        private IdentificationOverrides BuildIdentificationOverrides(RemoteBook remoteBook)
+        {
+            if (remoteBook == null)
+            {
+                return null;
+            }
+
+            var overrides = new IdentificationOverrides
+            {
+                Author = remoteBook.Author
+            };
+
+            if (remoteBook.Books != null && remoteBook.Books.Count == 1)
+            {
+                overrides.Book = remoteBook.Books.First();
+            }
+
+            return overrides;
         }
 
         public void Execute(DownloadedBooksScanCommand message)

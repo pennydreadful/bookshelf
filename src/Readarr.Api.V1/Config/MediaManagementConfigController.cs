@@ -33,6 +33,7 @@ namespace Readarr.Api.V1.Config
             SharedValidator.RuleFor(c => c.RecycleBinCleanupDays).GreaterThanOrEqualTo(0);
             SharedValidator.RuleFor(c => c.ChmodFolder).SetValidator(folderChmodValidator).When(c => !string.IsNullOrEmpty(c.ChmodFolder) && (OsInfo.IsLinux || OsInfo.IsOsx));
             SharedValidator.RuleFor(c => c.MinimumFreeSpaceWhenImporting).GreaterThanOrEqualTo(100);
+            SharedValidator.RuleFor(c => c.BookImportMinimumMatchPercent).InclusiveBetween(50, 99);
         }
 
         protected override MediaManagementConfigResource ToResource(IConfigService model)
