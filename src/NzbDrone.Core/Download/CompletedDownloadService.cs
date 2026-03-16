@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Download
         private readonly IProvideImportItemService _provideImportItemService;
         private readonly IDownloadedBooksImportService _downloadedTracksImportService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
+        private readonly IBookService _bookService;
         private readonly Logger _logger;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
@@ -35,6 +37,7 @@ namespace NzbDrone.Core.Download
                                         IProvideImportItemService provideImportItemService,
                                         IDownloadedBooksImportService downloadedTracksImportService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
+                                        IBookService bookService,
                                         Logger logger)
         {
             _eventAggregator = eventAggregator;
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.Download
             _provideImportItemService = provideImportItemService;
             _downloadedTracksImportService = downloadedTracksImportService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
+            _bookService = bookService;
             _logger = logger;
         }
 
@@ -88,7 +92,8 @@ namespace NzbDrone.Core.Download
             trackedDownload.State = TrackedDownloadState.Importing;
 
             var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
-            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteBook?.Author, trackedDownload.DownloadItem);
+            var idOverrides = BuildIdentificationOverrides(trackedDownload.RemoteBook);
+            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, idOverrides, trackedDownload.DownloadItem);
 
             if (importResults.Empty())
             {
@@ -188,6 +193,34 @@ namespace NzbDrone.Core.Download
         private void SetImportItem(TrackedDownload trackedDownload)
         {
             trackedDownload.ImportItem = _provideImportItemService.ProvideImportItem(trackedDownload.DownloadItem, trackedDownload.ImportItem);
+        }
+
+        private IdentificationOverrides BuildIdentificationOverrides(Parser.Model.RemoteBook remoteBook)
+        {
+            if (remoteBook == null)
+            {
+                return null;
+            }
+
+            var overrides = new IdentificationOverrides
+            {
+                Author = remoteBook.Author
+            };
+
+            // Only set Book override when the grab targeted exactly one book
+            // AND we can confirm the book exists in the local database.
+            // RemoteBook.Books may contain stale or unmapped objects that would
+            // cause CandidateService.GetDbCandidatesByBook to return zero candidates.
+            if (remoteBook.Books != null && remoteBook.Books.Count == 1)
+            {
+                var candidate = remoteBook.Books.First();
+                if (candidate.Id > 0 && _bookService.GetBook(candidate.Id) != null)
+                {
+                    overrides.Book = candidate;
+                }
+            }
+
+            return overrides;
         }
 
         private bool ValidatePath(TrackedDownload trackedDownload)

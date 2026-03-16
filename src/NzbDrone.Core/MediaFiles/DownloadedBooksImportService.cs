@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IDownloadedBooksImportService
     {
         List<ImportResult> ProcessRootFolder(IDirectoryInfo directoryInfo);
-        List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Author author = null, DownloadClientItem downloadClientItem = null);
+        List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, IdentificationOverrides idOverrides = null, DownloadClientItem downloadClientItem = null);
         bool ShouldDeleteFolder(IDirectoryInfo directoryInfo);
     }
 
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.MediaFiles
             return results;
         }
 
-        public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Author author = null, DownloadClientItem downloadClientItem = null)
+        public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, IdentificationOverrides idOverrides = null, DownloadClientItem downloadClientItem = null)
         {
             _logger.Debug("Processing path: {0}", path);
 
@@ -84,24 +84,24 @@ namespace NzbDrone.Core.MediaFiles
             {
                 var directoryInfo = _diskProvider.GetDirectoryInfo(path);
 
-                if (author == null)
+                if (idOverrides?.Author == null)
                 {
                     return ProcessFolder(directoryInfo, importMode, downloadClientItem);
                 }
 
-                return ProcessFolder(directoryInfo, importMode, author, downloadClientItem);
+                return ProcessFolder(directoryInfo, importMode, idOverrides, downloadClientItem);
             }
 
             if (_diskProvider.FileExists(path))
             {
                 var fileInfo = _diskProvider.GetFileInfo(path);
 
-                if (author == null)
+                if (idOverrides?.Author == null)
                 {
                     return ProcessFile(fileInfo, importMode, downloadClientItem);
                 }
 
-                return ProcessFile(fileInfo, importMode, author, downloadClientItem);
+                return ProcessFile(fileInfo, importMode, idOverrides, downloadClientItem);
             }
 
             LogInaccessiblePathError(path);
@@ -158,10 +158,10 @@ namespace NzbDrone.Core.MediaFiles
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
             var author = _parsingService.GetAuthor(cleanedUpName);
 
-            return ProcessFolder(directoryInfo, importMode, author, downloadClientItem);
+            return ProcessFolder(directoryInfo, importMode, new IdentificationOverrides { Author = author }, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, Author author, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, IdentificationOverrides idOverrides, DownloadClientItem downloadClientItem)
         {
             if (_authorService.AuthorPathExists(directoryInfo.FullName))
             {
@@ -207,10 +207,6 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var idOverrides = new IdentificationOverrides
-            {
-                Author = author
-            };
             var idInfo = new ImportDecisionMakerInfo
             {
                 DownloadClientItem = downloadClientItem,
@@ -266,10 +262,10 @@ namespace NzbDrone.Core.MediaFiles
                        };
             }
 
-            return ProcessFile(fileInfo, importMode, author, downloadClientItem);
+            return ProcessFile(fileInfo, importMode, new IdentificationOverrides { Author = author }, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, Author author, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, IdentificationOverrides idOverrides, DownloadClientItem downloadClientItem)
         {
             if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
             {
@@ -292,10 +288,6 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var idOverrides = new IdentificationOverrides
-            {
-                Author = author
-            };
             var idInfo = new ImportDecisionMakerInfo
             {
                 DownloadClientItem = downloadClientItem

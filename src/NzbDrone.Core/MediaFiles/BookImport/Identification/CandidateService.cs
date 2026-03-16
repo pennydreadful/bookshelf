@@ -80,6 +80,14 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 {
                     candidateReleases = GetDbCandidatesByBook(idOverrides.Book, includeExisting);
                 }
+
+                // If the book override produced no candidates (e.g. stale/invalid book),
+                // fall back to author-scoped search so import can still proceed.
+                if (!candidateReleases.Any() && idOverrides.Author != null)
+                {
+                    _logger.Debug("Book override returned no candidates, falling back to author search");
+                    candidateReleases = GetDbCandidatesByAuthor(localEdition, idOverrides.Author, includeExisting);
+                }
             }
             else if (idOverrides?.Author != null)
             {
