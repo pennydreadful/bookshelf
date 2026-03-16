@@ -71,6 +71,10 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
                   .Setup(s => s.GetEditionsByBook(50))
                   .Returns(new List<Edition> { edition });
 
+            Mocker.GetMock<IEditionService>()
+                  .Setup(s => s.GetCandidates(10, "Book"))
+                  .Returns(new List<Edition>());
+
             Mocker.GetMock<IMediaFileService>()
                   .Setup(s => s.GetFilesByBook(It.IsAny<int>()))
                   .Returns(new List<BookFile>());
