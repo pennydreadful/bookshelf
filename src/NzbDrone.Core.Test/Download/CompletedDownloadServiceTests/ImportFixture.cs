@@ -365,10 +365,14 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         }
 
         [Test]
-        public void should_pass_book_override_when_remotebook_has_single_book()
+        public void should_pass_book_override_when_remotebook_has_single_valid_local_book()
         {
             var book = CreateBook(42);
             _trackedDownload.RemoteBook.Books = new List<Book> { book };
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(s => s.GetBook(42))
+                  .Returns(book);
 
             Mocker.GetMock<IDownloadedBooksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<IdentificationOverrides>(), It.IsAny<DownloadClientItem>()))
@@ -384,6 +388,55 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                       It.IsAny<string>(),
                       ImportMode.Auto,
                       It.Is<IdentificationOverrides>(o => o.Author == _trackedDownload.RemoteBook.Author && o.Book == book),
+                      It.IsAny<DownloadClientItem>()),
+                  Times.Once());
+        }
+
+        [Test]
+        public void should_not_pass_book_override_when_single_book_has_zero_id()
+        {
+            var book = CreateBook(0);
+            _trackedDownload.RemoteBook.Books = new List<Book> { book };
+
+            Mocker.GetMock<IDownloadedBooksImportService>()
+                  .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<IdentificationOverrides>(), It.IsAny<DownloadClientItem>()))
+                  .Returns(new List<ImportResult>());
+
+            Subject.Import(_trackedDownload);
+
+            Mocker.GetMock<IDownloadedBooksImportService>()
+                  .Verify(v => v.ProcessPath(
+                      It.IsAny<string>(),
+                      ImportMode.Auto,
+                      It.Is<IdentificationOverrides>(o => o.Author == _trackedDownload.RemoteBook.Author && o.Book == null),
+                      It.IsAny<DownloadClientItem>()),
+                  Times.Once());
+
+            Mocker.GetMock<IBookService>()
+                  .Verify(s => s.GetBook(It.IsAny<int>()), Times.Never());
+        }
+
+        [Test]
+        public void should_not_pass_book_override_when_single_book_not_found_in_db()
+        {
+            var book = CreateBook(99);
+            _trackedDownload.RemoteBook.Books = new List<Book> { book };
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(s => s.GetBook(99))
+                  .Returns((Book)null);
+
+            Mocker.GetMock<IDownloadedBooksImportService>()
+                  .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<IdentificationOverrides>(), It.IsAny<DownloadClientItem>()))
+                  .Returns(new List<ImportResult>());
+
+            Subject.Import(_trackedDownload);
+
+            Mocker.GetMock<IDownloadedBooksImportService>()
+                  .Verify(v => v.ProcessPath(
+                      It.IsAny<string>(),
+                      ImportMode.Auto,
+                      It.Is<IdentificationOverrides>(o => o.Author == _trackedDownload.RemoteBook.Author && o.Book == null),
                       It.IsAny<DownloadClientItem>()),
                   Times.Once());
         }

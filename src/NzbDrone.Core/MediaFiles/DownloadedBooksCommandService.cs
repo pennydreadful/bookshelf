@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.BookImport;
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDiskProvider _diskProvider;
         private readonly ICompletedDownloadService _completedDownloadService;
+        private readonly IBookService _bookService;
         private readonly ICommandResultReporter _commandResultReporter;
         private readonly Logger _logger;
 
@@ -27,6 +29,7 @@ namespace NzbDrone.Core.MediaFiles
                                                 ITrackedDownloadService trackedDownloadService,
                                                 IDiskProvider diskProvider,
                                                 ICompletedDownloadService completedDownloadService,
+                                                IBookService bookService,
                                                 ICommandResultReporter commandResultReporter,
                                                 Logger logger)
         {
@@ -34,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles
             _trackedDownloadService = trackedDownloadService;
             _diskProvider = diskProvider;
             _completedDownloadService = completedDownloadService;
+            _bookService = bookService;
             _commandResultReporter = commandResultReporter;
             _logger = logger;
         }
@@ -82,7 +86,11 @@ namespace NzbDrone.Core.MediaFiles
 
             if (remoteBook.Books != null && remoteBook.Books.Count == 1)
             {
-                overrides.Book = remoteBook.Books.First();
+                var candidate = remoteBook.Books.First();
+                if (candidate.Id > 0 && _bookService.GetBook(candidate.Id) != null)
+                {
+                    overrides.Book = candidate;
+                }
             }
 
             return overrides;

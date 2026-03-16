@@ -7,6 +7,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.MediaFiles.Events;
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Download
         private readonly IProvideImportItemService _provideImportItemService;
         private readonly IDownloadedBooksImportService _downloadedTracksImportService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
+        private readonly IBookService _bookService;
         private readonly Logger _logger;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
@@ -35,6 +37,7 @@ namespace NzbDrone.Core.Download
                                         IProvideImportItemService provideImportItemService,
                                         IDownloadedBooksImportService downloadedTracksImportService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
+                                        IBookService bookService,
                                         Logger logger)
         {
             _eventAggregator = eventAggregator;
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.Download
             _provideImportItemService = provideImportItemService;
             _downloadedTracksImportService = downloadedTracksImportService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
+            _bookService = bookService;
             _logger = logger;
         }
 
@@ -203,11 +207,17 @@ namespace NzbDrone.Core.Download
                 Author = remoteBook.Author
             };
 
-            // Only set Book override when the grab targeted exactly one book,
-            // so we don't incorrectly force multi-book/omnibus downloads to a single book.
+            // Only set Book override when the grab targeted exactly one book
+            // AND we can confirm the book exists in the local database.
+            // RemoteBook.Books may contain stale or unmapped objects that would
+            // cause CandidateService.GetDbCandidatesByBook to return zero candidates.
             if (remoteBook.Books != null && remoteBook.Books.Count == 1)
             {
-                overrides.Book = remoteBook.Books.First();
+                var candidate = remoteBook.Books.First();
+                if (candidate.Id > 0 && _bookService.GetBook(candidate.Id) != null)
+                {
+                    overrides.Book = candidate;
+                }
             }
 
             return overrides;
