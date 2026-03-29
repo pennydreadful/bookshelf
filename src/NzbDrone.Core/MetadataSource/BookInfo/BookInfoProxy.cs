@@ -515,11 +515,12 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             }
 
             var authors = resource.Authors.Select(MapAuthorMetadata).ToDictionary(x => x.ForeignAuthorId, x => x);
+            var authorNames = resource.Authors.ToDictionary(x => x.ForeignId.ToString(), x => x.Name);
             var series = resource.Series.Select(MapSeries).ToList();
 
             foreach (var work in resource.Works)
             {
-                var book = MapBook(work);
+                var book = MapBook(work, authorNames);
                 var authorId = work.Books.OrderByDescending(b => b.AverageRating * b.RatingCount).First().Contributors.First().ForeignId.ToString();
 
                 AddDbIds(authorId, book, authors);
@@ -800,7 +801,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             var books = resource.Works
                 .Where(x => x.ForeignId > 0 && GetAuthorId(x) == resource.ForeignId)
-                .Select(MapBook)
+                .Select(x => MapBook(x))
                 .ToList();
 
             books.ForEach(x => x.AuthorMetadata = metadata);
@@ -864,7 +865,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return series;
         }
 
-        private static Book MapBook(WorkResource resource)
+        private static Book MapBook(WorkResource resource, Dictionary<string, string> authorNames = null)
         {
             var book = new Book
             {
@@ -881,7 +882,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
 
             if (resource.Books != null)
             {
-                book.Editions = resource.Books.Select(x => MapEdition(x)).ToList();
+                book.Editions = resource.Books.Select(x => MapEdition(x, authorNames)).ToList();
 
                 // monitor the most popular release
                 var mostPopular = book.Editions.Value.MaxBy(x => x.Ratings.Popularity);
@@ -944,7 +945,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             return book;
         }
 
-        private static Edition MapEdition(BookResource resource)
+        private static Edition MapEdition(BookResource resource, Dictionary<string, string> authorNames = null)
         {
             var edition = new Edition
             {
@@ -963,6 +964,19 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
                 ReleaseDate = resource.ReleaseDate,
                 Ratings = new Ratings { Votes = resource.RatingCount, Value = (decimal)resource.AverageRating }
             };
+
+            if (resource.Contributors != null && authorNames != null)
+            {
+                edition.Credits = resource.Contributors
+                    .Where(c => c.Role.IsNotNullOrWhiteSpace() &&
+                                !c.Role.Equals("Author", StringComparison.OrdinalIgnoreCase))
+                    .Select(c => new Credit
+                    {
+                        Name = authorNames.GetValueOrDefault(c.ForeignId.ToString(), "Unknown"),
+                        Role = c.Role
+                    })
+                    .ToList();
+            }
 
             if (resource.ImageUrl.IsNotNullOrWhiteSpace())
             {

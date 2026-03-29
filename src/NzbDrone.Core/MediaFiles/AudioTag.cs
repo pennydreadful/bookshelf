@@ -33,6 +33,8 @@ namespace NzbDrone.Core.MediaFiles
         public string Publisher { get; set; }
         public TimeSpan Duration { get; set; }
         public string[] Genres { get; set; }
+        public string Narrator { get; set; }
+        public string Illustrator { get; set; }
         public string ImageFile { get; set; }
         public long ImageSize { get; set; }
 
@@ -105,6 +107,11 @@ namespace NzbDrone.Core.MediaFiles
                     Media = id3tag.GetTextAsString("TMED");
                     Date = ReadId3Date(id3tag, "TDRC");
                     OriginalReleaseDate = ReadId3Date(id3tag, "TDOR");
+
+                    var narratorFrame = UserTextInformationFrame.Get(id3tag, "NARRATOR", false);
+                    Narrator = narratorFrame?.Text?.FirstOrDefault();
+                    var illustratorFrame = UserTextInformationFrame.Get(id3tag, "ILLUSTRATOR", false);
+                    Illustrator = illustratorFrame?.Text?.FirstOrDefault();
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Xiph))
                 {
@@ -115,6 +122,8 @@ namespace NzbDrone.Core.MediaFiles
                     Date = DateTime.TryParse(flactag.GetField("DATE").ExclusiveOrDefault(), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(flactag.GetField("ORIGINALDATE").ExclusiveOrDefault(), out tempDate) ? tempDate : default(DateTime?);
                     Publisher = flactag.GetField("LABEL").ExclusiveOrDefault();
+                    Narrator = flactag.GetField("NARRATOR").ExclusiveOrDefault();
+                    Illustrator = flactag.GetField("ILLUSTRATOR").ExclusiveOrDefault();
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Ape))
                 {
@@ -123,6 +132,8 @@ namespace NzbDrone.Core.MediaFiles
                     Date = DateTime.TryParse(apetag.GetItem("Year")?.ToString(), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(apetag.GetItem("Original Date")?.ToString(), out tempDate) ? tempDate : default(DateTime?);
                     Publisher = apetag.GetItem("Label")?.ToString();
+                    Narrator = apetag.GetItem("Narrator")?.ToString();
+                    Illustrator = apetag.GetItem("Illustrator")?.ToString();
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Asf))
                 {
@@ -131,6 +142,8 @@ namespace NzbDrone.Core.MediaFiles
                     Date = DateTime.TryParse(asftag.GetDescriptorString("WM/Year"), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(asftag.GetDescriptorString("WM/OriginalReleaseTime"), out tempDate) ? tempDate : default(DateTime?);
                     Publisher = asftag.GetDescriptorString("WM/Publisher");
+                    Narrator = asftag.GetDescriptorString("WM/Narrator");
+                    Illustrator = asftag.GetDescriptorString("WM/Illustrator");
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Apple))
                 {
@@ -138,6 +151,8 @@ namespace NzbDrone.Core.MediaFiles
                     Media = appletag.GetDashBox("com.apple.iTunes", "MEDIA");
                     Date = DateTime.TryParse(appletag.DataBoxes(FixAppleId("day")).FirstOrDefault()?.Text, out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(appletag.GetDashBox("com.apple.iTunes", "Original Date"), out tempDate) ? tempDate : default(DateTime?);
+                    Narrator = appletag.GetDashBox("com.apple.iTunes", "NARRATOR");
+                    Illustrator = appletag.GetDashBox("com.apple.iTunes", "ILLUSTRATOR");
                 }
 
                 OriginalYear = OriginalReleaseDate.HasValue ? (uint)OriginalReleaseDate?.Year : 0;
@@ -298,15 +313,36 @@ namespace NzbDrone.Core.MediaFiles
             return null;
         }
 
+        private static string SanitizeTagValue(string value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var sanitized = new string(value.Where(c => c >= ' ' || c == '\t' || c == '\n' || c == '\r').ToArray());
+
+            return sanitized.Length > 0 ? sanitized : null;
+        }
+
+        private static string[] SanitizeTagValues(string[] values)
+        {
+            return values?.Select(SanitizeTagValue).Where(v => v != null).ToArray() ?? new string[0];
+        }
+
         public void Write(string path)
         {
             Logger.Debug($"Starting tag write for {path}");
 
-            // patch up any null fields to work around TagLib exception for
-            // WMA with null performers/bookauthors
-            Performers = Performers ?? new string[0];
-            BookAuthors = BookAuthors ?? new string[0];
-            Genres = Genres ?? new string[0];
+            Title = SanitizeTagValue(Title);
+            Book = SanitizeTagValue(Book);
+            Publisher = SanitizeTagValue(Publisher);
+            Media = SanitizeTagValue(Media);
+            Narrator = SanitizeTagValue(Narrator);
+            Illustrator = SanitizeTagValue(Illustrator);
+            Performers = SanitizeTagValues(Performers);
+            BookAuthors = SanitizeTagValues(BookAuthors);
+            Genres = SanitizeTagValues(Genres);
 
             TagLib.File file = null;
             try
@@ -326,17 +362,14 @@ namespace NzbDrone.Core.MediaFiles
                 tag.Publisher = Publisher;
                 tag.Genres = Genres;
 
-                if (ImageFile.IsNotNullOrWhiteSpace())
-                {
-                    tag.Pictures = new IPicture[1] { new Picture(ImageFile) };
-                }
-
                 if (file.TagTypes.HasFlag(TagTypes.Id3v2))
                 {
                     var id3tag = (TagLib.Id3v2.Tag)file.GetTag(TagTypes.Id3v2);
                     id3tag.SetTextFrame("TMED", Media);
                     WriteId3Date(id3tag, "TDRC", "TYER", "TDAT", Date);
                     WriteId3Date(id3tag, "TDOR", "TORY", null, OriginalReleaseDate);
+                    WriteId3Tag(id3tag, "NARRATOR", Narrator);
+                    WriteId3Tag(id3tag, "ILLUSTRATOR", Illustrator);
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Xiph))
                 {
@@ -358,6 +391,8 @@ namespace NzbDrone.Core.MediaFiles
                     flactag.SetField("TOTALDISCS", DiscCount);
                     flactag.SetField("MEDIA", Media);
                     flactag.SetField("LABEL", Publisher);
+                    flactag.SetField("NARRATOR", Narrator);
+                    flactag.SetField("ILLUSTRATOR", Illustrator);
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Ape))
                 {
@@ -368,6 +403,8 @@ namespace NzbDrone.Core.MediaFiles
                     apetag.SetValue("Original Year", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null);
                     apetag.SetValue("Media", Media);
                     apetag.SetValue("Label", Publisher);
+                    apetag.SetValue("Narrator", Narrator);
+                    apetag.SetValue("Illustrator", Illustrator);
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Asf))
                 {
@@ -378,6 +415,8 @@ namespace NzbDrone.Core.MediaFiles
                     asftag.SetDescriptorString(OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null, "WM/OriginalReleaseYear");
                     asftag.SetDescriptorString(Media, "WM/Media");
                     asftag.SetDescriptorString(Publisher, "WM/Publisher");
+                    asftag.SetDescriptorString(Narrator, "WM/Narrator");
+                    asftag.SetDescriptorString(Illustrator, "WM/Illustrator");
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Apple))
                 {
@@ -387,6 +426,14 @@ namespace NzbDrone.Core.MediaFiles
                     appletag.SetDashBox("com.apple.iTunes", "Original Date", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
                     appletag.SetDashBox("com.apple.iTunes", "Original Year", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null);
                     appletag.SetDashBox("com.apple.iTunes", "MEDIA", Media);
+                    appletag.SetDashBox("com.apple.iTunes", "NARRATOR", Narrator);
+                    appletag.SetDashBox("com.apple.iTunes", "ILLUSTRATOR", Illustrator);
+                }
+
+                // write cover art last so large covr atom doesn't block parsers reading subsequent atoms
+                if (ImageFile.IsNotNullOrWhiteSpace())
+                {
+                    tag.Pictures = new IPicture[1] { new Picture(ImageFile) };
                 }
 
                 file.Save();
@@ -498,6 +545,16 @@ namespace NzbDrone.Core.MediaFiles
             if (Publisher != other.Publisher)
             {
                 output.Add("Label", Tuple.Create(Publisher, other.Publisher));
+            }
+
+            if (Narrator != other.Narrator)
+            {
+                output.Add("Narrator", Tuple.Create(Narrator, other.Narrator));
+            }
+
+            if (Illustrator != other.Illustrator)
+            {
+                output.Add("Illustrator", Tuple.Create(Illustrator, other.Illustrator));
             }
 
             if (!Genres.SequenceEqual(other.Genres))

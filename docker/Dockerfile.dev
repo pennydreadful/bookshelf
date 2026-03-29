@@ -1,0 +1,65 @@
+# Multi-stage Dockerfile for local builds without host tooling
+# Usage: docker build -f docker/Dockerfile.dev -t bookshelf:dev .
+#
+# Non-hardcover (softcover) build by default.
+# For hardcover: docker build -f docker/Dockerfile.dev -t bookshelf:hardcover --build-arg METADATA_URL=https://hardcover.bookinfo.pro --build-arg HARDCOVER=true .
+
+# ── Stage 1: Build backend ──────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS backend
+
+WORKDIR /build
+COPY .editorconfig ./
+COPY Logo/ Logo/
+COPY src/ src/
+RUN dotnet msbuild -restore src/Readarr.sln \
+    -p:Configuration=Release \
+    -p:Platform=Posix \
+    -p:RuntimeIdentifiers=linux-musl-x64 \
+    -t:PublishAllRids
+
+# ── Stage 2: Build frontend ─────────────────────────────────────────────
+FROM node:20-alpine AS frontend
+
+WORKDIR /build
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --network-timeout 120000
+
+COPY frontend/ frontend/
+COPY tsconfig.json ./
+RUN yarn run build --env production
+
+# ── Stage 3: Final image ────────────────────────────────────────────────
+FROM ghcr.io/linuxserver/baseimage-alpine:3.21
+
+ENV XDG_CONFIG_HOME="/config/xdg" \
+    COMPlus_EnableDiagnostics=0 \
+    TMPDIR=/run/readarr-temp
+
+RUN apk add -U --upgrade --no-cache \
+    icu-libs \
+    sqlite-libs \
+    xmlstarlet
+
+ARG GIT_BRANCH=develop
+ARG COMMIT_HASH=dev
+ARG BUILD_DATE=unknown
+ARG METADATA_URL=https://api.bookinfo.pro
+ARG HARDCOVER
+
+LABEL maintainer="pennydreadful"
+
+ENV METADATA_URL=${METADATA_URL}
+ENV HARDCOVER=${HARDCOVER}
+
+RUN mkdir -p /app/readarr/bin
+
+COPY --from=backend /build/_output/net6.0/linux-musl-x64/publish/ /app/readarr/bin/
+COPY --from=frontend /build/_output/UI/ /app/readarr/bin/UI/
+
+RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}\nPackageAuthor=pennydreadful" > /app/readarr/package_info && \
+    printf "version: ${COMMIT_HASH}\nBuild-date: ${BUILD_DATE}" > /build_version
+
+COPY docker/root/ /
+
+EXPOSE 8787
+VOLUME /config

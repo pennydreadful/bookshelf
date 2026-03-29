@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Books
             Images = new List<MediaCover.MediaCover>();
             Links = new List<Links>();
             Ratings = new Ratings();
+            Credits = new List<Credit>();
         }
 
         // These correspond to columns in the Books table
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.Books
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
         public Ratings Ratings { get; set; }
+        public List<Credit> Credits { get; set; }
 
         // These are Readarr generated/config
         public bool Monitored { get; set; }
@@ -71,6 +73,7 @@ namespace NzbDrone.Core.Books
             Images = other.Images.Any() ? other.Images : Images;
             Links = other.Links;
             Ratings = other.Ratings;
+            Credits = other.Credits;
         }
 
         public override void UseDbFieldsFrom(Edition other)

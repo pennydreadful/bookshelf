@@ -113,6 +113,8 @@ namespace NzbDrone.Core.MediaFiles
                 OriginalYear = (uint)(book.ReleaseDate?.Year ?? 0),
                 Publisher = edition.Publisher,
                 Genres = new string[0],
+                Narrator = edition.Credits?.FirstOrDefault(c => c.Role.Equals("Narrator", StringComparison.OrdinalIgnoreCase))?.Name,
+                Illustrator = edition.Credits?.FirstOrDefault(c => c.Role.Equals("Illustrator", StringComparison.OrdinalIgnoreCase))?.Name,
                 ImageFile = imageFile,
                 ImageSize = imageSize,
             };

@@ -28,6 +28,7 @@ namespace Readarr.Api.V1.Books
         public List<MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
         public Ratings Ratings { get; set; }
+        public List<Credit> Credits { get; set; }
         public bool Monitored { get; set; }
         public bool ManualAdd { get; set; }
         public string RemoteCover { get; set; }
@@ -67,6 +68,7 @@ namespace Readarr.Api.V1.Books
                 Images = model.Images,
                 Links = model.Links,
                 Ratings = model.Ratings,
+                Credits = model.Credits,
                 Monitored = model.Monitored,
                 ManualAdd = model.ManualAdd
             };
@@ -99,6 +101,7 @@ namespace Readarr.Api.V1.Books
                 Images = resource.Images,
                 Links = resource.Links,
                 Ratings = resource.Ratings,
+                Credits = resource.Credits ?? new List<Credit>(),
                 Monitored = resource.Monitored,
                 ManualAdd = resource.ManualAdd
             };
