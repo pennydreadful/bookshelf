@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -330,6 +331,144 @@ namespace NzbDrone.Core.MediaFiles
             return values?.Select(SanitizeTagValue).Where(v => v != null).ToArray() ?? new string[0];
         }
 
+        internal static void RepairChplAtom(string path)
+        {
+            try
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    var chplOffset = FindNestedAtom(fs, 0, fs.Length, "moov", "udta", "chpl");
+                    if (chplOffset < 0)
+                    {
+                        return;
+                    }
+
+                    // Read the atom size and version to validate the chpl atom.
+                    // TagLib-Sharp corrupts version 1 chpl atoms by rewriting them
+                    // in version 0 format, shifting chapter data. If the file was
+                    // already corrupted and re-saved, the version byte may be any
+                    // garbage value. We validate by checking that:
+                    //   1. Version is 0 or 1 (the only valid versions)
+                    //   2. If version 1: chapter count is sane (reserved=0, count fits atom)
+                    //   3. If version 0: chapter count is sane (count fits atom)
+                    // If anything looks wrong, neutralize the atom.
+                    var sizeBytes = new byte[4];
+                    fs.Seek(chplOffset, SeekOrigin.Begin);
+                    fs.Read(sizeBytes, 0, 4);
+                    var atomSize = (long)((sizeBytes[0] << 24) | (sizeBytes[1] << 16) | (sizeBytes[2] << 8) | sizeBytes[3]);
+
+                    fs.Seek(chplOffset + 8, SeekOrigin.Begin);
+                    var version = fs.ReadByte();
+
+                    var shouldNeutralize = false;
+                    if (version > 1)
+                    {
+                        // Invalid version — atom is corrupted
+                        shouldNeutralize = true;
+                    }
+                    else if (version == 0)
+                    {
+                        // Version 0 written by TagLib-Sharp — validate chapter count
+                        fs.Seek(chplOffset + 12, SeekOrigin.Begin);
+                        var countBytes = new byte[4];
+                        fs.Read(countBytes, 0, 4);
+                        var count = (uint)((countBytes[0] << 24) | (countBytes[1] << 16) | (countBytes[2] << 8) | countBytes[3]);
+
+                        // Each chapter is at least 9 bytes (8 timestamp + 1 length).
+                        // Data starts at offset 16 (8 header + 4 ver/flags + 4 count).
+                        var maxChapters = (atomSize - 16) / 9;
+                        if (count > maxChapters || count > 10000)
+                        {
+                            shouldNeutralize = true;
+                        }
+                    }
+
+                    // Version 1 with valid structure is left alone
+                    if (shouldNeutralize)
+                    {
+                        fs.Seek(chplOffset + 4, SeekOrigin.Begin);
+                        fs.Write(new byte[] { 0x66, 0x72, 0x65, 0x65 }, 0, 4); // "free"
+                        Logger.Debug("Neutralized corrupted chpl atom (version={0}) in {1}", version, path);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to repair chpl atom in {0}", path);
+            }
+        }
+
+        internal static long FindNestedAtom(Stream stream, long start, long end, params string[] atomPath)
+        {
+            if (atomPath.Length == 0)
+            {
+                return start;
+            }
+
+            var target = atomPath[0];
+            var remaining = new string[atomPath.Length - 1];
+            Array.Copy(atomPath, 1, remaining, 0, remaining.Length);
+
+            var buffer = new byte[8];
+            var pos = start;
+
+            while (pos < end - 7)
+            {
+                stream.Seek(pos, SeekOrigin.Begin);
+                if (stream.Read(buffer, 0, 8) < 8)
+                {
+                    break;
+                }
+
+                var size = (long)((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3]);
+                var type = System.Text.Encoding.ASCII.GetString(buffer, 4, 4);
+
+                long headerSize = 8;
+                if (size == 1)
+                {
+                    // 64-bit extended size
+                    var extBuf = new byte[8];
+                    if (stream.Read(extBuf, 0, 8) < 8)
+                    {
+                        break;
+                    }
+
+                    size = ((long)extBuf[0] << 56) | ((long)extBuf[1] << 48) |
+                           ((long)extBuf[2] << 40) | ((long)extBuf[3] << 32) |
+                           ((long)extBuf[4] << 24) | ((long)extBuf[5] << 16) |
+                           ((long)extBuf[6] << 8) | extBuf[7];
+                    headerSize = 16;
+                }
+                else if (size == 0)
+                {
+                    size = end - pos;
+                }
+                else if (size < 8)
+                {
+                    break;
+                }
+
+                if (pos + size > end)
+                {
+                    break;
+                }
+
+                if (type == target)
+                {
+                    if (remaining.Length == 0)
+                    {
+                        return pos;
+                    }
+
+                    return FindNestedAtom(stream, pos + headerSize, pos + size, remaining);
+                }
+
+                pos += size;
+            }
+
+            return -1;
+        }
+
         public void Write(string path)
         {
             Logger.Debug($"Starting tag write for {path}");
@@ -344,6 +483,7 @@ namespace NzbDrone.Core.MediaFiles
             BookAuthors = SanitizeTagValues(BookAuthors);
             Genres = SanitizeTagValues(Genres);
 
+            var isApple = false;
             TagLib.File file = null;
             try
             {
@@ -436,6 +576,8 @@ namespace NzbDrone.Core.MediaFiles
                     tag.Pictures = new IPicture[1] { new Picture(ImageFile) };
                 }
 
+                isApple = file.TagTypes.HasFlag(TagTypes.Apple);
+
                 file.Save();
             }
             catch (CorruptFileException ex)
@@ -452,6 +594,15 @@ namespace NzbDrone.Core.MediaFiles
             finally
             {
                 file?.Dispose();
+            }
+
+            // TagLib-Sharp corrupts Nero chapter (chpl) atoms by rewriting version 1
+            // atoms in version 0 format, shifting all chapter data. This causes readers
+            // like ATL/Jellyfin that parse chpl before ilst to fail to read any metadata.
+            // Neutralize the corrupted atom by replacing it with a free atom.
+            if (isApple)
+            {
+                RepairChplAtom(path);
             }
         }
 
