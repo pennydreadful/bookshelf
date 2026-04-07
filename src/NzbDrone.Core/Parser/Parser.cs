@@ -136,6 +136,12 @@ namespace NzbDrone.Core.Parser
             //ex. City of Bones by Cassandra Clare epub
             new Regex(@"^(?<book>.+?)\s+by\s+(?<author>[^(\[\])\n]+\S)",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Author - Book (no year, no brackets - catch-all for clean release names)
+            //ex. Stephen King - The Dark Tower VI - Song Of Susannah
+            //Must be last to avoid matching releases that would be better handled by more specific patterns
+            new Regex(@"^(?<author>.+?)(?: - )(?<book>.+)\s*$",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]

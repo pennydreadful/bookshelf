@@ -175,6 +175,10 @@ namespace NzbDrone.Core.Test.ParserTests
         // Ebook scene releases: underscore-delimited with dash separator
         [TestCase("Stephen_King_-_Dark_Tower_Series_(1-8)_epub", "Stephen King", "Dark Tower Series")]
 
+        // Clean Author - Book with no trailing metadata (no year, brackets, or format)
+        [TestCase("Stephen King - The Dark Tower VI - Song Of Susannah", "Stephen King", "The Dark Tower VI - Song Of Susannah")]
+        [TestCase("Brandon Sanderson - The Way of Kings", "Brandon Sanderson", "The Way of Kings")]
+
         // ruTracker
         [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill", "From The Trees")]
         [TestCase("(Folk Rock / Pop) Aztec Two-Step - Naked - 2017, MP3, 320 kbps", "Aztec Two-Step", "Naked")]
