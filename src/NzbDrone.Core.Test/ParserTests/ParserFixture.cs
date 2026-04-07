@@ -171,13 +171,25 @@ namespace NzbDrone.Core.Test.ParserTests
 
         // Ebook: Title by Author (no brackets — "epub" tag stripped during preprocessing)
         [TestCase("The Great Gatsby by F. Scott Fitzgerald epub", "F  Scott Fitzgerald", "The Great Gatsby")]
+        [TestCase("Dune by Frank Herbert mobi", "Frank Herbert", "Dune")]
+        [TestCase("The Hobbit by J.R.R. Tolkien pdf", "J R R  Tolkien", "The Hobbit")]
 
         // Ebook scene releases: underscore-delimited with dash separator
         [TestCase("Stephen_King_-_Dark_Tower_Series_(1-8)_epub", "Stephen King", "Dark Tower Series")]
+        [TestCase("J_K_Rowling_-_Harry_Potter_and_the_Philosophers_Stone_(2014)_[epub]", "J K Rowling", "Harry Potter and the Philosophers Stone")]
+        [TestCase("Brandon_Sanderson_-_Mistborn_-_The_Final_Empire_[epub]", "Brandon Sanderson", "Mistborn - The Final Empire")]
 
         // Clean Author - Book with no trailing metadata (no year, brackets, or format)
         [TestCase("Stephen King - The Dark Tower VI - Song Of Susannah", "Stephen King", "The Dark Tower VI - Song Of Susannah")]
         [TestCase("Brandon Sanderson - The Way of Kings", "Brandon Sanderson", "The Way of Kings")]
+        [TestCase("J.K. Rowling - Harry Potter and the Prisoner of Azkaban", "J K  Rowling", "Harry Potter and the Prisoner of Azkaban")]
+        [TestCase("George Orwell - 1984", "George Orwell", "1984")]
+        [TestCase("Agatha Christie - Murder on the Orient Express", "Agatha Christie", "Murder on the Orient Express")]
+        [TestCase("Terry Pratchett - Guards! Guards!", "Terry Pratchett", "Guards! Guards!")]
+        [TestCase("Neil Gaiman - American Gods", "Neil Gaiman", "American Gods")]
+        [TestCase("Patrick Rothfuss - The Name of the Wind", "Patrick Rothfuss", "The Name of the Wind")]
+        [TestCase("Suzanne Collins - The Hunger Games", "Suzanne Collins", "The Hunger Games")]
+        [TestCase("Douglas Adams - The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "The Hitchhiker's Guide to the Galaxy")]
 
         // ruTracker
         [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill", "From The Trees")]
@@ -250,6 +262,11 @@ namespace NzbDrone.Core.Test.ParserTests
         // Ebook scene releases (parsed via fuzzy matching after dot/tag normalization)
         [TestCase("Stephen King", "The Dark Tower", "Stephen.King.The.Dark.Tower.2004.RETAiL.iNTERNAL.ePub.eBook-LiBRiCiDE", "Stephen King", "The Dark Tower")]
         [TestCase("Stephen King", "The Gunslinger", "Stephen.King.The.Gunslinger.Dark.Tower.1.2003.ePub-GROUP", "Stephen King", "The Gunslinger")]
+        [TestCase("Brandon Sanderson", "The Way of Kings", "Brandon.Sanderson.The.Way.of.Kings.2010.ePub.eBook-RELEASE", "Brandon Sanderson", "The Way of Kings")]
+        [TestCase("J.K. Rowling", "Harry Potter and the Goblet of Fire", "J.K.Rowling.Harry.Potter.and.the.Goblet.of.Fire.2000.Retail.ePub.eBook-GROUP", "J K Rowling", "Harry Potter and the Goblet of Fire")]
+        [TestCase("Frank Herbert", "Dune", "Frank.Herbert.-.Dune.1965.ePub-LiBRiCiDE", "Frank Herbert", "Dune")]
+        [TestCase("George R.R. Martin", "A Game of Thrones", "George.R.R.Martin.A.Game.of.Thrones.1996.ePub.eBook-GROUP", "George R R Martin", "A Game of Thrones")]
+        [TestCase("Agatha Christie", "Murder on the Orient Express", "Agatha.Christie.Murder.on.the.Orient.Express.ePub-GROUP", "Agatha Christie", "Murder on the Orient Express")]
         public void should_parse_with_search_criteria(string searchAuthor, string searchBook, string report, string expectedAuthor, string expectedBook)
         {
             GivenSearchCriteria(searchAuthor, searchBook);
