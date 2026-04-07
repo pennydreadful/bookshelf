@@ -169,6 +169,12 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Great Gatsby by F. Scott Fitzgerald [azw3]", "F  Scott Fitzgerald", "The Great Gatsby")]
         [TestCase("Megabytes by Computer [pdf]", "Computer", "Megabytes")]
 
+        // Ebook: Title by Author (no brackets — "epub" tag stripped during preprocessing)
+        [TestCase("The Great Gatsby by F. Scott Fitzgerald epub", "F  Scott Fitzgerald", "The Great Gatsby")]
+
+        // Ebook scene releases: underscore-delimited with dash separator
+        [TestCase("Stephen_King_-_Dark_Tower_Series_(1-8)_epub", "Stephen King", "Dark Tower Series")]
+
         // ruTracker
         [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill", "From The Trees")]
         [TestCase("(Folk Rock / Pop) Aztec Two-Step - Naked - 2017, MP3, 320 kbps", "Aztec Two-Step", "Naked")]
@@ -236,6 +242,10 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("George R.R. Martin", "The Hero", "The Hero George R R Martin", "George R R Martin", "The Hero")]
         [TestCase("James Herbert", "48", "James Hertbert Collection/'48 - James Herbert (epub)", "James Herbert", "48")]
+
+        // Ebook scene releases (parsed via fuzzy matching after dot/tag normalization)
+        [TestCase("Stephen King", "The Dark Tower", "Stephen.King.The.Dark.Tower.2004.RETAiL.iNTERNAL.ePub.eBook-LiBRiCiDE", "Stephen King", "The Dark Tower")]
+        [TestCase("Stephen King", "The Gunslinger", "Stephen.King.The.Gunslinger.Dark.Tower.1.2003.ePub-GROUP", "Stephen King", "The Gunslinger")]
         public void should_parse_with_search_criteria(string searchAuthor, string searchBook, string report, string expectedAuthor, string expectedBook)
         {
             GivenSearchCriteria(searchAuthor, searchBook);

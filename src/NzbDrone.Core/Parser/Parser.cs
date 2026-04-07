@@ -130,6 +130,12 @@ namespace NzbDrone.Core.Parser
             // Hypen with no or more spaces between author/book/year
             new Regex(@"^(?:(?<author>.+?)(?:-))(?<releaseyear>\d{4})(?:-)(?<book>[^-]+)",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Ebook: Title by Author [format] or Title by Author (format)
+            //ex. The Great Gatsby by F. Scott Fitzgerald [epub]
+            //ex. City of Bones by Cassandra Clare epub
+            new Regex(@"^(?<book>.+?)\s+by\s+(?<author>[^(\[\])\n]+\S)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -171,6 +177,15 @@ namespace NzbDrone.Core.Parser
         private static readonly RegexReplace SimpleTitleRegex = new RegexReplace(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Strip common ebook scene tags (format markers, scene flags) before parsing
+        private static readonly RegexReplace EbookSceneTagsRegex = new RegexReplace(@"[\.\s_]*(RETAiL|iNTERNAL|eBook|ePub|MOBI|AZW3|PDF|CBR|CBZ|KINDLE|Retail|Internal|xpost)[\.\s_]*",
+                                                                " ",
+                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Detect scene-style dot-separated releases (3+ dot-separated segments, no spaces)
+        private static readonly Regex SceneReleaseRegex = new Regex(@"^\S+\.\S+\.\S+",
+                                                                RegexOptions.Compiled);
 
         // Valid TLDs http://data.iana.org/TLD/tlds-alpha-by-domain.txt
         private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^(?:\[\s*)?(?:www\.)?[-a-z0-9-]{1,256}\.(?:[a-z]{2,6}\.[a-z]{2,6}|xn--[a-z0-9-]{4,}|[a-z]{2,})\b(?:\s*\]|[ -]{2,})[ -]*",
@@ -355,6 +370,24 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
+                // Strip ebook-specific scene tags (RETAiL, iNTERNAL, ePub, eBook, etc.)
+                // Only normalize dot-separated scene releases when ebook tags are present
+                var hadEbookTags = EbookSceneTagsRegex.TryReplace(ref simpleTitle);
+
+                if (hadEbookTags && SceneReleaseRegex.IsMatch(simpleTitle) && !simpleTitle.Contains(" - "))
+                {
+                    simpleTitle = simpleTitle.Replace('.', ' ').Replace('_', ' ');
+
+                    // Strip release group suffix (-GROUPNAME) after normalization
+                    var groupMatch = ReleaseGroupRegex.Match(simpleTitle);
+                    if (groupMatch.Success)
+                    {
+                        simpleTitle = simpleTitle.Substring(0, groupMatch.Index).TrimEnd(' ', '-');
+                    }
+                }
+
+                simpleTitle = simpleTitle.Trim();
+
                 var bestBook = books
                     .OrderByDescending(x => simpleTitle.FuzzyMatch(x.Editions.Value.Single(x => x.Monitored).Title, wordDelimiters: WordDelimiters))
                     .First()
@@ -432,7 +465,7 @@ namespace NzbDrone.Core.Parser
 
             var found = report.Substring(locStart, matchLength);
 
-            if (score >= 0.8)
+            if (score >= 0.75)
             {
                 remainder = report.Remove(locStart, matchLength);
                 return found.Replace('.', ' ').Replace('_', ' ');
@@ -461,6 +494,24 @@ namespace NzbDrone.Core.Parser
                 simpleTitle = WebsitePostfixRegex.Replace(simpleTitle);
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
+
+                // Strip ebook-specific scene tags (RETAiL, iNTERNAL, ePub, eBook, etc.)
+                // Only normalize dot-separated scene releases when ebook tags are present
+                var hadEbookTags = EbookSceneTagsRegex.TryReplace(ref simpleTitle);
+
+                if (hadEbookTags && SceneReleaseRegex.IsMatch(simpleTitle) && !simpleTitle.Contains(" - "))
+                {
+                    simpleTitle = simpleTitle.Replace('.', ' ').Replace('_', ' ');
+
+                    // Strip release group suffix (-GROUPNAME) after normalization
+                    var groupMatch = ReleaseGroupRegex.Match(simpleTitle);
+                    if (groupMatch.Success)
+                    {
+                        simpleTitle = simpleTitle.Substring(0, groupMatch.Index).TrimEnd(' ', '-');
+                    }
+                }
+
+                simpleTitle = simpleTitle.Trim();
 
                 var airDateMatch = AirDateRegex.Match(simpleTitle);
                 if (airDateMatch.Success)
