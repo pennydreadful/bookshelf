@@ -120,6 +120,12 @@ namespace NzbDrone.Core.Parser
                     result.Quality = Quality.UnknownAudio;
                     result.QualityDetectionSource = QualityDetectionSource.Category;
                 }
+                else if (categories.Any(x => x >= 7000 && x < 8000))
+                {
+                    // Newznab 7000 = Books, 7020 = eBooks — default to EPUB
+                    result.Quality = Quality.EPUB;
+                    result.QualityDetectionSource = QualityDetectionSource.Category;
+                }
             }
 
             return result;
