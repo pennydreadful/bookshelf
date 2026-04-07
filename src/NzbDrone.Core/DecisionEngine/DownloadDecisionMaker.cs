@@ -108,6 +108,14 @@ namespace NzbDrone.Core.DecisionEngine
                             if (parsedBookInfoWithCriteria != null && parsedBookInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
                             {
                                 remoteBook = _parsingService.Map(parsedBookInfoWithCriteria, searchCriteria);
+
+                                // Fuzzy parsing confirmed this release matches the search criteria,
+                                // but DB mapping may fail due to title mismatches (e.g. series prefixes
+                                // in release names vs short titles in metadata). Trust the fuzzy match.
+                                if (remoteBook.Books.Empty() && remoteBook.Author != null)
+                                {
+                                    remoteBook.Books = searchCriteria.Books;
+                                }
                             }
                         }
 

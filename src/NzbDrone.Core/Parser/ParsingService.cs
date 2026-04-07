@@ -125,11 +125,14 @@ namespace NzbDrone.Core.Parser
 
                 // Release titles often include series prefixes (e.g. "The Dark Tower VI - Song Of Susannah")
                 // while the DB title may be just the short title (e.g. "Song of Susannah").
-                // Check if the parsed title contains the book's clean title as a substring.
+                // Compute clean title fresh from Book.Title (stored CleanTitle may include subtitle concatenation).
                 if (bookInfo == null)
                 {
                     bookInfo = searchCriteria.Books.ExclusiveOrDefault(e =>
-                        e.CleanTitle.Length > 3 && cleanTitle.Contains(e.CleanTitle));
+                    {
+                        var candidateClean = Parser.CleanAuthorName(e.Title);
+                        return candidateClean.Length > 3 && cleanTitle.Contains(candidateClean);
+                    });
                 }
             }
 
