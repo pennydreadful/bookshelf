@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -36,18 +37,19 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
             try
             {
-                var series = _seriesInfo.GetSeriesInfo(Settings.SeriesId);
-
-                foreach (var work in series.Works)
+                var pageNum = 1;
+                while (true)
                 {
-                    result.Add(new ImportListItemInfo
+                    var page = FetchPage(pageNum++);
+
+                    if (page.Any())
                     {
-                        BookGoodreadsId = work.Id.ToString(),
-                        Book = work.OriginalTitle,
-                        EditionGoodreadsId = work.BestBook.Id.ToString(),
-                        Author = work.BestBook.AuthorName,
-                        AuthorGoodreadsId = work.BestBook.AuthorId.ToString()
-                    });
+                        result.AddRange(page);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
 
                 _importListStatusService.RecordSuccess(Definition.Id);
@@ -60,6 +62,26 @@ namespace NzbDrone.Core.ImportLists.Goodreads
             return CleanupListItems(result);
         }
 
+        private List<ImportListItemInfo> FetchPage(int page)
+        {
+            var series = _seriesInfo.GetSeriesInfo(Settings.SeriesId, page);
+            var result = new List<ImportListItemInfo>();
+
+            foreach (var work in series.Works)
+            {
+                result.Add(new ImportListItemInfo
+                {
+                    BookGoodreadsId = work.Id.ToString(),
+                    Book = work.OriginalTitle,
+                    EditionGoodreadsId = work.BestBook.Id.ToString(),
+                    Author = work.BestBook.AuthorName,
+                    AuthorGoodreadsId = work.BestBook.AuthorId.ToString()
+                });
+            }
+
+            return result;
+        }
+
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
@@ -69,7 +91,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
         {
             try
             {
-                _seriesInfo.GetSeriesInfo(Settings.SeriesId);
+                _seriesInfo.GetSeriesInfo(Settings.SeriesId, 1);
                 return null;
             }
             catch (HttpException e)
