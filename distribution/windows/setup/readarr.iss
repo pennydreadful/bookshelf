@@ -54,12 +54,18 @@ Name: "{app}"; Permissions: users-modify
 [Files]
 Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\Readarr.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\*"; Excludes: "Readarr.Update"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Upgrade safety: backup + rollback helpers
+Source: "upgrade-helpers\do-backup.ps1"; Flags: dontcopy
+Source: "upgrade-helpers\rollback.ps1"; Flags: dontcopy
+Source: "upgrade-helpers\rollback.ps1"; DestDir: "{app}\bin\upgrade-helpers"; Flags: ignoreversion
+Source: "Rollback-To-Pre-Upgrade.bat"; DestDir: "{app}\bin"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\bin\{#AppExeName}"; Parameters: "/icon"
 Name: "{commondesktop}\{#AppName}"; Filename: "{app}\bin\{#AppExeName}"; Parameters: "/icon"; Tasks: desktopIcon
 Name: "{userstartup}\{#AppName}"; Filename: "{app}\bin\Readarr.exe"; WorkingDir: "{app}\bin"; Tasks: startupShortcut
+Name: "{group}\Rollback To Pre-Upgrade"; Filename: "{app}\bin\Rollback-To-Pre-Upgrade.bat"; WorkingDir: "{app}\bin"
 
 [InstallDelete]
 Name: "{app}\bin"; Type: filesandordirs
@@ -75,10 +81,117 @@ Filename: "{app}\bin\Readarr.exe"; Description: "Start Readarr"; Flags: postinst
 Filename: "{app}\bin\readarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
 
 [Code]
+const
+  REG_KEY = 'SOFTWARE\Readarr\Upgrade';
+
+var
+  GlobalBackupMethod: String;
+  GlobalBackupPath: String;
+
+function ExtractJsonValue(const Json, Key: String): String;
+var
+  Pattern, Remainder: String;
+  StartIdx, EndIdx: Integer;
+begin
+  Result := '';
+  Pattern := '"' + Key + '":"';
+  StartIdx := Pos(Pattern, Json);
+  if StartIdx = 0 then Exit;
+  StartIdx := StartIdx + Length(Pattern);
+  Remainder := Copy(Json, StartIdx, Length(Json));
+  EndIdx := Pos('"', Remainder);
+  if EndIdx = 0 then Exit;
+  Result := Copy(Remainder, 1, EndIdx - 1);
+  StringChangeEx(Result, '\\', '\', True);
+end;
+
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   ResultCode: Integer;
+  BackupScript, TempResult, OldExe, OldVer: String;
+  JsonContent: AnsiString;
 begin
-  Exec('net', 'stop readarr', '', 0, ewWaitUntilTerminated, ResultCode)
-  Exec('sc', 'delete readarr', '', 0, ewWaitUntilTerminated, ResultCode)
+  Result := '';
+
+  // Backup existing Readarr before any destructive install step
+  if FileExists(ExpandConstant('{commonappdata}\Readarr\config.xml')) then
+  begin
+    ExtractTemporaryFile('do-backup.ps1');
+    ExtractTemporaryFile('rollback.ps1');
+    BackupScript := ExpandConstant('{tmp}\do-backup.ps1');
+    TempResult := ExpandConstant('{tmp}\backup-result.json');
+
+    Exec(ExpandConstant('{cmd}'),
+         '/c powershell -NoProfile -ExecutionPolicy Bypass -File "' + BackupScript + '" > "' + TempResult + '"',
+         '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
+    if LoadStringFromFile(TempResult, JsonContent) then
+    begin
+      GlobalBackupMethod := ExtractJsonValue(JsonContent, 'method');
+      GlobalBackupPath := ExtractJsonValue(JsonContent, 'path');
+
+      if (GlobalBackupMethod <> '') and (GlobalBackupPath <> '') then
+      begin
+        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'LastUpgradeTime', GetDateTimeString('yyyy-mm-dd hh:nn:ss', #0, #0));
+        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupMethod', GlobalBackupMethod);
+        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupPath', GlobalBackupPath);
+        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'RollbackScript', ExpandConstant('{app}\bin\Rollback-To-Pre-Upgrade.bat'));
+
+        OldExe := ExpandConstant('{commonappdata}\Readarr\bin\Readarr.exe');
+        if FileExists(OldExe) then
+          if GetVersionNumbersString(OldExe, OldVer) then
+            RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'PreviousVersion', OldVer);
+      end;
+    end;
+  end;
+
+  // Existing behavior: stop + delete service (in-place upgrade needs fresh registration)
+  Exec('net', 'stop readarr', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec('sc', 'delete readarr', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  ResultCode, Attempts: Integer;
+  IsRunning: Boolean;
+  RollbackScript: String;
+begin
+  if CurStep = ssPostInstall then
+  begin
+    // The [Run] /i entry registers + starts the service; verify it reached RUNNING
+    IsRunning := False;
+    Attempts := 0;
+    while (not IsRunning) and (Attempts < 30) do
+    begin
+      Sleep(2000);
+      Exec(ExpandConstant('{cmd}'),
+           '/c sc query Readarr | findstr /C:"RUNNING" > nul',
+           '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+      IsRunning := (ResultCode = 0);
+      Attempts := Attempts + 1;
+    end;
+
+    if IsRunning then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'CurrentVersion', '{#BuildVersion}');
+    end
+    else if GlobalBackupPath <> '' then
+    begin
+      // Auto-rollback
+      RollbackScript := ExpandConstant('{tmp}\rollback.ps1');
+      Exec(ExpandConstant('{cmd}'),
+           '/c powershell -NoProfile -ExecutionPolicy Bypass -File "' + RollbackScript + '"',
+           '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+      MsgBox('The new Readarr service did not reach RUNNING within 60 seconds.' + #13#10 +
+             'Your previous installation has been restored from backup:' + #13#10 + #13#10 +
+             GlobalBackupPath,
+             mbError, MB_OK);
+    end
+    else
+    begin
+      MsgBox('The new Readarr service did not start. No pre-upgrade backup was made ' +
+             '(fresh install). Check Event Viewer for details.',
+             mbError, MB_OK);
+    end;
+  end;
 end;
