@@ -156,3 +156,6 @@ _temp_*/**/*
 
 _cache/
 _temp/
+
+# Portable Inno Setup install (downloaded by build.sh --installer)
+_inno/
