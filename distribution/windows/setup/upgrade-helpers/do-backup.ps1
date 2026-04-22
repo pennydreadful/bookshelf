@@ -10,12 +10,21 @@ $ProgressPreference = 'SilentlyContinue'
 $ReadarrRoot = 'C:\ProgramData\Readarr'
 $BackupRoot = 'C:\ProgramData\Readarr.backups'
 $ConfigFile = Join-Path $ReadarrRoot 'config.xml'
+$ProgressFile = Join-Path $env:TEMP 'readarr-backup-progress.txt'
 
 function Emit-Result([string]$method, [string]$path) {
     Write-Output (@{method = $method; path = $path} | ConvertTo-Json -Compress)
 }
 
+# Write a one-line status marker the Inno wizard can poll and display.
+# Last writer wins — no append. Swallow errors so a file-lock race doesn't
+# blow up the backup.
+function Write-Stage([string]$line) {
+    try { [System.IO.File]::WriteAllText($ProgressFile, $line) } catch { }
+}
+
 function Invoke-FileCopyBackup {
+    Write-Stage 'Running file-copy backup...'
     $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
     $target = Join-Path $BackupRoot $timestamp
     New-Item -ItemType Directory -Path $target -Force | Out-Null
@@ -25,22 +34,52 @@ function Invoke-FileCopyBackup {
                        'Backups')
     foreach ($item in $itemsToBackup) {
         $src = Join-Path $ReadarrRoot $item
-        if (Test-Path $src) {
+        if (-not (Test-Path $src)) { continue }
+
+        if ($item -eq 'bin') {
+            # bin/ is many small files where per-file overhead dominates.
+            # robocopy /MT:8 parallelizes the copy across 8 threads — faster
+            # than Copy-Item. /MT:8 is robocopy's own recommended default,
+            # safe across dual-core through many-core hosts.
+            $fileCount = (Get-ChildItem $src -Recurse -File -ErrorAction SilentlyContinue | Measure-Object).Count
+            $sizeMB = [math]::Round((Get-ChildItem $src -Recurse -File -ErrorAction SilentlyContinue | Measure-Object -Sum Length).Sum / 1MB)
+            Write-Stage "Copying binaries ($fileCount files, ~$sizeMB MB)..."
+            $destBin = Join-Path $target 'bin'
+            robocopy $src $destBin /E /MT:8 /NFL /NDL /NC /NS /NP | Out-Null
+        }
+        elseif ($item -eq 'readarr.db') {
+            $dbMB = [math]::Round((Get-Item $src).Length / 1MB)
+            Write-Stage "Copying database ($dbMB MB)..."
+            Copy-Item -Recurse -Force -Path $src -Destination $target -ErrorAction SilentlyContinue
+        }
+        elseif ($item -eq 'Backups') {
+            Write-Stage 'Copying existing Readarr backups...'
+            Copy-Item -Recurse -Force -Path $src -Destination $target -ErrorAction SilentlyContinue
+        }
+        else {
+            # Small single files (config.xml, db journals) — too quick to warrant a stage marker
             Copy-Item -Recurse -Force -Path $src -Destination $target -ErrorAction SilentlyContinue
         }
     }
 
-    # Rotation: keep only 2 newest backup dirs
+    Write-Stage 'Cleaning installer artifacts from backup...'
+    $targetBin = Join-Path $target 'bin'
+    Remove-Item -Force -ErrorAction SilentlyContinue (Join-Path $targetBin 'Rollback-To-Pre-Upgrade.bat')
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $targetBin 'upgrade-helpers')
+
+    Write-Stage 'Rotating old backups...'
     Get-ChildItem $BackupRoot -Directory -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending |
         Select-Object -Skip 2 |
         Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
+    Write-Stage 'Finalizing backup...'
     Emit-Result 'FileCopy' $target
 }
 
 # Try API-based backup
 try {
+    Write-Stage 'Checking Readarr API...'
     if (-not (Test-Path $ConfigFile)) { throw 'config.xml missing' }
     $cfg = [xml](Get-Content $ConfigFile -Raw)
     $port = $cfg.Config.Port
@@ -50,6 +89,7 @@ try {
     $headers = @{'X-Api-Key' = $apiKey}
     $body = @{name = 'Backup'} | ConvertTo-Json
 
+    Write-Stage 'Creating backup zip via Readarr API...'
     $cmd = Invoke-RestMethod -Method POST `
                               -Uri "http://localhost:$port/api/v1/command" `
                               -Headers $headers -Body $body `
@@ -60,6 +100,7 @@ try {
     $deadline = (Get-Date).AddMinutes(5)
     do {
         Start-Sleep -Seconds 2
+        Write-Stage 'Waiting for Readarr to finish building the backup...'
         $status = Invoke-RestMethod -Uri "http://localhost:$port/api/v1/command/$cmdId" `
                                      -Headers $headers -TimeoutSec 10
     } while ($status.status -notin @('completed','failed') -and (Get-Date) -lt $deadline)

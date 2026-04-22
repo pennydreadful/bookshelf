@@ -5,14 +5,33 @@
 $ErrorActionPreference = 'Stop'
 
 $ReadarrRoot = 'C:\ProgramData\Readarr'
-$RegPath = 'HKLM:\SOFTWARE\Readarr\Upgrade'
 
-try {
-    $props = Get-ItemProperty -Path $RegPath
-    $method = $props.BackupMethod
-    $path = $props.BackupPath
-    if (-not $method -or -not $path) { throw 'missing registry values' }
-} catch {
+# Check both registry views. Inno Setup installers that run as 32-bit
+# processes write to HKLM\SOFTWARE\WOW6432Node\... under WOW64 redirection,
+# while 64-bit PowerShell reads the native view. Scan both so the script
+# works regardless of which view carries the data.
+$RegPathCandidates = @(
+    'HKLM:\SOFTWARE\Readarr\Upgrade',
+    'HKLM:\SOFTWARE\WOW6432Node\Readarr\Upgrade'
+)
+
+$RegPath = $null
+$method = $null
+$path = $null
+foreach ($candidate in $RegPathCandidates) {
+    try {
+        $props = Get-ItemProperty -Path $candidate -ErrorAction Stop
+        if ($props.BackupMethod -and $props.BackupPath) {
+            $RegPath = $candidate
+            $method = $props.BackupMethod
+            $path = $props.BackupPath
+            Write-Host "Found upgrade record: $candidate"
+            break
+        }
+    } catch { }
+}
+
+if (-not $method -or -not $path) {
     Write-Host 'No upgrade record found in registry. Nothing to roll back.' -ForegroundColor Yellow
     exit 1
 }
@@ -36,13 +55,27 @@ while ((Get-Service -Name Readarr -ErrorAction SilentlyContinue).Status -ne 'Sto
 
 Write-Host 'Restoring files...'
 if ($method -eq 'ApiZip') {
-    # Extract the Readarr-native zip over the install root
+    # Extract the Readarr-native zip over the install root (config.xml, readarr.db, etc. — no binaries)
     Expand-Archive -Path $path -DestinationPath $ReadarrRoot -Force
 }
 elseif ($method -eq 'FileCopy') {
-    # Copy backup dir contents back in place
+    # Copy backup dir contents back in place.
+    # Defensive: skip installer-authored artifacts (Rollback-To-Pre-Upgrade.bat,
+    # upgrade-helpers/) from old backups where do-backup.ps1 didn't strip them.
+    # Overwriting the running .bat causes cmd.exe to bail without running 'pause'.
     Get-ChildItem -LiteralPath $path | ForEach-Object {
-        Copy-Item -Recurse -Force -Path $_.FullName -Destination $ReadarrRoot
+        if ($_.Name -eq 'bin') {
+            $destBin = Join-Path $ReadarrRoot 'bin'
+            if (-not (Test-Path $destBin)) { New-Item -ItemType Directory -Path $destBin -Force | Out-Null }
+            Get-ChildItem -LiteralPath $_.FullName | ForEach-Object {
+                if ($_.Name -eq 'Rollback-To-Pre-Upgrade.bat') { return }
+                if ($_.Name -eq 'upgrade-helpers') { return }
+                Copy-Item -Recurse -Force -Path $_.FullName -Destination $destBin
+            }
+        }
+        else {
+            Copy-Item -Recurse -Force -Path $_.FullName -Destination $ReadarrRoot
+        }
     }
 }
 else {

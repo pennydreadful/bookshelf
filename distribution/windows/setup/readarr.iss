@@ -38,6 +38,10 @@ VersionInfoVersion={#BaseVersion}.{#BuildNumber}
 SetupLogging=yes
 OutputDir=output
 WizardStyle=modern
+; Readarr is a 64-bit-only application; install in 64-bit mode on x64 Windows
+; so registry writes land in the native view (not WOW6432Node) and 64-bit
+; helper scripts (powershell.exe) can read them back.
+ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -47,14 +51,17 @@ Name: "desktopIcon"; Description: "{cm:CreateDesktopIcon}"
 Name: "windowsService"; Description: "Install Windows Service (Starts when the computer starts as the LocalService user, you will need to change the user to access network shares)"; GroupDescription: "Start automatically"; Flags: exclusive
 Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts when you log into Windows)"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
+; Shown only when a prior upgrade record is on this machine; when checked, the installer runs rollback instead of installing new binaries.
+Name: "restorePrevious"; Description: "Restore previous Readarr from the most recent pre-upgrade backup (skips upgrade)"; GroupDescription: "Previous installation detected"; Flags: unchecked; Check: HasRecoverableUpgrade
 
 [Dirs]
 Name: "{app}"; Permissions: users-modify
 
 [Files]
-Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\Readarr.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\*"; Excludes: "Readarr.Update"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
-; Upgrade safety: backup + rollback helpers
+; Main binaries — skipped entirely when user chose the Restore path
+Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\Readarr.exe"; DestDir: "{app}\bin"; Flags: ignoreversion; Check: IsUpgradeSelected
+Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Readarr\*"; Excludes: "Readarr.Update"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: IsUpgradeSelected
+; Upgrade safety helpers — install unconditionally so post-restore the user still has rollback capability
 Source: "upgrade-helpers\do-backup.ps1"; Flags: dontcopy
 Source: "upgrade-helpers\rollback.ps1"; Flags: dontcopy
 Source: "upgrade-helpers\rollback.ps1"; DestDir: "{app}\bin\upgrade-helpers"; Flags: ignoreversion
@@ -68,14 +75,16 @@ Name: "{userstartup}\{#AppName}"; Filename: "{app}\bin\Readarr.exe"; WorkingDir:
 Name: "{group}\Rollback To Pre-Upgrade"; Filename: "{app}\bin\Rollback-To-Pre-Upgrade.bat"; WorkingDir: "{app}\bin"
 
 [InstallDelete]
-Name: "{app}\bin"; Type: filesandordirs
+; Don't wipe bin during a Restore — rollback.ps1 overlays old files on top of current install.
+Name: "{app}\bin"; Type: filesandordirs; Check: IsUpgradeSelected
 
 [Run]
-Filename: "{app}\bin\Readarr.Console.exe"; StatusMsg: "Removing previous Windows Service"; Parameters: "/u /exitimmediately"; Flags: runhidden waituntilterminated;
-Filename: "{app}\bin\Readarr.Console.exe"; Description: "Enable Access from Other Devices"; StatusMsg: "Enabling Remote access"; Parameters: "/registerurl /exitimmediately"; Flags: postinstall runascurrentuser runhidden waituntilterminated; Tasks: startupShortcut none;
-Filename: "{app}\bin\Readarr.Console.exe"; StatusMsg: "Installing Windows Service"; Parameters: "/i /exitimmediately"; Flags: runhidden waituntilterminated; Tasks: windowsService
-Filename: "{app}\bin\Readarr.exe"; Description: "Open Readarr Web UI"; Flags: postinstall skipifsilent nowait; Tasks: windowsService;
-Filename: "{app}\bin\Readarr.exe"; Description: "Start Readarr"; Flags: postinstall skipifsilent nowait; Tasks: startupShortcut none;
+; All upgrade-path Run entries gated on IsUpgradeSelected — during Restore, CurStepChanged invokes rollback.ps1 which handles service lifecycle itself.
+Filename: "{app}\bin\Readarr.Console.exe"; StatusMsg: "Removing previous Windows Service"; Parameters: "/u /exitimmediately"; Flags: runhidden waituntilterminated; Check: IsUpgradeSelected
+Filename: "{app}\bin\Readarr.Console.exe"; Description: "Enable Access from Other Devices"; StatusMsg: "Enabling Remote access"; Parameters: "/registerurl /exitimmediately"; Flags: postinstall runascurrentuser runhidden waituntilterminated; Tasks: startupShortcut none; Check: IsUpgradeSelected
+Filename: "{app}\bin\Readarr.Console.exe"; StatusMsg: "Installing Windows Service"; Parameters: "/i /exitimmediately"; Flags: runhidden waituntilterminated; Tasks: windowsService; Check: IsUpgradeSelected
+Filename: "{app}\bin\Readarr.exe"; Description: "Open Readarr Web UI"; Flags: postinstall skipifsilent nowait; Tasks: windowsService; Check: IsUpgradeSelected
+Filename: "{app}\bin\Readarr.exe"; Description: "Start Readarr"; Flags: postinstall skipifsilent nowait; Tasks: startupShortcut none; Check: IsUpgradeSelected
 
 [UninstallRun]
 Filename: "{app}\bin\readarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
@@ -87,6 +96,23 @@ const
 var
   GlobalBackupMethod: String;
   GlobalBackupPath: String;
+  BackupMarqueePage: TOutputMarqueeProgressWizardPage;
+
+procedure InitializeWizard;
+begin
+  // Marquee progress page used while pre-install backup runs. The backup
+  // is driven by do-backup.ps1 which writes stage markers to a progress
+  // file; our Pascal poll reads the latest marker and pushes it into the
+  // page's caption. The marquee bar animates regardless. Result: even if
+  // Inno's sandbox never pumps the input queue during our loop, the user
+  // sees a visibly-alive page with real status text — zero perception of
+  // "crashed". This is the right-shape fix found after investigating
+  // _inno/Examples/AllPagesExample.iss (marquee) and CodeDownloadFiles.iss
+  // (long-running-work-in-NextButtonClick pattern).
+  BackupMarqueePage := CreateOutputMarqueeProgressPage(
+    'Backing up existing Readarr',
+    'Preserving your current installation so you can roll back if needed.');
+end;
 
 function ExtractJsonValue(const Json, Key: String): String;
 var
@@ -105,47 +131,150 @@ begin
   StringChangeEx(Result, '\\', '\', True);
 end;
 
-function PrepareToInstall(var NeedsRestart: Boolean): String;
+function HasRecoverableUpgrade: Boolean;
 var
-  ResultCode: Integer;
-  BackupScript, TempResult, OldExe, OldVer: String;
-  JsonContent: AnsiString;
+  RegValue: String;
 begin
-  Result := '';
-
-  // Backup existing Readarr before any destructive install step
-  if FileExists(ExpandConstant('{commonappdata}\Readarr\config.xml')) then
-  begin
-    ExtractTemporaryFile('do-backup.ps1');
-    ExtractTemporaryFile('rollback.ps1');
-    BackupScript := ExpandConstant('{tmp}\do-backup.ps1');
-    TempResult := ExpandConstant('{tmp}\backup-result.json');
-
-    Exec(ExpandConstant('{cmd}'),
-         '/c powershell -NoProfile -ExecutionPolicy Bypass -File "' + BackupScript + '" > "' + TempResult + '"',
-         '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-
-    if LoadStringFromFile(TempResult, JsonContent) then
+  Result := False;
+  // Native view (where iteration-1 fix writes post-ArchitecturesInstallIn64BitMode)
+  if RegQueryStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupPath', RegValue) then
+    if (RegValue <> '') and (DirExists(RegValue) or FileExists(RegValue)) then
     begin
-      GlobalBackupMethod := ExtractJsonValue(JsonContent, 'method');
-      GlobalBackupPath := ExtractJsonValue(JsonContent, 'path');
+      Result := True;
+      Exit;
+    end;
+  // 32-bit view for backward-compat with installs from before the registry fix
+  if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\WOW6432Node\Readarr\Upgrade', 'BackupPath', RegValue) then
+    if (RegValue <> '') and (DirExists(RegValue) or FileExists(RegValue)) then
+      Result := True;
+end;
 
-      if (GlobalBackupMethod <> '') and (GlobalBackupPath <> '') then
-      begin
-        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'LastUpgradeTime', GetDateTimeString('yyyy-mm-dd hh:nn:ss', #0, #0));
-        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupMethod', GlobalBackupMethod);
-        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupPath', GlobalBackupPath);
-        RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'RollbackScript', ExpandConstant('{app}\bin\Rollback-To-Pre-Upgrade.bat'));
+function IsRestoreSelected: Boolean;
+begin
+  Result := WizardIsTaskSelected('restorePrevious');
+end;
 
-        OldExe := ExpandConstant('{commonappdata}\Readarr\bin\Readarr.exe');
-        if FileExists(OldExe) then
-          if GetVersionNumbersString(OldExe, OldVer) then
-            RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'PreviousVersion', OldVer);
-      end;
+function IsUpgradeSelected: Boolean;
+begin
+  Result := not WizardIsTaskSelected('restorePrevious');
+end;
+
+function RunBackupWithMarquee: Boolean;
+var
+  ResultCode, IterCount, MaxIterations: Integer;
+  BackupScript, TempResult, DoneMarker, ProgressFile, OldExe, OldVer: String;
+  JsonContent, ProgressLine, LastShownLine: AnsiString;
+begin
+  Result := False;
+
+  ExtractTemporaryFile('do-backup.ps1');
+  BackupScript := ExpandConstant('{tmp}\do-backup.ps1');
+  TempResult := ExpandConstant('{tmp}\backup-result.json');
+  DoneMarker := ExpandConstant('{tmp}\backup-done.marker');
+  ProgressFile := AddBackslash(GetEnv('TEMP')) + 'readarr-backup-progress.txt';
+
+  // Clear stale state from any prior aborted attempt
+  DeleteFile(DoneMarker);
+  DeleteFile(TempResult);
+  DeleteFile(ProgressFile);
+
+  BackupMarqueePage.SetText('Starting backup...', '');
+  BackupMarqueePage.Show;
+  try
+    // Spawn the backup async. The 'echo DONE > DoneMarker' at the end of
+    // the && chain only runs if powershell exited 0, so marker presence
+    // is a reliable completion signal.
+    Exec(ExpandConstant('{cmd}'),
+         '/c powershell -NoProfile -ExecutionPolicy Bypass -File "' + BackupScript +
+         '" > "' + TempResult + '" && echo DONE > "' + DoneMarker + '"',
+         '', SW_HIDE, ewNoWait, ResultCode);
+
+    // Poll: animate the marquee and update caption from the progress file
+    // each iteration. Sleep(19) is Windows-quantum-boundary friendly —
+    // ~50 iterations/sec, negligible CPU. 31578 iterations ≈ 10 min cap.
+    IterCount := 0;
+    MaxIterations := 31578;
+    LastShownLine := '';
+    while (not FileExists(DoneMarker)) and (IterCount < MaxIterations) do
+    begin
+      Sleep(19);
+      BackupMarqueePage.Animate;
+      if LoadStringFromFile(ProgressFile, ProgressLine) then
+        if ProgressLine <> LastShownLine then
+        begin
+          BackupMarqueePage.SetText(Trim(String(ProgressLine)), '');
+          LastShownLine := ProgressLine;
+        end;
+      IterCount := IterCount + 1;
+    end;
+  finally
+    BackupMarqueePage.Hide;
+  end;
+
+  if not FileExists(DoneMarker) then
+  begin
+    MsgBox('The pre-upgrade backup did not complete within 10 minutes.' + #13#10 +
+           'The install has been aborted to protect your existing Readarr installation.' + #13#10 +
+           'Check the Windows Event Viewer and try again.',
+           mbError, MB_OK);
+    Exit;
+  end;
+
+  if LoadStringFromFile(TempResult, JsonContent) then
+  begin
+    GlobalBackupMethod := ExtractJsonValue(JsonContent, 'method');
+    GlobalBackupPath := ExtractJsonValue(JsonContent, 'path');
+
+    if (GlobalBackupMethod <> '') and (GlobalBackupPath <> '') then
+    begin
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'LastUpgradeTime', GetDateTimeString('yyyy-mm-dd hh:nn:ss', #0, #0));
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupMethod', GlobalBackupMethod);
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'BackupPath', GlobalBackupPath);
+      RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'RollbackScript', ExpandConstant('{app}\bin\Rollback-To-Pre-Upgrade.bat'));
+
+      OldExe := ExpandConstant('{commonappdata}\Readarr\bin\Readarr.exe');
+      if FileExists(OldExe) then
+        if GetVersionNumbersString(OldExe, OldVer) then
+          RegWriteStringValue(HKEY_LOCAL_MACHINE, REG_KEY, 'PreviousVersion', OldVer);
     end;
   end;
 
-  // Existing behavior: stop + delete service (in-place upgrade needs fresh registration)
+  Result := True;
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  Result := True;
+  if CurPageID = wpReady then
+  begin
+    // Restore path skips backup — rollback.ps1 in CurStepChanged handles lifecycle
+    if IsRestoreSelected then Exit;
+
+    // Only back up if there's a prior install to back up
+    if not FileExists(ExpandConstant('{commonappdata}\Readarr\config.xml')) then Exit;
+
+    // Returning False keeps the wizard on the Ready page so the user can retry
+    Result := RunBackupWithMarquee;
+  end;
+end;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  ResultCode: Integer;
+begin
+  Result := '';
+
+  // Ensure rollback.ps1 is available in {tmp} for either path — both
+  // auto-rollback (upgrade-fails-to-start) and the explicit Restore task
+  // need it before any [Files] copy has happened.
+  ExtractTemporaryFile('rollback.ps1');
+
+  // Restore path: skip service teardown — rollback.ps1 (invoked in
+  // CurStepChanged) handles service stop/start itself.
+  if IsRestoreSelected then Exit;
+
+  // Stop + delete service so the [Run] /i entry can register it fresh
+  // against the new binaries. Backup already ran in NextButtonClick(wpReady).
   Exec('net', 'stop readarr', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Exec('sc', 'delete readarr', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 end;
@@ -158,6 +287,19 @@ var
 begin
   if CurStep = ssPostInstall then
   begin
+    // Restore path: invoke rollback.ps1 and exit. Upgrade Run entries are gated
+    // on IsUpgradeSelected so they didn't fire; service lifecycle is rollback.ps1's job.
+    if IsRestoreSelected then
+    begin
+      RollbackScript := ExpandConstant('{tmp}\rollback.ps1');
+      Exec(ExpandConstant('{cmd}'),
+           '/c powershell -NoProfile -ExecutionPolicy Bypass -File "' + RollbackScript + '"',
+           '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+      MsgBox('Readarr has been restored from the most recent pre-upgrade backup.',
+             mbInformation, MB_OK);
+      Exit;
+    end;
+
     // The [Run] /i entry registers + starts the service; verify it reached RUNNING
     IsRunning := False;
     Attempts := 0;

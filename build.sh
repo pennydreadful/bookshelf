@@ -249,6 +249,69 @@ BuildInstaller()
     ./_inno/ISCC.exe distribution/windows/setup/readarr.iss "//DFramework=$framework" "//DRuntime=$runtime"
 }
 
+BuildInstallerNet()
+{
+    local framework="$1"
+    local runtime="$2"
+
+    ProgressStart "Creating $runtime .NET installer"
+
+    local installerProj="distribution/windows/installer-net"
+    local payloadDir="$installerProj/Payload"
+    local payloadZip="$payloadDir/Readarr.payload.zip"
+    local buildFolder="$artifactsFolder/$runtime/$framework/Readarr"
+    local publishDir="$installerProj/publish"
+    local destDir="distribution/windows/setup/output"
+    local version="${READARRVERSION:-dev}"
+    local destExe="$destDir/Readarr.Installer.$version.$runtime.exe"
+
+    if [ ! -d "$buildFolder" ]; then
+        echo "[ERROR] Build folder not found: $buildFolder"
+        echo "[ERROR] Run ./build.sh --backend --packages first."
+        exit 1
+    fi
+
+    echo "[1/4] Zipping payload (excluding Readarr.Update)..."
+    mkdir -p "$payloadDir"
+    rm -f "$payloadZip"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        \$src = Resolve-Path '$buildFolder';
+        \$dst = Join-Path (Resolve-Path '$payloadDir') 'Readarr.payload.zip';
+        \$items = Get-ChildItem -LiteralPath \$src | Where-Object { \$_.Name -ne 'Readarr.Update' };
+        Compress-Archive -LiteralPath \$items.FullName -DestinationPath \$dst -Force;
+    "
+    if [ ! -f "$payloadZip" ]; then
+        echo "[ERROR] Payload zip not created."
+        exit 1
+    fi
+    local payload_mb
+    payload_mb=$(du -m "$payloadZip" | cut -f1)
+    echo "    Payload: ${payload_mb} MB"
+
+    echo "[2/4] Publishing installer (single-file self-contained)..."
+    rm -rf "$publishDir"
+    dotnet publish "$installerProj/Readarr.Installer.csproj" -c Release -r "$runtime" --self-contained \
+        -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+        -o "$publishDir"
+    if [ $? -ne 0 ]; then
+        echo "[ERROR] dotnet publish failed"
+        exit 1
+    fi
+
+    echo "[3/4] Moving installer to output..."
+    mkdir -p "$destDir"
+    mv "$publishDir/Readarr.Installer.exe" "$destExe"
+    local size_mb
+    size_mb=$(du -m "$destExe" | cut -f1)
+    echo "    Output: $destExe (${size_mb} MB)"
+
+    echo "[4/4] Cleaning up..."
+    rm -f "$payloadZip"
+    rm -rf "$publishDir"
+
+    ProgressEnd "Created .NET installer: $destExe"
+}
+
 InstallInno()
 {
     ProgressStart "Installing portable Inno Setup"
@@ -424,8 +487,7 @@ fi
 
 if [ "$INSTALLER" = "YES" ];
 then
-    InstallInno
-    BuildInstaller "net6.0" "win-x64"
-    BuildInstaller "net6.0" "win-x86"
-    RemoveInno
+    # .NET installer replaces the Inno path on the Bookshelf_WindowsService branch;
+    # Inno path retained in BuildInstaller() / InstallInno() for fallback/reference.
+    BuildInstallerNet "net6.0" "win-x64"
 fi
