@@ -157,8 +157,9 @@ _temp_*/**/*
 _cache/
 _temp/
 
-# Claude Code local files (dev artifacts, never committed)
+# Local dev tool config
 .claude/
+CLAUDE.local.md
 
 # Portable Inno Setup install (downloaded by build.sh --installer)
 _inno/
