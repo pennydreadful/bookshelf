@@ -342,8 +342,17 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
             {
                 LogResponseContent = true,
-                NetworkCredential = new BasicNetworkCredential(settings.Username, settings.Password)
             };
+
+            if (settings.ApiKey.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.Headers["Authorization"] = $"Bearer {settings.ApiKey}";
+            }
+            else
+            {
+                requestBuilder.NetworkCredential = new BasicNetworkCredential(settings.Username, settings.Password);
+            }
+
             return requestBuilder;
         }
 
@@ -357,6 +366,36 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         private string ProcessRequest(HttpRequestBuilder requestBuilder, QBittorrentSettings settings)
         {
+            // ApiKey-based auth (qBittorrent 5.x+): the Authorization header is
+            // already on requestBuilder via BuildRequest, so skip the cookie-auth
+            // flow entirely. Bad keys surface as HTTP 401/403 which we route to
+            // DownloadClientAuthenticationException.
+            if (settings.ApiKey.IsNotNullOrWhiteSpace())
+            {
+                var apiRequest = requestBuilder.Build();
+                apiRequest.LogResponseContent = true;
+
+                try
+                {
+                    return _httpClient.Execute(apiRequest).Content;
+                }
+                catch (HttpException ex)
+                {
+                    if (ex.Response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+                    {
+                        _logger.Debug(ex, "qbitTorrent authentication failed.");
+                        throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.", ex);
+                    }
+
+                    throw new DownloadClientException("Failed to connect to qBittorrent, check your settings.", ex);
+                }
+                catch (WebException ex)
+                {
+                    throw new DownloadClientException("Failed to connect to qBittorrent, please check your settings.", ex);
+                }
+            }
+
+            // Legacy username/password cookie-auth flow.
             AuthenticateClient(requestBuilder, settings);
 
             var request = requestBuilder.Build();
