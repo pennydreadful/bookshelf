@@ -163,6 +163,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                     localTrack.Author = idOverrides.Author;
                 }
 
+                StampRemoteSearchResult(localBookRelease);
+
                 return;
             }
 
@@ -183,9 +185,29 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             _logger.Debug($"Best release found in {watch.ElapsedMilliseconds}ms");
 
+            StampRemoteSearchResult(localBookRelease);
+
             localBookRelease.PopulateMatch(config.KeepAllEditions);
 
             _logger.Debug($"IdentifyRelease done in {watch.ElapsedMilliseconds}ms");
+        }
+
+        // When a remote metadata search ran successfully but the release still couldn't be
+        // identified, record the search time on each file so recurring scans don't keep
+        // re-searching upstream for the same unmatched files. The marker is cleared when the file
+        // changes (see MediaFileService.FilterUnchangedFiles) or on manual/interactive import.
+        private void StampRemoteSearchResult(LocalEdition localBookRelease)
+        {
+            if (localBookRelease.Edition != null || !localBookRelease.RemoteSearchSucceeded)
+            {
+                return;
+            }
+
+            var searchTime = DateTime.UtcNow;
+            foreach (var localBook in localBookRelease.LocalBooks)
+            {
+                localBook.LastRemoteSearchTime = searchTime;
+            }
         }
 
         private void GetBestRelease(LocalEdition localBookRelease, IEnumerable<CandidateEdition> candidateReleases, List<LocalBook> extraTracksOnDisk, out bool seenCandidate)

@@ -187,7 +187,8 @@ namespace NzbDrone.Core.MediaFiles
                     DateAdded = DateTime.UtcNow,
                     Quality = decision.Item.Quality,
                     MediaInfo = decision.Item.FileTrackInfo.MediaInfo,
-                    Edition = decision.Item.Edition
+                    Edition = decision.Item.Edition,
+                    LastRemoteSearchTime = decision.Item.LastRemoteSearchTime
                 })
                 .ToList();
             _mediaFileService.AddMany(newFiles);
@@ -206,13 +207,15 @@ namespace NzbDrone.Core.MediaFiles
                       },
                       PathEqualityComparer.Instance)
                 .Where(x => x.File.Size != x.Item.Size ||
-                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1)
+                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1 ||
+                       x.File.LastRemoteSearchTime != x.Item.LastRemoteSearchTime)
                 .Select(x =>
                 {
                     x.File.Size = x.Item.Size;
                     x.File.Modified = x.Item.Modified;
                     x.File.MediaInfo = x.Item.FileTrackInfo.MediaInfo;
                     x.File.Quality = x.Item.Quality;
+                    x.File.LastRemoteSearchTime = x.Item.LastRemoteSearchTime;
                     return x.File;
                 })
                 .ToList();
