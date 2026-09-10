@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <RootNamespace>Readarr.Installer</RootNamespace>
+    <AssemblyName>Readarr.Installer</AssemblyName>
+    <ApplicationIcon>Resources\Readarr.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableCodeStyleInBuild>false</EnableCodeStyleInBuild>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="3.0.5" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.35" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Readarr.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Payload\Readarr.payload.zip" Condition="Exists('Payload\Readarr.payload.zip')" />
+    <EmbeddedResource Include="..\setup\upgrade-helpers\rollback.ps1" LogicalName="rollback.ps1" />
+  </ItemGroup>
+
+</Project>

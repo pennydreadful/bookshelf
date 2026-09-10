@@ -1,0 +1,6 @@
+# Installer build artifacts — populated by build.sh BuildInstallerNet, not source-controlled
+Payload/*.zip
+bin/
+obj/
+publish/
+*.user
