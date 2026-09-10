@@ -137,12 +137,20 @@ namespace NzbDrone.Core.MediaFiles
             else if (filter == FilterFilesType.Matched)
             {
                 unwanted = combined
-                    .Where(x => x.DiskFile.Length == x.DbFile.Size &&
-                           Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified.ToUniversalTime()).TotalSeconds) <= 1 &&
-                           (x.DbFile.Edition == null || (x.DbFile.Edition.IsLoaded && x.DbFile.Edition.Value != null)))
+                    .Where(x =>
+                    {
+                        var unchanged = x.DiskFile.Length == x.DbFile.Size &&
+                                        Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified.ToUniversalTime()).TotalSeconds) <= 1;
+                        var matched = x.DbFile.Edition == null || (x.DbFile.Edition.IsLoaded && x.DbFile.Edition.Value != null);
+                        var alreadyRemoteSearched = x.DbFile.LastRemoteSearchTime.HasValue;
+
+                        // Skip unchanged files that are matched, or that we already searched upstream
+                        // for without a match (no point re-searching until the file changes).
+                        return unchanged && (matched || alreadyRemoteSearched);
+                    })
                     .Select(x => x.DiskFile)
                     .ToList();
-                _logger.Trace($"{unwanted.Count} unchanged and matched files");
+                _logger.Trace($"{unwanted.Count} unchanged files that are matched or already remote-searched");
             }
             else
             {

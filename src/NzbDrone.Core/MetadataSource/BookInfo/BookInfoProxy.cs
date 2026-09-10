@@ -244,10 +244,13 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             {
                 result = _goodreadsSearchProxy.Search(query);
             }
-            catch (Exception e)
+            catch (GoodreadsException e)
             {
+                // A failed upstream call must surface (not be swallowed into an empty result), so
+                // callers can tell "search failed / upstream down" apart from "searched, no match"
+                // and avoid permanently suppressing retries for the file.
                 _logger.Warn(e, "Error searching for {0}", query);
-                return new List<Book>();
+                throw;
             }
 
             var books = new List<Book>();

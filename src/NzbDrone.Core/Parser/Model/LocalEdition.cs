@@ -34,6 +34,10 @@ namespace NzbDrone.Core.Parser.Model
         public List<LocalBook> ExistingTracks { get; set; }
         public bool NewDownload { get; set; }
 
+        // True once at least one remote metadata search call completed successfully (upstream
+        // responded). Distinguishes "searched, no match" from "search failed / upstream down".
+        public bool RemoteSearchSucceeded { get; set; }
+
         public void PopulateMatch(bool keepAllEditions)
         {
             if (Edition != null)
