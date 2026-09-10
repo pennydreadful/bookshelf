@@ -30,6 +30,10 @@ namespace NzbDrone.Core.Parser.Model
         public string ReleaseGroup { get; set; }
         public string SceneName { get; set; }
 
+        // Carries the "searched remotely but not identified" marker out of identification so it can
+        // be persisted on the BookFile. Null unless a successful remote search failed to match.
+        public DateTime? LastRemoteSearchTime { get; set; }
+
         public override string ToString()
         {
             return Path;

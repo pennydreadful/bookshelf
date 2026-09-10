@@ -24,6 +24,11 @@ namespace NzbDrone.Core.MediaFiles
         public int CalibreId { get; set; }
         public int Part { get; set; }
 
+        // Set when a remote metadata search was performed successfully but the file could not be
+        // identified. Used to avoid re-searching upstream metadata for the same unmatched file on
+        // every scan. Reset when the file changes (see MediaFileService.FilterUnchangedFiles).
+        public DateTime? LastRemoteSearchTime { get; set; }
+
         // These are queried from the database
         public LazyLoaded<Author> Author { get; set; }
         public LazyLoaded<Edition> Edition { get; set; }
