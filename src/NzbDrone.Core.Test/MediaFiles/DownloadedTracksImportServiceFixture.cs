@@ -302,7 +302,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             _trackedDownload.DownloadItem.CanMoveFiles = false;
 
-            Subject.ProcessPath(_droneFactory, ImportMode.Auto, _trackedDownload.RemoteBook.Author, _trackedDownload.DownloadItem);
+            Subject.ProcessPath(_droneFactory, ImportMode.Auto, new IdentificationOverrides { Author = _trackedDownload.RemoteBook.Author }, _trackedDownload.DownloadItem);
 
             DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();
         }
@@ -316,7 +316,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             _trackedDownload.DownloadItem.CanMoveFiles = false;
 
-            Subject.ProcessPath(_droneFactory, ImportMode.Move, _trackedDownload.RemoteBook.Author, _trackedDownload.DownloadItem);
+            Subject.ProcessPath(_droneFactory, ImportMode.Move, new IdentificationOverrides { Author = _trackedDownload.RemoteBook.Author }, _trackedDownload.DownloadItem);
 
             DiskProvider.FolderExists(_subFolders[0]).Should().BeFalse();
         }
@@ -330,7 +330,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             _trackedDownload.DownloadItem.CanMoveFiles = true;
 
-            Subject.ProcessPath(_droneFactory, ImportMode.Copy, _trackedDownload.RemoteBook.Author, _trackedDownload.DownloadItem);
+            Subject.ProcessPath(_droneFactory, ImportMode.Copy, new IdentificationOverrides { Author = _trackedDownload.RemoteBook.Author }, _trackedDownload.DownloadItem);
 
             DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();
         }

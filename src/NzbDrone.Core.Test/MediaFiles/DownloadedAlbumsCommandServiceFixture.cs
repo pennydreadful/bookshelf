@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Returns(new List<ImportResult>());
 
             Mocker.GetMock<IDownloadedBooksImportService>()
-                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Author>(), It.IsAny<DownloadClientItem>()))
+                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<IdentificationOverrides>(), It.IsAny<DownloadClientItem>()))
                 .Returns(new List<ImportResult>());
 
             var downloadItem = Builder<DownloadClientItem>.CreateNew()
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.Execute(new DownloadedBooksScanCommand() { Path = _downloadFolder, DownloadClientId = "sab1" });
 
-            Mocker.GetMock<IDownloadedBooksImportService>().Verify(c => c.ProcessPath(_downloadFolder, ImportMode.Auto, _trackedDownload.RemoteBook.Author, _trackedDownload.DownloadItem), Times.Once());
+            Mocker.GetMock<IDownloadedBooksImportService>().Verify(c => c.ProcessPath(_downloadFolder, ImportMode.Auto, It.Is<IdentificationOverrides>(o => o != null && o.Author == _trackedDownload.RemoteBook.Author), _trackedDownload.DownloadItem), Times.Once());
         }
 
         [Test]

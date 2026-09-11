@@ -5,11 +5,13 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -19,6 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDiskProvider _diskProvider;
         private readonly ICompletedDownloadService _completedDownloadService;
+        private readonly IBookService _bookService;
         private readonly ICommandResultReporter _commandResultReporter;
         private readonly Logger _logger;
 
@@ -26,6 +29,7 @@ namespace NzbDrone.Core.MediaFiles
                                                 ITrackedDownloadService trackedDownloadService,
                                                 IDiskProvider diskProvider,
                                                 ICompletedDownloadService completedDownloadService,
+                                                IBookService bookService,
                                                 ICommandResultReporter commandResultReporter,
                                                 Logger logger)
         {
@@ -33,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles
             _trackedDownloadService = trackedDownloadService;
             _diskProvider = diskProvider;
             _completedDownloadService = completedDownloadService;
+            _bookService = bookService;
             _commandResultReporter = commandResultReporter;
             _logger = logger;
         }
@@ -53,7 +58,8 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     _logger.Debug("External directory scan request for known download {0}. [{1}]", message.DownloadClientId, message.Path);
 
-                    var importResults = _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode, trackedDownload.RemoteBook.Author, trackedDownload.DownloadItem);
+                    var idOverrides = BuildIdentificationOverrides(trackedDownload.RemoteBook);
+                    var importResults = _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode, idOverrides, trackedDownload.DownloadItem);
 
                     _completedDownloadService.VerifyImport(trackedDownload, importResults);
 
@@ -64,6 +70,30 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode);
+        }
+
+        private IdentificationOverrides BuildIdentificationOverrides(RemoteBook remoteBook)
+        {
+            if (remoteBook == null)
+            {
+                return null;
+            }
+
+            var overrides = new IdentificationOverrides
+            {
+                Author = remoteBook.Author
+            };
+
+            if (remoteBook.Books != null && remoteBook.Books.Count == 1)
+            {
+                var candidate = remoteBook.Books.First();
+                if (candidate.Id > 0 && _bookService.GetBook(candidate.Id) != null)
+                {
+                    overrides.Book = candidate;
+                }
+            }
+
+            return overrides;
         }
 
         public void Execute(DownloadedBooksScanCommand message)

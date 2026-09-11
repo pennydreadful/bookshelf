@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Configuration
         bool CopyUsingHardlinks { get; set; }
         bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
+        int BookImportMinimumMatchPercent { get; set; }
         bool WatchLibraryForChanges { get; set; }
         RescanAfterRefreshType RescanAfterRefresh { get; set; }
         AllowFingerprinting AllowFingerprinting { get; set; }
