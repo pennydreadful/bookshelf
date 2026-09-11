@@ -35,11 +35,13 @@ namespace Readarr.Api.V1.Books
         protected readonly IAuthorService _authorService;
         protected readonly IEditionService _editionService;
         protected readonly IAddBookService _addBookService;
+        protected readonly IMediaFileService _mediaFileService;
 
         public BookController(IAuthorService authorService,
                           IBookService bookService,
                           IAddBookService addBookService,
                           IEditionService editionService,
+                          IMediaFileService mediaFileService,
                           ISeriesBookLinkService seriesBookLinkService,
                           IAuthorStatisticsService authorStatisticsService,
                           IMapCoversToLocal coverMapper,
@@ -53,6 +55,7 @@ namespace Readarr.Api.V1.Books
             _authorService = authorService;
             _editionService = editionService;
             _addBookService = addBookService;
+            _mediaFileService = mediaFileService;
 
             PostValidator.RuleFor(s => s.ForeignBookId).NotEmpty();
             PostValidator.RuleFor(s => s.Author.QualityProfileId).SetValidator(qualityProfileExistsValidator);
@@ -168,6 +171,21 @@ namespace Readarr.Api.V1.Books
 
             _bookService.UpdateBook(model);
             _editionService.UpdateMany(model.Editions.Value);
+
+            var newEdition = model.Editions.Value.SingleOrDefault(e => e.Monitored);
+
+            if (newEdition != null)
+            {
+                var files = _mediaFileService.GetFilesByBook(model.Id);
+
+                foreach (var file in files)
+                {
+                    file.EditionId = newEdition.Id;
+                    file.Edition = newEdition;
+
+                    _mediaFileService.Update(file);
+                }
+            }
 
             BroadcastResourceChange(ModelAction.Updated, model.Id);
 
