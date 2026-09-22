@@ -324,19 +324,28 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             foreach (var bookImport in bookImports)
             {
                 var book = bookImport.First().ImportDecision.Item.Book;
-                var edition = book.Editions.Value.Single(x => x.Monitored);
                 var author = bookImport.First().ImportDecision.Item.Author;
 
-                if (bookImport.Where(e => e.Errors.Count == 0).ToList().Count > 0 && author != null && book != null)
+                if (book == null || author == null || bookImport.All(e => e.Errors.Count > 0))
                 {
-                    _eventAggregator.PublishEvent(new BookImportedEvent(
-                        author,
-                        book,
-                        allImportedTrackFiles.Where(s => s.EditionId == edition.Id).ToList(),
-                        allOldTrackFiles.Where(s => s.EditionId == edition.Id).ToList(),
-                        replaceExisting,
-                        downloadClientItem));
+                    continue;
                 }
+
+                var edition = book.Editions.Value.FirstOrDefault(x => x.Monitored);
+
+                if (edition == null)
+                {
+                    _logger.Warn("Book {0} [{1}] has no monitored edition; skipping imported event", book.Title, book.Id);
+                    continue;
+                }
+
+                _eventAggregator.PublishEvent(new BookImportedEvent(
+                    author,
+                    book,
+                    allImportedTrackFiles.Where(s => s.EditionId == edition.Id).ToList(),
+                    allOldTrackFiles.Where(s => s.EditionId == edition.Id).ToList(),
+                    replaceExisting,
+                    downloadClientItem));
             }
 
             //Adding all the rejected decisions
