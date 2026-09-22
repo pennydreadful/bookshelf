@@ -8,7 +8,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
         public RescanFoldersCommand()
         {
             // These are the settings used in the scheduled task
-            Filter = FilterFilesType.Known;
+            Filter = FilterFilesType.Matched;
             AddNewAuthors = true;
         }
 
