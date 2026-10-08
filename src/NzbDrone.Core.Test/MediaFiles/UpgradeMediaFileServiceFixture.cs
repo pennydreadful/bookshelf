@@ -8,6 +8,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
@@ -133,6 +134,77 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Book.BookFiles.Value, It.IsAny<DeleteMediaFileReason>()), Times.Never());
+        }
+
+        private void GivenDestinationFolder(string folder)
+        {
+            Mocker.GetMock<IBuildFileNames>()
+                .Setup(c => c.BuildBookFileName(It.IsAny<Author>(), It.IsAny<Edition>(), It.IsAny<BookFile>(), null, null))
+                .Returns("book");
+
+            Mocker.GetMock<IBuildFileNames>()
+                .Setup(c => c.BuildBookFilePath(It.IsAny<Author>(), It.IsAny<Edition>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Path.Combine(folder, "book.azw3"));
+        }
+
+        private void GivenExistingFileAt(string path)
+        {
+            _localTrack.Book = Builder<Book>.CreateNew()
+                .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>(
+                          new List<BookFile>
+                          {
+                              new BookFile { Id = 1, Path = path }
+                          }))
+                .Build();
+        }
+
+        [Test]
+        public void should_not_delete_existing_file_from_a_different_book_folder()
+        {
+            // Regression: a file mis-matched to this book, living in another book's folder, was
+            // deleted as an "upgrade", destroying an unrelated book.
+            GivenExistingFileAt(Path.Combine(_rootPath, "Twisted Lies", "Twisted Lies.azw3"));
+            GivenDestinationFolder(Path.Combine(_rootPath, "Twisted Games"));
+
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
+
+            Mocker.GetMock<IRecycleBinProvider>()
+                .Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(v => v.Delete(It.IsAny<BookFile>(), DeleteMediaFileReason.Upgrade), Times.Never());
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void should_detach_but_not_delete_file_from_a_different_book_folder()
+        {
+            GivenExistingFileAt(Path.Combine(_rootPath, "Twisted Lies", "Twisted Lies.azw3"));
+            GivenDestinationFolder(Path.Combine(_rootPath, "Twisted Games"));
+
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
+
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(v => v.Delete(It.IsAny<BookFile>(), DeleteMediaFileReason.MissingFromDisk), Times.Once());
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void should_still_delete_existing_file_in_the_destination_folder()
+        {
+            var folder = Path.Combine(_rootPath, "Twisted Games");
+            GivenExistingFileAt(Path.Combine(folder, "old.azw3"));
+            GivenDestinationFolder(folder);
+
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
+
+            Mocker.GetMock<IRecycleBinProvider>()
+                .Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(v => v.Delete(It.IsAny<BookFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
         }
     }
 }

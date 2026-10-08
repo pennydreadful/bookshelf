@@ -391,9 +391,12 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             foreach (var groupedTrackedDownload in importedTrackedDownload.GroupBy(i => i.TrackedDownload.DownloadItem.DownloadId).ToList())
             {
                 var trackedDownload = groupedTrackedDownload.First().TrackedDownload;
-                var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
 
-                if (_diskProvider.FolderExists(outputPath))
+                // A download adopted from the client's history has no import item, so there is no
+                // output folder to clean up. Importing the files still succeeded.
+                var outputPath = trackedDownload.ImportItem?.OutputPath.FullPath;
+
+                if (outputPath.IsNotNullOrWhiteSpace() && _diskProvider.FolderExists(outputPath))
                 {
                     if (_downloadedTracksImportService.ShouldDeleteFolder(_diskProvider.GetDirectoryInfo(outputPath)) &&
                         trackedDownload.DownloadItem.CanMoveFiles)

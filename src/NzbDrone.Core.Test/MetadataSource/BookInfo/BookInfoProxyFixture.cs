@@ -10,10 +10,12 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource.BookInfo;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.MetadataSource.Goodreads
 {
     [TestFixture]
+    [IntegrationTest]
     public class BookInfoProxyFixture : CoreTest<BookInfoProxy>
     {
         private MetadataProfile _metadataProfile;

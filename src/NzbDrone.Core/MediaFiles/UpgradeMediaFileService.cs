@@ -1,9 +1,12 @@
+using System;
+using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books.Calibre;
 using NzbDrone.Core.MediaFiles.BookImport;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RootFolders;
 
@@ -23,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IRootFolderService _rootFolderService;
         private readonly ICalibreProxy _calibre;
+        private readonly IBuildFileNames _buildFileNames;
         private readonly Logger _logger;
 
         public UpgradeMediaFileService(IRecycleBinProvider recycleBinProvider,
@@ -32,6 +36,7 @@ namespace NzbDrone.Core.MediaFiles
                                        IDiskProvider diskProvider,
                                        IRootFolderService rootFolderService,
                                        ICalibreProxy calibre,
+                                       IBuildFileNames buildFileNames,
                                        Logger logger)
         {
             _recycleBinProvider = recycleBinProvider;
@@ -41,6 +46,7 @@ namespace NzbDrone.Core.MediaFiles
             _diskProvider = diskProvider;
             _rootFolderService = rootFolderService;
             _calibre = calibre;
+            _buildFileNames = buildFileNames;
             _logger = logger;
         }
 
@@ -61,12 +67,30 @@ namespace NzbDrone.Core.MediaFiles
                 throw new RootFolderNotFoundException($"Root folder '{rootFolderPath}' was not found.");
             }
 
+            // Where the incoming file is going to land. Anything outside that folder is not a copy
+            // of this book being upgraded, it is a file that was attached to this book by mistake,
+            // and deleting it would destroy an unrelated book.
+            var destinationFolder = isCalibre ? null : GetDestinationFolder(bookFile, localBook);
+
             foreach (var file in existingFiles)
             {
                 var bookFilePath = file.Path;
                 var subfolder = rootFolderPath.GetRelativePath(_diskProvider.GetParentFolder(bookFilePath));
 
                 bookFile.CalibreId = file.CalibreId;
+
+                if (destinationFolder != null && !IsInFolder(bookFilePath, destinationFolder))
+                {
+                    _logger.Warn("Not removing {0}: it is attached to {1} but does not live in {2}. " +
+                                 "This usually means the file was matched to the wrong book; it has been left on disk and detached from the book.",
+                                 bookFilePath,
+                                 localBook.Book,
+                                 destinationFolder);
+
+                    _mediaFileService.Delete(file, DeleteMediaFileReason.MissingFromDisk);
+
+                    continue;
+                }
 
                 if (_diskProvider.FileExists(bookFilePath))
                 {
@@ -115,6 +139,30 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return moveFileResult;
+        }
+
+        private string GetDestinationFolder(BookFile bookFile, LocalBook localBook)
+        {
+            try
+            {
+                var fileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+                var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Edition, fileName, Path.GetExtension(localBook.Path));
+
+                return _diskProvider.GetParentFolder(filePath);
+            }
+            catch (Exception e)
+            {
+                // Never block an import because the destination could not be calculated; fall back
+                // to the previous behaviour of trusting the book's file list.
+                _logger.Debug(e, "Could not determine destination folder for {0}", localBook.Path);
+
+                return null;
+            }
+        }
+
+        private bool IsInFolder(string path, string folder)
+        {
+            return _diskProvider.GetParentFolder(path).PathEquals(folder);
         }
     }
 }
