@@ -585,6 +585,8 @@
   "MinimumCustomFormatScore": "Minimum Custom Format Score",
   "MinimumCustomFormatScoreHelpText": "Minimum Custom Format Score required to bypass delay for the preferred protocol",
   "MinimumFreeSpace": "Minimum Free Space",
+  "MinimumImportMatch": "Minimum Import Match",
+  "MinimumImportMatchHelpText": "Minimum metadata match required to import a book. Higher values are stricter. Default: 50%.",
   "MinimumFreeSpaceWhenImportingHelpText": "Prevent import if it would leave less than this amount of disk space available",
   "MinimumLimits": "Minimum Limits",
   "MinimumPages": "Minimum Pages",

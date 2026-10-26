@@ -211,6 +211,27 @@ class MediaManagement extends Component {
                         />
                       </FormGroup>
 
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>
+                          {translate('MinimumImportMatch')}
+                        </FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.NUMBER}
+                          unit='%'
+                          name="bookImportMinimumMatchPercent"
+                          helpText={translate('MinimumImportMatchHelpText')}
+                          min={50}
+                          max={99}
+                          onChange={onInputChange}
+                          {...settings.bookImportMinimumMatchPercent}
+                        />
+                      </FormGroup>
+
                       {
                         settings.importExtraFiles.value ?
                           <FormGroup
