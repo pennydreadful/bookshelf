@@ -886,16 +886,18 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
             {
                 book.Editions = resource.Books.Select(x => MapEdition(x)).ToList();
 
-                // monitor the most popular release
-                var mostPopular = book.Editions.Value.MaxBy(x => x.Ratings.Popularity);
-                if (mostPopular != null)
+                // Prefer the provider's edition, retaining the popularity fallback.
+                var selectedEdition = book.Editions.Value.FirstOrDefault(x =>
+                    resource.BestBookId > 0 && x.ForeignEditionId == resource.BestBookId.ToString())
+                    ?? book.Editions.Value.MaxBy(x => x.Ratings.Popularity);
+                if (selectedEdition != null)
                 {
-                    mostPopular.Monitored = true;
+                    selectedEdition.Monitored = true;
 
                     // fix work title if missing
                     if (book.Title.IsNullOrWhiteSpace())
                     {
-                        book.Title = mostPopular.Title;
+                        book.Title = selectedEdition.Title;
                     }
                 }
             }

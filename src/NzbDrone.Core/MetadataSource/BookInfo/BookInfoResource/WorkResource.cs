@@ -6,6 +6,7 @@ namespace NzbDrone.Core.MetadataSource.BookInfo
     public class WorkResource
     {
         public int ForeignId { get; set; }
+        public int BestBookId { get; set; }
         public string Title { get; set; }
         public string Url { get; set; }
         public DateTime? ReleaseDate { get; set; }
