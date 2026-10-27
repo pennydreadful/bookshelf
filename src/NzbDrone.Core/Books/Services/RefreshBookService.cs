@@ -244,7 +244,11 @@ namespace NzbDrone.Core.Books
 
         protected override List<Edition> GetRemoteChildren(Book local, Book remote)
         {
-            return remote.Editions.Value.DistinctBy(m => m.ForeignEditionId).ToList();
+            // Incomplete provider responses must not orphan owned or manually added editions.
+            var preserved = _editionService.GetEditionsByBook(local.Id)
+                .Where(e => e.ManualAdd || _mediaFileService.GetFilesByEdition(e.Id).Any());
+
+            return remote.Editions.Value.Concat(preserved).DistinctBy(m => m.ForeignEditionId).ToList();
         }
 
         protected override List<Edition> GetLocalChildren(Book entity, List<Edition> remoteChildren)
