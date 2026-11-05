@@ -13,6 +13,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
@@ -340,6 +341,78 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             // Author has one valid cover, so Get is called once for author; book cover is skipped
             Mocker.GetMock<IHttpClient>()
                   .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Once());
+        }
+
+        [Test]
+        public void should_skip_book_cover_when_no_monitored_edition()
+        {
+            var unmonitoredEdition = Builder<Edition>.CreateNew()
+                .With(v => v.Id = 7)
+                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "http://test.org/Unmonitored.png") })
+                .With(v => v.Monitored = false)
+                .Build();
+
+            var bookWithoutMonitoredEdition = Builder<Book>.CreateNew()
+                .With(v => v.Id = 3)
+                .With(v => v.Editions = new List<Edition> { unmonitoredEdition })
+                .Build();
+
+            Mocker.GetMock<ICoverExistsSpecification>()
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
+                  .Returns(false);
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(v => v.GetBooksByAuthor(It.IsAny<int>()))
+                  .Returns(new List<Book> { bookWithoutMonitoredEdition, _book });
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(v => v.FileExists(It.IsAny<string>()))
+                  .Returns(true);
+
+            Subject.HandleAsync(new AuthorRefreshCompleteEvent(_author));
+
+            // Author poster + book B cover; book A has no monitored edition and must not abort B
+            Mocker.GetMock<IHttpClient>()
+                  .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Exactly(2));
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.IsAny<MediaCoversUpdatedEvent>()), Times.Once());
+        }
+
+        [Test]
+        public void should_continue_cover_download_when_one_book_throws()
+        {
+            var editionWithNullImages = Builder<Edition>.CreateNew()
+                .With(v => v.Id = 9)
+                .With(v => v.Images = null)
+                .With(v => v.Monitored = true)
+                .Build();
+
+            var bookThatThrows = Builder<Book>.CreateNew()
+                .With(v => v.Id = 5)
+                .With(v => v.Editions = new List<Edition> { editionWithNullImages })
+                .Build();
+
+            Mocker.GetMock<ICoverExistsSpecification>()
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
+                  .Returns(false);
+
+            Mocker.GetMock<IBookService>()
+                  .Setup(v => v.GetBooksByAuthor(It.IsAny<int>()))
+                  .Returns(new List<Book> { bookThatThrows, _book });
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(v => v.FileExists(It.IsAny<string>()))
+                  .Returns(true);
+
+            Subject.HandleAsync(new AuthorRefreshCompleteEvent(_author));
+
+            // Author poster + later book cover still attempted after per-book failure
+            Mocker.GetMock<IHttpClient>()
+                  .Verify(c => c.Get(It.IsAny<HttpRequest>()), Times.Exactly(2));
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.IsAny<MediaCoversUpdatedEvent>()), Times.Once());
         }
     }
 }
