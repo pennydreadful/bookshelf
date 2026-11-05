@@ -199,7 +199,15 @@ namespace NzbDrone.Core.MediaCover
 
         public void EnsureBookCovers(Book book)
         {
-            foreach (var cover in book.Editions.Value.Single(x => x.Monitored).Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
+            var edition = book.Editions.Value.FirstOrDefault(x => x.Monitored);
+
+            if (edition == null)
+            {
+                _logger.Debug("Book {0} [{1}] has no monitored edition; skipping cover download", book.Title, book.Id);
+                return;
+            }
+
+            foreach (var cover in edition.Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
             {
                 if (cover.CoverType == MediaCoverTypes.Unknown)
                 {
@@ -371,7 +379,14 @@ namespace NzbDrone.Core.MediaCover
             var books = _bookService.GetBooksByAuthor(message.Author.Id);
             foreach (var book in books)
             {
-                EnsureBookCovers(book);
+                try
+                {
+                    EnsureBookCovers(book);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't download media cover for {0}", book);
+                }
             }
 
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Author));
